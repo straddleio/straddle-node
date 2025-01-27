@@ -172,6 +172,37 @@ On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
 
+## Auto-pagination
+
+List methods in the Straddle API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllPayments(params) {
+  const allPayments = [];
+  // Automatically fetches more pages as needed.
+  for await (const payment of client.payments.list()) {
+    allPayments.push(payment);
+  }
+  return allPayments;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.payments.list();
+for (const payment of page.data) {
+  console.log(payment);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
+
 ## Advanced Usage
 
 ### Accessing raw Response data (e.g., headers)
