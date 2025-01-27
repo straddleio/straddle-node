@@ -8,9 +8,9 @@ const client = new Straddle({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource bridge', () => {
+describe('resource link', () => {
   test('bankAccount: only required params', async () => {
-    const responsePromise = client.bridge.bankAccount({
+    const responsePromise = client.bridge.link.bankAccount({
       account_number: 'account_number',
       account_type: 'checking',
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -26,7 +26,7 @@ describe('resource bridge', () => {
   });
 
   test('bankAccount: required and optional params', async () => {
-    const response = await client.bridge.bankAccount({
+    const response = await client.bridge.link.bankAccount({
       account_number: 'account_number',
       account_type: 'checking',
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -38,28 +38,8 @@ describe('resource bridge', () => {
     });
   });
 
-  test('initialize: only required params', async () => {
-    const responsePromise = client.bridge.initialize({ customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('initialize: required and optional params', async () => {
-    const response = await client.bridge.initialize({
-      customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'Correlation-Id': 'Correlation-Id',
-      'Request-Id': 'Request-Id',
-      'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    });
-  });
-
   test('plaid: only required params', async () => {
-    const responsePromise = client.bridge.plaid({
+    const responsePromise = client.bridge.link.plaid({
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       plaid_token: 'plaid_token',
     });
@@ -73,7 +53,7 @@ describe('resource bridge', () => {
   });
 
   test('plaid: required and optional params', async () => {
-    const response = await client.bridge.plaid({
+    const response = await client.bridge.link.plaid({
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       plaid_token: 'plaid_token',
       metadata: { foo: 'string' },

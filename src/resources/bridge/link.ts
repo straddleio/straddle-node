@@ -1,17 +1,17 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import * as Core from '../core';
-import * as PaykeysAPI from './paykeys';
+import { APIResource } from '../../resource';
+import * as Core from '../../core';
+import * as PaykeysAPI from '../paykeys';
 
-export class Bridge extends APIResource {
+export class Link extends APIResource {
   /**
    * Use Bridge to create a new paykey using a bank routing and account number as the
    * source. This endpoint allows you to create a secure payment token linked to a
    * specific bank account.
    */
   bankAccount(
-    params: BridgeBankAccountParams,
+    params: LinkBankAccountParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<PaykeysAPI.Paykey> {
     const {
@@ -33,33 +33,11 @@ export class Bridge extends APIResource {
   }
 
   /**
-   * Use this endpoint to generate a session token for use in the Bridge widget.
-   */
-  initialize(params: BridgeInitializeParams, options?: Core.RequestOptions): Core.APIPromise<BridgeToken> {
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-      ...body
-    } = params;
-    return this._client.post('/v1/bridge/initialize', {
-      body,
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Use Bridge to create a new paykey using a Plaid token as the source. This
    * endpoint allows you to create a secure payment token linked to a bank account
    * authenticated through Plaid.
    */
-  plaid(params: BridgePlaidParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.Paykey> {
+  plaid(params: LinkPlaidParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.Paykey> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -79,51 +57,7 @@ export class Bridge extends APIResource {
   }
 }
 
-export interface BridgeToken {
-  data: BridgeToken.Data;
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: BridgeToken.Meta;
-
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace BridgeToken {
-  export interface Data {
-    /**
-     * JWT Token to use in the bridge widget.
-     */
-    bridge_token: string;
-  }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
-}
-
-export interface BridgeBankAccountParams {
+export interface LinkBankAccountParams {
   /**
    * Body param: The bank account number.
    */
@@ -168,32 +102,7 @@ export interface BridgeBankAccountParams {
   'Straddle-Account-Id'?: string;
 }
 
-export interface BridgeInitializeParams {
-  /**
-   * Body param: The Straddle generated unique identifier of the `customer` to create
-   * a bridge token for.
-   */
-  customer_id: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
-export interface BridgePlaidParams {
+export interface LinkPlaidParams {
   /**
    * Body param: Unique identifier of the related customer object.
    */
@@ -229,11 +138,6 @@ export interface BridgePlaidParams {
   'Straddle-Account-Id'?: string;
 }
 
-export declare namespace Bridge {
-  export {
-    type BridgeToken as BridgeToken,
-    type BridgeBankAccountParams as BridgeBankAccountParams,
-    type BridgeInitializeParams as BridgeInitializeParams,
-    type BridgePlaidParams as BridgePlaidParams,
-  };
+export declare namespace Link {
+  export { type LinkBankAccountParams as LinkBankAccountParams, type LinkPlaidParams as LinkPlaidParams };
 }
