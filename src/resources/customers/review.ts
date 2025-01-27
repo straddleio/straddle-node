@@ -12,9 +12,9 @@ export class Review extends APIResource {
    * or updating the status of a customer's verification. Note that this endpoint is
    * only available for customers with a current status of `review`.
    */
-  update(
+  decision(
     id: string,
-    params: ReviewUpdateParams,
+    params: ReviewDecisionParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<CustomersAPI.Customer> {
     const {
@@ -480,7 +480,7 @@ export namespace CustomerReview {
   }
 }
 
-export interface ReviewUpdateParams {
+export interface ReviewDecisionParams {
   /**
    * Body param: The final status of the customer review.
    */
@@ -524,7 +524,7 @@ export interface ReviewGetParams {
 export declare namespace Review {
   export {
     type CustomerReview as CustomerReview,
-    type ReviewUpdateParams as ReviewUpdateParams,
+    type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
   };
 }

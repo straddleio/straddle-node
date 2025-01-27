@@ -9,8 +9,8 @@ const client = new Straddle({
 });
 
 describe('resource review', () => {
-  test('update: only required params', async () => {
-    const responsePromise = client.customers.review.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test('decision: only required params', async () => {
+    const responsePromise = client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       status: 'verified',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -22,8 +22,8 @@ describe('resource review', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('update: required and optional params', async () => {
-    const response = await client.customers.review.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test('decision: required and optional params', async () => {
+    const response = await client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       status: 'verified',
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',

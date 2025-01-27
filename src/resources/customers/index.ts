@@ -13,4 +13,4 @@ export {
   type CustomerGetParams,
   type CustomerUnmaskedParams,
 } from './customers';
-export { Review, type CustomerReview, type ReviewUpdateParams, type ReviewGetParams } from './review';
+export { Review, type CustomerReview, type ReviewDecisionParams, type ReviewGetParams } from './review';

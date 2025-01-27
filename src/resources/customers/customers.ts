@@ -4,7 +4,7 @@ import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as ReviewAPI from './review';
-import { CustomerReview, Review, ReviewGetParams, ReviewUpdateParams } from './review';
+import { CustomerReview, Review, ReviewDecisionParams, ReviewGetParams } from './review';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Customers extends APIResource {
@@ -1063,7 +1063,7 @@ export declare namespace Customers {
   export {
     Review as Review,
     type CustomerReview as CustomerReview,
-    type ReviewUpdateParams as ReviewUpdateParams,
+    type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
   };
 }
