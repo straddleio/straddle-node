@@ -1,12 +1,12 @@
 {
-  "name": "straddle",
-  "version": "0.0.1-alpha.0",
+  "name": "@straddleio/straddle",
+  "version": "0.1.0-alpha.1",
   "description": "The official TypeScript library for the Straddle API",
   "author": "Straddle <dev-feedback@straddle.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
-  "repository": "github:stainless-sdks/straddle-node",
+  "repository": "github:straddleio/straddle-node",
   "license": "Apache-2.0",
   "packageManager": "yarn@1.22.22",
   "files": [
@@ -59,8 +59,8 @@
     "./shims/web.mjs"
   ],
   "imports": {
-    "straddle": ".",
-    "straddle/*": "./src/*"
+    "@straddleio/straddle": ".",
+    "@straddleio/straddle/*": "./src/*"
   },
   "exports": {
     "./_shims/auto/*": {
