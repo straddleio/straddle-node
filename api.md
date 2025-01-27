@@ -1,71 +1,73 @@
-# Accounts
+# Embed
+
+## Accounts
 
 Types:
 
-- <code><a href="./src/resources/accounts/accounts.ts">Account</a></code>
-- <code><a href="./src/resources/accounts/accounts.ts">AccountPaged</a></code>
+- <code><a href="./src/resources/embed/accounts/accounts.ts">Account</a></code>
+- <code><a href="./src/resources/embed/accounts/accounts.ts">AccountPaged</a></code>
 
 Methods:
 
-- <code title="post /v1/accounts">client.accounts.<a href="./src/resources/accounts/accounts.ts">create</a>({ ...params }) -> Account</code>
-- <code title="put /v1/accounts/{account_id}">client.accounts.<a href="./src/resources/accounts/accounts.ts">update</a>(accountId, { ...params }) -> Account</code>
-- <code title="get /v1/accounts">client.accounts.<a href="./src/resources/accounts/accounts.ts">list</a>({ ...params }) -> AccountPagedDataPageNumberSchema</code>
-- <code title="get /v1/accounts/{account_id}">client.accounts.<a href="./src/resources/accounts/accounts.ts">get</a>(accountId, { ...params }) -> Account</code>
-- <code title="post /v1/accounts/{account_id}/onboard">client.accounts.<a href="./src/resources/accounts/accounts.ts">onboard</a>(accountId, { ...params }) -> Account</code>
-- <code title="post /v1/accounts/{account_id}/simulate">client.accounts.<a href="./src/resources/accounts/accounts.ts">simulate</a>(accountId, { ...params }) -> Account</code>
+- <code title="post /v1/accounts">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">create</a>({ ...params }) -> Account</code>
+- <code title="put /v1/accounts/{account_id}">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">update</a>(accountId, { ...params }) -> Account</code>
+- <code title="get /v1/accounts">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">list</a>({ ...params }) -> AccountPagedDataPageNumberSchema</code>
+- <code title="get /v1/accounts/{account_id}">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">get</a>(accountId, { ...params }) -> Account</code>
+- <code title="post /v1/accounts/{account_id}/onboard">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">onboard</a>(accountId, { ...params }) -> Account</code>
+- <code title="post /v1/accounts/{account_id}/simulate">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">simulate</a>(accountId, { ...params }) -> Account</code>
 
-## CapabilityRequests
+### CapabilityRequests
 
 Types:
 
-- <code><a href="./src/resources/accounts/capability-requests.ts">CapabilityRequestPaged</a></code>
+- <code><a href="./src/resources/embed/accounts/capability-requests.ts">CapabilityRequestPaged</a></code>
 
 Methods:
 
-- <code title="post /v1/accounts/{account_id}/capability_requests">client.accounts.capabilityRequests.<a href="./src/resources/accounts/capability-requests.ts">create</a>(accountId, { ...params }) -> CapabilityRequestPaged</code>
-- <code title="get /v1/accounts/{account_id}/capability_requests">client.accounts.capabilityRequests.<a href="./src/resources/accounts/capability-requests.ts">list</a>(accountId, { ...params }) -> CapabilityRequestPagedDataPageNumberSchema</code>
+- <code title="post /v1/accounts/{account_id}/capability_requests">client.embed.accounts.capabilityRequests.<a href="./src/resources/embed/accounts/capability-requests.ts">create</a>(accountId, { ...params }) -> CapabilityRequestPaged</code>
+- <code title="get /v1/accounts/{account_id}/capability_requests">client.embed.accounts.capabilityRequests.<a href="./src/resources/embed/accounts/capability-requests.ts">list</a>(accountId, { ...params }) -> CapabilityRequestPagedDataPageNumberSchema</code>
 
-# LinkedBankAccounts
+## LinkedBankAccounts
 
 Types:
 
-- <code><a href="./src/resources/linked-bank-accounts.ts">LinkedBankAccount</a></code>
-- <code><a href="./src/resources/linked-bank-accounts.ts">LinkedBankAccountPaged</a></code>
-- <code><a href="./src/resources/linked-bank-accounts.ts">LinkedBankAccountUnmask</a></code>
+- <code><a href="./src/resources/embed/linked-bank-accounts.ts">LinkedBankAccount</a></code>
+- <code><a href="./src/resources/embed/linked-bank-accounts.ts">LinkedBankAccountPaged</a></code>
+- <code><a href="./src/resources/embed/linked-bank-accounts.ts">LinkedBankAccountUnmask</a></code>
 
 Methods:
 
-- <code title="post /v1/linked_bank_accounts">client.linkedBankAccounts.<a href="./src/resources/linked-bank-accounts.ts">create</a>({ ...params }) -> LinkedBankAccount</code>
-- <code title="put /v1/linked_bank_accounts/{linked_bank_account_id}">client.linkedBankAccounts.<a href="./src/resources/linked-bank-accounts.ts">update</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccount</code>
-- <code title="get /v1/linked_bank_accounts">client.linkedBankAccounts.<a href="./src/resources/linked-bank-accounts.ts">list</a>({ ...params }) -> LinkedBankAccountPagedDataPageNumberSchema</code>
-- <code title="get /v1/linked_bank_accounts/{linked_bank_account_id}">client.linkedBankAccounts.<a href="./src/resources/linked-bank-accounts.ts">get</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccount</code>
-- <code title="get /v1/linked_bank_accounts/{linked_bank_account_id}/unmask">client.linkedBankAccounts.<a href="./src/resources/linked-bank-accounts.ts">unmask</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccountUnmask</code>
+- <code title="post /v1/linked_bank_accounts">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">create</a>({ ...params }) -> LinkedBankAccount</code>
+- <code title="put /v1/linked_bank_accounts/{linked_bank_account_id}">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">update</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccount</code>
+- <code title="get /v1/linked_bank_accounts">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">list</a>({ ...params }) -> LinkedBankAccountPagedDataPageNumberSchema</code>
+- <code title="get /v1/linked_bank_accounts/{linked_bank_account_id}">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">get</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccount</code>
+- <code title="get /v1/linked_bank_accounts/{linked_bank_account_id}/unmask">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">unmask</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccountUnmask</code>
 
-# Organizations
+## Organizations
 
 Types:
 
-- <code><a href="./src/resources/organizations.ts">Organization</a></code>
-- <code><a href="./src/resources/organizations.ts">OrganizationPaged</a></code>
+- <code><a href="./src/resources/embed/organizations.ts">Organization</a></code>
+- <code><a href="./src/resources/embed/organizations.ts">OrganizationPaged</a></code>
 
 Methods:
 
-- <code title="post /v1/organizations">client.organizations.<a href="./src/resources/organizations.ts">create</a>({ ...params }) -> Organization</code>
-- <code title="get /v1/organizations">client.organizations.<a href="./src/resources/organizations.ts">list</a>({ ...params }) -> OrganizationPagedDataPageNumberSchema</code>
+- <code title="post /v1/organizations">client.embed.organizations.<a href="./src/resources/embed/organizations.ts">create</a>({ ...params }) -> Organization</code>
+- <code title="get /v1/organizations">client.embed.organizations.<a href="./src/resources/embed/organizations.ts">list</a>({ ...params }) -> OrganizationPagedDataPageNumberSchema</code>
 
-# Representatives
+## Representatives
 
 Types:
 
-- <code><a href="./src/resources/representatives.ts">Representative</a></code>
-- <code><a href="./src/resources/representatives.ts">RepresentativePaged</a></code>
+- <code><a href="./src/resources/embed/representatives.ts">Representative</a></code>
+- <code><a href="./src/resources/embed/representatives.ts">RepresentativePaged</a></code>
 
 Methods:
 
-- <code title="post /v1/representatives">client.representatives.<a href="./src/resources/representatives.ts">create</a>({ ...params }) -> Representative</code>
-- <code title="put /v1/representatives/{representative_id}">client.representatives.<a href="./src/resources/representatives.ts">update</a>(representativeId, { ...params }) -> Representative</code>
-- <code title="get /v1/representatives">client.representatives.<a href="./src/resources/representatives.ts">list</a>({ ...params }) -> RepresentativePagedDataPageNumberSchema</code>
-- <code title="get /v1/representatives/{representative_id}">client.representatives.<a href="./src/resources/representatives.ts">get</a>(representativeId, { ...params }) -> Representative</code>
+- <code title="post /v1/representatives">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">create</a>({ ...params }) -> Representative</code>
+- <code title="put /v1/representatives/{representative_id}">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">update</a>(representativeId, { ...params }) -> Representative</code>
+- <code title="get /v1/representatives">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">list</a>({ ...params }) -> RepresentativePagedDataPageNumberSchema</code>
+- <code title="get /v1/representatives/{representative_id}">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">get</a>(representativeId, { ...params }) -> Representative</code>
 
 # Bridge
 

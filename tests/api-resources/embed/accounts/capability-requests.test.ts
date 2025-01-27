@@ -10,7 +10,9 @@ const client = new Straddle({
 
 describe('resource capabilityRequests', () => {
   test('create', async () => {
-    const responsePromise = client.accounts.capabilityRequests.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.embed.accounts.capabilityRequests.create(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    );
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,7 +25,7 @@ describe('resource capabilityRequests', () => {
   test('create: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.accounts.capabilityRequests.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      client.embed.accounts.capabilityRequests.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(Straddle.NotFoundError);
@@ -32,7 +34,7 @@ describe('resource capabilityRequests', () => {
   test('create: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.accounts.capabilityRequests.create(
+      client.embed.accounts.capabilityRequests.create(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           businesses: { enable: true },
@@ -50,7 +52,9 @@ describe('resource capabilityRequests', () => {
   });
 
   test('list', async () => {
-    const responsePromise = client.accounts.capabilityRequests.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.embed.accounts.capabilityRequests.list(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    );
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -63,7 +67,7 @@ describe('resource capabilityRequests', () => {
   test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.accounts.capabilityRequests.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      client.embed.accounts.capabilityRequests.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(Straddle.NotFoundError);
@@ -72,7 +76,7 @@ describe('resource capabilityRequests', () => {
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.accounts.capabilityRequests.list(
+      client.embed.accounts.capabilityRequests.list(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           category: 'payment_type',

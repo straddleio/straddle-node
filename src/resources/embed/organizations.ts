@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
+import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
+import * as Core from '../../core';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Organizations extends APIResource {
   /**

@@ -10,7 +10,7 @@ const client = new Straddle({
 
 describe('resource organizations', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.organizations.create({ name: 'name' });
+    const responsePromise = client.embed.organizations.create({ name: 'name' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,7 +21,7 @@ describe('resource organizations', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.organizations.create({
+    const response = await client.embed.organizations.create({
       name: 'name',
       external_id: 'external_id',
       metadata: { foo: 'string' },
@@ -31,7 +31,7 @@ describe('resource organizations', () => {
   });
 
   test('list', async () => {
-    const responsePromise = client.organizations.list();
+    const responsePromise = client.embed.organizations.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,7 +43,7 @@ describe('resource organizations', () => {
 
   test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.organizations.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+    await expect(client.embed.organizations.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       Straddle.NotFoundError,
     );
   });
@@ -51,7 +51,7 @@ describe('resource organizations', () => {
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.organizations.list(
+      client.embed.organizations.list(
         {
           external_id: 'external_id',
           name: 'name',
