@@ -15,9 +15,10 @@ export {
 export {
   Bridge,
   type BridgeToken,
+  type BridgeBankAccountParams,
   type BridgeInitializeParams,
   type BridgePlaidParams,
-} from './bridge/bridge';
+} from './bridge';
 export {
   Charges,
   type Charge,
