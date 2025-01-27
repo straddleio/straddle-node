@@ -2,7 +2,7 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
-import * as Shared from '../shared';
+import * as PaykeysAPI from '../paykeys';
 
 export class BankAccount extends APIResource {
   /**
@@ -10,7 +10,7 @@ export class BankAccount extends APIResource {
    * source. This endpoint allows you to create a secure payment token linked to a
    * specific bank account.
    */
-  create(params: BankAccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<Shared.Paykey> {
+  create(params: BankAccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.Paykey> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,

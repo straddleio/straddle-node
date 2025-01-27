@@ -3,7 +3,6 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
-import * as Shared from './shared';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Paykeys extends APIResource {
@@ -48,13 +47,13 @@ export class Paykeys extends APIResource {
    * Straddle will return the corresponding paykey record , including the `paykey`
    * token value and masked bank account details.
    */
-  get(id: string, params?: PaykeyGetParams, options?: Core.RequestOptions): Core.APIPromise<Shared.Paykey>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.Paykey>;
+  get(id: string, params?: PaykeyGetParams, options?: Core.RequestOptions): Core.APIPromise<Paykey>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Paykey>;
   get(
     id: string,
     params: PaykeyGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.Paykey> {
+  ): Core.APIPromise<Paykey> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -112,6 +111,136 @@ export class Paykeys extends APIResource {
 }
 
 export class PaykeySummaryPagedDataPageNumberSchema extends PageNumberSchema<PaykeySummaryPaged.Data> {}
+
+export interface Paykey {
+  data: Paykey.Data;
+
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
+  meta: Paykey.Meta;
+
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
+  response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace Paykey {
+  export interface Data {
+    /**
+     * Unique identifier for the paykey.
+     */
+    id: string;
+
+    /**
+     * Timestamp of when the paykey was created.
+     */
+    created_at: string;
+
+    /**
+     * Human-readable label used to represent this paykey in a UI.
+     */
+    label: string;
+
+    /**
+     * The tokenized paykey value. This value is used to create payments and should be
+     * stored securely.
+     */
+    paykey: string;
+
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
+
+    /**
+     * Timestamp of the most recent update to the paykey.
+     */
+    updated_at: string;
+
+    bank_data?: Data.BankData;
+
+    /**
+     * Unique identifier of the related customer object.
+     */
+    customer_id?: string | null;
+
+    /**
+     * Expiration date and time of the paykey, if applicable.
+     */
+    expires_at?: string | null;
+
+    /**
+     * Name of the financial institution.
+     */
+    institution_name?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the paykey in a structured format.
+     */
+    metadata?: Record<string, string> | null;
+
+    status_details?: Data.StatusDetails;
+  }
+
+  export namespace Data {
+    export interface BankData {
+      /**
+       * Bank account number. This value is masked by default for security reasons. Use
+       * the /unmask endpoint to access the unmasked value.
+       */
+      account_number: string;
+
+      account_type: 'checking' | 'savings';
+
+      /**
+       * The routing number of the bank account.
+       */
+      routing_number: string;
+    }
+
+    export interface StatusDetails {
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason: string;
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: string;
+    }
+  }
+
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
+  export interface Meta {
+    /**
+     * Unique identifier for this API request, useful for troubleshooting.
+     */
+    api_request_id: string;
+
+    /**
+     * Timestamp for this API request, useful for troubleshooting.
+     */
+    api_request_timestamp: string;
+  }
+}
 
 export interface PaykeySummaryPaged {
   data: Array<PaykeySummaryPaged.Data>;
@@ -456,6 +585,7 @@ Paykeys.PaykeySummaryPagedDataPageNumberSchema = PaykeySummaryPagedDataPageNumbe
 
 export declare namespace Paykeys {
   export {
+    type Paykey as Paykey,
     type PaykeySummaryPaged as PaykeySummaryPaged,
     type PaykeyUnmasked as PaykeyUnmasked,
     PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,

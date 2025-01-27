@@ -1,9 +1,3 @@
-# Shared
-
-Types:
-
-- <code><a href="./src/resources/shared.ts">Paykey</a></code>
-
 # Accounts
 
 Types:
@@ -122,6 +116,7 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/paykeys.ts">Paykey</a></code>
 - <code><a href="./src/resources/paykeys.ts">PaykeySummaryPaged</a></code>
 - <code><a href="./src/resources/paykeys.ts">PaykeyUnmasked</a></code>
 

@@ -47,6 +47,7 @@ import {
   Organizations,
 } from './resources/organizations';
 import {
+  Paykey,
   PaykeyGetParams,
   PaykeyListParams,
   PaykeySummaryPaged,
@@ -400,6 +401,7 @@ export declare namespace Straddle {
 
   export {
     Paykeys as Paykeys,
+    type Paykey as Paykey,
     type PaykeySummaryPaged as PaykeySummaryPaged,
     type PaykeyUnmasked as PaykeyUnmasked,
     PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,
@@ -451,8 +453,6 @@ export declare namespace Straddle {
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
   };
-
-  export type Paykey = API.Paykey;
 }
 
 export { toFile, fileFromPath } from './uploads';

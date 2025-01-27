@@ -2,7 +2,7 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
-import * as Shared from '../shared';
+import * as PaykeysAPI from '../paykeys';
 import * as BankAccountAPI from './bank-account';
 import { BankAccount, BankAccountCreateParams } from './bank-account';
 
@@ -36,7 +36,7 @@ export class Bridge extends APIResource {
    * endpoint allows you to create a secure payment token linked to a bank account
    * authenticated through Plaid.
    */
-  plaid(params: BridgePlaidParams, options?: Core.RequestOptions): Core.APIPromise<Shared.Paykey> {
+  plaid(params: BridgePlaidParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.Paykey> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
