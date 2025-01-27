@@ -4,6 +4,8 @@ import { type Agent } from './_shims/index';
 import * as qs from './internal/qs';
 import * as Core from './core';
 import * as Errors from './error';
+import * as Pagination from './pagination';
+import { type PageNumberSchemaParams, PageNumberSchemaResponse } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import {
@@ -100,14 +102,14 @@ import {
 } from './resources/customers/customers';
 
 const environments = {
-  sandbox: 'https://{environment}.straddle.io',
   production: 'https://{environment}.straddle.io',
+  sandbox: 'https://{environment}.straddle.io',
 };
 type Environment = keyof typeof environments;
 
 export interface ClientOptions {
   /**
-   * Api Key Token for authenticating with the Straddle API.
+   * Api Key for authenticating with the Straddle API.
    */
   apiKey?: string | undefined;
 
@@ -115,8 +117,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `sandbox` corresponds to `https://{environment}.straddle.io`
    * - `production` corresponds to `https://{environment}.straddle.io`
+   * - `sandbox` corresponds to `https://{environment}.straddle.io`
    */
   environment?: Environment | undefined;
 
@@ -188,8 +190,8 @@ export class Straddle extends Core.APIClient {
   /**
    * API Client for interfacing with the Straddle API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_TOKEN'] ?? undefined]
-   * @param {Environment} [opts.environment=sandbox] - Specifies the environment URL to use for the API.
+   * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
+   * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://{environment}.straddle.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
@@ -200,12 +202,12 @@ export class Straddle extends Core.APIClient {
    */
   constructor({
     baseURL = Core.readEnv('STRADDLE_BASE_URL'),
-    apiKey = Core.readEnv('STRADDLE_TOKEN'),
+    apiKey = Core.readEnv('STRADDLE_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
       throw new Errors.StraddleError(
-        "The STRADDLE_TOKEN environment variable is missing or empty; either provide it, or instantiate the Straddle client with an apiKey option, like new Straddle({ apiKey: 'My API Key' }).",
+        "The STRADDLE_API_KEY environment variable is missing or empty; either provide it, or instantiate the Straddle client with an apiKey option, like new Straddle({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -213,7 +215,7 @@ export class Straddle extends Core.APIClient {
       apiKey,
       ...opts,
       baseURL,
-      environment: opts.environment ?? 'sandbox',
+      environment: opts.environment ?? 'production',
     };
 
     if (baseURL && opts.environment) {
@@ -223,7 +225,7 @@ export class Straddle extends Core.APIClient {
     }
 
     super({
-      baseURL: options.baseURL || environments[options.environment || 'sandbox'],
+      baseURL: options.baseURL || environments[options.environment || 'production'],
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -302,6 +304,12 @@ Straddle.Payments = Payments;
 Straddle.Payouts = Payouts;
 export declare namespace Straddle {
   export type RequestOptions = Core.RequestOptions;
+
+  export import PageNumberSchema = Pagination.PageNumberSchema;
+  export {
+    type PageNumberSchemaParams as PageNumberSchemaParams,
+    type PageNumberSchemaResponse as PageNumberSchemaResponse,
+  };
 
   export {
     Accounts as Accounts,
