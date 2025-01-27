@@ -126,16 +126,6 @@ Methods:
 - <code title="get /v1/paykeys/{id}">client.paykeys.<a href="./src/resources/paykeys.ts">get</a>(id, { ...params }) -> Paykey</code>
 - <code title="get /v1/paykeys/{id}/unmasked">client.paykeys.<a href="./src/resources/paykeys.ts">unmasked</a>(id, { ...params }) -> PaykeyUnmasked</code>
 
-# Reports
-
-Types:
-
-- <code><a href="./src/resources/reports.ts">ReportTotalCustomersByStatusResponse</a></code>
-
-Methods:
-
-- <code title="post /v1/reports/total_customers_by_status">client.reports.<a href="./src/resources/reports.ts">totalCustomersByStatus</a>({ ...params }) -> ReportTotalCustomersByStatusResponse</code>
-
 # Charges
 
 Types:

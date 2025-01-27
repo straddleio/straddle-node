@@ -73,11 +73,6 @@ import {
   Payouts,
 } from './resources/payouts';
 import {
-  ReportTotalCustomersByStatusParams,
-  ReportTotalCustomersByStatusResponse,
-  Reports,
-} from './resources/reports';
-import {
   Representative,
   RepresentativeCreateParams,
   RepresentativeGetParams,
@@ -257,7 +252,6 @@ export class Straddle extends Core.APIClient {
   bridge: API.Bridge = new API.Bridge(this);
   customers: API.Customers = new API.Customers(this);
   paykeys: API.Paykeys = new API.Paykeys(this);
-  reports: API.Reports = new API.Reports(this);
   charges: API.Charges = new API.Charges(this);
   fundingEvents: API.FundingEvents = new API.FundingEvents(this);
   payments: API.Payments = new API.Payments(this);
@@ -316,7 +310,6 @@ Straddle.Customers = Customers;
 Straddle.CustomerSummaryPagedDataPageNumberSchema = CustomerSummaryPagedDataPageNumberSchema;
 Straddle.Paykeys = Paykeys;
 Straddle.PaykeySummaryPagedDataPageNumberSchema = PaykeySummaryPagedDataPageNumberSchema;
-Straddle.Reports = Reports;
 Straddle.Charges = Charges;
 Straddle.FundingEvents = FundingEvents;
 Straddle.FundingEventSummaryPagedDataPageNumberSchema = FundingEventSummaryPagedDataPageNumberSchema;
@@ -407,12 +400,6 @@ export declare namespace Straddle {
     type PaykeyListParams as PaykeyListParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
-  };
-
-  export {
-    Reports as Reports,
-    type ReportTotalCustomersByStatusResponse as ReportTotalCustomersByStatusResponse,
-    type ReportTotalCustomersByStatusParams as ReportTotalCustomersByStatusParams,
   };
 
   export {

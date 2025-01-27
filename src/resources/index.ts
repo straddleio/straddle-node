@@ -91,11 +91,6 @@ export {
   type PayoutReleaseParams,
 } from './payouts';
 export {
-  Reports,
-  type ReportTotalCustomersByStatusResponse,
-  type ReportTotalCustomersByStatusParams,
-} from './reports';
-export {
   RepresentativePagedDataPageNumberSchema,
   Representatives,
   type Representative,
