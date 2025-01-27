@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../../resource';
+import { isRequestOptions } from '../../../core';
+import * as Core from '../../../core';
 import * as CapabilityRequestsAPI from './capability-requests';
 import {
   CapabilityRequestCreateParams,
@@ -11,7 +11,7 @@ import {
   CapabilityRequestPagedDataPageNumberSchema,
   CapabilityRequests,
 } from './capability-requests';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
 
 export class Accounts extends APIResource {
   capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(

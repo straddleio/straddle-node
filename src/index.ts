@@ -27,26 +27,6 @@ import {
   FundingEvents,
 } from './resources/funding-events';
 import {
-  LinkedBankAccount,
-  LinkedBankAccountCreateParams,
-  LinkedBankAccountGetParams,
-  LinkedBankAccountListParams,
-  LinkedBankAccountPaged,
-  LinkedBankAccountPagedDataPageNumberSchema,
-  LinkedBankAccountUnmask,
-  LinkedBankAccountUnmaskParams,
-  LinkedBankAccountUpdateParams,
-  LinkedBankAccounts,
-} from './resources/linked-bank-accounts';
-import {
-  Organization,
-  OrganizationCreateParams,
-  OrganizationListParams,
-  OrganizationPaged,
-  OrganizationPagedDataPageNumberSchema,
-  Organizations,
-} from './resources/organizations';
-import {
   Paykey,
   PaykeyGetParams,
   PaykeyListParams,
@@ -72,28 +52,6 @@ import {
   PayoutUpdateParams,
   Payouts,
 } from './resources/payouts';
-import {
-  Representative,
-  RepresentativeCreateParams,
-  RepresentativeGetParams,
-  RepresentativeListParams,
-  RepresentativePaged,
-  RepresentativePagedDataPageNumberSchema,
-  RepresentativeUpdateParams,
-  Representatives,
-} from './resources/representatives';
-import {
-  Account,
-  AccountCreateParams,
-  AccountGetParams,
-  AccountListParams,
-  AccountOnboardParams,
-  AccountPaged,
-  AccountPagedDataPageNumberSchema,
-  AccountSimulateParams,
-  AccountUpdateParams,
-  Accounts,
-} from './resources/accounts/accounts';
 import { Bridge, BridgeInitializeParams, BridgeToken } from './resources/bridge/bridge';
 import {
   Customer,
@@ -108,6 +66,7 @@ import {
   CustomerUpdateParams,
   Customers,
 } from './resources/customers/customers';
+import { Embed } from './resources/embed/embed';
 
 const environments = {
   production: 'https://{environment}.straddle.io',
@@ -245,10 +204,7 @@ export class Straddle extends Core.APIClient {
     this.apiKey = apiKey;
   }
 
-  accounts: API.Accounts = new API.Accounts(this);
-  linkedBankAccounts: API.LinkedBankAccounts = new API.LinkedBankAccounts(this);
-  organizations: API.Organizations = new API.Organizations(this);
-  representatives: API.Representatives = new API.Representatives(this);
+  embed: API.Embed = new API.Embed(this);
   bridge: API.Bridge = new API.Bridge(this);
   customers: API.Customers = new API.Customers(this);
   paykeys: API.Paykeys = new API.Paykeys(this);
@@ -297,14 +253,7 @@ export class Straddle extends Core.APIClient {
   static fileFromPath = Uploads.fileFromPath;
 }
 
-Straddle.Accounts = Accounts;
-Straddle.AccountPagedDataPageNumberSchema = AccountPagedDataPageNumberSchema;
-Straddle.LinkedBankAccounts = LinkedBankAccounts;
-Straddle.LinkedBankAccountPagedDataPageNumberSchema = LinkedBankAccountPagedDataPageNumberSchema;
-Straddle.Organizations = Organizations;
-Straddle.OrganizationPagedDataPageNumberSchema = OrganizationPagedDataPageNumberSchema;
-Straddle.Representatives = Representatives;
-Straddle.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
+Straddle.Embed = Embed;
 Straddle.Bridge = Bridge;
 Straddle.Customers = Customers;
 Straddle.CustomerSummaryPagedDataPageNumberSchema = CustomerSummaryPagedDataPageNumberSchema;
@@ -325,51 +274,7 @@ export declare namespace Straddle {
     type PageNumberSchemaResponse as PageNumberSchemaResponse,
   };
 
-  export {
-    Accounts as Accounts,
-    type Account as Account,
-    type AccountPaged as AccountPaged,
-    AccountPagedDataPageNumberSchema as AccountPagedDataPageNumberSchema,
-    type AccountCreateParams as AccountCreateParams,
-    type AccountUpdateParams as AccountUpdateParams,
-    type AccountListParams as AccountListParams,
-    type AccountGetParams as AccountGetParams,
-    type AccountOnboardParams as AccountOnboardParams,
-    type AccountSimulateParams as AccountSimulateParams,
-  };
-
-  export {
-    LinkedBankAccounts as LinkedBankAccounts,
-    type LinkedBankAccount as LinkedBankAccount,
-    type LinkedBankAccountPaged as LinkedBankAccountPaged,
-    type LinkedBankAccountUnmask as LinkedBankAccountUnmask,
-    LinkedBankAccountPagedDataPageNumberSchema as LinkedBankAccountPagedDataPageNumberSchema,
-    type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
-    type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
-    type LinkedBankAccountListParams as LinkedBankAccountListParams,
-    type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
-    type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
-  };
-
-  export {
-    Organizations as Organizations,
-    type Organization as Organization,
-    type OrganizationPaged as OrganizationPaged,
-    OrganizationPagedDataPageNumberSchema as OrganizationPagedDataPageNumberSchema,
-    type OrganizationCreateParams as OrganizationCreateParams,
-    type OrganizationListParams as OrganizationListParams,
-  };
-
-  export {
-    Representatives as Representatives,
-    type Representative as Representative,
-    type RepresentativePaged as RepresentativePaged,
-    RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
-    type RepresentativeCreateParams as RepresentativeCreateParams,
-    type RepresentativeUpdateParams as RepresentativeUpdateParams,
-    type RepresentativeListParams as RepresentativeListParams,
-    type RepresentativeGetParams as RepresentativeGetParams,
-  };
+  export { Embed as Embed };
 
   export {
     Bridge as Bridge,

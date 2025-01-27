@@ -1,17 +1,5 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export {
-  AccountPagedDataPageNumberSchema,
-  Accounts,
-  type Account,
-  type AccountPaged,
-  type AccountCreateParams,
-  type AccountUpdateParams,
-  type AccountListParams,
-  type AccountGetParams,
-  type AccountOnboardParams,
-  type AccountSimulateParams,
-} from './accounts/accounts';
 export { Bridge, type BridgeToken, type BridgeInitializeParams } from './bridge/bridge';
 export {
   Charges,
@@ -36,6 +24,7 @@ export {
   type CustomerGetParams,
   type CustomerUnmaskedParams,
 } from './customers/customers';
+export { Embed } from './embed/embed';
 export {
   FundingEventSummaryPagedDataPageNumberSchema,
   FundingEvents,
@@ -44,26 +33,6 @@ export {
   type FundingEventListParams,
   type FundingEventGetParams,
 } from './funding-events';
-export {
-  LinkedBankAccountPagedDataPageNumberSchema,
-  LinkedBankAccounts,
-  type LinkedBankAccount,
-  type LinkedBankAccountPaged,
-  type LinkedBankAccountUnmask,
-  type LinkedBankAccountCreateParams,
-  type LinkedBankAccountUpdateParams,
-  type LinkedBankAccountListParams,
-  type LinkedBankAccountGetParams,
-  type LinkedBankAccountUnmaskParams,
-} from './linked-bank-accounts';
-export {
-  OrganizationPagedDataPageNumberSchema,
-  Organizations,
-  type Organization,
-  type OrganizationPaged,
-  type OrganizationCreateParams,
-  type OrganizationListParams,
-} from './organizations';
 export {
   PaykeySummaryPagedDataPageNumberSchema,
   Paykeys,
@@ -90,13 +59,3 @@ export {
   type PayoutHoldParams,
   type PayoutReleaseParams,
 } from './payouts';
-export {
-  RepresentativePagedDataPageNumberSchema,
-  Representatives,
-  type Representative,
-  type RepresentativePaged,
-  type RepresentativeCreateParams,
-  type RepresentativeUpdateParams,
-  type RepresentativeListParams,
-  type RepresentativeGetParams,
-} from './representatives';

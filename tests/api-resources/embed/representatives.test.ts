@@ -10,7 +10,7 @@ const client = new Straddle({
 
 describe('resource representatives', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.representatives.create({
+    const responsePromise = client.embed.representatives.create({
       account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       dob: '1980-01-01',
       email: 'ron.swanson@pawnee.com',
@@ -30,7 +30,7 @@ describe('resource representatives', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.representatives.create({
+    const response = await client.embed.representatives.create({
       account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       dob: '1980-01-01',
       email: 'ron.swanson@pawnee.com',
@@ -46,7 +46,7 @@ describe('resource representatives', () => {
   });
 
   test('update: only required params', async () => {
-    const responsePromise = client.representatives.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    const responsePromise = client.embed.representatives.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       dob: '1980-01-01',
       email: 'ron.swanson@pawnee.com',
       first_name: 'Ron',
@@ -65,7 +65,7 @@ describe('resource representatives', () => {
   });
 
   test('update: required and optional params', async () => {
-    const response = await client.representatives.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    const response = await client.embed.representatives.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       dob: '1980-01-01',
       email: 'ron.swanson@pawnee.com',
       first_name: 'Ron',
@@ -80,7 +80,7 @@ describe('resource representatives', () => {
   });
 
   test('list', async () => {
-    const responsePromise = client.representatives.list();
+    const responsePromise = client.embed.representatives.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -92,7 +92,7 @@ describe('resource representatives', () => {
 
   test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.representatives.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+    await expect(client.embed.representatives.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       Straddle.NotFoundError,
     );
   });
@@ -100,7 +100,7 @@ describe('resource representatives', () => {
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.representatives.list(
+      client.embed.representatives.list(
         {
           account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           page_number: 0,
@@ -116,7 +116,7 @@ describe('resource representatives', () => {
   });
 
   test('get', async () => {
-    const responsePromise = client.representatives.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.embed.representatives.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -129,7 +129,7 @@ describe('resource representatives', () => {
   test('get: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.representatives.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      client.embed.representatives.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(Straddle.NotFoundError);
@@ -138,7 +138,7 @@ describe('resource representatives', () => {
   test('get: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.representatives.get(
+      client.embed.representatives.get(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         { 'correlation-id': 'correlation-id', 'request-id': 'request-id' },
         { path: '/_stainless_unknown_path' },
