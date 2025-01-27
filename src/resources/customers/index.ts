@@ -7,10 +7,10 @@ export {
   type CustomerSummaryPaged,
   type CustomerUnmasked,
   type CustomerCreateParams,
-  type CustomerRetrieveParams,
   type CustomerUpdateParams,
   type CustomerListParams,
   type CustomerDeleteParams,
+  type CustomerGetParams,
   type CustomerUnmaskedParams,
 } from './customers';
-export { Review, type CustomerReview, type ReviewRetrieveParams, type ReviewUpdateParams } from './review';
+export { Review, type CustomerReview, type ReviewUpdateParams, type ReviewGetParams } from './review';

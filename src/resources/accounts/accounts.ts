@@ -37,36 +37,6 @@ export class Accounts extends APIResource {
   }
 
   /**
-   * Retrieves the details of an account that has previously been created. Supply the
-   * unique account ID that was returned from your previous request, and Straddle
-   * will return the corresponding account information.
-   */
-  retrieve(
-    accountId: string,
-    params?: AccountRetrieveParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Account>;
-  retrieve(accountId: string, options?: Core.RequestOptions): Core.APIPromise<Account>;
-  retrieve(
-    accountId: string,
-    params: AccountRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Account> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(accountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/accounts/${accountId}`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Updates an existing account's information. This endpoint allows you to update
    * various account details during onboarding or after the account has been created.
    */
@@ -108,6 +78,32 @@ export class Accounts extends APIResource {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList('/v1/accounts', AccountPagedDataPageNumberSchema, {
       query,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(requestId != null ? { 'request-id': requestId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of an account that has previously been created. Supply the
+   * unique account ID that was returned from your previous request, and Straddle
+   * will return the corresponding account information.
+   */
+  get(accountId: string, params?: AccountGetParams, options?: Core.RequestOptions): Core.APIPromise<Account>;
+  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<Account>;
+  get(
+    accountId: string,
+    params: AccountGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Account> {
+    if (isRequestOptions(params)) {
+      return this.get(accountId, {}, params);
+    }
+    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    return this._client.get(`/v1/accounts/${accountId}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
@@ -1222,18 +1218,6 @@ export namespace AccountCreateParams {
   }
 }
 
-export interface AccountRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'correlation-id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'request-id'?: string;
-}
-
 export interface AccountUpdateParams {
   /**
    * Body param:
@@ -1406,6 +1390,18 @@ export interface AccountListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
+export interface AccountGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
 export interface AccountOnboardParams {
   /**
    * Body param:
@@ -1482,9 +1478,9 @@ export declare namespace Accounts {
     type AccountPaged as AccountPaged,
     AccountPagedDataPageNumberSchema as AccountPagedDataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
-    type AccountRetrieveParams as AccountRetrieveParams,
     type AccountUpdateParams as AccountUpdateParams,
     type AccountListParams as AccountListParams,
+    type AccountGetParams as AccountGetParams,
     type AccountOnboardParams as AccountOnboardParams,
     type AccountSimulateParams as AccountSimulateParams,
   };

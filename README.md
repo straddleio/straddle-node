@@ -31,15 +31,19 @@ const client = new Straddle({
 });
 
 async function main() {
-  const customer = await client.customers.create({
+  const charge = await client.charges.create({
+    amount: 0,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
     device: { ip_address: '192.168.1.1' },
-    email: 'ron.swanson@pawnee.com',
-    name: 'Ron Swanson',
-    phone: '+12128675309',
-    type: 'individual',
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
   });
 
-  console.log(customer.data);
+  console.log(charge.data);
 }
 
 main();
@@ -59,14 +63,18 @@ const client = new Straddle({
 });
 
 async function main() {
-  const params: Straddle.CustomerCreateParams = {
+  const params: Straddle.ChargeCreateParams = {
+    amount: 0,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
     device: { ip_address: '192.168.1.1' },
-    email: 'ron.swanson@pawnee.com',
-    name: 'Ron Swanson',
-    phone: '+12128675309',
-    type: 'individual',
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
   };
-  const customer: Straddle.Customer = await client.customers.create(params);
+  const charge: Straddle.Charge = await client.charges.create(params);
 }
 
 main();
@@ -83,13 +91,17 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const customer = await client.customers
+  const charge = await client.charges
     .create({
+      amount: 0,
+      config: { balance_check: 'required' },
+      consent_type: 'internet',
+      currency: 'currency',
+      description: 'Monthly subscription fee',
       device: { ip_address: '192.168.1.1' },
-      email: 'ron.swanson@pawnee.com',
-      name: 'Ron Swanson',
-      phone: '+12128675309',
-      type: 'individual',
+      external_id: 'external_id',
+      paykey: 'paykey',
+      payment_date: '2019-12-27',
     })
     .catch(async (err) => {
       if (err instanceof Straddle.APIError) {
@@ -134,7 +146,7 @@ const client = new Straddle({
 });
 
 // Or, configure per-request:
-await client.customers.create({ device: { ip_address: '192.168.1.1' }, email: 'ron.swanson@pawnee.com', name: 'Ron Swanson', phone: '+12128675309', type: 'individual' }, {
+await client.charges.create({ amount: 0, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
   maxRetries: 5,
 });
 ```
@@ -151,7 +163,7 @@ const client = new Straddle({
 });
 
 // Override per-request:
-await client.customers.create({ device: { ip_address: '192.168.1.1' }, email: 'ron.swanson@pawnee.com', name: 'Ron Swanson', phone: '+12128675309', type: 'individual' }, {
+await client.charges.create({ amount: 0, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -159,37 +171,6 @@ await client.customers.create({ device: { ip_address: '192.168.1.1' }, email: 'r
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
-
-## Auto-pagination
-
-List methods in the Straddle API are paginated.
-You can use the `for await … of` syntax to iterate through items across all pages:
-
-```ts
-async function fetchAllAccounts(params) {
-  const allAccounts = [];
-  // Automatically fetches more pages as needed.
-  for await (const account of client.accounts.list()) {
-    allAccounts.push(account);
-  }
-  return allAccounts;
-}
-```
-
-Alternatively, you can request a single page at a time:
-
-```ts
-let page = await client.accounts.list();
-for (const account of page.data) {
-  console.log(account);
-}
-
-// Convenience methods are provided for manually paginating:
-while (page.hasNextPage()) {
-  page = await page.getNextPage();
-  // ...
-}
-```
 
 ## Advanced Usage
 
@@ -203,29 +184,37 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Straddle();
 
-const response = await client.customers
+const response = await client.charges
   .create({
+    amount: 0,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
     device: { ip_address: '192.168.1.1' },
-    email: 'ron.swanson@pawnee.com',
-    name: 'Ron Swanson',
-    phone: '+12128675309',
-    type: 'individual',
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
   })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: customer, response: raw } = await client.customers
+const { data: charge, response: raw } = await client.charges
   .create({
+    amount: 0,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
     device: { ip_address: '192.168.1.1' },
-    email: 'ron.swanson@pawnee.com',
-    name: 'Ron Swanson',
-    phone: '+12128675309',
-    type: 'individual',
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(customer.data);
+console.log(charge.data);
 ```
 
 ### Making custom/undocumented requests
@@ -329,13 +318,17 @@ const client = new Straddle({
 });
 
 // Override per-request:
-await client.customers.create(
+await client.charges.create(
   {
+    amount: 0,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
     device: { ip_address: '192.168.1.1' },
-    email: 'ron.swanson@pawnee.com',
-    name: 'Ron Swanson',
-    phone: '+12128675309',
-    type: 'individual',
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
   },
   {
     httpAgent: new http.Agent({ keepAlive: false }),

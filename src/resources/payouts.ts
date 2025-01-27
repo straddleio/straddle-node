@@ -28,36 +28,6 @@ export class Payouts extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing payout. Supply the unique payout `id` to
-   * retrieve the corresponding payout information.
-   */
-  retrieve(id: string, params?: PayoutRetrieveParams, options?: Core.RequestOptions): Core.APIPromise<Payout>;
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<Payout>;
-  retrieve(
-    id: string,
-    params: PayoutRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Payout> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(id, {}, params);
-    }
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/payouts/${id}`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Update the details of a payout prior to processing. The status of the payout
    * must be `created`, `scheduled`, or `on_hold`.
    */
@@ -93,6 +63,36 @@ export class Payouts extends APIResource {
     } = params;
     return this._client.put(`/v1/payouts/${id}/cancel`, {
       body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of an existing payout. Supply the unique payout `id` to
+   * retrieve the corresponding payout information.
+   */
+  get(id: string, params?: PayoutGetParams, options?: Core.RequestOptions): Core.APIPromise<Payout>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Payout>;
+  get(
+    id: string,
+    params: PayoutGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Payout> {
+    if (isRequestOptions(params)) {
+      return this.get(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+    } = params;
+    return this._client.get(`/v1/payouts/${id}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
@@ -535,23 +535,6 @@ export namespace PayoutCreateParams {
   }
 }
 
-export interface PayoutRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface PayoutUpdateParams {
   /**
    * Body param: The amount of the payout in cents.
@@ -617,6 +600,23 @@ export interface PayoutCancelParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface PayoutGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface PayoutHoldParams {
   /**
    * Body param: Details about why the payout status was updated.
@@ -669,9 +669,9 @@ export declare namespace Payouts {
   export {
     type Payout as Payout,
     type PayoutCreateParams as PayoutCreateParams,
-    type PayoutRetrieveParams as PayoutRetrieveParams,
     type PayoutUpdateParams as PayoutUpdateParams,
     type PayoutCancelParams as PayoutCancelParams,
+    type PayoutGetParams as PayoutGetParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
   };

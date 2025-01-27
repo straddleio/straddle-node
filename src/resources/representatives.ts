@@ -25,36 +25,6 @@ export class Representatives extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing representative. Supply the unique
-   * representative ID, and Straddle will return the corresponding representative
-   * information.
-   */
-  retrieve(
-    representativeId: string,
-    params?: RepresentativeRetrieveParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative>;
-  retrieve(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
-  retrieve(
-    representativeId: string,
-    params: RepresentativeRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(representativeId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/representatives/${representativeId}`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Updates an existing representative's information. This can be used to update
    * personal details, contact information, or the relationship to the account or
    * organization.
@@ -99,6 +69,36 @@ export class Representatives extends APIResource {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList('/v1/representatives', RepresentativePagedDataPageNumberSchema, {
       query,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(requestId != null ? { 'request-id': requestId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of an existing representative. Supply the unique
+   * representative ID, and Straddle will return the corresponding representative
+   * information.
+   */
+  get(
+    representativeId: string,
+    params?: RepresentativeGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Representative>;
+  get(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
+  get(
+    representativeId: string,
+    params: RepresentativeGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Representative> {
+    if (isRequestOptions(params)) {
+      return this.get(representativeId, {}, params);
+    }
+    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    return this._client.get(`/v1/representatives/${representativeId}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
@@ -599,18 +599,6 @@ export namespace RepresentativeCreateParams {
   }
 }
 
-export interface RepresentativeRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'correlation-id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'request-id'?: string;
-}
-
 export interface RepresentativeUpdateParams {
   /**
    * Body param: The date of birth of the representative, in ISO 8601 format
@@ -731,6 +719,18 @@ export interface RepresentativeListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
+export interface RepresentativeGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
 Representatives.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
 
 export declare namespace Representatives {
@@ -739,8 +739,8 @@ export declare namespace Representatives {
     type RepresentativePaged as RepresentativePaged,
     RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
-    type RepresentativeRetrieveParams as RepresentativeRetrieveParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
+    type RepresentativeGetParams as RepresentativeGetParams,
   };
 }

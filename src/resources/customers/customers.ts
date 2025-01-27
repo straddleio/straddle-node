@@ -4,7 +4,7 @@ import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as ReviewAPI from './review';
-import { CustomerReview, Review, ReviewRetrieveParams, ReviewUpdateParams } from './review';
+import { CustomerReview, Review, ReviewGetParams, ReviewUpdateParams } from './review';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Customers extends APIResource {
@@ -24,41 +24,6 @@ export class Customers extends APIResource {
     } = params;
     return this._client.post('/v1/customers', {
       body,
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
-   * Retrieves the details of an existing customer. Supply the unique customer ID
-   * that was returned from your 'create customer' request, and Straddle will return
-   * the corresponding customer information.
-   */
-  retrieve(
-    id: string,
-    params?: CustomerRetrieveParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Customer>;
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<Customer>;
-  retrieve(
-    id: string,
-    params: CustomerRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Customer> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(id, {}, params);
-    }
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/customers/${id}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
@@ -151,6 +116,37 @@ export class Customers extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
     } = params;
     return this._client.delete(`/v1/customers/${id}`, {
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of an existing customer. Supply the unique customer ID
+   * that was returned from your 'create customer' request, and Straddle will return
+   * the corresponding customer information.
+   */
+  get(id: string, params?: CustomerGetParams, options?: Core.RequestOptions): Core.APIPromise<Customer>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Customer>;
+  get(
+    id: string,
+    params: CustomerGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Customer> {
+    if (isRequestOptions(params)) {
+      return this.get(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+    } = params;
+    return this._client.get(`/v1/customers/${id}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
@@ -781,23 +777,6 @@ export namespace CustomerCreateParams {
   }
 }
 
-export interface CustomerRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface CustomerUpdateParams {
   /**
    * Body param:
@@ -1030,6 +1009,23 @@ export interface CustomerDeleteParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface CustomerGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface CustomerUnmaskedParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -1057,17 +1053,17 @@ export declare namespace Customers {
     type CustomerUnmasked as CustomerUnmasked,
     CustomerSummaryPagedDataPageNumberSchema as CustomerSummaryPagedDataPageNumberSchema,
     type CustomerCreateParams as CustomerCreateParams,
-    type CustomerRetrieveParams as CustomerRetrieveParams,
     type CustomerUpdateParams as CustomerUpdateParams,
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
+    type CustomerGetParams as CustomerGetParams,
     type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 
   export {
     Review as Review,
     type CustomerReview as CustomerReview,
-    type ReviewRetrieveParams as ReviewRetrieveParams,
     type ReviewUpdateParams as ReviewUpdateParams,
+    type ReviewGetParams as ReviewGetParams,
   };
 }

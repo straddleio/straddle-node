@@ -43,39 +43,6 @@ describe('resource customers', () => {
     });
   });
 
-  test('retrieve', async () => {
-    const responsePromise = client.customers.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('retrieve: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.customers.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
-  });
-
-  test('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.customers.retrieve(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {
-          'Correlation-Id': 'Correlation-Id',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
-  });
-
   test('update: only required params', async () => {
     const responsePromise = client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       device: { ip_address: '192.168.1.1' },
@@ -176,6 +143,39 @@ describe('resource customers', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.customers.delete(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('get', async () => {
+    const responsePromise = client.customers.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('get: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.customers.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('get: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.customers.get(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           'Correlation-Id': 'Correlation-Id',

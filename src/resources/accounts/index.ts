@@ -6,9 +6,9 @@ export {
   type Account,
   type AccountPaged,
   type AccountCreateParams,
-  type AccountRetrieveParams,
   type AccountUpdateParams,
   type AccountListParams,
+  type AccountGetParams,
   type AccountOnboardParams,
   type AccountSimulateParams,
 } from './accounts';
