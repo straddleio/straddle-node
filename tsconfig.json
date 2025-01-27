@@ -9,9 +9,9 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
-      "straddle/_shims/auto/*": ["src/_shims/auto/*-node"],
-      "straddle/*": ["src/*"],
-      "straddle": ["src/index.ts"]
+      "@straddleio/straddle/_shims/auto/*": ["src/_shims/auto/*-node"],
+      "@straddleio/straddle/*": ["src/*"],
+      "@straddleio/straddle": ["src/index.ts"]
     },
     "noEmit": true,
 
