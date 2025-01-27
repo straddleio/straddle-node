@@ -12,13 +12,7 @@ export {
   type AccountOnboardParams,
   type AccountSimulateParams,
 } from './accounts/accounts';
-export {
-  Bridge,
-  type BridgeToken,
-  type BridgeBankAccountParams,
-  type BridgeInitializeParams,
-  type BridgePlaidParams,
-} from './bridge';
+export { Bridge, type BridgeToken, type BridgeInitializeParams } from './bridge/bridge';
 export {
   Charges,
   type Charge,
