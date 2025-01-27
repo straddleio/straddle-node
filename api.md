@@ -109,7 +109,7 @@ Types:
 
 Methods:
 
-- <code title="patch /v1/customers/{id}/review">client.customers.review.<a href="./src/resources/customers/review.ts">update</a>(id, { ...params }) -> Customer</code>
+- <code title="patch /v1/customers/{id}/review">client.customers.review.<a href="./src/resources/customers/review.ts">decision</a>(id, { ...params }) -> Customer</code>
 - <code title="get /v1/customers/{id}/review">client.customers.review.<a href="./src/resources/customers/review.ts">get</a>(id, { ...params }) -> CustomerReview</code>
 
 # Paykeys
