@@ -99,11 +99,26 @@ import {
   Customers,
 } from './resources/customers/customers';
 
+const environments = {
+  sandbox: 'https://{environment}.straddle.io',
+  production: 'https://{environment}.straddle.io',
+};
+type Environment = keyof typeof environments;
+
 export interface ClientOptions {
   /**
-   * Bearer token for authenticating with the Straddle API.
+   * Api Key Token for authenticating with the Straddle API.
    */
-  bearerToken?: string | undefined;
+  apiKey?: string | undefined;
+
+  /**
+   * Specifies the environment to use for the API.
+   *
+   * Each environment maps to a different base URL:
+   * - `sandbox` corresponds to `https://{environment}.straddle.io`
+   * - `production` corresponds to `https://{environment}.straddle.io`
+   */
+  environment?: Environment | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -166,14 +181,15 @@ export interface ClientOptions {
  * API Client for interfacing with the Straddle API.
  */
 export class Straddle extends Core.APIClient {
-  bearerToken: string;
+  apiKey: string;
 
   private _options: ClientOptions;
 
   /**
    * API Client for interfacing with the Straddle API.
    *
-   * @param {string | undefined} [opts.bearerToken=process.env['STRADDLE_BEARER_TOKEN'] ?? undefined]
+   * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_TOKEN'] ?? undefined]
+   * @param {Environment} [opts.environment=sandbox] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://{environment}.straddle.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
@@ -184,23 +200,30 @@ export class Straddle extends Core.APIClient {
    */
   constructor({
     baseURL = Core.readEnv('STRADDLE_BASE_URL'),
-    bearerToken = Core.readEnv('STRADDLE_BEARER_TOKEN'),
+    apiKey = Core.readEnv('STRADDLE_TOKEN'),
     ...opts
   }: ClientOptions = {}) {
-    if (bearerToken === undefined) {
+    if (apiKey === undefined) {
       throw new Errors.StraddleError(
-        "The STRADDLE_BEARER_TOKEN environment variable is missing or empty; either provide it, or instantiate the Straddle client with an bearerToken option, like new Straddle({ bearerToken: 'My Bearer Token' }).",
+        "The STRADDLE_TOKEN environment variable is missing or empty; either provide it, or instantiate the Straddle client with an apiKey option, like new Straddle({ apiKey: 'My API Key' }).",
       );
     }
 
     const options: ClientOptions = {
-      bearerToken,
+      apiKey,
       ...opts,
-      baseURL: baseURL || `https://{environment}.straddle.io`,
+      baseURL,
+      environment: opts.environment ?? 'sandbox',
     };
 
+    if (baseURL && opts.environment) {
+      throw new Errors.StraddleError(
+        'Ambiguous URL; The `baseURL` option (or STRADDLE_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
+      );
+    }
+
     super({
-      baseURL: options.baseURL!,
+      baseURL: options.baseURL || environments[options.environment || 'sandbox'],
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -209,7 +232,7 @@ export class Straddle extends Core.APIClient {
 
     this._options = options;
 
-    this.bearerToken = bearerToken;
+    this.apiKey = apiKey;
   }
 
   accounts: API.Accounts = new API.Accounts(this);
@@ -237,7 +260,7 @@ export class Straddle extends Core.APIClient {
   }
 
   protected override authHeaders(opts: Core.FinalRequestOptions): Core.Headers {
-    return { Authorization: `Bearer ${this.bearerToken}` };
+    return { Authorization: `Bearer ${this.apiKey}` };
   }
 
   protected override stringifyQuery(query: Record<string, unknown>): string {
