@@ -3,6 +3,7 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Representatives extends APIResource {
   /**
@@ -84,17 +85,19 @@ export class Representatives extends APIResource {
   list(
     params?: RepresentativeListParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<RepresentativePaged>;
-  list(options?: Core.RequestOptions): Core.APIPromise<RepresentativePaged>;
+  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
   list(
     params: RepresentativeListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<RepresentativePaged> {
+  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.get('/v1/representatives', {
+    return this._client.getAPIList('/v1/representatives', RepresentativePagedDataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -105,6 +108,8 @@ export class Representatives extends APIResource {
     });
   }
 }
+
+export class RepresentativePagedDataPageNumberSchema extends PageNumberSchema<RepresentativePaged.Data> {}
 
 export interface Representative {
   data: Representative.Data;
@@ -698,21 +703,11 @@ export namespace RepresentativeUpdateParams {
   }
 }
 
-export interface RepresentativeListParams {
+export interface RepresentativeListParams extends PageNumberSchemaParams {
   /**
    * Query param: The unique identifier of the account to list representatives for.
    */
   account_id?: string;
-
-  /**
-   * Query param: Results page number. Starts at page 1.
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Page size. Max value: 1000
-   */
-  page_size?: number;
 
   /**
    * Query param: Sort By.
@@ -736,10 +731,13 @@ export interface RepresentativeListParams {
   'request-id'?: string;
 }
 
+Representatives.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
+
 export declare namespace Representatives {
   export {
     type Representative as Representative,
     type RepresentativePaged as RepresentativePaged,
+    RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
     type RepresentativeRetrieveParams as RepresentativeRetrieveParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,

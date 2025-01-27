@@ -5,6 +5,7 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as ReviewAPI from './review';
 import { CustomerReview, Review, ReviewRetrieveParams, ReviewUpdateParams } from './review';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Customers extends APIResource {
   review: ReviewAPI.Review = new ReviewAPI.Review(this._client);
@@ -97,12 +98,17 @@ export class Customers extends APIResource {
    * customers connected to your account. This endpoint supports advanced sorting and
    * filtering options.
    */
-  list(params?: CustomerListParams, options?: Core.RequestOptions): Core.APIPromise<CustomerSummaryPaged>;
-  list(options?: Core.RequestOptions): Core.APIPromise<CustomerSummaryPaged>;
+  list(
+    params?: CustomerListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<CustomerSummaryPagedDataPageNumberSchema, CustomerSummaryPaged.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<CustomerSummaryPagedDataPageNumberSchema, CustomerSummaryPaged.Data>;
   list(
     params: CustomerListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerSummaryPaged> {
+  ): Core.PagePromise<CustomerSummaryPagedDataPageNumberSchema, CustomerSummaryPaged.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
@@ -112,7 +118,7 @@ export class Customers extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
       ...query
     } = params;
-    return this._client.get('/v1/customers', {
+    return this._client.getAPIList('/v1/customers', CustomerSummaryPagedDataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -192,6 +198,8 @@ export class Customers extends APIResource {
     });
   }
 }
+
+export class CustomerSummaryPagedDataPageNumberSchema extends PageNumberSchema<CustomerSummaryPaged.Data> {}
 
 export interface Customer {
   data: Customer.Data;
@@ -936,7 +944,7 @@ export namespace CustomerUpdateParams {
   }
 }
 
-export interface CustomerListParams {
+export interface CustomerListParams extends PageNumberSchemaParams {
   /**
    * Query param: Start date for filtering by `created_at` date.
    */
@@ -961,16 +969,6 @@ export interface CustomerListParams {
    * Query param: Filter customers by `name` (partial match).
    */
   name?: string;
-
-  /**
-   * Query param: Page number for paginated results. Starts at 1.
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Number of results per page. Maximum: 1000.
-   */
-  page_size?: number;
 
   /**
    * Query param: General search term to filter customers.
@@ -1049,6 +1047,7 @@ export interface CustomerUnmaskedParams {
   'Straddle-Account-Id'?: string;
 }
 
+Customers.CustomerSummaryPagedDataPageNumberSchema = CustomerSummaryPagedDataPageNumberSchema;
 Customers.Review = Review;
 
 export declare namespace Customers {
@@ -1056,6 +1055,7 @@ export declare namespace Customers {
     type Customer as Customer,
     type CustomerSummaryPaged as CustomerSummaryPaged,
     type CustomerUnmasked as CustomerUnmasked,
+    CustomerSummaryPagedDataPageNumberSchema as CustomerSummaryPagedDataPageNumberSchema,
     type CustomerCreateParams as CustomerCreateParams,
     type CustomerRetrieveParams as CustomerRetrieveParams,
     type CustomerUpdateParams as CustomerUpdateParams,

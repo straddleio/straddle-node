@@ -3,18 +3,24 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Payments extends APIResource {
   /**
    * Search for payments, including `charges` and `payouts`, using a variety of
    * criteria. This endpoint supports advanced sorting and filtering options.
    */
-  list(params?: PaymentListParams, options?: Core.RequestOptions): Core.APIPromise<PaymentSummaryPaged>;
-  list(options?: Core.RequestOptions): Core.APIPromise<PaymentSummaryPaged>;
+  list(
+    params?: PaymentListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<PaymentSummaryPagedDataPageNumberSchema, PaymentSummaryPaged.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<PaymentSummaryPagedDataPageNumberSchema, PaymentSummaryPaged.Data>;
   list(
     params: PaymentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<PaymentSummaryPaged> {
+  ): Core.PagePromise<PaymentSummaryPagedDataPageNumberSchema, PaymentSummaryPaged.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
@@ -24,7 +30,7 @@ export class Payments extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
       ...query
     } = params;
-    return this._client.get('/v1/payments', {
+    return this._client.getAPIList('/v1/payments', PaymentSummaryPagedDataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -36,6 +42,8 @@ export class Payments extends APIResource {
     });
   }
 }
+
+export class PaymentSummaryPagedDataPageNumberSchema extends PageNumberSchema<PaymentSummaryPaged.Data> {}
 
 export interface PaymentSummaryPaged {
   data: Array<PaymentSummaryPaged.Data>;
@@ -275,7 +283,7 @@ export namespace PaymentSummaryPaged {
   }
 }
 
-export interface PaymentListParams {
+export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: Search using the `customer_id` of a `charge` or `payout`.
    */
@@ -350,16 +358,6 @@ export interface PaymentListParams {
   min_payment_date?: string;
 
   /**
-   * Query param: Results page number. Starts at page 1.
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Results page size. Max value: 1000
-   */
-  page_size?: number;
-
-  /**
    * Query param: Search using the `paykey` of a `charge` or `payout`.
    */
   paykey?: string;
@@ -419,6 +417,12 @@ export interface PaymentListParams {
   'Straddle-Account-Id'?: string;
 }
 
+Payments.PaymentSummaryPagedDataPageNumberSchema = PaymentSummaryPagedDataPageNumberSchema;
+
 export declare namespace Payments {
-  export { type PaymentSummaryPaged as PaymentSummaryPaged, type PaymentListParams as PaymentListParams };
+  export {
+    type PaymentSummaryPaged as PaymentSummaryPaged,
+    PaymentSummaryPagedDataPageNumberSchema as PaymentSummaryPagedDataPageNumberSchema,
+    type PaymentListParams as PaymentListParams,
+  };
 }

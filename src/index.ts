@@ -23,6 +23,7 @@ import {
   FundingEventRetrieveParams,
   FundingEventSummaryItem,
   FundingEventSummaryPaged,
+  FundingEventSummaryPagedDataPageNumberSchema,
   FundingEvents,
 } from './resources/funding-events';
 import {
@@ -30,6 +31,7 @@ import {
   LinkedBankAccountCreateParams,
   LinkedBankAccountListParams,
   LinkedBankAccountPaged,
+  LinkedBankAccountPagedDataPageNumberSchema,
   LinkedBankAccountRetrieveParams,
   LinkedBankAccountUnmask,
   LinkedBankAccountUnmaskParams,
@@ -41,17 +43,24 @@ import {
   OrganizationCreateParams,
   OrganizationListParams,
   OrganizationPaged,
+  OrganizationPagedDataPageNumberSchema,
   Organizations,
 } from './resources/organizations';
 import {
   PaykeyListParams,
   PaykeyRetrieveParams,
   PaykeySummaryPaged,
+  PaykeySummaryPagedDataPageNumberSchema,
   PaykeyUnmasked,
   PaykeyUnmaskedParams,
   Paykeys,
 } from './resources/paykeys';
-import { PaymentListParams, PaymentSummaryPaged, Payments } from './resources/payments';
+import {
+  PaymentListParams,
+  PaymentSummaryPaged,
+  PaymentSummaryPagedDataPageNumberSchema,
+  Payments,
+} from './resources/payments';
 import {
   Payout,
   PayoutCancelParams,
@@ -72,6 +81,7 @@ import {
   RepresentativeCreateParams,
   RepresentativeListParams,
   RepresentativePaged,
+  RepresentativePagedDataPageNumberSchema,
   RepresentativeRetrieveParams,
   RepresentativeUpdateParams,
   Representatives,
@@ -82,6 +92,7 @@ import {
   AccountListParams,
   AccountOnboardParams,
   AccountPaged,
+  AccountPagedDataPageNumberSchema,
   AccountRetrieveParams,
   AccountSimulateParams,
   AccountUpdateParams,
@@ -95,6 +106,7 @@ import {
   CustomerListParams,
   CustomerRetrieveParams,
   CustomerSummaryPaged,
+  CustomerSummaryPagedDataPageNumberSchema,
   CustomerUnmasked,
   CustomerUnmaskedParams,
   CustomerUpdateParams,
@@ -291,16 +303,24 @@ export class Straddle extends Core.APIClient {
 }
 
 Straddle.Accounts = Accounts;
+Straddle.AccountPagedDataPageNumberSchema = AccountPagedDataPageNumberSchema;
 Straddle.LinkedBankAccounts = LinkedBankAccounts;
+Straddle.LinkedBankAccountPagedDataPageNumberSchema = LinkedBankAccountPagedDataPageNumberSchema;
 Straddle.Organizations = Organizations;
+Straddle.OrganizationPagedDataPageNumberSchema = OrganizationPagedDataPageNumberSchema;
 Straddle.Representatives = Representatives;
+Straddle.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
 Straddle.Bridge = Bridge;
 Straddle.Customers = Customers;
+Straddle.CustomerSummaryPagedDataPageNumberSchema = CustomerSummaryPagedDataPageNumberSchema;
 Straddle.Paykeys = Paykeys;
+Straddle.PaykeySummaryPagedDataPageNumberSchema = PaykeySummaryPagedDataPageNumberSchema;
 Straddle.Reports = Reports;
 Straddle.Charges = Charges;
 Straddle.FundingEvents = FundingEvents;
+Straddle.FundingEventSummaryPagedDataPageNumberSchema = FundingEventSummaryPagedDataPageNumberSchema;
 Straddle.Payments = Payments;
+Straddle.PaymentSummaryPagedDataPageNumberSchema = PaymentSummaryPagedDataPageNumberSchema;
 Straddle.Payouts = Payouts;
 export declare namespace Straddle {
   export type RequestOptions = Core.RequestOptions;
@@ -315,6 +335,7 @@ export declare namespace Straddle {
     Accounts as Accounts,
     type Account as Account,
     type AccountPaged as AccountPaged,
+    AccountPagedDataPageNumberSchema as AccountPagedDataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
     type AccountRetrieveParams as AccountRetrieveParams,
     type AccountUpdateParams as AccountUpdateParams,
@@ -328,6 +349,7 @@ export declare namespace Straddle {
     type LinkedBankAccount as LinkedBankAccount,
     type LinkedBankAccountPaged as LinkedBankAccountPaged,
     type LinkedBankAccountUnmask as LinkedBankAccountUnmask,
+    LinkedBankAccountPagedDataPageNumberSchema as LinkedBankAccountPagedDataPageNumberSchema,
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
     type LinkedBankAccountRetrieveParams as LinkedBankAccountRetrieveParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
@@ -339,6 +361,7 @@ export declare namespace Straddle {
     Organizations as Organizations,
     type Organization as Organization,
     type OrganizationPaged as OrganizationPaged,
+    OrganizationPagedDataPageNumberSchema as OrganizationPagedDataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
   };
@@ -347,6 +370,7 @@ export declare namespace Straddle {
     Representatives as Representatives,
     type Representative as Representative,
     type RepresentativePaged as RepresentativePaged,
+    RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
     type RepresentativeRetrieveParams as RepresentativeRetrieveParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
@@ -365,6 +389,7 @@ export declare namespace Straddle {
     type Customer as Customer,
     type CustomerSummaryPaged as CustomerSummaryPaged,
     type CustomerUnmasked as CustomerUnmasked,
+    CustomerSummaryPagedDataPageNumberSchema as CustomerSummaryPagedDataPageNumberSchema,
     type CustomerCreateParams as CustomerCreateParams,
     type CustomerRetrieveParams as CustomerRetrieveParams,
     type CustomerUpdateParams as CustomerUpdateParams,
@@ -377,6 +402,7 @@ export declare namespace Straddle {
     Paykeys as Paykeys,
     type PaykeySummaryPaged as PaykeySummaryPaged,
     type PaykeyUnmasked as PaykeyUnmasked,
+    PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,
     type PaykeyRetrieveParams as PaykeyRetrieveParams,
     type PaykeyListParams as PaykeyListParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
@@ -403,6 +429,7 @@ export declare namespace Straddle {
     FundingEvents as FundingEvents,
     type FundingEventSummaryItem as FundingEventSummaryItem,
     type FundingEventSummaryPaged as FundingEventSummaryPaged,
+    FundingEventSummaryPagedDataPageNumberSchema as FundingEventSummaryPagedDataPageNumberSchema,
     type FundingEventRetrieveParams as FundingEventRetrieveParams,
     type FundingEventListParams as FundingEventListParams,
   };
@@ -410,6 +437,7 @@ export declare namespace Straddle {
   export {
     Payments as Payments,
     type PaymentSummaryPaged as PaymentSummaryPaged,
+    PaymentSummaryPagedDataPageNumberSchema as PaymentSummaryPagedDataPageNumberSchema,
     type PaymentListParams as PaymentListParams,
   };
 
