@@ -42,12 +42,12 @@ export let isFsReadStream: Shims['isFsReadStream'] | undefined = undefined;
 export function setShims(shims: Shims, options: { auto: boolean } = { auto: false }) {
   if (auto) {
     throw new Error(
-      `you must \`import 'straddle/shims/${shims.kind}'\` before importing anything else from straddle`,
+      `you must \`import '@straddleio/straddle/shims/${shims.kind}'\` before importing anything else from @straddleio/straddle`,
     );
   }
   if (kind) {
     throw new Error(
-      `can't \`import 'straddle/shims/${shims.kind}'\` after \`import 'straddle/shims/${kind}'\``,
+      `can't \`import '@straddleio/straddle/shims/${shims.kind}'\` after \`import '@straddleio/straddle/shims/${kind}'\``,
     );
   }
   auto = options.auto;

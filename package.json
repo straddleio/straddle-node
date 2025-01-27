@@ -1,5 +1,5 @@
 {
-  "name": "straddle",
+  "name": "@straddleio/straddle",
   "version": "0.0.1-alpha.0",
   "description": "The official TypeScript library for the Straddle API",
   "author": "Straddle <dev-feedback@straddle.com>",
@@ -59,8 +59,8 @@
     "./shims/web.mjs"
   ],
   "imports": {
-    "straddle": ".",
-    "straddle/*": "./src/*"
+    "@straddleio/straddle": ".",
+    "@straddleio/straddle/*": "./src/*"
   },
   "exports": {
     "./_shims/auto/*": {
