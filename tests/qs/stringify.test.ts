@@ -1,7 +1,7 @@
 import iconv from 'iconv-lite';
-import { stringify } from 'straddle/internal/qs';
-import { encode } from 'straddle/internal/qs/utils';
-import { StringifyOptions } from 'straddle/internal/qs/types';
+import { stringify } from '@straddleio/straddle/internal/qs';
+import { encode } from '@straddleio/straddle/internal/qs/utils';
+import { StringifyOptions } from '@straddleio/straddle/internal/qs/types';
 import { empty_test_cases } from './empty-keys-cases';
 import assert from 'assert';
 
