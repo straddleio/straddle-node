@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Straddle REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.straddle.com](https://docs.straddle.com). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.straddle.io](https://docs.straddle.io). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
@@ -26,7 +26,8 @@ The full API of this library can be found in [api.md](api.md).
 import Straddle from 'straddle';
 
 const client = new Straddle({
-  bearerToken: process.env['STRADDLE_BEARER_TOKEN'], // This is the default and can be omitted
+  apiKey: process.env['STRADDLE_TOKEN'], // This is the default and can be omitted
+  environment: 'production', // defaults to 'sandbox'
 });
 
 async function main() {
@@ -53,7 +54,8 @@ This library includes TypeScript definitions for all request params and response
 import Straddle from 'straddle';
 
 const client = new Straddle({
-  bearerToken: process.env['STRADDLE_BEARER_TOKEN'], // This is the default and can be omitted
+  apiKey: process.env['STRADDLE_TOKEN'], // This is the default and can be omitted
+  environment: 'production', // defaults to 'sandbox'
 });
 
 async function main() {
