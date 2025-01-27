@@ -56,10 +56,6 @@ export class PageNumberSchema<Item> extends AbstractPage<Item> implements PageNu
   nextPageInfo(): PageInfo | null {
     const currentPage = this.meta?.page_number;
 
-    if (currentPage >= this.meta?.total_items) {
-      return null;
-    }
-
     return { params: { page_number: currentPage + 1 } };
   }
 }
