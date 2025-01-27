@@ -1,6 +1,5 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export * from './shared';
 export {
   AccountPagedDataPageNumberSchema,
   Accounts,
@@ -73,6 +72,7 @@ export {
 export {
   PaykeySummaryPagedDataPageNumberSchema,
   Paykeys,
+  type Paykey,
   type PaykeySummaryPaged,
   type PaykeyUnmasked,
   type PaykeyListParams,
