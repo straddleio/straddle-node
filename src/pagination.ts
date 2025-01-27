@@ -58,7 +58,8 @@ export class PageNumberSchema<Item> extends AbstractPage<Item> implements PageNu
   }
 
   nextPageInfo(): PageInfo | null {
-    const currentPage = this.meta?.page_number;
+    const query = this.options.query as PageNumberSchemaParams;
+    const currentPage = query?.page_number ?? 1;
 
     return { params: { page_number: currentPage + 1 } };
   }
