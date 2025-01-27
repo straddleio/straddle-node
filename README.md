@@ -26,8 +26,8 @@ The full API of this library can be found in [api.md](api.md).
 import Straddle from 'straddle';
 
 const client = new Straddle({
-  apiKey: process.env['STRADDLE_TOKEN'], // This is the default and can be omitted
-  environment: 'production', // defaults to 'sandbox'
+  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
+  environment: 'sandbox', // defaults to 'production'
 });
 
 async function main() {
@@ -54,8 +54,8 @@ This library includes TypeScript definitions for all request params and response
 import Straddle from 'straddle';
 
 const client = new Straddle({
-  apiKey: process.env['STRADDLE_TOKEN'], // This is the default and can be omitted
-  environment: 'production', // defaults to 'sandbox'
+  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
+  environment: 'sandbox', // defaults to 'production'
 });
 
 async function main() {
