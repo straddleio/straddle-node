@@ -9,6 +9,13 @@ import { type PageNumberSchemaParams, PageNumberSchemaResponse } from './paginat
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import {
+  Bridge,
+  BridgeBankAccountParams,
+  BridgeInitializeParams,
+  BridgePlaidParams,
+  BridgeToken,
+} from './resources/bridge';
+import {
   Charge,
   ChargeCancelParams,
   ChargeCreateParams,
@@ -99,7 +106,6 @@ import {
   AccountUpdateParams,
   Accounts,
 } from './resources/accounts/accounts';
-import { Bridge, BridgeInitializeParams, BridgePlaidParams, BridgeToken } from './resources/bridge/bridge';
 import {
   Customer,
   CustomerCreateParams,
@@ -381,6 +387,7 @@ export declare namespace Straddle {
   export {
     Bridge as Bridge,
     type BridgeToken as BridgeToken,
+    type BridgeBankAccountParams as BridgeBankAccountParams,
     type BridgeInitializeParams as BridgeInitializeParams,
     type BridgePlaidParams as BridgePlaidParams,
   };

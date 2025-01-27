@@ -71,18 +71,13 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/bridge/bridge.ts">BridgeToken</a></code>
+- <code><a href="./src/resources/bridge.ts">BridgeToken</a></code>
 
 Methods:
 
-- <code title="post /v1/bridge/initialize">client.bridge.<a href="./src/resources/bridge/bridge.ts">initialize</a>({ ...params }) -> BridgeToken</code>
-- <code title="post /v1/bridge/plaid">client.bridge.<a href="./src/resources/bridge/bridge.ts">plaid</a>({ ...params }) -> Paykey</code>
-
-## BankAccount
-
-Methods:
-
-- <code title="post /v1/bridge/bank_account">client.bridge.bankAccount.<a href="./src/resources/bridge/bank-account.ts">create</a>({ ...params }) -> Paykey</code>
+- <code title="post /v1/bridge/bank_account">client.bridge.<a href="./src/resources/bridge.ts">bankAccount</a>({ ...params }) -> Paykey</code>
+- <code title="post /v1/bridge/initialize">client.bridge.<a href="./src/resources/bridge.ts">initialize</a>({ ...params }) -> BridgeToken</code>
+- <code title="post /v1/bridge/plaid">client.bridge.<a href="./src/resources/bridge.ts">plaid</a>({ ...params }) -> Paykey</code>
 
 # Customers
 
