@@ -7,41 +7,6 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class FundingEvents extends APIResource {
   /**
-   * Retrieves the details of an existing funding event. Supply the unique funding
-   * event `id`, and Straddle will return the individual transaction items that make
-   * up the funding event.
-   */
-  retrieve(
-    id: string,
-    params?: FundingEventRetrieveParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryItem>;
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<FundingEventSummaryItem>;
-  retrieve(
-    id: string,
-    params: FundingEventRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryItem> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(id, {}, params);
-    }
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/funding_events/${id}`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Retrieves a list of funding events for your account. This endpoint supports
    * advanced sorting and filtering options.
    */
@@ -67,6 +32,41 @@ export class FundingEvents extends APIResource {
     } = params;
     return this._client.getAPIList('/v1/funding_events', FundingEventSummaryPagedDataPageNumberSchema, {
       query,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of an existing funding event. Supply the unique funding
+   * event `id`, and Straddle will return the individual transaction items that make
+   * up the funding event.
+   */
+  get(
+    id: string,
+    params?: FundingEventGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<FundingEventSummaryItem>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<FundingEventSummaryItem>;
+  get(
+    id: string,
+    params: FundingEventGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<FundingEventSummaryItem> {
+    if (isRequestOptions(params)) {
+      return this.get(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+    } = params;
+    return this._client.get(`/v1/funding_events/${id}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
@@ -254,23 +254,6 @@ export namespace FundingEventSummaryPaged {
   }
 }
 
-export interface FundingEventRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface FundingEventListParams extends PageNumberSchemaParams {
   /**
    * Query param: The start date of the range to filter by using the `YYYY-MM-DD`
@@ -329,6 +312,23 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface FundingEventGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 FundingEvents.FundingEventSummaryPagedDataPageNumberSchema = FundingEventSummaryPagedDataPageNumberSchema;
 
 export declare namespace FundingEvents {
@@ -336,7 +336,7 @@ export declare namespace FundingEvents {
     type FundingEventSummaryItem as FundingEventSummaryItem,
     type FundingEventSummaryPaged as FundingEventSummaryPaged,
     FundingEventSummaryPagedDataPageNumberSchema as FundingEventSummaryPagedDataPageNumberSchema,
-    type FundingEventRetrieveParams as FundingEventRetrieveParams,
     type FundingEventListParams as FundingEventListParams,
+    type FundingEventGetParams as FundingEventGetParams,
   };
 }

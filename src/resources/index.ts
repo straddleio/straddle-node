@@ -7,9 +7,9 @@ export {
   type Account,
   type AccountPaged,
   type AccountCreateParams,
-  type AccountRetrieveParams,
   type AccountUpdateParams,
   type AccountListParams,
+  type AccountGetParams,
   type AccountOnboardParams,
   type AccountSimulateParams,
 } from './accounts/accounts';
@@ -23,9 +23,9 @@ export {
   Charges,
   type Charge,
   type ChargeCreateParams,
-  type ChargeRetrieveParams,
   type ChargeUpdateParams,
   type ChargeCancelParams,
+  type ChargeGetParams,
   type ChargeHoldParams,
   type ChargeReleaseParams,
 } from './charges';
@@ -36,10 +36,10 @@ export {
   type CustomerSummaryPaged,
   type CustomerUnmasked,
   type CustomerCreateParams,
-  type CustomerRetrieveParams,
   type CustomerUpdateParams,
   type CustomerListParams,
   type CustomerDeleteParams,
+  type CustomerGetParams,
   type CustomerUnmaskedParams,
 } from './customers/customers';
 export {
@@ -47,8 +47,8 @@ export {
   FundingEvents,
   type FundingEventSummaryItem,
   type FundingEventSummaryPaged,
-  type FundingEventRetrieveParams,
   type FundingEventListParams,
+  type FundingEventGetParams,
 } from './funding-events';
 export {
   LinkedBankAccountPagedDataPageNumberSchema,
@@ -57,9 +57,9 @@ export {
   type LinkedBankAccountPaged,
   type LinkedBankAccountUnmask,
   type LinkedBankAccountCreateParams,
-  type LinkedBankAccountRetrieveParams,
   type LinkedBankAccountUpdateParams,
   type LinkedBankAccountListParams,
+  type LinkedBankAccountGetParams,
   type LinkedBankAccountUnmaskParams,
 } from './linked-bank-accounts';
 export {
@@ -75,8 +75,8 @@ export {
   Paykeys,
   type PaykeySummaryPaged,
   type PaykeyUnmasked,
-  type PaykeyRetrieveParams,
   type PaykeyListParams,
+  type PaykeyGetParams,
   type PaykeyUnmaskedParams,
 } from './paykeys';
 export {
@@ -89,9 +89,9 @@ export {
   Payouts,
   type Payout,
   type PayoutCreateParams,
-  type PayoutRetrieveParams,
   type PayoutUpdateParams,
   type PayoutCancelParams,
+  type PayoutGetParams,
   type PayoutHoldParams,
   type PayoutReleaseParams,
 } from './payouts';
@@ -106,7 +106,7 @@ export {
   type Representative,
   type RepresentativePaged,
   type RepresentativeCreateParams,
-  type RepresentativeRetrieveParams,
   type RepresentativeUpdateParams,
   type RepresentativeListParams,
+  type RepresentativeGetParams,
 } from './representatives';

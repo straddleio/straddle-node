@@ -28,36 +28,6 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing charge. Supply the unique charge `id`, and
-   * Straddle will return the corresponding charge information.
-   */
-  retrieve(id: string, params?: ChargeRetrieveParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
-  retrieve(
-    id: string,
-    params: ChargeRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Charge> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(id, {}, params);
-    }
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/charges/${id}`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Change the values of parameters associated with a charge prior to processing.
    * The status of the charge must be `created`, `scheduled`, or `on_hold`.
    */
@@ -102,6 +72,36 @@ export class Charges extends APIResource {
     } = params;
     return this._client.put(`/v1/charges/${id}/cancel`, {
       body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of an existing charge. Supply the unique charge `id`, and
+   * Straddle will return the corresponding charge information.
+   */
+  get(id: string, params?: ChargeGetParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
+  get(
+    id: string,
+    params: ChargeGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Charge> {
+    if (isRequestOptions(params)) {
+      return this.get(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+    } = params;
+    return this._client.get(`/v1/charges/${id}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
@@ -591,23 +591,6 @@ export namespace ChargeCreateParams {
   }
 }
 
-export interface ChargeRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface ChargeUpdateParams {
   /**
    * Body param: The amount of the charge in cents.
@@ -673,6 +656,23 @@ export interface ChargeCancelParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface ChargeGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface ChargeHoldParams {
   /**
    * Body param: Details about why the charge status was updated.
@@ -725,9 +725,9 @@ export declare namespace Charges {
   export {
     type Charge as Charge,
     type ChargeCreateParams as ChargeCreateParams,
-    type ChargeRetrieveParams as ChargeRetrieveParams,
     type ChargeUpdateParams as ChargeUpdateParams,
     type ChargeCancelParams as ChargeCancelParams,
+    type ChargeGetParams as ChargeGetParams,
     type ChargeHoldParams as ChargeHoldParams,
     type ChargeReleaseParams as ChargeReleaseParams,
   };

@@ -29,37 +29,6 @@ export class LinkedBankAccounts extends APIResource {
   }
 
   /**
-   * Retrieves the details of a linked bank account that has previously been created.
-   * Supply the unique linked bank account `id`, and Straddle will return the
-   * corresponding information. The response includes masked account details for
-   * security purposes.
-   */
-  retrieve(
-    linkedBankAccountId: string,
-    params?: LinkedBankAccountRetrieveParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccount>;
-  retrieve(linkedBankAccountId: string, options?: Core.RequestOptions): Core.APIPromise<LinkedBankAccount>;
-  retrieve(
-    linkedBankAccountId: string,
-    params: LinkedBankAccountRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccount> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(linkedBankAccountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/linked_bank_accounts/${linkedBankAccountId}`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Updates an existing linked bank account's information. This can be used to
    * update account details during onboarding or to update metadata associated with
    * the linked account. The linked bank account must be in 'created' or 'onboarding'
@@ -105,6 +74,37 @@ export class LinkedBankAccounts extends APIResource {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList('/v1/linked_bank_accounts', LinkedBankAccountPagedDataPageNumberSchema, {
       query,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(requestId != null ? { 'request-id': requestId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of a linked bank account that has previously been created.
+   * Supply the unique linked bank account `id`, and Straddle will return the
+   * corresponding information. The response includes masked account details for
+   * security purposes.
+   */
+  get(
+    linkedBankAccountId: string,
+    params?: LinkedBankAccountGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<LinkedBankAccount>;
+  get(linkedBankAccountId: string, options?: Core.RequestOptions): Core.APIPromise<LinkedBankAccount>;
+  get(
+    linkedBankAccountId: string,
+    params: LinkedBankAccountGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<LinkedBankAccount> {
+    if (isRequestOptions(params)) {
+      return this.get(linkedBankAccountId, {}, params);
+    }
+    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    return this._client.get(`/v1/linked_bank_accounts/${linkedBankAccountId}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
@@ -596,18 +596,6 @@ export namespace LinkedBankAccountCreateParams {
   }
 }
 
-export interface LinkedBankAccountRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'correlation-id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'request-id'?: string;
-}
-
 export interface LinkedBankAccountUpdateParams {
   /**
    * Body param:
@@ -680,6 +668,18 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
+export interface LinkedBankAccountGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
 export interface LinkedBankAccountUnmaskParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -701,9 +701,9 @@ export declare namespace LinkedBankAccounts {
     type LinkedBankAccountUnmask as LinkedBankAccountUnmask,
     LinkedBankAccountPagedDataPageNumberSchema as LinkedBankAccountPagedDataPageNumberSchema,
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
-    type LinkedBankAccountRetrieveParams as LinkedBankAccountRetrieveParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
+    type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
     type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
   };
 }

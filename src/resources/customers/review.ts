@@ -7,47 +7,6 @@ import * as CustomersAPI from './customers';
 
 export class Review extends APIResource {
   /**
-   * Retrieves and analyzes the results of a customer's identity validation and fraud
-   * score. This endpoint provides a comprehensive breakdown of the validation
-   * outcome, including:
-   *
-   * - Risk and correlation scores
-   * - Reason codes for the decision
-   * - Results of watchlist screening
-   * - Any network alerts detected Use this endpoint to gain insights into the
-   *   verification process and make informed decisions about customer onboarding.
-   */
-  retrieve(
-    id: string,
-    params?: ReviewRetrieveParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerReview>;
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReview>;
-  retrieve(
-    id: string,
-    params: ReviewRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerReview> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(id, {}, params);
-    }
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/customers/${id}/review`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Updates the status of a customer's identity decision. This endpoint allows you
    * to modify the outcome of a customer risk screening and is useful for correcting
    * or updating the status of a customer's verification. Note that this endpoint is
@@ -66,6 +25,43 @@ export class Review extends APIResource {
     } = params;
     return this._client.patch(`/v1/customers/${id}/review`, {
       body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves and analyzes the results of a customer's identity validation and fraud
+   * score. This endpoint provides a comprehensive breakdown of the validation
+   * outcome, including:
+   *
+   * - Risk and correlation scores
+   * - Reason codes for the decision
+   * - Results of watchlist screening
+   * - Any network alerts detected Use this endpoint to gain insights into the
+   *   verification process and make informed decisions about customer onboarding.
+   */
+  get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReview>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReview>;
+  get(
+    id: string,
+    params: ReviewGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CustomerReview> {
+    if (isRequestOptions(params)) {
+      return this.get(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+    } = params;
+    return this._client.get(`/v1/customers/${id}/review`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
@@ -484,23 +480,6 @@ export namespace CustomerReview {
   }
 }
 
-export interface ReviewRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface ReviewUpdateParams {
   /**
    * Body param: The final status of the customer review.
@@ -525,10 +504,27 @@ export interface ReviewUpdateParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface ReviewGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export declare namespace Review {
   export {
     type CustomerReview as CustomerReview,
-    type ReviewRetrieveParams as ReviewRetrieveParams,
     type ReviewUpdateParams as ReviewUpdateParams,
+    type ReviewGetParams as ReviewGetParams,
   };
 }

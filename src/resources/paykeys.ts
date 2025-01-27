@@ -8,41 +8,6 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Paykeys extends APIResource {
   /**
-   * Retrieves the details of an existing paykey. Supply the unique paykey `id` and
-   * Straddle will return the corresponding paykey record , including the `paykey`
-   * token value and masked bank account details.
-   */
-  retrieve(
-    id: string,
-    params?: PaykeyRetrieveParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.Paykey>;
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.Paykey>;
-  retrieve(
-    id: string,
-    params: PaykeyRetrieveParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.Paykey> {
-    if (isRequestOptions(params)) {
-      return this.retrieve(id, {}, params);
-    }
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/paykeys/${id}`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Returns a list of paykeys associated with a Straddle account. This endpoint
    * supports advanced sorting and filtering options.
    */
@@ -68,6 +33,37 @@ export class Paykeys extends APIResource {
     } = params;
     return this._client.getAPIList('/v1/paykeys', PaykeySummaryPagedDataPageNumberSchema, {
       query,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
+   * Retrieves the details of an existing paykey. Supply the unique paykey `id` and
+   * Straddle will return the corresponding paykey record , including the `paykey`
+   * token value and masked bank account details.
+   */
+  get(id: string, params?: PaykeyGetParams, options?: Core.RequestOptions): Core.APIPromise<Shared.Paykey>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.Paykey>;
+  get(
+    id: string,
+    params: PaykeyGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.Paykey> {
+    if (isRequestOptions(params)) {
+      return this.get(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+    } = params;
+    return this._client.get(`/v1/paykeys/${id}`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
@@ -383,23 +379,6 @@ export namespace PaykeyUnmasked {
   }
 }
 
-export interface PaykeyRetrieveParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter paykeys by related customer ID.
@@ -439,6 +418,23 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface PaykeyGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface PaykeyUnmaskedParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -463,8 +459,8 @@ export declare namespace Paykeys {
     type PaykeySummaryPaged as PaykeySummaryPaged,
     type PaykeyUnmasked as PaykeyUnmasked,
     PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,
-    type PaykeyRetrieveParams as PaykeyRetrieveParams,
     type PaykeyListParams as PaykeyListParams,
+    type PaykeyGetParams as PaykeyGetParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
   };
 }

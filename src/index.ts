@@ -12,15 +12,15 @@ import {
   Charge,
   ChargeCancelParams,
   ChargeCreateParams,
+  ChargeGetParams,
   ChargeHoldParams,
   ChargeReleaseParams,
-  ChargeRetrieveParams,
   ChargeUpdateParams,
   Charges,
 } from './resources/charges';
 import {
+  FundingEventGetParams,
   FundingEventListParams,
-  FundingEventRetrieveParams,
   FundingEventSummaryItem,
   FundingEventSummaryPaged,
   FundingEventSummaryPagedDataPageNumberSchema,
@@ -29,10 +29,10 @@ import {
 import {
   LinkedBankAccount,
   LinkedBankAccountCreateParams,
+  LinkedBankAccountGetParams,
   LinkedBankAccountListParams,
   LinkedBankAccountPaged,
   LinkedBankAccountPagedDataPageNumberSchema,
-  LinkedBankAccountRetrieveParams,
   LinkedBankAccountUnmask,
   LinkedBankAccountUnmaskParams,
   LinkedBankAccountUpdateParams,
@@ -47,8 +47,8 @@ import {
   Organizations,
 } from './resources/organizations';
 import {
+  PaykeyGetParams,
   PaykeyListParams,
-  PaykeyRetrieveParams,
   PaykeySummaryPaged,
   PaykeySummaryPagedDataPageNumberSchema,
   PaykeyUnmasked,
@@ -65,9 +65,9 @@ import {
   Payout,
   PayoutCancelParams,
   PayoutCreateParams,
+  PayoutGetParams,
   PayoutHoldParams,
   PayoutReleaseParams,
-  PayoutRetrieveParams,
   PayoutUpdateParams,
   Payouts,
 } from './resources/payouts';
@@ -79,21 +79,21 @@ import {
 import {
   Representative,
   RepresentativeCreateParams,
+  RepresentativeGetParams,
   RepresentativeListParams,
   RepresentativePaged,
   RepresentativePagedDataPageNumberSchema,
-  RepresentativeRetrieveParams,
   RepresentativeUpdateParams,
   Representatives,
 } from './resources/representatives';
 import {
   Account,
   AccountCreateParams,
+  AccountGetParams,
   AccountListParams,
   AccountOnboardParams,
   AccountPaged,
   AccountPagedDataPageNumberSchema,
-  AccountRetrieveParams,
   AccountSimulateParams,
   AccountUpdateParams,
   Accounts,
@@ -103,8 +103,8 @@ import {
   Customer,
   CustomerCreateParams,
   CustomerDeleteParams,
+  CustomerGetParams,
   CustomerListParams,
-  CustomerRetrieveParams,
   CustomerSummaryPaged,
   CustomerSummaryPagedDataPageNumberSchema,
   CustomerUnmasked,
@@ -337,9 +337,9 @@ export declare namespace Straddle {
     type AccountPaged as AccountPaged,
     AccountPagedDataPageNumberSchema as AccountPagedDataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
-    type AccountRetrieveParams as AccountRetrieveParams,
     type AccountUpdateParams as AccountUpdateParams,
     type AccountListParams as AccountListParams,
+    type AccountGetParams as AccountGetParams,
     type AccountOnboardParams as AccountOnboardParams,
     type AccountSimulateParams as AccountSimulateParams,
   };
@@ -351,9 +351,9 @@ export declare namespace Straddle {
     type LinkedBankAccountUnmask as LinkedBankAccountUnmask,
     LinkedBankAccountPagedDataPageNumberSchema as LinkedBankAccountPagedDataPageNumberSchema,
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
-    type LinkedBankAccountRetrieveParams as LinkedBankAccountRetrieveParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
+    type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
     type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
   };
 
@@ -372,9 +372,9 @@ export declare namespace Straddle {
     type RepresentativePaged as RepresentativePaged,
     RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
-    type RepresentativeRetrieveParams as RepresentativeRetrieveParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
+    type RepresentativeGetParams as RepresentativeGetParams,
   };
 
   export {
@@ -391,10 +391,10 @@ export declare namespace Straddle {
     type CustomerUnmasked as CustomerUnmasked,
     CustomerSummaryPagedDataPageNumberSchema as CustomerSummaryPagedDataPageNumberSchema,
     type CustomerCreateParams as CustomerCreateParams,
-    type CustomerRetrieveParams as CustomerRetrieveParams,
     type CustomerUpdateParams as CustomerUpdateParams,
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
+    type CustomerGetParams as CustomerGetParams,
     type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 
@@ -403,8 +403,8 @@ export declare namespace Straddle {
     type PaykeySummaryPaged as PaykeySummaryPaged,
     type PaykeyUnmasked as PaykeyUnmasked,
     PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,
-    type PaykeyRetrieveParams as PaykeyRetrieveParams,
     type PaykeyListParams as PaykeyListParams,
+    type PaykeyGetParams as PaykeyGetParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
   };
 
@@ -418,9 +418,9 @@ export declare namespace Straddle {
     Charges as Charges,
     type Charge as Charge,
     type ChargeCreateParams as ChargeCreateParams,
-    type ChargeRetrieveParams as ChargeRetrieveParams,
     type ChargeUpdateParams as ChargeUpdateParams,
     type ChargeCancelParams as ChargeCancelParams,
+    type ChargeGetParams as ChargeGetParams,
     type ChargeHoldParams as ChargeHoldParams,
     type ChargeReleaseParams as ChargeReleaseParams,
   };
@@ -430,8 +430,8 @@ export declare namespace Straddle {
     type FundingEventSummaryItem as FundingEventSummaryItem,
     type FundingEventSummaryPaged as FundingEventSummaryPaged,
     FundingEventSummaryPagedDataPageNumberSchema as FundingEventSummaryPagedDataPageNumberSchema,
-    type FundingEventRetrieveParams as FundingEventRetrieveParams,
     type FundingEventListParams as FundingEventListParams,
+    type FundingEventGetParams as FundingEventGetParams,
   };
 
   export {
@@ -445,9 +445,9 @@ export declare namespace Straddle {
     Payouts as Payouts,
     type Payout as Payout,
     type PayoutCreateParams as PayoutCreateParams,
-    type PayoutRetrieveParams as PayoutRetrieveParams,
     type PayoutUpdateParams as PayoutUpdateParams,
     type PayoutCancelParams as PayoutCancelParams,
+    type PayoutGetParams as PayoutGetParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
   };
