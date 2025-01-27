@@ -8,8 +8,10 @@ import {
   CapabilityRequestCreateParams,
   CapabilityRequestListParams,
   CapabilityRequestPaged,
+  CapabilityRequestPagedDataPageNumberSchema,
   CapabilityRequests,
 } from './capability-requests';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Accounts extends APIResource {
   capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(
@@ -91,17 +93,20 @@ export class Accounts extends APIResource {
    * created accounts appearing first. This endpoint supports advanced sorting and
    * filtering options.
    */
-  list(params?: AccountListParams, options?: Core.RequestOptions): Core.APIPromise<AccountPaged>;
-  list(options?: Core.RequestOptions): Core.APIPromise<AccountPaged>;
+  list(
+    params?: AccountListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data>;
+  list(options?: Core.RequestOptions): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data>;
   list(
     params: AccountListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountPaged> {
+  ): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.get('/v1/accounts', {
+    return this._client.getAPIList('/v1/accounts', AccountPagedDataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -164,6 +169,8 @@ export class Accounts extends APIResource {
     });
   }
 }
+
+export class AccountPagedDataPageNumberSchema extends PageNumberSchema<AccountPaged.Data> {}
 
 export interface Account {
   data: Account.Data;
@@ -1376,17 +1383,7 @@ export namespace AccountUpdateParams {
   }
 }
 
-export interface AccountListParams {
-  /**
-   * Query param: Results page number. Starts at page 1. Default value: 1
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Page size. Default value: 100. Max value: 1000
-   */
-  page_size?: number;
-
+export interface AccountListParams extends PageNumberSchemaParams {
   /**
    * Query param: Sort By. Default value: 'id'.
    */
@@ -1475,12 +1472,15 @@ export interface AccountSimulateParams {
   'request-id'?: string;
 }
 
+Accounts.AccountPagedDataPageNumberSchema = AccountPagedDataPageNumberSchema;
 Accounts.CapabilityRequests = CapabilityRequests;
+Accounts.CapabilityRequestPagedDataPageNumberSchema = CapabilityRequestPagedDataPageNumberSchema;
 
 export declare namespace Accounts {
   export {
     type Account as Account,
     type AccountPaged as AccountPaged,
+    AccountPagedDataPageNumberSchema as AccountPagedDataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
     type AccountRetrieveParams as AccountRetrieveParams,
     type AccountUpdateParams as AccountUpdateParams,
@@ -1492,6 +1492,7 @@ export declare namespace Accounts {
   export {
     CapabilityRequests as CapabilityRequests,
     type CapabilityRequestPaged as CapabilityRequestPaged,
+    CapabilityRequestPagedDataPageNumberSchema as CapabilityRequestPagedDataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };

@@ -2,6 +2,7 @@
 
 export * from './shared';
 export {
+  AccountPagedDataPageNumberSchema,
   Accounts,
   type Account,
   type AccountPaged,
@@ -29,6 +30,7 @@ export {
   type ChargeReleaseParams,
 } from './charges';
 export {
+  CustomerSummaryPagedDataPageNumberSchema,
   Customers,
   type Customer,
   type CustomerSummaryPaged,
@@ -41,6 +43,7 @@ export {
   type CustomerUnmaskedParams,
 } from './customers/customers';
 export {
+  FundingEventSummaryPagedDataPageNumberSchema,
   FundingEvents,
   type FundingEventSummaryItem,
   type FundingEventSummaryPaged,
@@ -48,6 +51,7 @@ export {
   type FundingEventListParams,
 } from './funding-events';
 export {
+  LinkedBankAccountPagedDataPageNumberSchema,
   LinkedBankAccounts,
   type LinkedBankAccount,
   type LinkedBankAccountPaged,
@@ -59,6 +63,7 @@ export {
   type LinkedBankAccountUnmaskParams,
 } from './linked-bank-accounts';
 export {
+  OrganizationPagedDataPageNumberSchema,
   Organizations,
   type Organization,
   type OrganizationPaged,
@@ -66,6 +71,7 @@ export {
   type OrganizationListParams,
 } from './organizations';
 export {
+  PaykeySummaryPagedDataPageNumberSchema,
   Paykeys,
   type PaykeySummaryPaged,
   type PaykeyUnmasked,
@@ -73,7 +79,12 @@ export {
   type PaykeyListParams,
   type PaykeyUnmaskedParams,
 } from './paykeys';
-export { Payments, type PaymentSummaryPaged, type PaymentListParams } from './payments';
+export {
+  PaymentSummaryPagedDataPageNumberSchema,
+  Payments,
+  type PaymentSummaryPaged,
+  type PaymentListParams,
+} from './payments';
 export {
   Payouts,
   type Payout,
@@ -90,6 +101,7 @@ export {
   type ReportTotalCustomersByStatusParams,
 } from './reports';
 export {
+  RepresentativePagedDataPageNumberSchema,
   Representatives,
   type Representative,
   type RepresentativePaged,

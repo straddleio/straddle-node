@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class CapabilityRequests extends APIResource {
   /**
@@ -44,28 +45,37 @@ export class CapabilityRequests extends APIResource {
     accountId: string,
     params?: CapabilityRequestListParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CapabilityRequestPaged>;
-  list(accountId: string, options?: Core.RequestOptions): Core.APIPromise<CapabilityRequestPaged>;
+  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data>;
+  list(
+    accountId: string,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data>;
   list(
     accountId: string,
     params: CapabilityRequestListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CapabilityRequestPaged> {
+  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data> {
     if (isRequestOptions(params)) {
       return this.list(accountId, {}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.get(`/v1/accounts/${accountId}/capability_requests`, {
-      query,
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
+    return this._client.getAPIList(
+      `/v1/accounts/${accountId}/capability_requests`,
+      CapabilityRequestPagedDataPageNumberSchema,
+      {
+        query,
+        ...options,
+        headers: {
+          ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+          ...(requestId != null ? { 'request-id': requestId } : undefined),
+          ...options?.headers,
+        },
       },
-    });
+    );
   }
 }
+
+export class CapabilityRequestPagedDataPageNumberSchema extends PageNumberSchema<CapabilityRequestPaged.Data> {}
 
 export interface CapabilityRequestPaged {
   data: Array<CapabilityRequestPaged.Data>;
@@ -317,21 +327,11 @@ export namespace CapabilityRequestCreateParams {
   }
 }
 
-export interface CapabilityRequestListParams {
+export interface CapabilityRequestListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter capability requests by category.
    */
   category?: 'payment_type' | 'customer_type' | 'consent_type';
-
-  /**
-   * Query param: Results page number. Starts at page 1.
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Page size.Max value: 1000
-   */
-  page_size?: number;
 
   /**
    * Query param: Sort By.
@@ -365,9 +365,12 @@ export interface CapabilityRequestListParams {
   'request-id'?: string;
 }
 
+CapabilityRequests.CapabilityRequestPagedDataPageNumberSchema = CapabilityRequestPagedDataPageNumberSchema;
+
 export declare namespace CapabilityRequests {
   export {
     type CapabilityRequestPaged as CapabilityRequestPaged,
+    CapabilityRequestPagedDataPageNumberSchema as CapabilityRequestPagedDataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };

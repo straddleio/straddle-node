@@ -2,7 +2,19 @@
 
 import { AbstractPage, Response, APIClient, FinalRequestOptions, PageInfo } from './core';
 
-export type PageNumberSchemaResponse<Item> = Item[];
+export interface PageNumberSchemaResponse<Item> {
+  data: Array<Item>;
+
+  meta: PageNumberSchemaResponse.Meta;
+}
+
+export namespace PageNumberSchemaResponse {
+  export interface Meta {
+    page_number?: number;
+
+    total_items?: number;
+  }
+}
 
 export interface PageNumberSchemaParams {
   page_number?: number;
@@ -10,10 +22,10 @@ export interface PageNumberSchemaParams {
   page_size?: number;
 }
 
-export class PageNumberSchema<Item> extends AbstractPage<Item> {
+export class PageNumberSchema<Item> extends AbstractPage<Item> implements PageNumberSchemaResponse<Item> {
   data: Array<Item>;
 
-  meta: unknown;
+  meta: PageNumberSchemaResponse.Meta;
 
   constructor(
     client: APIClient,
@@ -23,7 +35,8 @@ export class PageNumberSchema<Item> extends AbstractPage<Item> {
   ) {
     super(client, response, body, options);
 
-    this.data = body || [];
+    this.data = body.data || [];
+    this.meta = body.meta || {};
   }
 
   getPaginatedItems(): Item[] {
@@ -41,8 +54,11 @@ export class PageNumberSchema<Item> extends AbstractPage<Item> {
   }
 
   nextPageInfo(): PageInfo | null {
-    const query = this.options.query as PageNumberSchemaParams;
-    const currentPage = query?.page_number ?? 1;
+    const currentPage = this.meta?.page_number;
+
+    if (currentPage >= this.meta?.total_items) {
+      return null;
+    }
 
     return { params: { page_number: currentPage + 1 } };
   }

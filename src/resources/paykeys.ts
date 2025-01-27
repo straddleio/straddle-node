@@ -4,6 +4,7 @@ import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
 import * as Shared from './shared';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Paykeys extends APIResource {
   /**
@@ -45,12 +46,17 @@ export class Paykeys extends APIResource {
    * Returns a list of paykeys associated with a Straddle account. This endpoint
    * supports advanced sorting and filtering options.
    */
-  list(params?: PaykeyListParams, options?: Core.RequestOptions): Core.APIPromise<PaykeySummaryPaged>;
-  list(options?: Core.RequestOptions): Core.APIPromise<PaykeySummaryPaged>;
+  list(
+    params?: PaykeyListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<PaykeySummaryPagedDataPageNumberSchema, PaykeySummaryPaged.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<PaykeySummaryPagedDataPageNumberSchema, PaykeySummaryPaged.Data>;
   list(
     params: PaykeyListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeySummaryPaged> {
+  ): Core.PagePromise<PaykeySummaryPagedDataPageNumberSchema, PaykeySummaryPaged.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
@@ -60,7 +66,7 @@ export class Paykeys extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
       ...query
     } = params;
-    return this._client.get('/v1/paykeys', {
+    return this._client.getAPIList('/v1/paykeys', PaykeySummaryPagedDataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -108,6 +114,8 @@ export class Paykeys extends APIResource {
     });
   }
 }
+
+export class PaykeySummaryPagedDataPageNumberSchema extends PageNumberSchema<PaykeySummaryPaged.Data> {}
 
 export interface PaykeySummaryPaged {
   data: Array<PaykeySummaryPaged.Data>;
@@ -392,21 +400,11 @@ export interface PaykeyRetrieveParams {
   'Straddle-Account-Id'?: string;
 }
 
-export interface PaykeyListParams {
+export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter paykeys by related customer ID.
    */
   customer_id?: string;
-
-  /**
-   * Query param: Page number for paginated results. Starts at 1.
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Number of results per page. Maximum: 1000.
-   */
-  page_size?: number;
 
   /**
    * Query param:
@@ -458,10 +456,13 @@ export interface PaykeyUnmaskedParams {
   'Straddle-Account-Id'?: string;
 }
 
+Paykeys.PaykeySummaryPagedDataPageNumberSchema = PaykeySummaryPagedDataPageNumberSchema;
+
 export declare namespace Paykeys {
   export {
     type PaykeySummaryPaged as PaykeySummaryPaged,
     type PaykeyUnmasked as PaykeyUnmasked,
+    PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,
     type PaykeyRetrieveParams as PaykeyRetrieveParams,
     type PaykeyListParams as PaykeyListParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,

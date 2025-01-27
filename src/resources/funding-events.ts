@@ -3,6 +3,7 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class FundingEvents extends APIResource {
   /**
@@ -47,12 +48,14 @@ export class FundingEvents extends APIResource {
   list(
     params?: FundingEventListParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryPaged>;
-  list(options?: Core.RequestOptions): Core.APIPromise<FundingEventSummaryPaged>;
+  ): Core.PagePromise<FundingEventSummaryPagedDataPageNumberSchema, FundingEventSummaryPaged.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<FundingEventSummaryPagedDataPageNumberSchema, FundingEventSummaryPaged.Data>;
   list(
     params: FundingEventListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryPaged> {
+  ): Core.PagePromise<FundingEventSummaryPagedDataPageNumberSchema, FundingEventSummaryPaged.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
@@ -62,7 +65,7 @@ export class FundingEvents extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
       ...query
     } = params;
-    return this._client.get('/v1/funding_events', {
+    return this._client.getAPIList('/v1/funding_events', FundingEventSummaryPagedDataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -74,6 +77,8 @@ export class FundingEvents extends APIResource {
     });
   }
 }
+
+export class FundingEventSummaryPagedDataPageNumberSchema extends PageNumberSchema<FundingEventSummaryPaged.Data> {}
 
 export interface FundingEventSummaryItem {
   data: FundingEventSummaryItem.Data;
@@ -266,7 +271,7 @@ export interface FundingEventRetrieveParams {
   'Straddle-Account-Id'?: string;
 }
 
-export interface FundingEventListParams {
+export interface FundingEventListParams extends PageNumberSchemaParams {
   /**
    * Query param: The start date of the range to filter by using the `YYYY-MM-DD`
    * format.
@@ -290,16 +295,6 @@ export interface FundingEventListParams {
    * funding event.
    */
   event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
-
-  /**
-   * Query param: Results page number. Starts at page 1.
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Results page size. Max value: 1000
-   */
-  page_size?: number;
 
   /**
    * Query param: The field to sort the results by.
@@ -334,10 +329,13 @@ export interface FundingEventListParams {
   'Straddle-Account-Id'?: string;
 }
 
+FundingEvents.FundingEventSummaryPagedDataPageNumberSchema = FundingEventSummaryPagedDataPageNumberSchema;
+
 export declare namespace FundingEvents {
   export {
     type FundingEventSummaryItem as FundingEventSummaryItem,
     type FundingEventSummaryPaged as FundingEventSummaryPaged,
+    FundingEventSummaryPagedDataPageNumberSchema as FundingEventSummaryPagedDataPageNumberSchema,
     type FundingEventRetrieveParams as FundingEventRetrieveParams,
     type FundingEventListParams as FundingEventListParams,
   };

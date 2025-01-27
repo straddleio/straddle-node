@@ -3,6 +3,7 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Organizations extends APIResource {
   /**
@@ -29,17 +30,22 @@ export class Organizations extends APIResource {
    * created organizations appearing first. This endpoint supports advanced sorting
    * and filtering options to help you find specific organizations.
    */
-  list(params?: OrganizationListParams, options?: Core.RequestOptions): Core.APIPromise<OrganizationPaged>;
-  list(options?: Core.RequestOptions): Core.APIPromise<OrganizationPaged>;
+  list(
+    params?: OrganizationListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<OrganizationPagedDataPageNumberSchema, OrganizationPaged.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<OrganizationPagedDataPageNumberSchema, OrganizationPaged.Data>;
   list(
     params: OrganizationListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<OrganizationPaged> {
+  ): Core.PagePromise<OrganizationPagedDataPageNumberSchema, OrganizationPaged.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.get('/v1/organizations', {
+    return this._client.getAPIList('/v1/organizations', OrganizationPagedDataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -50,6 +56,8 @@ export class Organizations extends APIResource {
     });
   }
 }
+
+export class OrganizationPagedDataPageNumberSchema extends PageNumberSchema<OrganizationPaged.Data> {}
 
 export interface Organization {
   data: Organization.Data;
@@ -255,7 +263,7 @@ export interface OrganizationCreateParams {
   'request-id'?: string;
 }
 
-export interface OrganizationListParams {
+export interface OrganizationListParams extends PageNumberSchemaParams {
   /**
    * Query param: List organizations by their external ID.
    */
@@ -265,16 +273,6 @@ export interface OrganizationListParams {
    * Query param: List organizations by name (partial match supported).
    */
   name?: string;
-
-  /**
-   * Query param: Results page number. Starts at page 1.
-   */
-  page_number?: number;
-
-  /**
-   * Query param: Page size. Max value: 1000
-   */
-  page_size?: number;
 
   /**
    * Query param: Sort By.
@@ -298,10 +296,13 @@ export interface OrganizationListParams {
   'request-id'?: string;
 }
 
+Organizations.OrganizationPagedDataPageNumberSchema = OrganizationPagedDataPageNumberSchema;
+
 export declare namespace Organizations {
   export {
     type Organization as Organization,
     type OrganizationPaged as OrganizationPaged,
+    OrganizationPagedDataPageNumberSchema as OrganizationPagedDataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
   };
