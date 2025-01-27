@@ -10,7 +10,11 @@ export interface PageNumberSchemaResponse<Item> {
 
 export namespace PageNumberSchemaResponse {
   export interface Meta {
+    max_page_size?: number;
+
     page_number?: number;
+
+    page_size?: number;
 
     total_items?: number;
   }
