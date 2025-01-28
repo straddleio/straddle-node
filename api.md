@@ -54,7 +54,6 @@ Methods:
 
 - <code title="post /v1/organizations">client.embed.organizations.<a href="./src/resources/embed/organizations.ts">create</a>({ ...params }) -> Organization</code>
 - <code title="get /v1/organizations">client.embed.organizations.<a href="./src/resources/embed/organizations.ts">list</a>({ ...params }) -> OrganizationPagedDataPageNumberSchema</code>
-- <code title="get /v1/organizations/{organization_id}">client.embed.organizations.<a href="./src/resources/embed/organizations.ts">get</a>(organizationId, { ...params }) -> Organization</code>
 
 ## Representatives
 
@@ -69,7 +68,6 @@ Methods:
 - <code title="put /v1/representatives/{representative_id}">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">update</a>(representativeId, { ...params }) -> Representative</code>
 - <code title="get /v1/representatives">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">list</a>({ ...params }) -> RepresentativePagedDataPageNumberSchema</code>
 - <code title="get /v1/representatives/{representative_id}">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">get</a>(representativeId, { ...params }) -> Representative</code>
-- <code title="get /v1/representatives/{representative_id}/unmask">client.embed.representatives.<a href="./src/resources/embed/representatives.ts">unmask</a>(representativeId, { ...params }) -> Representative</code>
 
 # Bridge
 
@@ -123,13 +121,11 @@ Types:
 - <code><a href="./src/resources/paykeys.ts">Paykey</a></code>
 - <code><a href="./src/resources/paykeys.ts">PaykeySummaryPaged</a></code>
 - <code><a href="./src/resources/paykeys.ts">PaykeyUnmasked</a></code>
-- <code><a href="./src/resources/paykeys.ts">PaykeyRevealResponse</a></code>
 
 Methods:
 
 - <code title="get /v1/paykeys">client.paykeys.<a href="./src/resources/paykeys.ts">list</a>({ ...params }) -> PaykeySummaryPagedDataPageNumberSchema</code>
 - <code title="get /v1/paykeys/{id}">client.paykeys.<a href="./src/resources/paykeys.ts">get</a>(id, { ...params }) -> Paykey</code>
-- <code title="get /v1/paykeys/{id}/reveal">client.paykeys.<a href="./src/resources/paykeys.ts">reveal</a>(id, { ...params }) -> PaykeyRevealResponse</code>
 - <code title="get /v1/paykeys/{id}/unmasked">client.paykeys.<a href="./src/resources/paykeys.ts">unmasked</a>(id, { ...params }) -> PaykeyUnmasked</code>
 
 # Charges
