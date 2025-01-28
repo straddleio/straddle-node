@@ -6,7 +6,7 @@ import * as Core from '../core';
 
 export class Charges extends APIResource {
   /**
-   * Use charges to collect money from a customer for the sale of goods or services.
+   * Create a charge.
    */
   create(params: ChargeCreateParams, options?: Core.RequestOptions): Core.APIPromise<Charge> {
     const {
@@ -28,8 +28,7 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Change the values of parameters associated with a charge prior to processing.
-   * The status of the charge must be `created`, `scheduled`, or `on_hold`.
+   * Update a charge.
    */
   update(id: string, params: ChargeUpdateParams, options?: Core.RequestOptions): Core.APIPromise<Charge> {
     const {
@@ -51,8 +50,7 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Cancel a charge to prevent it from being originated for processing. The status
-   * of the charge must be `created`, `scheduled`, or `on_hold`.
+   * Cancel a charge.
    */
   cancel(id: string, params?: ChargeCancelParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
   cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
@@ -83,8 +81,7 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing charge. Supply the unique charge `id`, and
-   * Straddle will return the corresponding charge information.
+   * Get a charge by id.
    */
   get(id: string, params?: ChargeGetParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
@@ -113,8 +110,7 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Place a charge on hold to prevent it from being originated for processing. The
-   * status of the charge must be `created` or `scheduled`.
+   * Put a charge on hold.
    */
   hold(id: string, params?: ChargeHoldParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
   hold(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
@@ -145,8 +141,7 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Release a charge from an `on_hold` status to allow it to be rescheduled for
-   * processing.
+   * Release a charge from hold.
    */
   release(id: string, params?: ChargeReleaseParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
   release(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
@@ -180,161 +175,107 @@ export class Charges extends APIResource {
 export interface Charge {
   data: Charge.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: Charge.Meta;
 
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace Charge {
   export interface Data {
     /**
-     * Unique identifier for the charge.
+     * Id.
      */
     id: string;
 
     /**
-     * The amount of the charge in cents.
+     * Amount.
      */
     amount: number;
 
-    /**
-     * Configuration options for the charge.
-     */
     config: Data.Config;
 
-    /**
-     * The channel or mechanism through which the payment was authorized. Use
-     * `internet` for payments made online or through a mobile app and `signed` for
-     * signed agreements where there is a consent form or contract. Use `signed` for
-     * PDF signatures.
-     */
     consent_type: 'internet' | 'signed';
 
     /**
-     * The currency of the charge. Only USD is supported.
+     * Created at.
+     */
+    created_at: string;
+
+    /**
+     * Currency.
      */
     currency: string;
 
     /**
-     * An arbitrary description for the charge.
+     * Description.
      */
     description: string;
 
-    /**
-     * Information about the device used when the customer authorized the payment.
-     */
     device: Data.Device;
 
     /**
-     * Unique identifier for the charge in your database. This value must be unique
-     * across all charges.
+     * External id.
      */
     external_id: string;
 
     /**
-     * Value of the `paykey` used for the charge.
+     * Paykey.
      */
     paykey: string;
 
     /**
-     * The desired date on which the payment should be occur. For charges, this means
-     * the date you want the customer to be debited on.
+     * Payment date.
      */
     payment_date: string;
 
-    /**
-     * The current status of the charge.
-     */
     status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
-    /**
-     * Additional details about the current status of the charge.
-     */
     status_details: Data.StatusDetails;
 
+    /**
+     * Status history.
+     */
     status_history: Array<Data.StatusHistory>;
 
     /**
-     * Timestamp of when the charge was created.
+     * Updated at.
      */
-    created_at?: string | null;
+    updated_at: string;
 
-    /**
-     * Information about the customer associated with the charge.
-     */
     customer_details?: Data.CustomerDetails;
 
     /**
-     * Timestamp of when the charge was effective in the customer's bank account,
-     * otherwise known as the date on which the customer is debited.
+     * Effective at.
      */
     effective_at?: string | null;
 
     /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the charge in a structured format.
+     * Metadata.
      */
     metadata?: Record<string, string> | null;
 
-    /**
-     * Information about the paykey used for the charge.
-     */
     paykey_details?: Data.PaykeyDetails;
 
-    /**
-     * The payment rail that the charge will be processed through.
-     */
     payment_rail?: 'ach';
 
     /**
-     * Timestamp of when the charge was processed by Straddle and originated to the
-     * payment rail.
+     * Processed at.
      */
     processed_at?: string | null;
-
-    /**
-     * Timestamp of when the charge was last updated.
-     */
-    updated_at?: string | null;
   }
 
   export namespace Data {
-    /**
-     * Configuration options for the charge.
-     */
     export interface Config {
-      /**
-       * Defines whether to check the customer's balance before processing the charge.
-       */
       balance_check: 'required' | 'enabled' | 'disabled';
     }
 
-    /**
-     * Information about the device used when the customer authorized the payment.
-     */
     export interface Device {
       /**
-       * The IP address of the device used when the customer authorized the charge or
-       * payout. Use `0.0.0.0` to represent an offline consent interaction.
+       * Ip address.
        */
       ip_address: string;
     }
 
-    /**
-     * Additional details about the current status of the charge.
-     */
     export interface StatusDetails {
       /**
        * The time the status change occurred.
@@ -342,14 +283,10 @@ export namespace Charge {
       changed_at: string;
 
       /**
-       * A human-readable description of the current status.
+       * A human-readable description of the status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'insufficient_funds'
         | 'closed_bank_account'
@@ -372,16 +309,14 @@ export namespace Charge {
         | 'other_network_return'
         | 'payout_refused';
 
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+
+      /**
+       * The status code if applicable.
+       */
+      code?: string | null;
     }
 
-    /**
-     * A record of the charge's status changes over time.
-     */
     export interface StatusHistory {
       /**
        * The time the status change occurred.
@@ -393,10 +328,6 @@ export namespace Charge {
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'insufficient_funds'
         | 'closed_bank_account'
@@ -419,15 +350,8 @@ export namespace Charge {
         | 'other_network_return'
         | 'payout_refused';
 
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
-      /**
-       * The current status of the `charge` or `payout`.
-       */
       status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
       /**
@@ -436,56 +360,53 @@ export namespace Charge {
       code?: string | null;
     }
 
-    /**
-     * Information about the customer associated with the charge.
-     */
     export interface CustomerDetails {
       /**
-       * Unique identifier for the customer.
+       * Id.
        */
       id: string;
 
-      /**
-       * The type of customer.
-       */
-      customer_type: 'individual' | 'business';
+      customer_type: 'unknown' | 'individual' | 'business';
 
       /**
-       * The name of the customer.
+       * Email.
+       */
+      email: string;
+
+      /**
+       * Name.
        */
       name: string;
+
+      /**
+       * Phone.
+       */
+      phone: string;
     }
 
-    /**
-     * Information about the paykey used for the charge.
-     */
     export interface PaykeyDetails {
       /**
-       * Unique identifier for the paykey.
+       * Id.
        */
       id: string;
 
       /**
-       * Unique identifier for the customer associated with the paykey.
+       * Customer id.
        */
       customer_id: string;
 
       /**
-       * Human-readable label used to represent this paykey in a UI.
+       * Label.
        */
       label: string;
 
       /**
-       * The most recent balance of the bank account associated with the paykey in
-       * dollars.
+       * Balance.
        */
       balance?: number | null;
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -501,7 +422,7 @@ export namespace Charge {
 
 export interface ChargeCreateParams {
   /**
-   * Body param: The amount of the charge in cents.
+   * Body param: Amount.
    */
   amount: number;
 
@@ -511,20 +432,17 @@ export interface ChargeCreateParams {
   config: ChargeCreateParams.Config;
 
   /**
-   * Body param: The channel or mechanism through which the payment was authorized.
-   * Use `internet` for payments made online or through a mobile app and `signed` for
-   * signed agreements where there is a consent form or contract. Use `signed` for
-   * PDF signatures.
+   * Body param:
    */
   consent_type: 'internet' | 'signed';
 
   /**
-   * Body param: The currency of the charge. Only USD is supported.
+   * Body param: Currency.
    */
   currency: string;
 
   /**
-   * Body param: An arbitrary description for the charge.
+   * Body param: Description.
    */
   description: string;
 
@@ -534,25 +452,22 @@ export interface ChargeCreateParams {
   device: ChargeCreateParams.Device;
 
   /**
-   * Body param: Unique identifier for the charge in your database. This value must
-   * be unique across all charges.
+   * Body param: External id.
    */
   external_id: string;
 
   /**
-   * Body param: Value of the `paykey` used for the charge.
+   * Body param: Paykey.
    */
   paykey: string;
 
   /**
-   * Body param: The desired date on which the payment should be occur. For charges,
-   * this means the date you want the customer to be debited on.
+   * Body param: Payment date.
    */
   payment_date: string;
 
   /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the charge in a structured format.
+   * Body param: Metadata.
    */
   metadata?: Record<string, string> | null;
 
@@ -576,16 +491,12 @@ export interface ChargeCreateParams {
 
 export namespace ChargeCreateParams {
   export interface Config {
-    /**
-     * Defines whether to check the customer's balance before processing the charge.
-     */
     balance_check: 'required' | 'enabled' | 'disabled';
   }
 
   export interface Device {
     /**
-     * The IP address of the device used when the customer authorized the charge or
-     * payout. Use `0.0.0.0` to represent an offline consent interaction.
+     * Ip address.
      */
     ip_address: string;
   }
@@ -593,24 +504,22 @@ export namespace ChargeCreateParams {
 
 export interface ChargeUpdateParams {
   /**
-   * Body param: The amount of the charge in cents.
+   * Body param: Amount.
    */
   amount: number;
 
   /**
-   * Body param: An arbitrary description for the charge.
+   * Body param: Description.
    */
   description: string;
 
   /**
-   * Body param: The desired date on which the payment should be occur. For charges,
-   * this means the date you want the customer to be debited on.
+   * Body param: Payment date.
    */
   payment_date: string;
 
   /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the charge in a structured format.
+   * Body param: Metadata.
    */
   metadata?: Record<string, string> | null;
 
@@ -634,7 +543,7 @@ export interface ChargeUpdateParams {
 
 export interface ChargeCancelParams {
   /**
-   * Body param: Details about why the charge status was updated.
+   * Body param: Reason.
    */
   reason?: string | null;
 
@@ -675,7 +584,7 @@ export interface ChargeGetParams {
 
 export interface ChargeHoldParams {
   /**
-   * Body param: Details about why the charge status was updated.
+   * Body param: Reason.
    */
   reason?: string | null;
 
@@ -699,7 +608,7 @@ export interface ChargeHoldParams {
 
 export interface ChargeReleaseParams {
   /**
-   * Body param: Details about why the charge status was updated.
+   * Body param: Reason.
    */
   reason?: string | null;
 
