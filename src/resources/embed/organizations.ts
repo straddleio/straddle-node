@@ -55,6 +55,36 @@ export class Organizations extends APIResource {
       },
     });
   }
+
+  /**
+   * Retrieves the details of an Organization that has previously been created.
+   * Supply the unique organization ID that was returned from your previous request,
+   * and Straddle will return the corresponding organization information.
+   */
+  get(
+    organizationId: string,
+    params?: OrganizationGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Organization>;
+  get(organizationId: string, options?: Core.RequestOptions): Core.APIPromise<Organization>;
+  get(
+    organizationId: string,
+    params: OrganizationGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Organization> {
+    if (isRequestOptions(params)) {
+      return this.get(organizationId, {}, params);
+    }
+    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    return this._client.get(`/v1/organizations/${organizationId}`, {
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(requestId != null ? { 'request-id': requestId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
 }
 
 export class OrganizationPagedDataPageNumberSchema extends PageNumberSchema<OrganizationPaged.Data> {}
@@ -87,14 +117,19 @@ export namespace Organization {
     id: string;
 
     /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of when the organization was created.
+     * Timestamp of the most recent update to the organization.
      */
-    created_at?: string;
+    updated_at: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -107,11 +142,6 @@ export namespace Organization {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
-
-    /**
-     * Timestamp of the most recent update to the organization.
-     */
-    updated_at?: string;
   }
 
   /**
@@ -159,14 +189,19 @@ export namespace OrganizationPaged {
     id: string;
 
     /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of when the organization was created.
+     * Timestamp of the most recent update to the organization.
      */
-    created_at?: string;
+    updated_at: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -179,11 +214,6 @@ export namespace OrganizationPaged {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
-
-    /**
-     * Timestamp of the most recent update to the organization.
-     */
-    updated_at?: string;
   }
 
   /**
@@ -230,6 +260,11 @@ export namespace OrganizationPaged {
      * Total number of items returned in this response.
      */
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
@@ -296,6 +331,18 @@ export interface OrganizationListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
+export interface OrganizationGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
 Organizations.OrganizationPagedDataPageNumberSchema = OrganizationPagedDataPageNumberSchema;
 
 export declare namespace Organizations {
@@ -305,5 +352,6 @@ export declare namespace Organizations {
     OrganizationPagedDataPageNumberSchema as OrganizationPagedDataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
+    type OrganizationGetParams as OrganizationGetParams,
   };
 }

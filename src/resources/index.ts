@@ -39,8 +39,10 @@ export {
   type Paykey,
   type PaykeySummaryPaged,
   type PaykeyUnmasked,
+  type PaykeyRevealResponse,
   type PaykeyListParams,
   type PaykeyGetParams,
+  type PaykeyRevealParams,
   type PaykeyUnmaskedParams,
 } from './paykeys';
 export {

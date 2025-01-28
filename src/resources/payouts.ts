@@ -183,6 +183,11 @@ export namespace Payout {
     amount: number;
 
     /**
+     * Configuration for the payout.
+     */
+    config: unknown;
+
+    /**
      * The currency of the payout. Only USD is supported.
      */
     currency: string;
@@ -228,11 +233,6 @@ export namespace Payout {
      * History of the status changes for the payout.
      */
     status_history: Array<Data.StatusHistory>;
-
-    /**
-     * Configuration for the payout.
-     */
-    config?: unknown;
 
     /**
      * The time the payout was created.
@@ -335,6 +335,11 @@ export namespace Payout {
        * This helps in tracking the cause of status updates.
        */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+
+      /**
+       * The status code if applicable.
+       */
+      code?: string | null;
     }
 
     export interface StatusHistory {
@@ -403,12 +408,22 @@ export namespace Payout {
       /**
        * The type of customer.
        */
-      customer_type: 'individual' | 'business';
+      customer_type: 'individual' | 'business' | 'unknown';
+
+      /**
+       * Email.
+       */
+      email: string;
 
       /**
        * The name of the customer.
        */
       name: string;
+
+      /**
+       * Phone.
+       */
+      phone: string;
     }
 
     /**

@@ -209,14 +209,14 @@ export namespace Account {
     /**
      * The current status of the account (e.g., 'active', 'inactive', 'pending').
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'unknown';
 
     status_detail: Data.StatusDetail;
 
     /**
      * The type of account (e.g., 'individual', 'business').
      */
-    type: 'business';
+    type: 'business' | 'unknown';
 
     business_profile?: Data.BusinessProfile;
 
@@ -274,7 +274,9 @@ export namespace Account {
         | 'verified'
         | 'failed_verification'
         | 'disabled'
-        | 'terminated';
+        | 'terminated'
+        | 'unknown'
+        | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -491,7 +493,7 @@ export namespace Account {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -525,7 +527,7 @@ export namespace Account {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -636,14 +638,14 @@ export namespace AccountPaged {
     /**
      * The current status of the account (e.g., 'active', 'inactive', 'pending').
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'unknown';
 
     status_detail: Data.StatusDetail;
 
     /**
      * The type of account (e.g., 'individual', 'business').
      */
-    type: 'business';
+    type: 'business' | 'unknown';
 
     business_profile?: Data.BusinessProfile;
 
@@ -701,7 +703,9 @@ export namespace AccountPaged {
         | 'verified'
         | 'failed_verification'
         | 'disabled'
-        | 'terminated';
+        | 'terminated'
+        | 'unknown'
+        | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -918,7 +922,7 @@ export namespace AccountPaged {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -952,7 +956,7 @@ export namespace AccountPaged {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -1049,6 +1053,11 @@ export namespace AccountPaged {
      * Total number of items returned in this response.
      */
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
@@ -1063,7 +1072,7 @@ export interface AccountCreateParams {
    * Body param: The type of account to be created. Currently, only `business` is
    * supported.
    */
-  account_type: 'business';
+  account_type: 'business' | 'unknown';
 
   /**
    * Body param:
@@ -1368,6 +1377,11 @@ export namespace AccountUpdateParams {
 }
 
 export interface AccountListParams extends PageNumberSchemaParams {
+  /**
+   * Query param:
+   */
+  search_text?: string;
+
   /**
    * Query param: Sort By. Default value: 'id'.
    */
