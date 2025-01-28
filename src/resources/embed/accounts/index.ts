@@ -5,7 +5,6 @@ export {
   Accounts,
   type Account,
   type AccountPaged,
-  type AccountGetResponse,
   type AccountCreateParams,
   type AccountUpdateParams,
   type AccountListParams,
