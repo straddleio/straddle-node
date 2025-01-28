@@ -81,15 +81,10 @@ Methods:
 
 ## Link
 
-Types:
-
-- <code><a href="./src/resources/bridge/link.ts">LinkBankAccountResponse</a></code>
-- <code><a href="./src/resources/bridge/link.ts">LinkPlaidResponse</a></code>
-
 Methods:
 
-- <code title="post /v1/bridge/bank_account">client.bridge.link.<a href="./src/resources/bridge/link.ts">bankAccount</a>({ ...params }) -> LinkBankAccountResponse</code>
-- <code title="post /v1/bridge/plaid">client.bridge.link.<a href="./src/resources/bridge/link.ts">plaid</a>({ ...params }) -> LinkPlaidResponse</code>
+- <code title="post /v1/bridge/bank_account">client.bridge.link.<a href="./src/resources/bridge/link.ts">bankAccount</a>({ ...params }) -> Paykey</code>
+- <code title="post /v1/bridge/plaid">client.bridge.link.<a href="./src/resources/bridge/link.ts">plaid</a>({ ...params }) -> Paykey</code>
 
 # Customers
 

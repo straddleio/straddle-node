@@ -14,7 +14,7 @@ describe('resource link', () => {
       account_number: 'account_number',
       account_type: 'checking',
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      routing_number: 'routing_number',
+      routing_number: 'xxxxxxxxx',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -30,7 +30,7 @@ describe('resource link', () => {
       account_number: 'account_number',
       account_type: 'checking',
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      routing_number: 'routing_number',
+      routing_number: 'xxxxxxxxx',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',

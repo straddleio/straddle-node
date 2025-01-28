@@ -51,10 +51,9 @@ describe('resource capabilityRequests', () => {
     ).rejects.toThrow(Straddle.NotFoundError);
   });
 
-  test('list: only required params', async () => {
+  test('list', async () => {
     const responsePromise = client.embed.accounts.capabilityRequests.list(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      { page_number: 0, page_size: 0, sort_by: 'sort_by', sort_order: 'asc' },
     );
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -65,20 +64,33 @@ describe('resource capabilityRequests', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: required and optional params', async () => {
-    const response = await client.embed.accounts.capabilityRequests.list(
-      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      {
-        page_number: 0,
-        page_size: 0,
-        sort_by: 'sort_by',
-        sort_order: 'asc',
-        category: 'payment_type',
-        status: 'approved',
-        type: 'charges',
-        'correlation-id': 'correlation-id',
-        'request-id': 'request-id',
-      },
-    );
+  test('list: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.embed.accounts.capabilityRequests.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+        path: '/_stainless_unknown_path',
+      }),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.embed.accounts.capabilityRequests.list(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          category: 'payment_type',
+          page_number: 0,
+          page_size: 0,
+          sort_by: 'sort_by',
+          sort_order: 'asc',
+          status: 'active',
+          type: 'charges',
+          'correlation-id': 'correlation-id',
+          'request-id': 'request-id',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 });

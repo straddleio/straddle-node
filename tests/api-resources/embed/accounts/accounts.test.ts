@@ -12,8 +12,8 @@ describe('resource accounts', () => {
   test('create: only required params', async () => {
     const responsePromise = client.embed.accounts.create({
       access_level: 'standard',
-      account_type: 'unknown',
-      business_profile: { name: 'name', website: 'website' },
+      account_type: 'business',
+      business_profile: { name: 'name', website: 'https://example.com' },
       organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -28,24 +28,24 @@ describe('resource accounts', () => {
   test('create: required and optional params', async () => {
     const response = await client.embed.accounts.create({
       access_level: 'standard',
-      account_type: 'unknown',
+      account_type: 'business',
       business_profile: {
         name: 'name',
-        website: 'website',
+        website: 'https://example.com',
         address: {
           city: 'city',
           country: 'country',
           line1: 'line1',
           line2: 'line2',
-          postal_code: 'postal_code',
-          state: 'state',
+          postal_code: '21029-1360',
+          state: 'SE',
         },
         description: 'description',
         industry: { category: 'category', mcc: 'mcc', sector: 'sector' },
         legal_name: 'legal_name',
-        phone: 'phone',
-        support_channels: { email: 'email', phone: 'phone', url: 'url' },
-        tax_id: 'tax_id',
+        phone: '+46991022',
+        support_channels: { email: 'dev@stainlessapi.com', phone: '+46991022', url: 'https://example.com' },
+        tax_id: '210297980',
         use_case: 'use_case',
       },
       organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -58,7 +58,7 @@ describe('resource accounts', () => {
 
   test('update: only required params', async () => {
     const responsePromise = client.embed.accounts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      business_profile: { name: 'name', website: 'website' },
+      business_profile: { name: 'name', website: 'https://example.com' },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -73,21 +73,21 @@ describe('resource accounts', () => {
     const response = await client.embed.accounts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       business_profile: {
         name: 'name',
-        website: 'website',
+        website: 'https://example.com',
         address: {
           city: 'city',
           country: 'country',
           line1: 'line1',
           line2: 'line2',
-          postal_code: 'postal_code',
-          state: 'state',
+          postal_code: '21029-1360',
+          state: 'SE',
         },
         description: 'description',
         industry: { category: 'category', mcc: 'mcc', sector: 'sector' },
         legal_name: 'legal_name',
-        phone: 'phone',
-        support_channels: { email: 'email', phone: 'phone', url: 'url' },
-        tax_id: 'tax_id',
+        phone: '+46991022',
+        support_channels: { email: 'dev@stainlessapi.com', phone: '+46991022', url: 'https://example.com' },
+        tax_id: '210297980',
         use_case: 'use_case',
       },
       external_id: 'external_id',
@@ -97,8 +97,8 @@ describe('resource accounts', () => {
     });
   });
 
-  test('list: only required params', async () => {
-    const responsePromise = client.embed.accounts.list({ page_number: 0, page_size: 0, sort_order: 'asc' });
+  test('list', async () => {
+    const responsePromise = client.embed.accounts.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -108,16 +108,28 @@ describe('resource accounts', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: required and optional params', async () => {
-    const response = await client.embed.accounts.list({
-      page_number: 0,
-      page_size: 0,
-      sort_order: 'asc',
-      search_text: 'search_text',
-      sort_by: 'sort_by',
-      'correlation-id': 'correlation-id',
-      'request-id': 'request-id',
-    });
+  test('list: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.embed.accounts.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Straddle.NotFoundError,
+    );
+  });
+
+  test('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.embed.accounts.list(
+        {
+          page_number: 0,
+          page_size: 0,
+          sort_by: 'sort_by',
+          sort_order: 'asc',
+          'correlation-id': 'correlation-id',
+          'request-id': 'request-id',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('get', async () => {

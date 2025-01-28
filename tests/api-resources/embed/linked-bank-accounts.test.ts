@@ -15,7 +15,7 @@ describe('resource linkedBankAccounts', () => {
       bank_account: {
         account_holder: 'account_holder',
         account_number: 'account_number',
-        routing_number: 'routing_number',
+        routing_number: 'xxxxxxxxx',
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -33,7 +33,7 @@ describe('resource linkedBankAccounts', () => {
       bank_account: {
         account_holder: 'account_holder',
         account_number: 'account_number',
-        routing_number: 'routing_number',
+        routing_number: 'xxxxxxxxx',
       },
       metadata: { foo: 'string' },
       'correlation-id': 'correlation-id',
@@ -46,7 +46,7 @@ describe('resource linkedBankAccounts', () => {
       bank_account: {
         account_holder: 'account_holder',
         account_number: 'account_number',
-        routing_number: 'routing_number',
+        routing_number: 'xxxxxxxxx',
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -63,7 +63,7 @@ describe('resource linkedBankAccounts', () => {
       bank_account: {
         account_holder: 'account_holder',
         account_number: 'account_number',
-        routing_number: 'routing_number',
+        routing_number: 'xxxxxxxxx',
       },
       metadata: { foo: 'string' },
       'correlation-id': 'correlation-id',
@@ -71,13 +71,8 @@ describe('resource linkedBankAccounts', () => {
     });
   });
 
-  test('list: only required params', async () => {
-    const responsePromise = client.embed.linkedBankAccounts.list({
-      page_number: 0,
-      page_size: 0,
-      sort_by: 'sort_by',
-      sort_order: 'asc',
-    });
+  test('list', async () => {
+    const responsePromise = client.embed.linkedBankAccounts.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -87,16 +82,29 @@ describe('resource linkedBankAccounts', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: required and optional params', async () => {
-    const response = await client.embed.linkedBankAccounts.list({
-      page_number: 0,
-      page_size: 0,
-      sort_by: 'sort_by',
-      sort_order: 'asc',
-      account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'correlation-id': 'correlation-id',
-      'request-id': 'request-id',
-    });
+  test('list: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.embed.linkedBankAccounts.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Straddle.NotFoundError,
+    );
+  });
+
+  test('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.embed.linkedBankAccounts.list(
+        {
+          account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          page_number: 0,
+          page_size: 0,
+          sort_by: 'sort_by',
+          sort_order: 'asc',
+          'correlation-id': 'correlation-id',
+          'request-id': 'request-id',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('get', async () => {

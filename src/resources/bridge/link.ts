@@ -2,17 +2,18 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
+import * as PaykeysAPI from '../paykeys';
 
 export class Link extends APIResource {
   /**
-   * Creates a new paykey using a bank routing and account number as the source. This
-   * endpoint allows you to create a secure payment token linked to a specific bank
-   * account.
+   * Use Bridge to create a new paykey using a bank routing and account number as the
+   * source. This endpoint allows you to create a secure payment token linked to a
+   * specific bank account.
    */
   bankAccount(
     params: LinkBankAccountParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkBankAccountResponse> {
+  ): Core.APIPromise<PaykeysAPI.Paykey> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -32,11 +33,11 @@ export class Link extends APIResource {
   }
 
   /**
-   * Creates a new paykey using a Plaid token as the source. This endpoint allows you
-   * to create a secure payment token linked to a bank account authenticated through
-   * Plaid.
+   * Use Bridge to create a new paykey using a Plaid token as the source. This
+   * endpoint allows you to create a secure payment token linked to a bank account
+   * authenticated through Plaid.
    */
-  plaid(params: LinkPlaidParams, options?: Core.RequestOptions): Core.APIPromise<LinkPlaidResponse> {
+  plaid(params: LinkPlaidParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.Paykey> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -56,239 +57,9 @@ export class Link extends APIResource {
   }
 }
 
-export interface LinkBankAccountResponse {
-  data: LinkBankAccountResponse.Data;
-
-  meta: LinkBankAccountResponse.Meta;
-
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace LinkBankAccountResponse {
-  export interface Data {
-    /**
-     * Unique identifier for the paykey.
-     */
-    id: string;
-
-    /**
-     * Timestamp of when the paykey was created.
-     */
-    created_at: string;
-
-    /**
-     * Human-readable label used to represent this paykey in a UI.
-     */
-    label: string;
-
-    /**
-     * The tokenized paykey value. This value is used to create payments and should be
-     * stored securely.
-     */
-    paykey: string;
-
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
-
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
-
-    /**
-     * Timestamp of the most recent update to the paykey.
-     */
-    updated_at: string;
-
-    bank_data?: Data.BankData;
-
-    /**
-     * Unique identifier of the related customer object.
-     */
-    customer_id?: string | null;
-
-    /**
-     * Expiration date and time of the paykey, if applicable.
-     */
-    expires_at?: string | null;
-
-    /**
-     * Name of the financial institution.
-     */
-    institution_name?: string | null;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the paykey in a structured format.
-     */
-    metadata?: Record<string, string> | null;
-
-    status_details?: Data.StatusDetails;
-  }
-
-  export namespace Data {
-    export interface BankData {
-      /**
-       * Bank account number. This value is masked by default for security reasons. Use
-       * the /unmask endpoint to access the unmasked value.
-       */
-      account_number: string;
-
-      account_type: 'checking' | 'savings';
-
-      /**
-       * Bank routing number.
-       */
-      routing_number: string;
-    }
-
-    export interface StatusDetails {
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
-
-      /**
-       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
-       * This helps in tracking the cause of status updates.
-       */
-      source: string;
-    }
-  }
-
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
-}
-
-export interface LinkPlaidResponse {
-  data: LinkPlaidResponse.Data;
-
-  meta: LinkPlaidResponse.Meta;
-
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace LinkPlaidResponse {
-  export interface Data {
-    /**
-     * Unique identifier for the paykey.
-     */
-    id: string;
-
-    /**
-     * Timestamp of when the paykey was created.
-     */
-    created_at: string;
-
-    /**
-     * Human-readable label used to represent this paykey in a UI.
-     */
-    label: string;
-
-    /**
-     * The tokenized paykey value. This value is used to create payments and should be
-     * stored securely.
-     */
-    paykey: string;
-
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
-
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
-
-    /**
-     * Timestamp of the most recent update to the paykey.
-     */
-    updated_at: string;
-
-    bank_data?: Data.BankData;
-
-    /**
-     * Unique identifier of the related customer object.
-     */
-    customer_id?: string | null;
-
-    /**
-     * Expiration date and time of the paykey, if applicable.
-     */
-    expires_at?: string | null;
-
-    /**
-     * Name of the financial institution.
-     */
-    institution_name?: string | null;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the paykey in a structured format.
-     */
-    metadata?: Record<string, string> | null;
-
-    status_details?: Data.StatusDetails;
-  }
-
-  export namespace Data {
-    export interface BankData {
-      /**
-       * Bank account number. This value is masked by default for security reasons. Use
-       * the /unmask endpoint to access the unmasked value.
-       */
-      account_number: string;
-
-      account_type: 'checking' | 'savings';
-
-      /**
-       * Bank routing number.
-       */
-      routing_number: string;
-    }
-
-    export interface StatusDetails {
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
-
-      /**
-       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
-       * This helps in tracking the cause of status updates.
-       */
-      source: string;
-    }
-  }
-
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
-}
-
 export interface LinkBankAccountParams {
   /**
-   * Body param: Bank account number.
+   * Body param: The bank account number.
    */
   account_number: string;
 
@@ -303,7 +74,7 @@ export interface LinkBankAccountParams {
   customer_id: string;
 
   /**
-   * Body param: Bank routing number.
+   * Body param: The routing number of the bank account.
    */
   routing_number: string;
 
@@ -368,10 +139,5 @@ export interface LinkPlaidParams {
 }
 
 export declare namespace Link {
-  export {
-    type LinkBankAccountResponse as LinkBankAccountResponse,
-    type LinkPlaidResponse as LinkPlaidResponse,
-    type LinkBankAccountParams as LinkBankAccountParams,
-    type LinkPlaidParams as LinkPlaidParams,
-  };
+  export { type LinkBankAccountParams as LinkBankAccountParams, type LinkPlaidParams as LinkPlaidParams };
 }

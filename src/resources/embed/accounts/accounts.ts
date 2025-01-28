@@ -59,14 +59,22 @@ export class Accounts extends APIResource {
 
   /**
    * Returns a list of accounts associated with your Straddle platform integration.
-   * <br /> <br /> The accounts are returned sorted by creation date, with the most
-   * recently created accounts appearing first. This endpoint supports pagination and
-   * sorting options to help you efficiently manage large numbers of accounts.
+   * The accounts are returned sorted by creation date, with the most recently
+   * created accounts appearing first. This endpoint supports advanced sorting and
+   * filtering options.
    */
   list(
-    params: AccountListParams,
+    params?: AccountListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data>;
+  list(options?: Core.RequestOptions): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data>;
+  list(
+    params: AccountListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data> {
+    if (isRequestOptions(params)) {
+      return this.list({}, params);
+    }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList('/v1/accounts', AccountPagedDataPageNumberSchema, {
       query,
@@ -163,10 +171,19 @@ export class AccountPagedDataPageNumberSchema extends PageNumberSchema<AccountPa
 export interface Account {
   data: Account.Data;
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   meta: Account.Meta;
 
   /**
-   * Indicates the type of data returned.
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -180,7 +197,7 @@ export namespace Account {
 
     /**
      * The access level granted to the account. This is determined by your platform
-     * configuration. Possible values: 'managed', 'standard'.
+     * configuration. Use `standard` unless instructed otherwise by Straddle.
      */
     access_level: 'standard' | 'managed';
 
@@ -192,14 +209,14 @@ export namespace Account {
     /**
      * The current status of the account (e.g., 'active', 'inactive', 'pending').
      */
-    status: 'unknown' | 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
 
     status_detail: Data.StatusDetail;
 
     /**
      * The type of account (e.g., 'individual', 'business').
      */
-    type: 'unknown' | 'business';
+    type: 'business';
 
     business_profile?: Data.BusinessProfile;
 
@@ -234,14 +251,23 @@ export namespace Account {
 
   export namespace Data {
     export interface StatusDetail {
+      /**
+       * A machine-readable code for the specific status, useful for programmatic
+       * handling.
+       */
       code: string;
 
+      /**
+       * A human-readable message describing the current status.
+       */
       message: string;
 
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
       reason:
-        | 'unknown'
         | 'unverified'
-        | 'new'
         | 'in_review'
         | 'pending'
         | 'stuck'
@@ -250,6 +276,10 @@ export namespace Account {
         | 'disabled'
         | 'terminated';
 
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
       source: 'watchtower';
     }
 
@@ -264,7 +294,10 @@ export namespace Account {
        */
       website: string;
 
-      address?: BusinessProfile.Address;
+      /**
+       * The address object is optional. If provided, it must be a valid address.
+       */
+      address?: BusinessProfile.Address | null;
 
       /**
        * A brief description of the business and its products or services.
@@ -297,6 +330,9 @@ export namespace Account {
     }
 
     export namespace BusinessProfile {
+      /**
+       * The address object is optional. If provided, it must be a valid address.
+       */
       export interface Address {
         /**
          * City, district, suburb, town, or village.
@@ -374,16 +410,32 @@ export namespace Account {
 
     export namespace Capabilities {
       export interface ConsentTypes {
+        /**
+         * Whether the internet payment authorization capability is enabled for the
+         * account.
+         */
         internet: ConsentTypes.Internet;
 
+        /**
+         * Whether the signed agreement payment authorization capability is enabled for the
+         * account.
+         */
         signed_agreement: ConsentTypes.SignedAgreement;
       }
 
       export namespace ConsentTypes {
+        /**
+         * Whether the internet payment authorization capability is enabled for the
+         * account.
+         */
         export interface Internet {
           capability_status: 'active' | 'inactive';
         }
 
+        /**
+         * Whether the signed agreement payment authorization capability is enabled for the
+         * account.
+         */
         export interface SignedAgreement {
           capability_status: 'active' | 'inactive';
         }
@@ -430,30 +482,69 @@ export namespace Account {
 
     export namespace Settings {
       export interface Charges {
+        /**
+         * The maximum dollar amount of charges in a calendar day.
+         */
         daily_amount: number;
 
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
+        /**
+         * The amount of time it takes for a charge to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
 
+        /**
+         * The unique identifier of the linked bank account associated with charges. This
+         * value is defined by Straddle.
+         */
         linked_bank_account_id: string;
 
+        /**
+         * The maximum amount of a single charge.
+         */
         max_amount: number;
 
+        /**
+         * The maximum dollar amount of charges in a calendar month.
+         */
         monthly_amount: number;
 
+        /**
+         * The maximum number of charges in a calendar month.
+         */
         monthly_count: number;
       }
 
       export interface Payouts {
+        /**
+         * The maximum dollar amount of payouts in a day.
+         */
         daily_amount: number;
 
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
+        /**
+         * The amount of time it takes for a payout to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
 
+        /**
+         * The unique identifier of the linked bank account to use for payouts.
+         */
         linked_bank_account_id: string;
 
+        /**
+         * The maximum amount of a single payout.
+         */
         max_amount: number;
 
+        /**
+         * The maximum dollar amount of payouts in a month.
+         */
         monthly_amount: number;
 
+        /**
+         * The maximum number of payouts in a month.
+         */
         monthly_count: number;
       }
     }
@@ -465,7 +556,8 @@ export namespace Account {
       accepted_date: string;
 
       /**
-       * The type or version of the agreement accepted. Possible values: 'embedded'.
+       * The type or version of the agreement accepted. Use `embedded` unless your
+       * platform was specifically enabled for `direct` agreements.
        */
       agreement_type: 'embedded' | 'direct';
 
@@ -486,6 +578,9 @@ export namespace Account {
     }
   }
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -502,10 +597,20 @@ export namespace Account {
 export interface AccountPaged {
   data: Array<AccountPaged.Data>;
 
+  /**
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
+   */
   meta: AccountPaged.Meta;
 
   /**
-   * Indicates the type of data returned.
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -519,7 +624,7 @@ export namespace AccountPaged {
 
     /**
      * The access level granted to the account. This is determined by your platform
-     * configuration. Possible values: 'managed', 'standard'.
+     * configuration. Use `standard` unless instructed otherwise by Straddle.
      */
     access_level: 'standard' | 'managed';
 
@@ -531,14 +636,14 @@ export namespace AccountPaged {
     /**
      * The current status of the account (e.g., 'active', 'inactive', 'pending').
      */
-    status: 'unknown' | 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
 
     status_detail: Data.StatusDetail;
 
     /**
      * The type of account (e.g., 'individual', 'business').
      */
-    type: 'unknown' | 'business';
+    type: 'business';
 
     business_profile?: Data.BusinessProfile;
 
@@ -573,14 +678,23 @@ export namespace AccountPaged {
 
   export namespace Data {
     export interface StatusDetail {
+      /**
+       * A machine-readable code for the specific status, useful for programmatic
+       * handling.
+       */
       code: string;
 
+      /**
+       * A human-readable message describing the current status.
+       */
       message: string;
 
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
       reason:
-        | 'unknown'
         | 'unverified'
-        | 'new'
         | 'in_review'
         | 'pending'
         | 'stuck'
@@ -589,6 +703,10 @@ export namespace AccountPaged {
         | 'disabled'
         | 'terminated';
 
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
       source: 'watchtower';
     }
 
@@ -603,7 +721,10 @@ export namespace AccountPaged {
        */
       website: string;
 
-      address?: BusinessProfile.Address;
+      /**
+       * The address object is optional. If provided, it must be a valid address.
+       */
+      address?: BusinessProfile.Address | null;
 
       /**
        * A brief description of the business and its products or services.
@@ -636,6 +757,9 @@ export namespace AccountPaged {
     }
 
     export namespace BusinessProfile {
+      /**
+       * The address object is optional. If provided, it must be a valid address.
+       */
       export interface Address {
         /**
          * City, district, suburb, town, or village.
@@ -713,16 +837,32 @@ export namespace AccountPaged {
 
     export namespace Capabilities {
       export interface ConsentTypes {
+        /**
+         * Whether the internet payment authorization capability is enabled for the
+         * account.
+         */
         internet: ConsentTypes.Internet;
 
+        /**
+         * Whether the signed agreement payment authorization capability is enabled for the
+         * account.
+         */
         signed_agreement: ConsentTypes.SignedAgreement;
       }
 
       export namespace ConsentTypes {
+        /**
+         * Whether the internet payment authorization capability is enabled for the
+         * account.
+         */
         export interface Internet {
           capability_status: 'active' | 'inactive';
         }
 
+        /**
+         * Whether the signed agreement payment authorization capability is enabled for the
+         * account.
+         */
         export interface SignedAgreement {
           capability_status: 'active' | 'inactive';
         }
@@ -769,30 +909,69 @@ export namespace AccountPaged {
 
     export namespace Settings {
       export interface Charges {
+        /**
+         * The maximum dollar amount of charges in a calendar day.
+         */
         daily_amount: number;
 
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
+        /**
+         * The amount of time it takes for a charge to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
 
+        /**
+         * The unique identifier of the linked bank account associated with charges. This
+         * value is defined by Straddle.
+         */
         linked_bank_account_id: string;
 
+        /**
+         * The maximum amount of a single charge.
+         */
         max_amount: number;
 
+        /**
+         * The maximum dollar amount of charges in a calendar month.
+         */
         monthly_amount: number;
 
+        /**
+         * The maximum number of charges in a calendar month.
+         */
         monthly_count: number;
       }
 
       export interface Payouts {
+        /**
+         * The maximum dollar amount of payouts in a day.
+         */
         daily_amount: number;
 
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
+        /**
+         * The amount of time it takes for a payout to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
 
+        /**
+         * The unique identifier of the linked bank account to use for payouts.
+         */
         linked_bank_account_id: string;
 
+        /**
+         * The maximum amount of a single payout.
+         */
         max_amount: number;
 
+        /**
+         * The maximum dollar amount of payouts in a month.
+         */
         monthly_amount: number;
 
+        /**
+         * The maximum number of payouts in a month.
+         */
         monthly_count: number;
       }
     }
@@ -804,7 +983,8 @@ export namespace AccountPaged {
       accepted_date: string;
 
       /**
-       * The type or version of the agreement accepted. Possible values: 'embedded'.
+       * The type or version of the agreement accepted. Use `embedded` unless your
+       * platform was specifically enabled for `direct` agreements.
        */
       agreement_type: 'embedded' | 'direct';
 
@@ -825,6 +1005,10 @@ export namespace AccountPaged {
     }
   }
 
+  /**
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -861,27 +1045,25 @@ export namespace AccountPaged {
      */
     sort_order: 'asc' | 'desc';
 
-    total_items: number;
-
     /**
-     * The number of pages available.
+     * Total number of items returned in this response.
      */
-    total_pages: number;
+    total_items: number;
   }
 }
 
 export interface AccountCreateParams {
   /**
-   * Body param: The desired access level for the new account. Possible values:
-   * 'managed', 'standard'.
+   * Body param: The access level granted to the account. This is determined by your
+   * platform configuration. Use `standard` unless instructed otherwise by Straddle.
    */
   access_level: 'standard' | 'managed';
 
   /**
-   * Body param: The type of account to be created. Currently only 'business' is
+   * Body param: The type of account to be created. Currently, only `business` is
    * supported.
    */
-  account_type: 'unknown' | 'business';
+  account_type: 'business';
 
   /**
    * Body param:
@@ -929,7 +1111,10 @@ export namespace AccountCreateParams {
      */
     website: string;
 
-    address?: BusinessProfile.Address;
+    /**
+     * The address object is optional. If provided, it must be a valid address.
+     */
+    address?: BusinessProfile.Address | null;
 
     /**
      * A brief description of the business and its products or services.
@@ -962,6 +1147,9 @@ export namespace AccountCreateParams {
   }
 
   export namespace BusinessProfile {
+    /**
+     * The address object is optional. If provided, it must be a valid address.
+     */
     export interface Address {
       /**
        * City, district, suburb, town, or village.
@@ -1072,7 +1260,10 @@ export namespace AccountUpdateParams {
      */
     website: string;
 
-    address?: BusinessProfile.Address;
+    /**
+     * The address object is optional. If provided, it must be a valid address.
+     */
+    address?: BusinessProfile.Address | null;
 
     /**
      * A brief description of the business and its products or services.
@@ -1105,6 +1296,9 @@ export namespace AccountUpdateParams {
   }
 
   export namespace BusinessProfile {
+    /**
+     * The address object is optional. If provided, it must be a valid address.
+     */
     export interface Address {
       /**
        * City, district, suburb, town, or village.
@@ -1175,19 +1369,14 @@ export namespace AccountUpdateParams {
 
 export interface AccountListParams extends PageNumberSchemaParams {
   /**
-   * Query param: Sort Order. Default value: 'asc'.
-   */
-  sort_order: 'asc' | 'desc';
-
-  /**
-   * Query param:
-   */
-  search_text?: string;
-
-  /**
-   * Query param:
+   * Query param: Sort By. Default value: 'id'.
    */
   sort_by?: string;
+
+  /**
+   * Query param: Sort Order. Default value: 'asc'.
+   */
+  sort_order?: 'asc' | 'desc';
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -1239,7 +1428,8 @@ export namespace AccountOnboardParams {
     accepted_date: string;
 
     /**
-     * The type or version of the agreement accepted. Possible values: 'embedded'.
+     * The type or version of the agreement accepted. Use `embedded` unless your
+     * platform was specifically enabled for `direct` agreements.
      */
     agreement_type: 'embedded' | 'direct';
 

@@ -15,8 +15,8 @@ describe('resource charges', () => {
       config: { balance_check: 'required' },
       consent_type: 'internet',
       currency: 'currency',
-      description: 'description',
-      device: { ip_address: 'ip_address' },
+      description: 'Monthly subscription fee',
+      device: { ip_address: '192.168.1.1' },
       external_id: 'external_id',
       paykey: 'paykey',
       payment_date: '2019-12-27',
@@ -36,8 +36,8 @@ describe('resource charges', () => {
       config: { balance_check: 'required' },
       consent_type: 'internet',
       currency: 'currency',
-      description: 'description',
-      device: { ip_address: 'ip_address' },
+      description: 'Monthly subscription fee',
+      device: { ip_address: '192.168.1.1' },
       external_id: 'external_id',
       paykey: 'paykey',
       payment_date: '2019-12-27',
@@ -51,7 +51,7 @@ describe('resource charges', () => {
   test('update: only required params', async () => {
     const responsePromise = client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       amount: 0,
-      description: 'description',
+      description: 'Monthly subscription fee',
       payment_date: '2019-12-27',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -66,7 +66,7 @@ describe('resource charges', () => {
   test('update: required and optional params', async () => {
     const response = await client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       amount: 0,
-      description: 'description',
+      description: 'Monthly subscription fee',
       payment_date: '2019-12-27',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
