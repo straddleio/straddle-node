@@ -6,13 +6,14 @@ Types:
 
 - <code><a href="./src/resources/embed/accounts/accounts.ts">Account</a></code>
 - <code><a href="./src/resources/embed/accounts/accounts.ts">AccountPaged</a></code>
+- <code><a href="./src/resources/embed/accounts/accounts.ts">AccountGetResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/accounts">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">create</a>({ ...params }) -> Account</code>
 - <code title="put /v1/accounts/{account_id}">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">update</a>(accountId, { ...params }) -> Account</code>
 - <code title="get /v1/accounts">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">list</a>({ ...params }) -> AccountPagedDataPageNumberSchema</code>
-- <code title="get /v1/accounts/{account_id}">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">get</a>(accountId, { ...params }) -> Account</code>
+- <code title="get /v1/accounts/{account_id}">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">get</a>(accountId, { ...params }) -> AccountGetResponse</code>
 - <code title="post /v1/accounts/{account_id}/onboard">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">onboard</a>(accountId, { ...params }) -> Account</code>
 - <code title="post /v1/accounts/{account_id}/simulate">client.embed.accounts.<a href="./src/resources/embed/accounts/accounts.ts">simulate</a>(accountId, { ...params }) -> Account</code>
 
