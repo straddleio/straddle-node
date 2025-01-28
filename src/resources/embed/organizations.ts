@@ -87,14 +87,19 @@ export namespace Organization {
     id: string;
 
     /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of when the organization was created.
+     * Timestamp of the most recent update to the organization.
      */
-    created_at?: string;
+    updated_at: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -107,11 +112,6 @@ export namespace Organization {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
-
-    /**
-     * Timestamp of the most recent update to the organization.
-     */
-    updated_at?: string;
   }
 
   /**
@@ -159,14 +159,19 @@ export namespace OrganizationPaged {
     id: string;
 
     /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of when the organization was created.
+     * Timestamp of the most recent update to the organization.
      */
-    created_at?: string;
+    updated_at: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -179,11 +184,6 @@ export namespace OrganizationPaged {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
-
-    /**
-     * Timestamp of the most recent update to the organization.
-     */
-    updated_at?: string;
   }
 
   /**
@@ -230,6 +230,11 @@ export namespace OrganizationPaged {
      * Total number of items returned in this response.
      */
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
