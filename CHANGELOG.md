@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-01-28)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/straddleio/straddle-node/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Features
+
+* **api:** api update ([#10](https://github.com/straddleio/straddle-node/issues/10)) ([876aacd](https://github.com/straddleio/straddle-node/commit/876aacdb9107eaf0f6ae51ecf56bcb3462628b4b))
+* **api:** api update ([#8](https://github.com/straddleio/straddle-node/issues/8)) ([6b58484](https://github.com/straddleio/straddle-node/commit/6b58484b9213d76961c61d2d86d08138c0bcf771))
+* **api:** Release Updates to SDK based on Open API Spec ([#6](https://github.com/straddleio/straddle-node/issues/6)) ([0183598](https://github.com/straddleio/straddle-node/commit/0183598e73d369354a4af7602d79ca37b21a453b))
+* **api:** Release Updates to SDK based on Open API Spec ([#9](https://github.com/straddleio/straddle-node/issues/9)) ([74ca00a](https://github.com/straddleio/straddle-node/commit/74ca00af6d7f50f55ba356b8620dc0d6f4786634))
+* **sdk:** Add unwrap response ([#13](https://github.com/straddleio/straddle-node/issues/13)) ([43fb290](https://github.com/straddleio/straddle-node/commit/43fb290ae02df54b62df034f2f540f2d2fc6c1a8))
+* **sdk:** Remove wrapper ([#14](https://github.com/straddleio/straddle-node/issues/14)) ([75d64ad](https://github.com/straddleio/straddle-node/commit/75d64addebfde4ecfa668f6cd1c7d6884c408690))
+
+
+### Bug Fixes
+
+* **sdk:** Fix contact field ([#12](https://github.com/straddleio/straddle-node/issues/12)) ([4f7da68](https://github.com/straddleio/straddle-node/commit/4f7da68268ec606d9160519d30d31463037a9659))
+* **sdk:** Fix Environment to point to correct URLs ([#11](https://github.com/straddleio/straddle-node/issues/11)) ([a719804](https://github.com/straddleio/straddle-node/commit/a719804419f16aeb9936202a8953e72faceb5156))
+
 ## 0.1.0-alpha.1 (2025-01-27)
 
 Full Changelog: [v0.0.1-alpha.0...v0.1.0-alpha.1](https://github.com/straddleio/straddle-node/compare/v0.0.1-alpha.0...v0.1.0-alpha.1)
