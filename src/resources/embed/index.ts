@@ -32,6 +32,7 @@ export {
   type OrganizationPaged,
   type OrganizationCreateParams,
   type OrganizationListParams,
+  type OrganizationGetParams,
 } from './organizations';
 export {
   RepresentativePagedDataPageNumberSchema,
@@ -42,4 +43,5 @@ export {
   type RepresentativeUpdateParams,
   type RepresentativeListParams,
   type RepresentativeGetParams,
+  type RepresentativeUnmaskParams,
 } from './representatives';
