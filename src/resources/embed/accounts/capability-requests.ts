@@ -125,7 +125,7 @@ export namespace CapabilityRequestPaged {
     /**
      * The current status of the capability request.
      */
-    status: 'active' | 'inactive' | 'in_review' | 'rejected';
+    status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing';
 
     /**
      * The specific type of capability being requested within the category.
@@ -187,6 +187,11 @@ export namespace CapabilityRequestPaged {
      * Total number of items returned in this response.
      */
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
