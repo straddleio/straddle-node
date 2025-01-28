@@ -276,12 +276,6 @@ export namespace PaykeySummaryPaged {
      */
     label: string;
 
-    /**
-     * The tokenized paykey value. This value is used to create payments and should be
-     * stored securely.
-     */
-    paykey: string;
-
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected';
@@ -381,11 +375,6 @@ export namespace PaykeySummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
   }
 }
 

@@ -264,8 +264,7 @@ export namespace Representative {
         | 'stuck'
         | 'verified'
         | 'failed_verification'
-        | 'disabled'
-        | 'new';
+        | 'disabled';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -445,8 +444,7 @@ export namespace RepresentativePaged {
         | 'stuck'
         | 'verified'
         | 'failed_verification'
-        | 'disabled'
-        | 'new';
+        | 'disabled';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -500,11 +498,6 @@ export namespace RepresentativePaged {
      * Total number of items returned in this response.
      */
     total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
   }
 }
 
@@ -703,16 +696,6 @@ export interface RepresentativeListParams extends PageNumberSchemaParams {
    * Query param: The unique identifier of the account to list representatives for.
    */
   account_id?: string;
-
-  /**
-   * Query param:
-   */
-  organization_id?: string;
-
-  /**
-   * Query param:
-   */
-  platform_id?: string;
 
   /**
    * Query param: Sort By.

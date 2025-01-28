@@ -223,11 +223,6 @@ export namespace Charge {
     consent_type: 'internet' | 'signed';
 
     /**
-     * Timestamp of when the charge was created.
-     */
-    created_at: string | null;
-
-    /**
      * The currency of the charge. Only USD is supported.
      */
     currency: string;
@@ -269,15 +264,12 @@ export namespace Charge {
      */
     status_details: Data.StatusDetails;
 
-    /**
-     * Status history.
-     */
     status_history: Array<Data.StatusHistory>;
 
     /**
-     * Timestamp of when the charge was last updated.
+     * Timestamp of when the charge was created.
      */
-    updated_at: string | null;
+    created_at?: string | null;
 
     /**
      * Information about the customer associated with the charge.
@@ -311,6 +303,11 @@ export namespace Charge {
      * payment rail.
      */
     processed_at?: string | null;
+
+    /**
+     * Timestamp of when the charge was last updated.
+     */
+    updated_at?: string | null;
   }
 
   export namespace Data {
@@ -380,11 +377,6 @@ export namespace Charge {
        * This helps in tracking the cause of status updates.
        */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
     }
 
     /**
@@ -456,22 +448,12 @@ export namespace Charge {
       /**
        * The type of customer.
        */
-      customer_type: 'individual' | 'business' | 'unknown';
-
-      /**
-       * Email.
-       */
-      email: string;
+      customer_type: 'individual' | 'business';
 
       /**
        * The name of the customer.
        */
       name: string;
-
-      /**
-       * Phone.
-       */
-      phone: string;
     }
 
     /**
