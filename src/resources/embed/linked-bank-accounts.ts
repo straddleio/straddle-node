@@ -244,8 +244,7 @@ export namespace LinkedBankAccount {
         | 'stuck'
         | 'verified'
         | 'failed_verification'
-        | 'disabled'
-        | 'new';
+        | 'disabled';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -364,8 +363,7 @@ export namespace LinkedBankAccountPaged {
         | 'stuck'
         | 'verified'
         | 'failed_verification'
-        | 'disabled'
-        | 'new';
+        | 'disabled';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -419,11 +417,6 @@ export namespace LinkedBankAccountPaged {
      * Total number of items returned in this response.
      */
     total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
   }
 }
 
@@ -527,8 +520,7 @@ export namespace LinkedBankAccountUnmask {
         | 'stuck'
         | 'verified'
         | 'failed_verification'
-        | 'disabled'
-        | 'new';
+        | 'disabled';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in

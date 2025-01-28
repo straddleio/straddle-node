@@ -122,7 +122,6 @@ describe('resource accounts', () => {
         {
           page_number: 0,
           page_size: 0,
-          search_text: 'search_text',
           sort_by: 'sort_by',
           sort_order: 'asc',
           'correlation-id': 'correlation-id',
