@@ -130,11 +130,6 @@ export namespace FundingEventSummaryItem {
     payment_count: number;
 
     /**
-     * Trace number.
-     */
-    trace_numbers: Array<string>;
-
-    /**
      * The date on which the funding event occurred. For `deposits` and `returns`, this
      * is the date the funds were credited to your bank account. For `withdrawals` and
      * `reversals`, this is the date the funds were debited from your bank account.
@@ -210,11 +205,6 @@ export namespace FundingEventSummaryPaged {
     payment_count: number;
 
     /**
-     * Trace number.
-     */
-    trace_numbers: Array<string>;
-
-    /**
      * The date on which the funding event occurred. For `deposits` and `returns`, this
      * is the date the funds were credited to your bank account. For `withdrawals` and
      * `reversals`, this is the date the funds were debited from your bank account.
@@ -261,11 +251,6 @@ export namespace FundingEventSummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
   }
 }
 
