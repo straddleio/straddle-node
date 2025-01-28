@@ -20,7 +20,7 @@ or products provided by Straddle please follow the respective company's security
 
 ### Straddle Terms and Policies
 
-Please contact dev-feedback@straddle.com for any questions or concerns regarding security of our services.
+Please contact help@straddle.io for any questions or concerns regarding security of our services.
 
 ---
 
