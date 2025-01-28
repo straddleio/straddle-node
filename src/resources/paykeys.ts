@@ -7,8 +7,8 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Paykeys extends APIResource {
   /**
-   * Returns a list of paykeys associated with a Straddle account. This endpoint
-   * supports advanced sorting and filtering options.
+   * Searches or lists paykeys using various filters and criteria. This endpoint
+   * supports pagination and sorting options.
    */
   list(
     params?: PaykeyListParams,
@@ -43,9 +43,9 @@ export class Paykeys extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing paykey. Supply the unique paykey `id` and
-   * Straddle will return the corresponding paykey record , including the `paykey`
-   * token value and masked bank account details.
+   * Retrieves the details of a paykey that has previously been created. Supply the
+   * unique paykey ID that was returned from your previous request, and Straddle will
+   * return the corresponding paykey information.
    */
   get(id: string, params?: PaykeyGetParams, options?: Core.RequestOptions): Core.APIPromise<Paykey>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<Paykey>;
@@ -74,10 +74,10 @@ export class Paykeys extends APIResource {
   }
 
   /**
-   * Retrieves the unmasked details of an existing paykey. Supply the unique paykey
-   * `id` and Straddle will return the corresponding paykey record, including the
-   * unmasked bank account details. This endpoint needs to be enabled by Straddle for
-   * your account and should only be used when absolutely necessary.
+   * Retrieves the details of a paykey that has previously been created, including
+   * unmasked bank account fields. Supply the unique paykey ID that was returned from
+   * your previous request, and Straddle will return the corresponding paykey
+   * information.
    */
   unmasked(
     id: string,
@@ -115,20 +115,8 @@ export class PaykeySummaryPagedDataPageNumberSchema extends PageNumberSchema<Pay
 export interface Paykey {
   data: Paykey.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: Paykey.Meta;
 
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -201,7 +189,7 @@ export namespace Paykey {
       account_type: 'checking' | 'savings';
 
       /**
-       * The routing number of the bank account.
+       * Bank routing number.
        */
       routing_number: string;
     }
@@ -219,16 +207,13 @@ export namespace Paykey {
       reason: string;
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
        * This helps in tracking the cause of status updates.
        */
       source: string;
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -247,15 +232,6 @@ export interface PaykeySummaryPaged {
 
   meta: PaykeySummaryPaged.Meta;
 
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -275,6 +251,12 @@ export namespace PaykeySummaryPaged {
      * Human-readable label used to represent this paykey in a UI.
      */
     label: string;
+
+    /**
+     * The tokenized paykey value. This value is used to create payments and should be
+     * stored securely.
+     */
+    paykey: string;
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
@@ -316,7 +298,7 @@ export namespace PaykeySummaryPaged {
       account_type: 'checking' | 'savings';
 
       /**
-       * The routing number of the bank account.
+       * Bank routing number.
        */
       routing_number: string;
     }
@@ -334,7 +316,7 @@ export namespace PaykeySummaryPaged {
       reason: string;
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
        * This helps in tracking the cause of status updates.
        */
       source: string;
@@ -375,26 +357,19 @@ export namespace PaykeySummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
 export interface PaykeyUnmasked {
   data: PaykeyUnmasked.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: PaykeyUnmasked.Meta;
 
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -459,15 +434,15 @@ export namespace PaykeyUnmasked {
   export namespace Data {
     export interface BankData {
       /**
-       * The bank account number. This value is masked by default for security reasons.
-       * Use the /unmask endpoint to access the unmasked value.
+       * Bank account number. This value is masked by default for security reasons. Use
+       * the /unmask endpoint to access the unmasked value.
        */
       account_number: string;
 
       account_type: 'checking' | 'savings';
 
       /**
-       * The routing number of the bank account.
+       * Bank routing number.
        */
       routing_number: string;
     }
@@ -485,16 +460,13 @@ export namespace PaykeyUnmasked {
       reason: string;
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
        * This helps in tracking the cause of status updates.
        */
       source: string;
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.

@@ -11,10 +11,10 @@ const client = new Straddle({
 describe('resource customers', () => {
   test('create: only required params', async () => {
     const responsePromise = client.customers.create({
-      device: { ip_address: '192.168.1.1' },
-      email: 'ron.swanson@pawnee.com',
-      name: 'Ron Swanson',
-      phone: '+12128675309',
+      device: { ip_address: 'x' },
+      email: 'email',
+      name: 'name',
+      phone: 'phone',
       type: 'individual',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -28,14 +28,20 @@ describe('resource customers', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.customers.create({
-      device: { ip_address: '192.168.1.1' },
-      email: 'ron.swanson@pawnee.com',
-      name: 'Ron Swanson',
-      phone: '+12128675309',
+      device: { ip_address: 'x' },
+      email: 'email',
+      name: 'name',
+      phone: 'phone',
       type: 'individual',
-      address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '94105', address2: 'address2' },
-      compliance_profile: { dob: '2019-12-27', ssn: '210-69-1329' },
-      external_id: 'customer_123',
+      address: { address1: 'address1', city: 'city', state: 'state', zip: 'zip', address2: 'address2' },
+      compliance_profile: {
+        dob: 'dob',
+        ein: 'ein',
+        legal_business_name: 'legal_business_name',
+        ssn: 'ssn',
+        website: 'website',
+      },
+      external_id: 'external_id',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',
@@ -45,11 +51,11 @@ describe('resource customers', () => {
 
   test('update: only required params', async () => {
     const responsePromise = client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      device: { ip_address: '192.168.1.1' },
-      email: 'dev@stainlessapi.com',
+      device: { ip_address: 'x' },
+      email: 'email',
       name: 'name',
-      phone: '+46991022',
-      status: 'pending',
+      phone: 'phone',
+      status: 'verified',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -62,13 +68,19 @@ describe('resource customers', () => {
 
   test('update: required and optional params', async () => {
     const response = await client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      device: { ip_address: '192.168.1.1' },
-      email: 'dev@stainlessapi.com',
+      device: { ip_address: 'x' },
+      email: 'email',
       name: 'name',
-      phone: '+46991022',
-      status: 'pending',
-      address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '94105', address2: 'address2' },
-      compliance_profile: { dob: '2019-12-27', ssn: '210-69-1329' },
+      phone: 'phone',
+      status: 'verified',
+      address: { address1: 'address1', city: 'city', state: 'state', zip: 'zip', address2: 'address2' },
+      compliance_profile: {
+        dob: 'dob',
+        ein: 'ein',
+        legal_business_name: 'legal_business_name',
+        ssn: 'ssn',
+        website: 'website',
+      },
       external_id: 'external_id',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',

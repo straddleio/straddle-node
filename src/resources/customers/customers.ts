@@ -11,9 +11,8 @@ export class Customers extends APIResource {
   review: ReviewAPI.Review = new ReviewAPI.Review(this._client);
 
   /**
-   * Creates a new customer record and automatically initiates identity, fraud, and
-   * risk assessment scores. This endpoint allows you to create a customer profile
-   * and associate it with paykeys and payments.
+   * Creates a new customer record in Straddle. This endpoint allows you to create a
+   * customer profile and associate it with payments and paykeys.
    */
   create(params: CustomerCreateParams, options?: Core.RequestOptions): Core.APIPromise<Customer> {
     const {
@@ -60,8 +59,8 @@ export class Customers extends APIResource {
   /**
    * Lists or searches customers connected to your account. All supported query
    * parameters are optional. If none are provided, the response will include all
-   * customers connected to your account. This endpoint supports advanced sorting and
-   * filtering options.
+   * customers connected to your account. This endpoint supports pagination and
+   * sorting options.
    */
   list(
     params?: CustomerListParams,
@@ -96,7 +95,7 @@ export class Customers extends APIResource {
   }
 
   /**
-   * Permanently removes a customer record from Straddle. This action cannot be
+   * Permanently removes a customer record from the system. This action cannot be
    * undone and should only be used to satisfy regulatory requirements or for privacy
    * compliance.
    */
@@ -127,9 +126,9 @@ export class Customers extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing customer. Supply the unique customer ID
-   * that was returned from your 'create customer' request, and Straddle will return
-   * the corresponding customer information.
+   * Retrieves the details of a customer that has previously been created. Supply the
+   * unique customer ID that was returned from your 'create customer' request, and
+   * Straddle will return the corresponding customer information.
    */
   get(id: string, params?: CustomerGetParams, options?: Core.RequestOptions): Core.APIPromise<Customer>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<Customer>;
@@ -158,11 +157,11 @@ export class Customers extends APIResource {
   }
 
   /**
-   * Retrieves the unmasked details, including PII, of an existing customer. Supply
-   * the unique customer ID that was returned from your 'create customer' request,
-   * and Straddle will return the corresponding customer information. This endpoint
-   * needs to be enabled by Straddle and should only be used when absolutely
-   * necessary.
+   * Retrieves the unmasked details, including PII, of a customer that has previously
+   * been created. Supply the unique customer ID that was returned from your 'create
+   * customer' request, and Straddle will return the corresponding customer
+   * information. This endpoint needs to be enabled by Straddle for your account and
+   * should only be used when absolutely necessary.
    */
   unmasked(
     id: string,
@@ -200,20 +199,8 @@ export class CustomerSummaryPagedDataPageNumberSchema extends PageNumberSchema<C
 export interface Customer {
   data: Customer.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: Customer.Meta;
 
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -253,12 +240,9 @@ export namespace Customer {
      */
     updated_at: string;
 
-    address?: Data.Address | null;
+    address?: Data.Address;
 
-    /**
-     * Compliance profile for individual customers
-     */
-    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile;
+    compliance_profile?: Data.ComplianceProfile;
 
     device?: Data.Device;
 
@@ -300,57 +284,54 @@ export namespace Customer {
       /**
        * Secondary address line (e.g., apartment, suite, unit, or building).
        */
-      address2?: string;
+      address2?: string | null;
     }
 
-    /**
-     * Compliance profile for individual customers
-     */
-    export interface IndividualComplianceProfile {
+    export interface ComplianceProfile {
       /**
-       * Date of birth in YYYY-MM-DD format.
+       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+       * data is required to trigger Patriot Act compliant Know Your Customer (KYC)
+       * verification. Required if SSN is provided. Only valid where customer type is
+       * 'individual'.
        */
-      dob: string;
+      dob?: string | null;
 
       /**
-       * Social Security Number in the format XXX-XX-XXXX.
+       * Full 9-digit Employer Identification Number for businesses. This data is
+       * required to trigger Patriot Act compliant Know Your Business (KYB) verification.
+       * Only valid where customer type is 'business'.
        */
-      ssn: string;
-    }
-
-    /**
-     * Compliance profile for business customers
-     */
-    export interface BusinessComplianceProfile {
-      /**
-       * Employer Identification Number in the format XX-XXXXXXX.
-       */
-      ein: string;
+      ein?: string | null;
 
       /**
-       * The official registered name of the business. This name should be correlated
-       * with the `ein` value.
+       * The official name of the business. This name should be correlated with the ein
+       * value. Only valid where customer type is 'business'.
        */
-      legal_business_name: string;
+      legal_business_name?: string | null;
 
       /**
-       * Business website URL.
+       * Full 9-digit Social Security Number or government identifier for individuals.
+       * This data is required to trigger Patriot Act compliant KYC verification.
+       * Required if DOB is provided. Only valid where customer type is 'individual'.
        */
-      website?: string;
+      ssn?: string | null;
+
+      /**
+       * URL of the company's official website. Only valid where customer type is
+       * 'business'.
+       */
+      website?: string | null;
     }
 
     export interface Device {
       /**
-       * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
+       * The customer's IP address at the time of profile creation. Use '0.0.0.0' to
        * represent an offline customer registration.
        */
       ip_address: string;
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -369,15 +350,6 @@ export interface CustomerSummaryPaged {
 
   meta: CustomerSummaryPaged.Meta;
 
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -458,26 +430,19 @@ export namespace CustomerSummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
 export interface CustomerUnmasked {
   data: CustomerUnmasked.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: CustomerUnmasked.Meta;
 
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -517,12 +482,9 @@ export namespace CustomerUnmasked {
      */
     updated_at: string;
 
-    address?: Data.Address | null;
+    address?: Data.Address;
 
-    /**
-     * Compliance profile for individual customers
-     */
-    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile;
+    compliance_profile?: Data.ComplianceProfile;
 
     device?: Data.Device;
 
@@ -564,57 +526,52 @@ export namespace CustomerUnmasked {
       /**
        * Secondary address line (e.g., apartment, suite, unit, or building).
        */
-      address2?: string;
+      address2?: string | null;
     }
 
-    /**
-     * Compliance profile for individual customers
-     */
-    export interface IndividualComplianceProfile {
+    export interface ComplianceProfile {
       /**
-       * Date of birth in YYYY-MM-DD format.
+       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+       * data is required to trigger Patriot Act compliant KYC verification. Required if
+       * SSN is provided. Only valid where customer type is 'individual'.
        */
-      dob: string;
+      dob?: string | null;
 
       /**
-       * Social Security Number in the format XXX-XX-XXXX.
+       * Full 9-digit Employer Identification Number for businesses. This data is
+       * required to trigger Patriot Act compliant KYB verification. Only valid where
+       * customer type is 'business'.
        */
-      ssn: string;
-    }
-
-    /**
-     * Compliance profile for business customers
-     */
-    export interface BusinessComplianceProfile {
-      /**
-       * Employer Identification Number in the format XX-XXXXXXX.
-       */
-      ein: string;
+      ein?: string | null;
 
       /**
-       * The official registered name of the business. This name should be correlated
-       * with the `ein` value.
+       * The official name of the business. This name should be correlated with the ein
+       * value. Only valid where customer type is 'business'.
        */
-      legal_business_name: string;
+      legal_business_name?: string | null;
 
       /**
-       * Business website URL.
+       * Full 9-digit Social Security Number or government identifier for individuals.
+       * This data is required to trigger Patriot Act compliant KYC verification.
+       * Required if DOB is provided. Only valid where customer type is 'individual'.
        */
-      website?: string;
+      ssn?: string | null;
+
+      /**
+       * URL of the company's official website.
+       */
+      website?: string | null;
     }
 
     export interface Device {
       /**
-       * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
+       * The customer's IP address at the time of profile creation. Use '0.0.0.0' to
        * represent an offline customer registration.
        */
       ip_address: string;
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -656,19 +613,14 @@ export interface CustomerCreateParams {
   type: 'individual' | 'business';
 
   /**
-   * Body param: An object containing the customer's address. This is optional, but
-   * if provided, all required fields must be present.
+   * Body param:
    */
-  address?: CustomerCreateParams.Address | null;
+  address?: CustomerCreateParams.Address;
 
   /**
-   * Body param: An object containing the customer's compliance profile. This is
-   * optional, but if provided, all required fields must be present for the
-   * appropriate customer type.
+   * Body param:
    */
-  compliance_profile?:
-    | CustomerCreateParams.IndividualComplianceProfile
-    | CustomerCreateParams.BusinessComplianceProfile;
+  compliance_profile?: CustomerCreateParams.ComplianceProfile;
 
   /**
    * Body param: Unique identifier for the customer in your database, used for
@@ -703,16 +655,12 @@ export interface CustomerCreateParams {
 export namespace CustomerCreateParams {
   export interface Device {
     /**
-     * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
+     * The customer's IP address at the time of profile creation. Use '0.0.0.0' to
      * represent an offline customer registration.
      */
     ip_address: string;
   }
 
-  /**
-   * An object containing the customer's address. This is optional, but if provided,
-   * all required fields must be present.
-   */
   export interface Address {
     /**
      * Primary address line (e.g., street, PO Box).
@@ -737,43 +685,41 @@ export namespace CustomerCreateParams {
     /**
      * Secondary address line (e.g., apartment, suite, unit, or building).
      */
-    address2?: string;
+    address2?: string | null;
   }
 
-  /**
-   * Compliance profile for individual customers
-   */
-  export interface IndividualComplianceProfile {
+  export interface ComplianceProfile {
     /**
-     * Date of birth in YYYY-MM-DD format.
+     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+     * data is required to trigger Patriot Act compliant KYC verification. Required if
+     * SSN is provided. Only valid where customer type is 'individual'.
      */
-    dob: string;
+    dob?: string | null;
 
     /**
-     * Social Security Number in the format XXX-XX-XXXX.
+     * Full 9-digit Employer Identification Number for businesses. This data is
+     * required to trigger Patriot Act compliant KYB verification. Only valid where
+     * customer type is 'business'.
      */
-    ssn: string;
-  }
-
-  /**
-   * Compliance profile for business customers
-   */
-  export interface BusinessComplianceProfile {
-    /**
-     * Employer Identification Number in the format XX-XXXXXXX.
-     */
-    ein: string;
+    ein?: string | null;
 
     /**
-     * The official registered name of the business. This name should be correlated
-     * with the `ein` value.
+     * The official name of the business. This name should be correlated with the ein
+     * value. Only valid where customer type is 'business'.
      */
-    legal_business_name: string;
+    legal_business_name?: string | null;
 
     /**
-     * Business website URL.
+     * Full 9-digit Social Security Number or government identifier for individuals.
+     * This data is required to trigger Patriot Act compliant KYC verification.
+     * Required if DOB is provided. Only valid where customer type is 'individual'.
      */
-    website?: string;
+    ssn?: string | null;
+
+    /**
+     * URL of the company's official website.
+     */
+    website?: string | null;
   }
 }
 
@@ -801,20 +747,17 @@ export interface CustomerUpdateParams {
   /**
    * Body param:
    */
-  status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
+  status: 'verified' | 'inactive' | 'rejected';
 
   /**
-   * Body param: An object containing the customer's address. This is optional, but
-   * if provided, all required fields must be present.
+   * Body param:
    */
-  address?: CustomerUpdateParams.Address | null;
+  address?: CustomerUpdateParams.Address;
 
   /**
-   * Body param: Compliance profile for individual customers
+   * Body param:
    */
-  compliance_profile?:
-    | CustomerUpdateParams.IndividualComplianceProfile
-    | CustomerUpdateParams.BusinessComplianceProfile;
+  compliance_profile?: CustomerUpdateParams.ComplianceProfile;
 
   /**
    * Body param: Unique identifier for the customer in your database, used for
@@ -849,16 +792,12 @@ export interface CustomerUpdateParams {
 export namespace CustomerUpdateParams {
   export interface Device {
     /**
-     * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
+     * The customer's IP address at the time of profile creation. Use '0.0.0.0' to
      * represent an offline customer registration.
      */
     ip_address: string;
   }
 
-  /**
-   * An object containing the customer's address. This is optional, but if provided,
-   * all required fields must be present.
-   */
   export interface Address {
     /**
      * Primary address line (e.g., street, PO Box).
@@ -883,69 +822,67 @@ export namespace CustomerUpdateParams {
     /**
      * Secondary address line (e.g., apartment, suite, unit, or building).
      */
-    address2?: string;
+    address2?: string | null;
   }
 
-  /**
-   * Compliance profile for individual customers
-   */
-  export interface IndividualComplianceProfile {
+  export interface ComplianceProfile {
     /**
-     * Date of birth in YYYY-MM-DD format.
+     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+     * data is required to trigger Patriot Act compliant KYC verification. Required if
+     * SSN is provided. Only valid where customer type is 'individual'.
      */
-    dob: string;
+    dob?: string | null;
 
     /**
-     * Social Security Number in the format XXX-XX-XXXX.
+     * Full 9-digit Employer Identification Number for businesses. This data is
+     * required to trigger Patriot Act compliant KYB verification. Only valid where
+     * customer type is 'business'.
      */
-    ssn: string;
-  }
-
-  /**
-   * Compliance profile for business customers
-   */
-  export interface BusinessComplianceProfile {
-    /**
-     * Employer Identification Number in the format XX-XXXXXXX.
-     */
-    ein: string;
+    ein?: string | null;
 
     /**
-     * The official registered name of the business. This name should be correlated
-     * with the `ein` value.
+     * The official name of the business. This name should be correlated with the ein
+     * value. Only valid where customer type is 'business'.
      */
-    legal_business_name: string;
+    legal_business_name?: string | null;
 
     /**
-     * Business website URL.
+     * Full 9-digit Social Security Number or government identifier for individuals.
+     * This data is required to trigger Patriot Act compliant KYC verification.
+     * Required if DOB is provided. Only valid where customer type is 'individual'.
      */
-    website?: string;
+    ssn?: string | null;
+
+    /**
+     * URL of the company's official website.
+     */
+    website?: string | null;
   }
 }
 
 export interface CustomerListParams extends PageNumberSchemaParams {
   /**
-   * Query param: Start date for filtering by `created_at` date.
+   * Query param: Start date for filtering by creation date.
    */
   created_from?: string;
 
   /**
-   * Query param: End date for filtering by `created_at` date.
+   * Query param: End date for filtering by creation date.
    */
   created_to?: string;
 
   /**
-   * Query param: Filter customers by `email` address.
+   * Query param: Filter customers by email address.
    */
   email?: string;
 
   /**
-   * Query param: Filter by your system's `external_id`.
+   * Query param: Filter by your system's customer identifier.
    */
   external_id?: string;
 
   /**
-   * Query param: Filter customers by `name` (partial match).
+   * Query param: Filter customers by name (partial match).
    */
   name?: string;
 
@@ -965,12 +902,12 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   sort_order?: 'asc' | 'desc';
 
   /**
-   * Query param: Filter customers by their current `status`.
+   * Query param: Filter customers by their current status.
    */
   status?: Array<'pending' | 'review' | 'verified' | 'inactive' | 'rejected'>;
 
   /**
-   * Query param: Filter by customer type `individual` or `business`.
+   * Query param: Filter by customer type ('individual' or 'business').
    */
   types?: Array<'individual' | 'business'>;
 
@@ -986,8 +923,8 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   'Request-Id'?: string;
 
   /**
-   * Header param: For use by platforms to specify an `account_id` to set the scope
-   * of a request.
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
    */
   'Straddle-Account-Id'?: string;
 }

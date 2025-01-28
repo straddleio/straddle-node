@@ -7,10 +7,9 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination'
 
 export class LinkedBankAccounts extends APIResource {
   /**
-   * Creates a new linked bank account associated with a Straddle account. This
-   * endpoint allows you to associate external bank accounts with a Straddle account
-   * for various payment operations such as payment deposits, payout withdrawals, and
-   * more.
+   * Creates a new linked bank account for a Straddle account. This endpoint allows
+   * you to associate external bank accounts with a Straddle account for various
+   * payment operations such as payment deposits, payout withdrawals, and more.
    */
   create(
     params: LinkedBankAccountCreateParams,
@@ -58,19 +57,9 @@ export class LinkedBankAccounts extends APIResource {
    * accounts with multiple linked bank accounts.
    */
   list(
-    params?: LinkedBankAccountListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedDataPageNumberSchema, LinkedBankAccountPaged.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedDataPageNumberSchema, LinkedBankAccountPaged.Data>;
-  list(
-    params: LinkedBankAccountListParams | Core.RequestOptions = {},
+    params: LinkedBankAccountListParams,
     options?: Core.RequestOptions,
   ): Core.PagePromise<LinkedBankAccountPagedDataPageNumberSchema, LinkedBankAccountPaged.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList('/v1/linked_bank_accounts', LinkedBankAccountPagedDataPageNumberSchema, {
       query,
@@ -85,7 +74,7 @@ export class LinkedBankAccounts extends APIResource {
 
   /**
    * Retrieves the details of a linked bank account that has previously been created.
-   * Supply the unique linked bank account `id`, and Straddle will return the
+   * Supply the unique linked bank account ID, and Straddle will return the
    * corresponding information. The response includes masked account details for
    * security purposes.
    */
@@ -116,10 +105,9 @@ export class LinkedBankAccounts extends APIResource {
 
   /**
    * Retrieves the unmasked details of a linked bank account that has previously been
-   * created. Supply the unique linked bank account `id`, and Straddle will return
-   * the corresponding information, including sensitive details. This endpoint needs
-   * to be enabled by Straddle for your account and should only be used when
-   * absolutely necessary.
+   * created. Supply the unique linked bank account ID, and Straddle will return the
+   * corresponding information, including sensitive details. This endpoint requires
+   * additional authentication and should be used with caution.
    */
   unmask(
     linkedBankAccountId: string,
@@ -155,19 +143,10 @@ export class LinkedBankAccountPagedDataPageNumberSchema extends PageNumberSchema
 export interface LinkedBankAccount {
   data: LinkedBankAccount.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: LinkedBankAccount.Meta;
 
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Indicates the type of data returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -180,7 +159,7 @@ export namespace LinkedBankAccount {
     id: string;
 
     /**
-     * The unique identifier of the Straddle account related to this bank account.
+     * The unique identifier of the Straddle account relatd to this bank account.
      */
     account_id: string;
 
@@ -192,7 +171,8 @@ export namespace LinkedBankAccount {
     created_at: string;
 
     /**
-     * The current status of the linked bank account.
+     * The current status of the linked bank account. Possible values: 'created',
+     * 'onboarding', 'active', 'inactive', 'rejected'.
      */
     status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
 
@@ -222,23 +202,13 @@ export namespace LinkedBankAccount {
     }
 
     export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
       code: string;
 
-      /**
-       * A human-readable message describing the current status.
-       */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'unverified'
+        | 'new'
         | 'in_review'
         | 'pending'
         | 'stuck'
@@ -246,17 +216,10 @@ export namespace LinkedBankAccount {
         | 'failed_verification'
         | 'disabled';
 
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
       source: 'watchtower';
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -273,20 +236,10 @@ export namespace LinkedBankAccount {
 export interface LinkedBankAccountPaged {
   data: Array<LinkedBankAccountPaged.Data>;
 
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
   meta: LinkedBankAccountPaged.Meta;
 
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Indicates the type of data returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -299,7 +252,7 @@ export namespace LinkedBankAccountPaged {
     id: string;
 
     /**
-     * The unique identifier of the Straddle account related to this bank account.
+     * The unique identifier of the Straddle account relatd to this bank account.
      */
     account_id: string;
 
@@ -311,7 +264,8 @@ export namespace LinkedBankAccountPaged {
     created_at: string;
 
     /**
-     * The current status of the linked bank account.
+     * The current status of the linked bank account. Possible values: 'created',
+     * 'onboarding', 'active', 'inactive', 'rejected'.
      */
     status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
 
@@ -341,23 +295,13 @@ export namespace LinkedBankAccountPaged {
     }
 
     export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
       code: string;
 
-      /**
-       * A human-readable message describing the current status.
-       */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'unverified'
+        | 'new'
         | 'in_review'
         | 'pending'
         | 'stuck'
@@ -365,18 +309,10 @@ export namespace LinkedBankAccountPaged {
         | 'failed_verification'
         | 'disabled';
 
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
       source: 'watchtower';
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -413,77 +349,46 @@ export namespace LinkedBankAccountPaged {
      */
     sort_order: 'asc' | 'desc';
 
-    /**
-     * Total number of items returned in this response.
-     */
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
 export interface LinkedBankAccountUnmask {
   data: LinkedBankAccountUnmask.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: LinkedBankAccountUnmask.Meta;
 
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Indicates the type of data returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace LinkedBankAccountUnmask {
   export interface Data {
-    /**
-     * Unique identifier for the linked bank account.
-     */
     id: string;
 
-    /**
-     * Unique identifier for the Straddle account related to this bank account.
-     */
     account_id: string;
 
-    /**
-     * The bank account details associated with the linked bank account.
-     */
     bank_account: Data.BankAccount;
 
-    /**
-     * Timestamp of when the linked bank account was created.
-     */
     created_at: string;
 
-    /**
-     * The current status of the linked bank account.
-     */
     status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
 
-    /**
-     * Additional details about the current status of the linked bank account.
-     */
     status_detail: Data.StatusDetail;
 
-    /**
-     * Timestamp of when the linked bank account was last updated.
-     */
     updated_at: string;
 
     metadata?: Record<string, string | null> | null;
   }
 
   export namespace Data {
-    /**
-     * The bank account details associated with the linked bank account.
-     */
     export interface BankAccount {
       account_holder: string;
 
@@ -494,27 +399,14 @@ export namespace LinkedBankAccountUnmask {
       routing_number: string;
     }
 
-    /**
-     * Additional details about the current status of the linked bank account.
-     */
     export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
       code: string;
 
-      /**
-       * A human-readable message describing the current status.
-       */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'unverified'
+        | 'new'
         | 'in_review'
         | 'pending'
         | 'stuck'
@@ -522,17 +414,10 @@ export namespace LinkedBankAccountUnmask {
         | 'failed_verification'
         | 'disabled';
 
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
       source: 'watchtower';
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -585,12 +470,12 @@ export namespace LinkedBankAccountCreateParams {
     account_holder: string;
 
     /**
-     * The bank account number.
+     * Bank account number.
      */
     account_number: string;
 
     /**
-     * The routing number of the bank account.
+     * Bank routing number.
      */
     routing_number: string;
   }
@@ -629,12 +514,12 @@ export namespace LinkedBankAccountUpdateParams {
     account_holder: string;
 
     /**
-     * The bank account number.
+     * Bank account number.
      */
     account_number: string;
 
     /**
-     * The routing number of the bank account.
+     * Bank routing number.
      */
     routing_number: string;
   }
@@ -642,19 +527,19 @@ export namespace LinkedBankAccountUpdateParams {
 
 export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
   /**
+   * Query param: Sort By. Default value: 'id'.
+   */
+  sort_by: string;
+
+  /**
+   * Query param: Sort Order. Default value: 'asc'.
+   */
+  sort_order: 'asc' | 'desc';
+
+  /**
    * Query param: The unique identifier of the related account.
    */
   account_id?: string;
-
-  /**
-   * Query param: Sort By.
-   */
-  sort_by?: string;
-
-  /**
-   * Query param: Sort Order.
-   */
-  sort_order?: 'asc' | 'desc';
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
