@@ -7,7 +7,8 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Payments extends APIResource {
   /**
-   * Search payments.
+   * Search for payments, including `charges` and `payouts`, using a variety of
+   * criteria. This endpoint supports advanced sorting and filtering options.
    */
   list(
     params?: PaymentListParams,
@@ -49,78 +50,111 @@ export interface PaymentSummaryPaged {
 
   meta: PaymentSummaryPaged.Meta;
 
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaymentSummaryPaged {
   export interface Data {
     /**
-     * Id.
+     * Unique identifier for the `charge` or `payout`.
      */
     id: string;
 
     /**
-     * Amount.
+     * The amount of the `charge` or `payout` in cents.
      */
     amount: number;
 
     /**
-     * Created at.
+     * The time the `charge` or `payout` was created.
      */
     created_at: string;
 
     /**
-     * Currency.
+     * The currency of the `charge` or `payout`. Only USD is supported.
      */
     currency: string;
 
     /**
-     * Description.
+     * An arbitrary description for the `charge` or `payout`.
      */
     description: string;
 
     /**
-     * External id.
+     * Unique identifier for the `charge` or `payout` in your database. This value must
+     * be unique across all charges or payouts.
      */
     external_id: string;
 
     /**
-     * Paykey.
+     * Value of the `paykey` used for the `charge` or `payout`.
      */
     paykey: string;
 
     /**
-     * Payment date.
+     * The desired date on which the payment should be occur. For charges, this means
+     * the date you want the customer to be debited on. For payouts, this means the
+     * date you want the funds to be sent from your bank account.
      */
     payment_date: string;
 
+    /**
+     * The type of payment. Valid values are `charge` or `payout`.
+     */
     payment_type: 'charge' | 'payout';
 
+    /**
+     * The current status of the `charge` or `payout`.
+     */
     status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
+    /**
+     * Details about the current status of the `charge` or `payout`.
+     */
     status_details: Data.StatusDetails;
 
     /**
-     * Updated at.
+     * The time the `charge` or `payout` was last updated.
      */
     updated_at: string;
 
+    /**
+     * Information about the customer associated with the charge or payout.
+     */
     customer_details?: Data.CustomerDetails;
 
     /**
-     * Effective at.
+     * The actual date on which the payment occurred. For charges, this is the date the
+     * customer was debited. For payouts, this is the date the funds were sent from
+     * your bank account.
      */
     effective_at?: string | null;
 
     /**
-     * Funding id.
+     * Unique identifier for the funding event associated with the `charge` or
+     * `payout`.
      */
     funding_id?: string | null;
 
+    /**
+     * Information about the paykey used for the `charge` or `payout`.
+     */
     paykey_details?: Data.PaykeyDetails;
   }
 
   export namespace Data {
+    /**
+     * Details about the current status of the `charge` or `payout`.
+     */
     export interface StatusDetails {
       /**
        * The time the status change occurred.
@@ -128,10 +162,14 @@ export namespace PaymentSummaryPaged {
       changed_at: string;
 
       /**
-       * A human-readable description of the status.
+       * A human-readable description of the current status.
        */
       message: string;
 
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
       reason:
         | 'insufficient_funds'
         | 'closed_bank_account'
@@ -154,56 +192,55 @@ export namespace PaymentSummaryPaged {
         | 'other_network_return'
         | 'payout_refused';
 
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
       /**
-       * The status code if applicable.
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
        */
-      code?: string | null;
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
     }
 
+    /**
+     * Information about the customer associated with the charge or payout.
+     */
     export interface CustomerDetails {
       /**
-       * Id.
+       * Unique identifier for the customer.
        */
       id: string;
 
-      customer_type: 'unknown' | 'individual' | 'business';
-
       /**
-       * Email.
+       * The type of customer.
        */
-      email: string;
+      customer_type: 'individual' | 'business';
 
       /**
-       * Name.
+       * The name of the customer.
        */
       name: string;
-
-      /**
-       * Phone.
-       */
-      phone: string;
     }
 
+    /**
+     * Information about the paykey used for the `charge` or `payout`.
+     */
     export interface PaykeyDetails {
       /**
-       * Id.
+       * Unique identifier for the paykey.
        */
       id: string;
 
       /**
-       * Customer id.
+       * Unique identifier for the customer associated with the paykey.
        */
       customer_id: string;
 
       /**
-       * Label.
+       * Human-readable label used to represent this paykey in a UI.
        */
       label: string;
 
       /**
-       * Balance.
+       * The most recent balance of the bank account associated with the paykey in
+       * dollars.
        */
       balance?: number | null;
     }
@@ -243,17 +280,12 @@ export namespace PaymentSummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
   }
 }
 
 export interface PaymentListParams extends PageNumberSchemaParams {
   /**
-   * Query param: Customer id.
+   * Query param: Search using the `customer_id` of a `charge` or `payout`.
    */
   customer_id?: string;
 
@@ -263,7 +295,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   default_page_size?: number;
 
   /**
-   * Query param:
+   * Query param: The field to sort the results by.
    */
   default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
@@ -273,89 +305,92 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   default_sort_order?: 'asc' | 'desc';
 
   /**
-   * Query param: External id.
+   * Query param: Search using the `external_id` of a `charge` or `payout`.
    */
   external_id?: string;
 
   /**
-   * Query param: Funding id.
+   * Query param: Search using the `funding_id` of a `charge` or `payout`.
    */
   funding_id?: string;
 
   /**
-   * Query param: Maximum amount.
+   * Query param: Search using a maximum `amount` of a `charge` or `payout`.
    */
   max_amount?: number;
 
   /**
-   * Query param: Maximum created at.
+   * Query param: Search using the latest `created_at` date of a `charge` or
+   * `payout`.
    */
   max_created_at?: string;
 
   /**
-   * Query param: Maximum effective at.
+   * Query param: Search using the latest `effective_date` of a `charge` or `payout`.
    */
   max_effective_at?: string;
 
   /**
-   * Query param: Maximum payment date.
+   * Query param: Search using the latest `payment_date` of a `charge` or `payout`.
    */
   max_payment_date?: string;
 
   /**
-   * Query param: Minimum amount.
+   * Query param: Search using the minimum `amount of a `charge`or`payout`.
    */
   min_amount?: number;
 
   /**
-   * Query param: Minimum created at.
+   * Query param: Search using the earliest `created_at` date of a `charge` or
+   * `payout`.
    */
   min_created_at?: string;
 
   /**
-   * Query param: Minimum effective at.
+   * Query param: Search using the earliest `effective_date` of a `charge` or
+   * `payout`.
    */
   min_effective_at?: string;
 
   /**
-   * Query param: Minimum payment date.
+   * Query param: Search using the earliest ` `of a `charge` or `payout`.
    */
   min_payment_date?: string;
 
   /**
-   * Query param: Paykey.
+   * Query param: Search using the `paykey` of a `charge` or `payout`.
    */
   paykey?: string;
 
   /**
-   * Query param: Paykey id.
+   * Query param: Search using the `paykey_id` of a `charge` or `payout`.
    */
   paykey_id?: string;
 
   /**
-   * Query param: Payment id.
+   * Query param: Search using the `id` of a `charge` or `payout`.
    */
   payment_id?: string;
 
   /**
-   * Query param: Payment status.
+   * Query param: Search by the status of a `charge` or `payout`.
    */
   payment_status?: Array<
     'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
   >;
 
   /**
-   * Query param: Payment type.
+   * Query param: Search by the type of a `charge` or `payout`.
    */
   payment_type?: Array<'charge' | 'payout'>;
 
   /**
-   * Query param: Search text.
+   * Query param: Search using a text string associated with a `charge` or `payout`.
    */
   search_text?: string;
 
   /**
-   * Query param:
+   * Query param: The field to sort the results by.
    */
   sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
