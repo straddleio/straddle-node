@@ -30,8 +30,13 @@ describe('resource organizations', () => {
     });
   });
 
-  test('list', async () => {
-    const responsePromise = client.embed.organizations.list();
+  test('list: only required params', async () => {
+    const responsePromise = client.embed.organizations.list({
+      page_number: 0,
+      page_size: 0,
+      sort_by: 'sort_by',
+      sort_order: 'asc',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -41,29 +46,16 @@ describe('resource organizations', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.embed.organizations.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Straddle.NotFoundError,
-    );
-  });
-
-  test('list: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.embed.organizations.list(
-        {
-          external_id: 'external_id',
-          name: 'name',
-          page_number: 0,
-          page_size: 0,
-          sort_by: 'sort_by',
-          sort_order: 'asc',
-          'correlation-id': 'correlation-id',
-          'request-id': 'request-id',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+  test('list: required and optional params', async () => {
+    const response = await client.embed.organizations.list({
+      page_number: 0,
+      page_size: 0,
+      sort_by: 'sort_by',
+      sort_order: 'asc',
+      external_id: 'external_id',
+      name: 'name',
+      'correlation-id': 'correlation-id',
+      'request-id': 'request-id',
+    });
   });
 });

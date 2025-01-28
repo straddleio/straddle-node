@@ -7,7 +7,7 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination'
 
 export class Representatives extends APIResource {
   /**
-   * Creates a new representative associated with an account. Representatives are
+   * Creates a new representative for an account or organization. Representatives are
    * individuals who have legal authority or significant responsibility within the
    * business.
    */
@@ -48,24 +48,14 @@ export class Representatives extends APIResource {
 
   /**
    * Returns a list of representatives associated with a specific account or
-   * organization. The representatives are returned sorted by creation date, with the
-   * most recently created representatives appearing first. This endpoint supports
-   * advanced sorting and filtering options.
+   * organization. <br /> <br /> The representatives are returned sorted by creation
+   * date, with the most recently created representatives appearing first. This
+   * endpoint supports pagination to handle accounts with multiple representatives.
    */
   list(
-    params?: RepresentativeListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
-  list(
-    params: RepresentativeListParams | Core.RequestOptions = {},
+    params: RepresentativeListParams,
     options?: Core.RequestOptions,
   ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList('/v1/representatives', RepresentativePagedDataPageNumberSchema, {
       query,
@@ -79,9 +69,10 @@ export class Representatives extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing representative. Supply the unique
-   * representative ID, and Straddle will return the corresponding representative
-   * information.
+   * Retrieves the details of a representative that has previously been created.
+   * Supply the unique representative ID, and Straddle will return the corresponding
+   * representative information. The response includes masked representative details
+   * for security purposes.
    */
   get(
     representativeId: string,
@@ -114,19 +105,10 @@ export class RepresentativePagedDataPageNumberSchema extends PageNumberSchema<Re
 export interface Representative {
   data: Representative.Data;
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   meta: Representative.Meta;
 
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Indicates the type of data returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -207,58 +189,25 @@ export namespace Representative {
 
   export namespace Data {
     export interface Relationship {
-      /**
-       * Whether the representative has significant responsibility to control, manage, or
-       * direct the organization. One representative must be identified under the control
-       * prong for each legal entity.
-       */
       control: boolean;
 
-      /**
-       * Whether the representative owns any percentage of of the equity interests of the
-       * legal entity.
-       */
       owner: boolean;
 
-      /**
-       * Whether the person is authorized as the primary representative of the account.
-       * This is the person chosen by the business to provide information about
-       * themselves, general information about the account, and who consented to the
-       * services agreement.
-       *
-       * There can be only one primary representative for an account at a time.
-       */
       primary: boolean;
 
-      /**
-       * The percentage of ownership the representative has. Required if 'Owner' is true.
-       */
       percent_ownership?: number | null;
 
-      /**
-       * The job title of the representative.
-       */
       title?: string | null;
     }
 
     export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
       code: string;
 
-      /**
-       * A human-readable message describing the current status.
-       */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'unverified'
+        | 'new'
         | 'in_review'
         | 'pending'
         | 'stuck'
@@ -266,17 +215,10 @@ export namespace Representative {
         | 'failed_verification'
         | 'disabled';
 
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
       source: 'watchtower';
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -293,20 +235,10 @@ export namespace Representative {
 export interface RepresentativePaged {
   data: Array<RepresentativePaged.Data>;
 
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
   meta: RepresentativePaged.Meta;
 
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Indicates the type of data returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -387,58 +319,25 @@ export namespace RepresentativePaged {
 
   export namespace Data {
     export interface Relationship {
-      /**
-       * Whether the representative has significant responsibility to control, manage, or
-       * direct the organization. One representative must be identified under the control
-       * prong for each legal entity.
-       */
       control: boolean;
 
-      /**
-       * Whether the representative owns any percentage of of the equity interests of the
-       * legal entity.
-       */
       owner: boolean;
 
-      /**
-       * Whether the person is authorized as the primary representative of the account.
-       * This is the person chosen by the business to provide information about
-       * themselves, general information about the account, and who consented to the
-       * services agreement.
-       *
-       * There can be only one primary representative for an account at a time.
-       */
       primary: boolean;
 
-      /**
-       * The percentage of ownership the representative has. Required if 'Owner' is true.
-       */
       percent_ownership?: number | null;
 
-      /**
-       * The job title of the representative.
-       */
       title?: string | null;
     }
 
     export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
       code: string;
 
-      /**
-       * A human-readable message describing the current status.
-       */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'unverified'
+        | 'new'
         | 'in_review'
         | 'pending'
         | 'stuck'
@@ -446,18 +345,10 @@ export namespace RepresentativePaged {
         | 'failed_verification'
         | 'disabled';
 
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
       source: 'watchtower';
     }
   }
 
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -494,10 +385,12 @@ export namespace RepresentativePaged {
      */
     sort_order: 'asc' | 'desc';
 
-    /**
-     * Total number of items returned in this response.
-     */
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
@@ -581,9 +474,8 @@ export namespace RepresentativeCreateParams {
      * Whether the person is authorized as the primary representative of the account.
      * This is the person chosen by the business to provide information about
      * themselves, general information about the account, and who consented to the
-     * services agreement.
-     *
-     * There can be only one primary representative for an account at a time.
+     * services agreement. <br /> There can be only one primary representative for an
+     * account at a time.
      */
     primary: boolean;
 
@@ -673,9 +565,8 @@ export namespace RepresentativeUpdateParams {
      * Whether the person is authorized as the primary representative of the account.
      * This is the person chosen by the business to provide information about
      * themselves, general information about the account, and who consented to the
-     * services agreement.
-     *
-     * There can be only one primary representative for an account at a time.
+     * services agreement. <br /> There can be only one primary representative for an
+     * account at a time.
      */
     primary: boolean;
 
@@ -693,19 +584,29 @@ export namespace RepresentativeUpdateParams {
 
 export interface RepresentativeListParams extends PageNumberSchemaParams {
   /**
+   * Query param: Sort By. Default value: 'id'.
+   */
+  sort_by: string;
+
+  /**
+   * Query param: Sort Order. Default value: 'asc'.
+   */
+  sort_order: 'asc' | 'desc';
+
+  /**
    * Query param: The unique identifier of the account to list representatives for.
    */
   account_id?: string;
 
   /**
-   * Query param: Sort By.
+   * Query param:
    */
-  sort_by?: string;
+  organization_id?: string;
 
   /**
-   * Query param: Sort Order.
+   * Query param:
    */
-  sort_order?: 'asc' | 'desc';
+  platform_id?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
