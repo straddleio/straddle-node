@@ -103,10 +103,8 @@ describe('resource representatives', () => {
       client.embed.representatives.list(
         {
           account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           page_number: 0,
           page_size: 0,
-          platform_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           sort_by: 'sort_by',
           sort_order: 'asc',
           'correlation-id': 'correlation-id',
