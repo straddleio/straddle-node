@@ -74,42 +74,6 @@ export class Paykeys extends APIResource {
   }
 
   /**
-   * Retrieves the details of a paykey that has previously been created, including
-   * unmasked bank account fields. Supply the unique paykey ID that was returned from
-   * your previous request, and Straddle will return the corresponding paykey
-   * information.
-   */
-  reveal(
-    id: string,
-    params?: PaykeyRevealParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeyRevealResponse>;
-  reveal(id: string, options?: Core.RequestOptions): Core.APIPromise<PaykeyRevealResponse>;
-  reveal(
-    id: string,
-    params: PaykeyRevealParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeyRevealResponse> {
-    if (isRequestOptions(params)) {
-      return this.reveal(id, {}, params);
-    }
-    const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/paykeys/${id}/reveal`, {
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
-    });
-  }
-
-  /**
    * Retrieves the unmasked details of an existing paykey. Supply the unique paykey
    * `id` and Straddle will return the corresponding paykey record, including the
    * unmasked bank account details. This endpoint needs to be enabled by Straddle for
@@ -312,12 +276,6 @@ export namespace PaykeySummaryPaged {
      */
     label: string;
 
-    /**
-     * The tokenized paykey value. This value is used to create payments and should be
-     * stored securely.
-     */
-    paykey: string;
-
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected';
@@ -417,11 +375,6 @@ export namespace PaykeySummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
   }
 }
 
@@ -555,136 +508,6 @@ export namespace PaykeyUnmasked {
   }
 }
 
-export interface PaykeyRevealResponse {
-  data: PaykeyRevealResponse.Data;
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: PaykeyRevealResponse.Meta;
-
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace PaykeyRevealResponse {
-  export interface Data {
-    /**
-     * Unique identifier for the paykey.
-     */
-    id: string;
-
-    /**
-     * Timestamp of when the paykey was created.
-     */
-    created_at: string;
-
-    /**
-     * Human-readable label used to represent this paykey in a UI.
-     */
-    label: string;
-
-    /**
-     * The tokenized paykey value. This value is used to create payments and should be
-     * stored securely.
-     */
-    paykey: string;
-
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
-
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
-
-    /**
-     * Timestamp of the most recent update to the paykey.
-     */
-    updated_at: string;
-
-    bank_data?: Data.BankData;
-
-    /**
-     * Unique identifier of the related customer object.
-     */
-    customer_id?: string | null;
-
-    /**
-     * Expiration date and time of the paykey, if applicable.
-     */
-    expires_at?: string | null;
-
-    /**
-     * Name of the financial institution.
-     */
-    institution_name?: string | null;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the paykey in a structured format.
-     */
-    metadata?: Record<string, string> | null;
-
-    status_details?: Data.StatusDetails;
-  }
-
-  export namespace Data {
-    export interface BankData {
-      /**
-       * Bank account number. This value is masked by default for security reasons. Use
-       * the /unmask endpoint to access the unmasked value.
-       */
-      account_number: string;
-
-      account_type: 'checking' | 'savings';
-
-      /**
-       * The routing number of the bank account.
-       */
-      routing_number: string;
-    }
-
-    export interface StatusDetails {
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: string;
-    }
-  }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
-}
-
 export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter paykeys by related customer ID.
@@ -741,23 +564,6 @@ export interface PaykeyGetParams {
   'Straddle-Account-Id'?: string;
 }
 
-export interface PaykeyRevealParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface PaykeyUnmaskedParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -782,11 +588,9 @@ export declare namespace Paykeys {
     type Paykey as Paykey,
     type PaykeySummaryPaged as PaykeySummaryPaged,
     type PaykeyUnmasked as PaykeyUnmasked,
-    type PaykeyRevealResponse as PaykeyRevealResponse,
     PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
     type PaykeyGetParams as PaykeyGetParams,
-    type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
   };
 }
