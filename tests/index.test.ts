@@ -177,13 +177,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['STRADDLE_BASE_URL'] = ''; // empty
       const client = new Straddle({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://{environment}.straddle.io');
+      expect(client.baseURL).toEqual('https://production.straddle.io');
     });
 
     test('blank env variable', () => {
       process.env['STRADDLE_BASE_URL'] = '  '; // blank
       const client = new Straddle({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://{environment}.straddle.io');
+      expect(client.baseURL).toEqual('https://production.straddle.io');
     });
 
     test('env variable with environment', () => {
@@ -196,7 +196,7 @@ describe('instantiate client', () => {
       );
 
       const client = new Straddle({ apiKey: 'My API Key', baseURL: null, environment: 'production' });
-      expect(client.baseURL).toEqual('https://{environment}.straddle.io');
+      expect(client.baseURL).toEqual('https://production.straddle.io');
     });
   });
 

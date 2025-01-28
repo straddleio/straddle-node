@@ -69,8 +69,8 @@ import {
 import { Embed } from './resources/embed/embed';
 
 const environments = {
-  production: 'https://{environment}.straddle.io',
-  sandbox: 'https://{environment}.straddle.io',
+  production: 'https://production.straddle.io',
+  sandbox: 'https://sandbox.straddle.io',
 };
 type Environment = keyof typeof environments;
 
@@ -84,8 +84,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `production` corresponds to `https://{environment}.straddle.io`
-   * - `sandbox` corresponds to `https://{environment}.straddle.io`
+   * - `production` corresponds to `https://production.straddle.io`
+   * - `sandbox` corresponds to `https://sandbox.straddle.io`
    */
   environment?: Environment | undefined;
 
@@ -159,7 +159,7 @@ export class Straddle extends Core.APIClient {
    *
    * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://{environment}.straddle.io] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://production.straddle.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
    * @param {Core.Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
