@@ -7,7 +7,8 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class FundingEvents extends APIResource {
   /**
-   * Search funding events.
+   * Retrieves a list of funding events for your account. This endpoint supports
+   * advanced sorting and filtering options.
    */
   list(
     params?: FundingEventListParams,
@@ -42,7 +43,9 @@ export class FundingEvents extends APIResource {
   }
 
   /**
-   * Get a funding event by id.
+   * Retrieves the details of an existing funding event. Supply the unique funding
+   * event `id`, and Straddle will return the individual transaction items that make
+   * up the funding event.
    */
   get(
     id: string,
@@ -80,43 +83,68 @@ export class FundingEventSummaryPagedDataPageNumberSchema extends PageNumberSche
 export interface FundingEventSummaryItem {
   data: FundingEventSummaryItem.Data;
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   meta: FundingEventSummaryItem.Meta;
 
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace FundingEventSummaryItem {
   export interface Data {
     /**
-     * Id.
+     * Unique identifier for the funding event.
      */
     id: string;
 
     /**
-     * Amount.
+     * The amount of the funding event in cents.
      */
     amount: number;
 
+    /**
+     * Describes the direction of the funding event from the perspective of the
+     * `linked_bank_account`.
+     */
     direction: 'deposit' | 'withdrawal';
 
+    /**
+     * The funding event types describes the direction and reason for the funding
+     * event.
+     */
     event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
 
     /**
-     * Payment count.
+     * The number of payments associated with the funding event.
      */
     payment_count: number;
 
     /**
-     * Trace number.
-     */
-    trace_numbers: Array<string>;
-
-    /**
-     * Transfer date.
+     * The date on which the funding event occurred. For `deposits` and `returns`, this
+     * is the date the funds were credited to your bank account. For `withdrawals` and
+     * `reversals`, this is the date the funds were debited from your bank account.
      */
     transfer_date: string;
+
+    /**
+     * The trace number of the funding event.
+     */
+    trace_number?: string | null;
   }
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -135,39 +163,58 @@ export interface FundingEventSummaryPaged {
 
   meta: FundingEventSummaryPaged.Meta;
 
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace FundingEventSummaryPaged {
   export interface Data {
     /**
-     * Id.
+     * Unique identifier for the funding event.
      */
     id: string;
 
     /**
-     * Amount.
+     * The amount of the funding event in cents.
      */
     amount: number;
 
+    /**
+     * Describes the direction of the funding event from the perspective of the
+     * `linked_bank_account`.
+     */
     direction: 'deposit' | 'withdrawal';
 
+    /**
+     * The funding event types describes the direction and reason for the funding
+     * event.
+     */
     event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
 
     /**
-     * Payment count.
+     * The number of payments associated with the funding event.
      */
     payment_count: number;
 
     /**
-     * Trace number.
-     */
-    trace_numbers: Array<string>;
-
-    /**
-     * Transfer date.
+     * The date on which the funding event occurred. For `deposits` and `returns`, this
+     * is the date the funds were credited to your bank account. For `withdrawals` and
+     * `reversals`, this is the date the funds were debited from your bank account.
      */
     transfer_date: string;
+
+    /**
+     * The trace number of the funding event.
+     */
+    trace_number?: string | null;
   }
 
   export interface Meta {
@@ -204,42 +251,41 @@ export namespace FundingEventSummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
   }
 }
 
 export interface FundingEventListParams extends PageNumberSchemaParams {
   /**
-   * Query param: Created from.
+   * Query param: The start date of the range to filter by using the `YYYY-MM-DD`
+   * format.
    */
   created_from?: string | null;
 
   /**
-   * Query param: Created to.
+   * Query param: The end date of the range to filter by using the `YYYY-MM-DD`
+   * format.
    */
   created_to?: string | null;
 
   /**
-   * Query param:
+   * Query param: Describes the direction of the funding event from the perspective
+   * of the `linked_bank_account`.
    */
   direction?: 'deposit' | 'withdrawal';
 
   /**
-   * Query param:
+   * Query param: The funding event types describes the direction and reason for the
+   * funding event.
    */
   event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
 
   /**
-   * Query param:
+   * Query param: The field to sort the results by.
    */
   sort_by?: 'transfer_date' | 'id' | 'amount';
 
   /**
-   * Query param:
+   * Query param: The order in which to sort the results.
    */
   sort_order?: 'asc' | 'desc';
 

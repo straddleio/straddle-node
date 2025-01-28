@@ -3,19 +3,13 @@
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
 import * as LinkAPI from './link';
-import {
-  Link,
-  LinkBankAccountParams,
-  LinkBankAccountResponse,
-  LinkPlaidParams,
-  LinkPlaidResponse,
-} from './link';
+import { Link, LinkBankAccountParams, LinkPlaidParams } from './link';
 
 export class Bridge extends APIResource {
   link: LinkAPI.Link = new LinkAPI.Link(this._client);
 
   /**
-   * Create a JWT token to use in the bridge widget
+   * Use this endpoint to generate a session token for use in the Bridge widget.
    */
   initialize(params: BridgeInitializeParams, options?: Core.RequestOptions): Core.APIPromise<BridgeToken> {
     const {
@@ -40,8 +34,20 @@ export class Bridge extends APIResource {
 export interface BridgeToken {
   data: BridgeToken.Data;
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   meta: BridgeToken.Meta;
 
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -53,6 +59,9 @@ export namespace BridgeToken {
     bridge_token: string;
   }
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -68,7 +77,8 @@ export namespace BridgeToken {
 
 export interface BridgeInitializeParams {
   /**
-   * Body param: Customer Id to create token for.
+   * Body param: The Straddle generated unique identifier of the `customer` to create
+   * a bridge token for.
    */
   customer_id: string;
 
@@ -97,8 +107,6 @@ export declare namespace Bridge {
 
   export {
     Link as Link,
-    type LinkBankAccountResponse as LinkBankAccountResponse,
-    type LinkPlaidResponse as LinkPlaidResponse,
     type LinkBankAccountParams as LinkBankAccountParams,
     type LinkPlaidParams as LinkPlaidParams,
   };

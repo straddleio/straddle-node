@@ -7,7 +7,7 @@ import { PageNumberSchema, type PageNumberSchemaParams } from '../../../paginati
 
 export class CapabilityRequests extends APIResource {
   /**
-   * Submits a new request to enable a specific capability for an account. Use this
+   * Submits a request to enable a specific capability for an account. Use this
    * endpoint to request additional features or services for an account.
    */
   create(
@@ -39,14 +39,25 @@ export class CapabilityRequests extends APIResource {
   /**
    * Retrieves a list of capability requests associated with an account. The requests
    * are returned sorted by creation date, with the most recent requests appearing
-   * first. This endpoint supports filtering options to help you track the status of
-   * various capability requests.
+   * first. This endpoint supports advanced sorting and filtering options.
    */
   list(
     accountId: string,
-    params: CapabilityRequestListParams,
+    params?: CapabilityRequestListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data>;
+  list(
+    accountId: string,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data>;
+  list(
+    accountId: string,
+    params: CapabilityRequestListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data> {
+    if (isRequestOptions(params)) {
+      return this.list(accountId, {}, params);
+    }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList(
       `/v1/accounts/${accountId}/capability_requests`,
@@ -69,10 +80,20 @@ export class CapabilityRequestPagedDataPageNumberSchema extends PageNumberSchema
 export interface CapabilityRequestPaged {
   data: Array<CapabilityRequestPaged.Data>;
 
+  /**
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
+   */
   meta: CapabilityRequestPaged.Meta;
 
   /**
-   * Indicates the type of data returned.
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -90,8 +111,9 @@ export namespace CapabilityRequestPaged {
     account_id: string;
 
     /**
-     * The category of the requested capability. Possible values: 'payment_type',
-     * 'customer_type', 'consent_type'.
+     * The category of the requested capability. Use `payment_type` for charges and
+     * payouts, `customer_type` to define `individuals` or `businesses`, and
+     * `consent_type` for `signed_agreement` or `internet` payment authorization.
      */
     category: 'payment_type' | 'customer_type' | 'consent_type';
 
@@ -101,15 +123,12 @@ export namespace CapabilityRequestPaged {
     created_at: string;
 
     /**
-     * The current status of the capability request. Possible values: 'active',
-     * 'inactive', 'in_review', 'rejected'.
+     * The current status of the capability request.
      */
-    status: 'approved' | 'rejected' | 'reviewing';
+    status: 'active' | 'inactive' | 'in_review' | 'rejected';
 
     /**
-     * The specific type of capability being requested within the category. Possible
-     * values: 'charges', 'payouts', 'individuals', 'businesses', 'signed_agreement',
-     * 'internet'.
+     * The specific type of capability being requested within the category.
      */
     type: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet';
 
@@ -124,6 +143,10 @@ export namespace CapabilityRequestPaged {
     settings?: Record<string, unknown> | null;
   }
 
+  /**
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -160,43 +183,43 @@ export namespace CapabilityRequestPaged {
      */
     sort_order: 'asc' | 'desc';
 
-    total_items: number;
-
     /**
-     * The number of pages available.
+     * Total number of items returned in this response.
      */
-    total_pages: number;
+    total_items: number;
   }
 }
 
 export interface CapabilityRequestCreateParams {
   /**
-   * Body param:
+   * Body param: Allows the account to accept payments from businesses.
    */
   businesses?: CapabilityRequestCreateParams.Businesses;
 
   /**
-   * Body param:
+   * Body param: The charges capability settings for the account.
    */
   charges?: CapabilityRequestCreateParams.Charges;
 
   /**
-   * Body param:
+   * Body param: Allows the account to accept payments from individuals.
    */
   individuals?: CapabilityRequestCreateParams.Individuals;
 
   /**
-   * Body param:
+   * Body param: Allows the account to accept payments authorized via the internet or
+   * mobile applications.
    */
   internet?: CapabilityRequestCreateParams.Internet;
 
   /**
-   * Body param:
+   * Body param: The payouts capability settings for the account.
    */
   payouts?: CapabilityRequestCreateParams.Payouts;
 
   /**
-   * Body param:
+   * Body param: Allows the account to accept payments authorized by signed
+   * agreements or contracts.
    */
   signed_agreement?: CapabilityRequestCreateParams.SignedAgreement;
 
@@ -213,42 +236,92 @@ export interface CapabilityRequestCreateParams {
 }
 
 export namespace CapabilityRequestCreateParams {
+  /**
+   * Allows the account to accept payments from businesses.
+   */
   export interface Businesses {
     enable: boolean;
   }
 
+  /**
+   * The charges capability settings for the account.
+   */
   export interface Charges {
+    /**
+     * The maximum dollar amount of charges in a calendar day.
+     */
     daily_amount: number;
 
+    /**
+     * Determines whether `charges` are enabled for the account.
+     */
     enable: boolean;
 
+    /**
+     * The maximum amount of a single charge.
+     */
     max_amount: number;
 
+    /**
+     * The maximum dollar amount of charges in a calendar month.
+     */
     monthly_amount: number;
 
+    /**
+     * The maximum number of charges in a calendar month.
+     */
     monthly_count: number;
   }
 
+  /**
+   * Allows the account to accept payments from individuals.
+   */
   export interface Individuals {
     enable: boolean;
   }
 
+  /**
+   * Allows the account to accept payments authorized via the internet or mobile
+   * applications.
+   */
   export interface Internet {
     enable: boolean;
   }
 
+  /**
+   * The payouts capability settings for the account.
+   */
   export interface Payouts {
+    /**
+     * The maximum dollar amount of payouts in a day.
+     */
     daily_amount: number;
 
+    /**
+     * Determines whether `payouts` are enabled for the account.
+     */
     enable: boolean;
 
+    /**
+     * The maximum amount of a single payout.
+     */
     max_amount: number;
 
+    /**
+     * The maximum dollar amount of payouts in a month.
+     */
     monthly_amount: number;
 
+    /**
+     * The maximum number of payouts in a month.
+     */
     monthly_count: number;
   }
 
+  /**
+   * Allows the account to accept payments authorized by signed agreements or
+   * contracts.
+   */
   export interface SignedAgreement {
     enable: boolean;
   }
@@ -256,31 +329,27 @@ export namespace CapabilityRequestCreateParams {
 
 export interface CapabilityRequestListParams extends PageNumberSchemaParams {
   /**
-   * Query param: Sort By. Default value: 'id'.
-   */
-  sort_by: string;
-
-  /**
-   * Query param: Sort Order. Default value: 'asc'.
-   */
-  sort_order: 'asc' | 'desc';
-
-  /**
-   * Query param: Filter capability requests by category. Possible values:
-   * 'payment_type', 'customer_type', 'consent_type'.
+   * Query param: Filter capability requests by category.
    */
   category?: 'payment_type' | 'customer_type' | 'consent_type';
 
   /**
-   * Query param: Filter capability requests by their current status. Possible
-   * values: 'active', 'inactive', 'in_review', 'rejected'.
+   * Query param: Sort By.
    */
-  status?: 'approved' | 'rejected' | 'reviewing';
+  sort_by?: string;
+
+  /**
+   * Query param: Sort Order.
+   */
+  sort_order?: 'asc' | 'desc';
+
+  /**
+   * Query param: Filter capability requests by their current status.
+   */
+  status?: 'active' | 'inactive' | 'in_review' | 'rejected';
 
   /**
    * Query param: Filter capability requests by the specific type of capability.
-   * Possible values: 'charges', 'payouts', 'individuals', 'businesses',
-   * 'signed_agreement', 'internet'.
    */
   type?: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet';
 

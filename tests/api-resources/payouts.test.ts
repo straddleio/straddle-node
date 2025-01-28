@@ -13,8 +13,8 @@ describe('resource payouts', () => {
     const responsePromise = client.payouts.create({
       amount: 0,
       currency: 'currency',
-      description: 'description',
-      device: { ip_address: 'ip_address' },
+      description: 'Vendor invoice payment',
+      device: { ip_address: '192.168.1.1' },
       external_id: 'external_id',
       paykey: 'paykey',
       payment_date: '2019-12-27',
@@ -32,8 +32,8 @@ describe('resource payouts', () => {
     const response = await client.payouts.create({
       amount: 0,
       currency: 'currency',
-      description: 'description',
-      device: { ip_address: 'ip_address' },
+      description: 'Vendor invoice payment',
+      device: { ip_address: '192.168.1.1' },
       external_id: 'external_id',
       paykey: 'paykey',
       payment_date: '2019-12-27',

@@ -1,13 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Organizations extends APIResource {
   /**
-   * Creates a new organization in the Straddle system. Organizations can be used to
-   * group related accounts and manage permissions across multiple users.
+   * Creates a new organization related to your Straddle integration. Organizations
+   * can be used to group related accounts and manage permissions across multiple
+   * users.
    */
   create(params: OrganizationCreateParams, options?: Core.RequestOptions): Core.APIPromise<Organization> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
@@ -25,13 +27,23 @@ export class Organizations extends APIResource {
   /**
    * Retrieves a list of organizations associated with your Straddle integration. The
    * organizations are returned sorted by creation date, with the most recently
-   * created organizations appearing first. This endpoint supports filtering options
-   * to help you find specific organizations.
+   * created organizations appearing first. This endpoint supports advanced sorting
+   * and filtering options to help you find specific organizations.
    */
   list(
-    params: OrganizationListParams,
+    params?: OrganizationListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<OrganizationPagedDataPageNumberSchema, OrganizationPaged.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<OrganizationPagedDataPageNumberSchema, OrganizationPaged.Data>;
+  list(
+    params: OrganizationListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.PagePromise<OrganizationPagedDataPageNumberSchema, OrganizationPaged.Data> {
+    if (isRequestOptions(params)) {
+      return this.list({}, params);
+    }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList('/v1/organizations', OrganizationPagedDataPageNumberSchema, {
       query,
@@ -50,10 +62,19 @@ export class OrganizationPagedDataPageNumberSchema extends PageNumberSchema<Orga
 export interface Organization {
   data: Organization.Data;
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   meta: Organization.Meta;
 
   /**
-   * Indicates the type of data returned.
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -66,19 +87,14 @@ export namespace Organization {
     id: string;
 
     /**
-     * Timestamp of when the organization was created.
-     */
-    created_at: string;
-
-    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of the most recent update to the organization.
+     * Timestamp of when the organization was created.
      */
-    updated_at: string;
+    created_at?: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -91,8 +107,16 @@ export namespace Organization {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
+
+    /**
+     * Timestamp of the most recent update to the organization.
+     */
+    updated_at?: string;
   }
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -109,10 +133,20 @@ export namespace Organization {
 export interface OrganizationPaged {
   data: Array<OrganizationPaged.Data>;
 
+  /**
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
+   */
   meta: OrganizationPaged.Meta;
 
   /**
-   * Indicates the type of data returned.
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
@@ -125,19 +159,14 @@ export namespace OrganizationPaged {
     id: string;
 
     /**
-     * Timestamp of when the organization was created.
-     */
-    created_at: string;
-
-    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of the most recent update to the organization.
+     * Timestamp of when the organization was created.
      */
-    updated_at: string;
+    created_at?: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -150,8 +179,17 @@ export namespace OrganizationPaged {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
+
+    /**
+     * Timestamp of the most recent update to the organization.
+     */
+    updated_at?: string;
   }
 
+  /**
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -188,12 +226,10 @@ export namespace OrganizationPaged {
      */
     sort_order: 'asc' | 'desc';
 
-    total_items: number;
-
     /**
-     * The number of pages available.
+     * Total number of items returned in this response.
      */
-    total_pages: number;
+    total_items: number;
   }
 }
 
@@ -229,16 +265,6 @@ export interface OrganizationCreateParams {
 
 export interface OrganizationListParams extends PageNumberSchemaParams {
   /**
-   * Query param: Sort By. Default value: 'id'.
-   */
-  sort_by: string;
-
-  /**
-   * Query param: Sort Order. Default value: 'asc'.
-   */
-  sort_order: 'asc' | 'desc';
-
-  /**
    * Query param: List organizations by their external ID.
    */
   external_id?: string;
@@ -247,6 +273,16 @@ export interface OrganizationListParams extends PageNumberSchemaParams {
    * Query param: List organizations by name (partial match supported).
    */
   name?: string;
+
+  /**
+   * Query param: Sort By.
+   */
+  sort_by?: string;
+
+  /**
+   * Query param: Sort Order.
+   */
+  sort_order?: 'asc' | 'desc';
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

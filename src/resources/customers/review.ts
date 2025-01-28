@@ -7,9 +7,10 @@ import * as CustomersAPI from './customers';
 
 export class Review extends APIResource {
   /**
-   * Updates the decision of a customer's identity validation. This endpoint allows
-   * you to modify the outcome of a customer decision and is useful for correcting or
-   * updating the status of a customer's verification.
+   * Updates the status of a customer's identity decision. This endpoint allows you
+   * to modify the outcome of a customer risk screening and is useful for correcting
+   * or updating the status of a customer's verification. Note that this endpoint is
+   * only available for customers with a current status of `review`.
    */
   decision(
     id: string,
@@ -35,12 +36,15 @@ export class Review extends APIResource {
   }
 
   /**
-   * Retrieves and analyzes the results of a customer's identity validation. This
-   * endpoint provides a comprehensive breakdown of the validation outcome,
-   * including:<br />- Risk and correlation scores<br />- Reason codes for the
-   * decision<br />- Results of watchlist screening<br />- Any network alerts
-   * detected<br />Use this endpoint to gain insights into the verification process
-   * and make informed decisions about customer onboarding.
+   * Retrieves and analyzes the results of a customer's identity validation and fraud
+   * score. This endpoint provides a comprehensive breakdown of the validation
+   * outcome, including:
+   *
+   * - Risk and correlation scores
+   * - Reason codes for the decision
+   * - Results of watchlist screening
+   * - Any network alerts detected Use this endpoint to gain insights into the
+   *   verification process and make informed decisions about customer onboarding.
    */
   get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReview>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReview>;
@@ -72,8 +76,20 @@ export class Review extends APIResource {
 export interface CustomerReview {
   data: CustomerReview.Data;
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   meta: CustomerReview.Meta;
 
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
@@ -120,9 +136,14 @@ export namespace CustomerReview {
        */
       updated_at: string;
 
-      address?: CustomerDetails.Address;
+      address?: CustomerDetails.Address | null;
 
-      compliance_profile?: CustomerDetails.ComplianceProfile;
+      /**
+       * Compliance profile for individual customers
+       */
+      compliance_profile?:
+        | CustomerDetails.IndividualComplianceProfile
+        | CustomerDetails.BusinessComplianceProfile;
 
       device?: CustomerDetails.Device;
 
@@ -164,48 +185,48 @@ export namespace CustomerReview {
         /**
          * Secondary address line (e.g., apartment, suite, unit, or building).
          */
-        address2?: string | null;
+        address2?: string;
       }
 
-      export interface ComplianceProfile {
+      /**
+       * Compliance profile for individual customers
+       */
+      export interface IndividualComplianceProfile {
         /**
-         * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
-         * data is required to trigger Patriot Act compliant Know Your Customer (KYC)
-         * verification. Required if SSN is provided. Only valid where customer type is
-         * 'individual'.
+         * Date of birth in YYYY-MM-DD format.
          */
-        dob?: string | null;
+        dob: string;
 
         /**
-         * Full 9-digit Employer Identification Number for businesses. This data is
-         * required to trigger Patriot Act compliant Know Your Business (KYB) verification.
-         * Only valid where customer type is 'business'.
+         * Social Security Number in the format XXX-XX-XXXX.
          */
-        ein?: string | null;
+        ssn: string;
+      }
+
+      /**
+       * Compliance profile for business customers
+       */
+      export interface BusinessComplianceProfile {
+        /**
+         * Employer Identification Number in the format XX-XXXXXXX.
+         */
+        ein: string;
 
         /**
-         * The official name of the business. This name should be correlated with the ein
-         * value. Only valid where customer type is 'business'.
+         * The official registered name of the business. This name should be correlated
+         * with the `ein` value.
          */
-        legal_business_name?: string | null;
+        legal_business_name: string;
 
         /**
-         * Full 9-digit Social Security Number or government identifier for individuals.
-         * This data is required to trigger Patriot Act compliant KYC verification.
-         * Required if DOB is provided. Only valid where customer type is 'individual'.
+         * Business website URL.
          */
-        ssn?: string | null;
-
-        /**
-         * URL of the company's official website. Only valid where customer type is
-         * 'business'.
-         */
-        website?: string | null;
+        website?: string;
       }
 
       export interface Device {
         /**
-         * The customer's IP address at the time of profile creation. Use '0.0.0.0' to
+         * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
          * represent an offline customer registration.
          */
         ip_address: string;
@@ -443,6 +464,9 @@ export namespace CustomerReview {
     }
   }
 
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
   export interface Meta {
     /**
      * Unique identifier for this API request, useful for troubleshooting.
@@ -458,7 +482,7 @@ export namespace CustomerReview {
 
 export interface ReviewDecisionParams {
   /**
-   * Body param:
+   * Body param: The final status of the customer review.
    */
   status: 'verified' | 'rejected';
 
