@@ -17,6 +17,7 @@ import {
 import * as OrganizationsAPI from './organizations';
 import {
   OrganizationCreateParams,
+  OrganizationGetParams,
   OrganizationListParams,
   OrganizationPagedV1,
   OrganizationPagedV1DataPageNumberSchema,
@@ -31,6 +32,7 @@ import {
   RepresentativeListParams,
   RepresentativePaged,
   RepresentativePagedDataPageNumberSchema,
+  RepresentativeUnmaskParams,
   RepresentativeUpdateParams,
   Representatives,
 } from './representatives';
@@ -112,6 +114,7 @@ export declare namespace Embed {
     OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
+    type OrganizationGetParams as OrganizationGetParams,
   };
 
   export {
@@ -123,5 +126,6 @@ export declare namespace Embed {
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
     type RepresentativeGetParams as RepresentativeGetParams,
+    type RepresentativeUnmaskParams as RepresentativeUnmaskParams,
   };
 }

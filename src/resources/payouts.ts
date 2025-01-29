@@ -184,6 +184,11 @@ export namespace PayoutV1 {
     amount: number;
 
     /**
+     * Configuration for the payout.
+     */
+    config: unknown;
+
+    /**
      * The currency of the payout. Only USD is supported.
      */
     currency: string;
@@ -229,11 +234,6 @@ export namespace PayoutV1 {
      * History of the status changes for the payout.
      */
     status_history: Array<Data.StatusHistory>;
-
-    /**
-     * Configuration for the payout.
-     */
-    config?: unknown;
 
     /**
      * The time the payout was created.

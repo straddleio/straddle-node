@@ -29,6 +29,8 @@ import {
 import {
   PaykeyGetParams,
   PaykeyListParams,
+  PaykeyRevealParams,
+  PaykeyRevealResponse,
   PaykeySummaryPagedV1,
   PaykeySummaryPagedV1DataPageNumberSchema,
   PaykeyUnmaskedParams,
@@ -305,9 +307,11 @@ export declare namespace Straddle {
     type PaykeySummaryPagedV1 as PaykeySummaryPagedV1,
     type PaykeyUnmaskedV1 as PaykeyUnmaskedV1,
     type PaykeyV1 as PaykeyV1,
+    type PaykeyRevealResponse as PaykeyRevealResponse,
     PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
     type PaykeyGetParams as PaykeyGetParams,
+    type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
   };
 

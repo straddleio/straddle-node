@@ -126,7 +126,7 @@ export namespace CapabilityRequestPagedV1 {
     /**
      * The current status of the capability request.
      */
-    status: 'active' | 'inactive' | 'in_review' | 'rejected';
+    status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing';
 
     /**
      * The specific type of capability being requested within the category.

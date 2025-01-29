@@ -12,12 +12,22 @@ export interface CustomerDetailsV1 {
   /**
    * The type of customer.
    */
-  customer_type: 'individual' | 'business';
+  customer_type: 'individual' | 'business' | 'unknown';
+
+  /**
+   * Email.
+   */
+  email: string;
 
   /**
    * The name of the customer.
    */
   name: string;
+
+  /**
+   * Phone.
+   */
+  phone: string;
 }
 
 export interface DeviceInfoV1 {
@@ -72,6 +82,11 @@ export interface PagedResponseMetadata {
    * Total number of items returned in this response.
    */
   total_items: number;
+
+  /**
+   * The number of pages available.
+   */
+  total_pages: number;
 }
 
 export interface PaykeyDetailsV1 {
@@ -154,4 +169,9 @@ export interface StatusDetailsV1 {
    * This helps in tracking the cause of status updates.
    */
   source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+
+  /**
+   * The status code if applicable.
+   */
+  code?: string | null;
 }
