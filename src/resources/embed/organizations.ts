@@ -56,6 +56,36 @@ export class Organizations extends APIResource {
       },
     });
   }
+
+  /**
+   * Retrieves the details of an Organization that has previously been created.
+   * Supply the unique organization ID that was returned from your previous request,
+   * and Straddle will return the corresponding organization information.
+   */
+  get(
+    organizationId: string,
+    params?: OrganizationGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<OrganizationV1>;
+  get(organizationId: string, options?: Core.RequestOptions): Core.APIPromise<OrganizationV1>;
+  get(
+    organizationId: string,
+    params: OrganizationGetParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<OrganizationV1> {
+    if (isRequestOptions(params)) {
+      return this.get(organizationId, {}, params);
+    }
+    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    return this._client.get(`/v1/organizations/${organizationId}`, {
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(requestId != null ? { 'request-id': requestId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
 }
 
 export class OrganizationPagedV1DataPageNumberSchema extends PageNumberSchema<OrganizationPagedV1.Data> {}
@@ -89,14 +119,19 @@ export namespace OrganizationPagedV1 {
     id: string;
 
     /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of when the organization was created.
+     * Timestamp of the most recent update to the organization.
      */
-    created_at?: string;
+    updated_at: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -109,11 +144,6 @@ export namespace OrganizationPagedV1 {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
-
-    /**
-     * Timestamp of the most recent update to the organization.
-     */
-    updated_at?: string;
   }
 }
 
@@ -145,14 +175,19 @@ export namespace OrganizationV1 {
     id: string;
 
     /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
      * The name of the organization.
      */
     name: string;
 
     /**
-     * Timestamp of when the organization was created.
+     * Timestamp of the most recent update to the organization.
      */
-    created_at?: string;
+    updated_at: string;
 
     /**
      * Unique identifier for the organization in your database, used for
@@ -165,11 +200,6 @@ export namespace OrganizationV1 {
      * information about the organization in a structured format.
      */
     metadata?: Record<string, string | null> | null;
-
-    /**
-     * Timestamp of the most recent update to the organization.
-     */
-    updated_at?: string;
   }
 }
 
@@ -236,6 +266,18 @@ export interface OrganizationListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
+export interface OrganizationGetParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
 Organizations.OrganizationPagedV1DataPageNumberSchema = OrganizationPagedV1DataPageNumberSchema;
 
 export declare namespace Organizations {
@@ -245,5 +287,6 @@ export declare namespace Organizations {
     OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
+    type OrganizationGetParams as OrganizationGetParams,
   };
 }
