@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
+import * as Shared from '../shared';
 import * as LinkAPI from './link';
 import { Link, LinkBankAccountParams, LinkPlaidParams } from './link';
 
@@ -11,7 +12,7 @@ export class Bridge extends APIResource {
   /**
    * Use this endpoint to generate a session token for use in the Bridge widget.
    */
-  initialize(params: BridgeInitializeParams, options?: Core.RequestOptions): Core.APIPromise<BridgeToken> {
+  initialize(params: BridgeInitializeParams, options?: Core.RequestOptions): Core.APIPromise<BridgeTokenV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -31,13 +32,13 @@ export class Bridge extends APIResource {
   }
 }
 
-export interface BridgeToken {
-  data: BridgeToken.Data;
+export interface BridgeTokenV1 {
+  data: BridgeTokenV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  meta: BridgeToken.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -51,27 +52,12 @@ export interface BridgeToken {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace BridgeToken {
+export namespace BridgeTokenV1 {
   export interface Data {
     /**
      * JWT Token to use in the bridge widget.
      */
     bridge_token: string;
-  }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
   }
 }
 
@@ -103,7 +89,7 @@ export interface BridgeInitializeParams {
 Bridge.Link = Link;
 
 export declare namespace Bridge {
-  export { type BridgeToken as BridgeToken, type BridgeInitializeParams as BridgeInitializeParams };
+  export { type BridgeTokenV1 as BridgeTokenV1, type BridgeInitializeParams as BridgeInitializeParams };
 
   export {
     Link as Link,

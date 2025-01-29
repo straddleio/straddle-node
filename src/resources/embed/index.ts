@@ -1,10 +1,16 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  AccountPagedDataPageNumberSchema,
+  AccountPagedV1DataPageNumberSchema,
   Accounts,
-  type Account,
-  type AccountPaged,
+  type AccountPagedV1,
+  type AccountV1,
+  type AddressV1,
+  type BusinessProfileV1,
+  type CapabilityV1,
+  type IndustryV1,
+  type SupportChannelsV1,
+  type TermsOfServiceV1,
   type AccountCreateParams,
   type AccountUpdateParams,
   type AccountListParams,
@@ -14,11 +20,11 @@ export {
 } from './accounts/index';
 export { Embed } from './embed';
 export {
-  LinkedBankAccountPagedDataPageNumberSchema,
+  LinkedBankAccountPagedV1DataPageNumberSchema,
   LinkedBankAccounts,
-  type LinkedBankAccount,
-  type LinkedBankAccountPaged,
-  type LinkedBankAccountUnmask,
+  type LinkedBankAccountPagedV1,
+  type LinkedBankAccountUnmaskV1,
+  type LinkedBankAccountV1,
   type LinkedBankAccountCreateParams,
   type LinkedBankAccountUpdateParams,
   type LinkedBankAccountListParams,
@@ -26,10 +32,10 @@ export {
   type LinkedBankAccountUnmaskParams,
 } from './linked-bank-accounts';
 export {
-  OrganizationPagedDataPageNumberSchema,
+  OrganizationPagedV1DataPageNumberSchema,
   Organizations,
-  type Organization,
-  type OrganizationPaged,
+  type OrganizationPagedV1,
+  type OrganizationV1,
   type OrganizationCreateParams,
   type OrganizationListParams,
 } from './organizations';

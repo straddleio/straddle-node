@@ -3,6 +3,7 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import * as Shared from './shared';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class Payments extends APIResource {
@@ -13,14 +14,14 @@ export class Payments extends APIResource {
   list(
     params?: PaymentListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<PaymentSummaryPagedDataPageNumberSchema, PaymentSummaryPaged.Data>;
+  ): Core.PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<PaymentSummaryPagedDataPageNumberSchema, PaymentSummaryPaged.Data>;
+  ): Core.PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data>;
   list(
     params: PaymentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<PaymentSummaryPagedDataPageNumberSchema, PaymentSummaryPaged.Data> {
+  ): Core.PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
@@ -30,7 +31,7 @@ export class Payments extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
       ...query
     } = params;
-    return this._client.getAPIList('/v1/payments', PaymentSummaryPagedDataPageNumberSchema, {
+    return this._client.getAPIList('/v1/payments', PaymentSummaryPagedV1DataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -43,12 +44,12 @@ export class Payments extends APIResource {
   }
 }
 
-export class PaymentSummaryPagedDataPageNumberSchema extends PageNumberSchema<PaymentSummaryPaged.Data> {}
+export class PaymentSummaryPagedV1DataPageNumberSchema extends PageNumberSchema<PaymentSummaryPagedV1.Data> {}
 
-export interface PaymentSummaryPaged {
-  data: Array<PaymentSummaryPaged.Data>;
+export interface PaymentSummaryPagedV1 {
+  data: Array<PaymentSummaryPagedV1.Data>;
 
-  meta: PaymentSummaryPaged.Meta;
+  meta: PaymentSummaryPagedV1.Meta;
 
   /**
    * Indicates the structure of the returned content.
@@ -62,7 +63,7 @@ export interface PaymentSummaryPaged {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace PaymentSummaryPaged {
+export namespace PaymentSummaryPagedV1 {
   export interface Data {
     /**
      * Unique identifier for the `charge` or `payout`.
@@ -120,7 +121,7 @@ export namespace PaymentSummaryPaged {
     /**
      * Details about the current status of the `charge` or `payout`.
      */
-    status_details: Data.StatusDetails;
+    status_details: Shared.StatusDetailsV1;
 
     /**
      * The time the `charge` or `payout` was last updated.
@@ -130,7 +131,7 @@ export namespace PaymentSummaryPaged {
     /**
      * Information about the customer associated with the charge or payout.
      */
-    customer_details?: Data.CustomerDetails;
+    customer_details?: Shared.CustomerDetailsV1;
 
     /**
      * The actual date on which the payment occurred. For charges, this is the date the
@@ -148,102 +149,7 @@ export namespace PaymentSummaryPaged {
     /**
      * Information about the paykey used for the `charge` or `payout`.
      */
-    paykey_details?: Data.PaykeyDetails;
-  }
-
-  export namespace Data {
-    /**
-     * Details about the current status of the `charge` or `payout`.
-     */
-    export interface StatusDetails {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-    }
-
-    /**
-     * Information about the customer associated with the charge or payout.
-     */
-    export interface CustomerDetails {
-      /**
-       * Unique identifier for the customer.
-       */
-      id: string;
-
-      /**
-       * The type of customer.
-       */
-      customer_type: 'individual' | 'business';
-
-      /**
-       * The name of the customer.
-       */
-      name: string;
-    }
-
-    /**
-     * Information about the paykey used for the `charge` or `payout`.
-     */
-    export interface PaykeyDetails {
-      /**
-       * Unique identifier for the paykey.
-       */
-      id: string;
-
-      /**
-       * Unique identifier for the customer associated with the paykey.
-       */
-      customer_id: string;
-
-      /**
-       * Human-readable label used to represent this paykey in a UI.
-       */
-      label: string;
-
-      /**
-       * The most recent balance of the bank account associated with the paykey in
-       * dollars.
-       */
-      balance?: number | null;
-    }
+    paykey_details?: Shared.PaykeyDetailsV1;
   }
 
   export interface Meta {
@@ -417,12 +323,12 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   'Straddle-Account-Id'?: string;
 }
 
-Payments.PaymentSummaryPagedDataPageNumberSchema = PaymentSummaryPagedDataPageNumberSchema;
+Payments.PaymentSummaryPagedV1DataPageNumberSchema = PaymentSummaryPagedV1DataPageNumberSchema;
 
 export declare namespace Payments {
   export {
-    type PaymentSummaryPaged as PaymentSummaryPaged,
-    PaymentSummaryPagedDataPageNumberSchema as PaymentSummaryPagedDataPageNumberSchema,
+    type PaymentSummaryPagedV1 as PaymentSummaryPagedV1,
+    PaymentSummaryPagedV1DataPageNumberSchema as PaymentSummaryPagedV1DataPageNumberSchema,
     type PaymentListParams as PaymentListParams,
   };
 }

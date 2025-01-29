@@ -3,12 +3,13 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import * as Shared from './shared';
 
 export class Charges extends APIResource {
   /**
    * Use charges to collect money from a customer for the sale of goods or services.
    */
-  create(params: ChargeCreateParams, options?: Core.RequestOptions): Core.APIPromise<Charge> {
+  create(params: ChargeCreateParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -31,7 +32,7 @@ export class Charges extends APIResource {
    * Change the values of parameters associated with a charge prior to processing.
    * The status of the charge must be `created`, `scheduled`, or `on_hold`.
    */
-  update(id: string, params: ChargeUpdateParams, options?: Core.RequestOptions): Core.APIPromise<Charge> {
+  update(id: string, params: ChargeUpdateParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -54,13 +55,13 @@ export class Charges extends APIResource {
    * Cancel a charge to prevent it from being originated for processing. The status
    * of the charge must be `created`, `scheduled`, or `on_hold`.
    */
-  cancel(id: string, params?: ChargeCancelParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
-  cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
+  cancel(id: string, params?: ChargeCancelParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   cancel(
     id: string,
     params: ChargeCancelParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Charge> {
+  ): Core.APIPromise<ChargeV1> {
     if (isRequestOptions(params)) {
       return this.cancel(id, {}, params);
     }
@@ -86,13 +87,13 @@ export class Charges extends APIResource {
    * Retrieves the details of an existing charge. Supply the unique charge `id`, and
    * Straddle will return the corresponding charge information.
    */
-  get(id: string, params?: ChargeGetParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
+  get(id: string, params?: ChargeGetParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   get(
     id: string,
     params: ChargeGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Charge> {
+  ): Core.APIPromise<ChargeV1> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -116,13 +117,13 @@ export class Charges extends APIResource {
    * Place a charge on hold to prevent it from being originated for processing. The
    * status of the charge must be `created` or `scheduled`.
    */
-  hold(id: string, params?: ChargeHoldParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
-  hold(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
+  hold(id: string, params?: ChargeHoldParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  hold(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   hold(
     id: string,
     params: ChargeHoldParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Charge> {
+  ): Core.APIPromise<ChargeV1> {
     if (isRequestOptions(params)) {
       return this.hold(id, {}, params);
     }
@@ -148,13 +149,13 @@ export class Charges extends APIResource {
    * Release a charge from an `on_hold` status to allow it to be rescheduled for
    * processing.
    */
-  release(id: string, params?: ChargeReleaseParams, options?: Core.RequestOptions): Core.APIPromise<Charge>;
-  release(id: string, options?: Core.RequestOptions): Core.APIPromise<Charge>;
+  release(id: string, params?: ChargeReleaseParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  release(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   release(
     id: string,
     params: ChargeReleaseParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Charge> {
+  ): Core.APIPromise<ChargeV1> {
     if (isRequestOptions(params)) {
       return this.release(id, {}, params);
     }
@@ -177,13 +178,13 @@ export class Charges extends APIResource {
   }
 }
 
-export interface Charge {
-  data: Charge.Data;
+export interface ChargeV1 {
+  data: ChargeV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  meta: Charge.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -197,7 +198,7 @@ export interface Charge {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace Charge {
+export namespace ChargeV1 {
   export interface Data {
     /**
      * Unique identifier for the charge.
@@ -235,7 +236,7 @@ export namespace Charge {
     /**
      * Information about the device used when the customer authorized the payment.
      */
-    device: Data.Device;
+    device: Shared.DeviceInfoV1;
 
     /**
      * Unique identifier for the charge in your database. This value must be unique
@@ -262,7 +263,7 @@ export namespace Charge {
     /**
      * Additional details about the current status of the charge.
      */
-    status_details: Data.StatusDetails;
+    status_details: Shared.StatusDetailsV1;
 
     status_history: Array<Data.StatusHistory>;
 
@@ -274,7 +275,7 @@ export namespace Charge {
     /**
      * Information about the customer associated with the charge.
      */
-    customer_details?: Data.CustomerDetails;
+    customer_details?: Shared.CustomerDetailsV1;
 
     /**
      * Timestamp of when the charge was effective in the customer's bank account,
@@ -291,7 +292,7 @@ export namespace Charge {
     /**
      * Information about the paykey used for the charge.
      */
-    paykey_details?: Data.PaykeyDetails;
+    paykey_details?: Shared.PaykeyDetailsV1;
 
     /**
      * The payment rail that the charge will be processed through.
@@ -319,64 +320,6 @@ export namespace Charge {
        * Defines whether to check the customer's balance before processing the charge.
        */
       balance_check: 'required' | 'enabled' | 'disabled';
-    }
-
-    /**
-     * Information about the device used when the customer authorized the payment.
-     */
-    export interface Device {
-      /**
-       * The IP address of the device used when the customer authorized the charge or
-       * payout. Use `0.0.0.0` to represent an offline consent interaction.
-       */
-      ip_address: string;
-    }
-
-    /**
-     * Additional details about the current status of the charge.
-     */
-    export interface StatusDetails {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
     }
 
     /**
@@ -435,67 +378,6 @@ export namespace Charge {
        */
       code?: string | null;
     }
-
-    /**
-     * Information about the customer associated with the charge.
-     */
-    export interface CustomerDetails {
-      /**
-       * Unique identifier for the customer.
-       */
-      id: string;
-
-      /**
-       * The type of customer.
-       */
-      customer_type: 'individual' | 'business';
-
-      /**
-       * The name of the customer.
-       */
-      name: string;
-    }
-
-    /**
-     * Information about the paykey used for the charge.
-     */
-    export interface PaykeyDetails {
-      /**
-       * Unique identifier for the paykey.
-       */
-      id: string;
-
-      /**
-       * Unique identifier for the customer associated with the paykey.
-       */
-      customer_id: string;
-
-      /**
-       * Human-readable label used to represent this paykey in a UI.
-       */
-      label: string;
-
-      /**
-       * The most recent balance of the bank account associated with the paykey in
-       * dollars.
-       */
-      balance?: number | null;
-    }
-  }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
   }
 }
 
@@ -531,7 +413,7 @@ export interface ChargeCreateParams {
   /**
    * Body param:
    */
-  device: ChargeCreateParams.Device;
+  device: Shared.DeviceInfoV1;
 
   /**
    * Body param: Unique identifier for the charge in your database. This value must
@@ -580,14 +462,6 @@ export namespace ChargeCreateParams {
      * Defines whether to check the customer's balance before processing the charge.
      */
     balance_check: 'required' | 'enabled' | 'disabled';
-  }
-
-  export interface Device {
-    /**
-     * The IP address of the device used when the customer authorized the charge or
-     * payout. Use `0.0.0.0` to represent an offline consent interaction.
-     */
-    ip_address: string;
   }
 }
 
@@ -723,7 +597,7 @@ export interface ChargeReleaseParams {
 
 export declare namespace Charges {
   export {
-    type Charge as Charge,
+    type ChargeV1 as ChargeV1,
     type ChargeCreateParams as ChargeCreateParams,
     type ChargeUpdateParams as ChargeUpdateParams,
     type ChargeCancelParams as ChargeCancelParams,

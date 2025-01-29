@@ -1,9 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Bridge, type BridgeToken, type BridgeInitializeParams } from './bridge/bridge';
+export * from './shared';
+export { Bridge, type BridgeTokenV1, type BridgeInitializeParams } from './bridge/bridge';
 export {
   Charges,
-  type Charge,
+  type ChargeV1,
   type ChargeCreateParams,
   type ChargeUpdateParams,
   type ChargeCancelParams,
@@ -12,11 +13,13 @@ export {
   type ChargeReleaseParams,
 } from './charges';
 export {
-  CustomerSummaryPagedDataPageNumberSchema,
+  CustomerSummaryPagedV1DataPageNumberSchema,
   Customers,
-  type Customer,
-  type CustomerSummaryPaged,
-  type CustomerUnmasked,
+  type CustomerAddressV1,
+  type CustomerSummaryPagedV1,
+  type CustomerUnmaskedV1,
+  type CustomerV1,
+  type DeviceUnmaskedV1,
   type CustomerCreateParams,
   type CustomerUpdateParams,
   type CustomerListParams,
@@ -26,32 +29,32 @@ export {
 } from './customers/customers';
 export { Embed } from './embed/embed';
 export {
-  FundingEventSummaryPagedDataPageNumberSchema,
+  FundingEventSummaryPagedV1DataPageNumberSchema,
   FundingEvents,
-  type FundingEventSummaryItem,
-  type FundingEventSummaryPaged,
+  type FundingEventSummaryItemV1,
+  type FundingEventSummaryPagedV1,
   type FundingEventListParams,
   type FundingEventGetParams,
 } from './funding-events';
 export {
-  PaykeySummaryPagedDataPageNumberSchema,
+  PaykeySummaryPagedV1DataPageNumberSchema,
   Paykeys,
-  type Paykey,
-  type PaykeySummaryPaged,
-  type PaykeyUnmasked,
+  type PaykeySummaryPagedV1,
+  type PaykeyUnmaskedV1,
+  type PaykeyV1,
   type PaykeyListParams,
   type PaykeyGetParams,
   type PaykeyUnmaskedParams,
 } from './paykeys';
 export {
-  PaymentSummaryPagedDataPageNumberSchema,
+  PaymentSummaryPagedV1DataPageNumberSchema,
   Payments,
-  type PaymentSummaryPaged,
+  type PaymentSummaryPagedV1,
   type PaymentListParams,
 } from './payments';
 export {
   Payouts,
-  type Payout,
+  type PayoutV1,
   type PayoutCreateParams,
   type PayoutUpdateParams,
   type PayoutCancelParams,
