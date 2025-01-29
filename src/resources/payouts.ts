@@ -3,12 +3,13 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import * as Shared from './shared';
 
 export class Payouts extends APIResource {
   /**
    * Use payouts to send money to your customers.
    */
-  create(params: PayoutCreateParams, options?: Core.RequestOptions): Core.APIPromise<Payout> {
+  create(params: PayoutCreateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -31,7 +32,7 @@ export class Payouts extends APIResource {
    * Update the details of a payout prior to processing. The status of the payout
    * must be `created`, `scheduled`, or `on_hold`.
    */
-  update(id: string, params: PayoutUpdateParams, options?: Core.RequestOptions): Core.APIPromise<Payout> {
+  update(id: string, params: PayoutUpdateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -54,7 +55,7 @@ export class Payouts extends APIResource {
    * Cancel a payout to prevent it from being processed. The status of the payout
    * must be `created`, `scheduled`, or `on_hold`.
    */
-  cancel(id: string, params: PayoutCancelParams, options?: Core.RequestOptions): Core.APIPromise<Payout> {
+  cancel(id: string, params: PayoutCancelParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -77,13 +78,13 @@ export class Payouts extends APIResource {
    * Retrieves the details of an existing payout. Supply the unique payout `id` to
    * retrieve the corresponding payout information.
    */
-  get(id: string, params?: PayoutGetParams, options?: Core.RequestOptions): Core.APIPromise<Payout>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Payout>;
+  get(id: string, params?: PayoutGetParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<PayoutV1>;
   get(
     id: string,
     params: PayoutGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Payout> {
+  ): Core.APIPromise<PayoutV1> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -107,7 +108,7 @@ export class Payouts extends APIResource {
    * Hold a payout to prevent it from being processed. The status of the payout must
    * be `created`, `scheduled`, or `on_hold`.
    */
-  hold(id: string, params: PayoutHoldParams, options?: Core.RequestOptions): Core.APIPromise<Payout> {
+  hold(id: string, params: PayoutHoldParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -130,7 +131,7 @@ export class Payouts extends APIResource {
    * Release a payout from a `hold` status to allow it to be rescheduled for
    * processing.
    */
-  release(id: string, params: PayoutReleaseParams, options?: Core.RequestOptions): Core.APIPromise<Payout> {
+  release(id: string, params: PayoutReleaseParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -150,13 +151,13 @@ export class Payouts extends APIResource {
   }
 }
 
-export interface Payout {
-  data: Payout.Data;
+export interface PayoutV1 {
+  data: PayoutV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  meta: Payout.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -170,7 +171,7 @@ export interface Payout {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace Payout {
+export namespace PayoutV1 {
   export interface Data {
     /**
      * Unique identifier for the payout.
@@ -181,6 +182,11 @@ export namespace Payout {
      * The amount of the payout in cents.
      */
     amount: number;
+
+    /**
+     * Configuration for the payout.
+     */
+    config: unknown;
 
     /**
      * The currency of the payout. Only USD is supported.
@@ -195,7 +201,7 @@ export namespace Payout {
     /**
      * Information about the device used when the customer authorized the payout.
      */
-    device: Data.Device;
+    device: Shared.DeviceInfoV1;
 
     /**
      * Unique identifier for the payout in your database. This value must be unique
@@ -222,17 +228,12 @@ export namespace Payout {
     /**
      * Details about the current status of the payout.
      */
-    status_details: Data.StatusDetails;
+    status_details: Shared.StatusDetailsV1;
 
     /**
      * History of the status changes for the payout.
      */
     status_history: Array<Data.StatusHistory>;
-
-    /**
-     * Configuration for the payout.
-     */
-    config?: unknown;
 
     /**
      * The time the payout was created.
@@ -242,7 +243,7 @@ export namespace Payout {
     /**
      * Information about the customer associated with the payout.
      */
-    customer_details?: Data.CustomerDetails;
+    customer_details?: Shared.CustomerDetailsV1;
 
     /**
      * The actual date on which the payment occurred. For payouts, this is the date the
@@ -259,7 +260,7 @@ export namespace Payout {
     /**
      * Information about the paykey used for the payout.
      */
-    paykey_details?: Data.PaykeyDetails;
+    paykey_details?: Shared.PaykeyDetailsV1;
 
     /**
      * The payment rail used for the payout.
@@ -279,64 +280,6 @@ export namespace Payout {
   }
 
   export namespace Data {
-    /**
-     * Information about the device used when the customer authorized the payout.
-     */
-    export interface Device {
-      /**
-       * The IP address of the device used when the customer authorized the charge or
-       * payout. Use `0.0.0.0` to represent an offline consent interaction.
-       */
-      ip_address: string;
-    }
-
-    /**
-     * Details about the current status of the payout.
-     */
-    export interface StatusDetails {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-    }
-
     export interface StatusHistory {
       /**
        * The time the status change occurred.
@@ -390,67 +333,6 @@ export namespace Payout {
        */
       code?: string | null;
     }
-
-    /**
-     * Information about the customer associated with the payout.
-     */
-    export interface CustomerDetails {
-      /**
-       * Unique identifier for the customer.
-       */
-      id: string;
-
-      /**
-       * The type of customer.
-       */
-      customer_type: 'individual' | 'business';
-
-      /**
-       * The name of the customer.
-       */
-      name: string;
-    }
-
-    /**
-     * Information about the paykey used for the payout.
-     */
-    export interface PaykeyDetails {
-      /**
-       * Unique identifier for the paykey.
-       */
-      id: string;
-
-      /**
-       * Unique identifier for the customer associated with the paykey.
-       */
-      customer_id: string;
-
-      /**
-       * Human-readable label used to represent this paykey in a UI.
-       */
-      label: string;
-
-      /**
-       * The most recent balance of the bank account associated with the paykey in
-       * dollars.
-       */
-      balance?: number | null;
-    }
-  }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
   }
 }
 
@@ -474,7 +356,7 @@ export interface PayoutCreateParams {
    * Body param: Information about the device used when the customer authorized the
    * payout.
    */
-  device: PayoutCreateParams.Device;
+  device: Shared.DeviceInfoV1;
 
   /**
    * Body param: Unique identifier for the payout in your database. This value must
@@ -520,19 +402,6 @@ export interface PayoutCreateParams {
    * request.
    */
   'Straddle-Account-Id'?: string;
-}
-
-export namespace PayoutCreateParams {
-  /**
-   * Information about the device used when the customer authorized the payout.
-   */
-  export interface Device {
-    /**
-     * The IP address of the device used when the customer authorized the charge or
-     * payout. Use `0.0.0.0` to represent an offline consent interaction.
-     */
-    ip_address: string;
-  }
 }
 
 export interface PayoutUpdateParams {
@@ -667,7 +536,7 @@ export interface PayoutReleaseParams {
 
 export declare namespace Payouts {
   export {
-    type Payout as Payout,
+    type PayoutV1 as PayoutV1,
     type PayoutCreateParams as PayoutCreateParams,
     type PayoutUpdateParams as PayoutUpdateParams,
     type PayoutCancelParams as PayoutCancelParams,

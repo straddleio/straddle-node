@@ -9,62 +9,66 @@ import { type PageNumberSchemaParams, PageNumberSchemaResponse } from './paginat
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import {
-  Charge,
   ChargeCancelParams,
   ChargeCreateParams,
   ChargeGetParams,
   ChargeHoldParams,
   ChargeReleaseParams,
   ChargeUpdateParams,
+  ChargeV1,
   Charges,
 } from './resources/charges';
 import {
   FundingEventGetParams,
   FundingEventListParams,
-  FundingEventSummaryItem,
-  FundingEventSummaryPaged,
-  FundingEventSummaryPagedDataPageNumberSchema,
+  FundingEventSummaryItemV1,
+  FundingEventSummaryPagedV1,
+  FundingEventSummaryPagedV1DataPageNumberSchema,
   FundingEvents,
 } from './resources/funding-events';
 import {
-  Paykey,
   PaykeyGetParams,
   PaykeyListParams,
-  PaykeySummaryPaged,
-  PaykeySummaryPagedDataPageNumberSchema,
-  PaykeyUnmasked,
+  PaykeyRevealParams,
+  PaykeyRevealResponse,
+  PaykeySummaryPagedV1,
+  PaykeySummaryPagedV1DataPageNumberSchema,
   PaykeyUnmaskedParams,
+  PaykeyUnmaskedV1,
+  PaykeyV1,
   Paykeys,
 } from './resources/paykeys';
 import {
   PaymentListParams,
-  PaymentSummaryPaged,
-  PaymentSummaryPagedDataPageNumberSchema,
+  PaymentSummaryPagedV1,
+  PaymentSummaryPagedV1DataPageNumberSchema,
   Payments,
 } from './resources/payments';
 import {
-  Payout,
   PayoutCancelParams,
   PayoutCreateParams,
   PayoutGetParams,
   PayoutHoldParams,
   PayoutReleaseParams,
   PayoutUpdateParams,
+  PayoutV1,
   Payouts,
 } from './resources/payouts';
-import { Bridge, BridgeInitializeParams, BridgeToken } from './resources/bridge/bridge';
+import { Bridge, BridgeInitializeParams, BridgeTokenV1 } from './resources/bridge/bridge';
 import {
-  Customer,
+  CustomerAddressV1,
   CustomerCreateParams,
   CustomerDeleteParams,
   CustomerGetParams,
   CustomerListParams,
-  CustomerSummaryPaged,
-  CustomerSummaryPagedDataPageNumberSchema,
-  CustomerUnmasked,
+  CustomerSummaryPagedV1,
+  CustomerSummaryPagedV1DataPageNumberSchema,
   CustomerUnmaskedParams,
+  CustomerUnmaskedV1,
   CustomerUpdateParams,
+  CustomerV1,
   Customers,
+  DeviceUnmaskedV1,
 } from './resources/customers/customers';
 import { Embed } from './resources/embed/embed';
 
@@ -256,14 +260,14 @@ export class Straddle extends Core.APIClient {
 Straddle.Embed = Embed;
 Straddle.Bridge = Bridge;
 Straddle.Customers = Customers;
-Straddle.CustomerSummaryPagedDataPageNumberSchema = CustomerSummaryPagedDataPageNumberSchema;
+Straddle.CustomerSummaryPagedV1DataPageNumberSchema = CustomerSummaryPagedV1DataPageNumberSchema;
 Straddle.Paykeys = Paykeys;
-Straddle.PaykeySummaryPagedDataPageNumberSchema = PaykeySummaryPagedDataPageNumberSchema;
+Straddle.PaykeySummaryPagedV1DataPageNumberSchema = PaykeySummaryPagedV1DataPageNumberSchema;
 Straddle.Charges = Charges;
 Straddle.FundingEvents = FundingEvents;
-Straddle.FundingEventSummaryPagedDataPageNumberSchema = FundingEventSummaryPagedDataPageNumberSchema;
+Straddle.FundingEventSummaryPagedV1DataPageNumberSchema = FundingEventSummaryPagedV1DataPageNumberSchema;
 Straddle.Payments = Payments;
-Straddle.PaymentSummaryPagedDataPageNumberSchema = PaymentSummaryPagedDataPageNumberSchema;
+Straddle.PaymentSummaryPagedV1DataPageNumberSchema = PaymentSummaryPagedV1DataPageNumberSchema;
 Straddle.Payouts = Payouts;
 export declare namespace Straddle {
   export type RequestOptions = Core.RequestOptions;
@@ -278,16 +282,18 @@ export declare namespace Straddle {
 
   export {
     Bridge as Bridge,
-    type BridgeToken as BridgeToken,
+    type BridgeTokenV1 as BridgeTokenV1,
     type BridgeInitializeParams as BridgeInitializeParams,
   };
 
   export {
     Customers as Customers,
-    type Customer as Customer,
-    type CustomerSummaryPaged as CustomerSummaryPaged,
-    type CustomerUnmasked as CustomerUnmasked,
-    CustomerSummaryPagedDataPageNumberSchema as CustomerSummaryPagedDataPageNumberSchema,
+    type CustomerAddressV1 as CustomerAddressV1,
+    type CustomerSummaryPagedV1 as CustomerSummaryPagedV1,
+    type CustomerUnmaskedV1 as CustomerUnmaskedV1,
+    type CustomerV1 as CustomerV1,
+    type DeviceUnmaskedV1 as DeviceUnmaskedV1,
+    CustomerSummaryPagedV1DataPageNumberSchema as CustomerSummaryPagedV1DataPageNumberSchema,
     type CustomerCreateParams as CustomerCreateParams,
     type CustomerUpdateParams as CustomerUpdateParams,
     type CustomerListParams as CustomerListParams,
@@ -298,18 +304,20 @@ export declare namespace Straddle {
 
   export {
     Paykeys as Paykeys,
-    type Paykey as Paykey,
-    type PaykeySummaryPaged as PaykeySummaryPaged,
-    type PaykeyUnmasked as PaykeyUnmasked,
-    PaykeySummaryPagedDataPageNumberSchema as PaykeySummaryPagedDataPageNumberSchema,
+    type PaykeySummaryPagedV1 as PaykeySummaryPagedV1,
+    type PaykeyUnmaskedV1 as PaykeyUnmaskedV1,
+    type PaykeyV1 as PaykeyV1,
+    type PaykeyRevealResponse as PaykeyRevealResponse,
+    PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
     type PaykeyGetParams as PaykeyGetParams,
+    type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
   };
 
   export {
     Charges as Charges,
-    type Charge as Charge,
+    type ChargeV1 as ChargeV1,
     type ChargeCreateParams as ChargeCreateParams,
     type ChargeUpdateParams as ChargeUpdateParams,
     type ChargeCancelParams as ChargeCancelParams,
@@ -320,23 +328,23 @@ export declare namespace Straddle {
 
   export {
     FundingEvents as FundingEvents,
-    type FundingEventSummaryItem as FundingEventSummaryItem,
-    type FundingEventSummaryPaged as FundingEventSummaryPaged,
-    FundingEventSummaryPagedDataPageNumberSchema as FundingEventSummaryPagedDataPageNumberSchema,
+    type FundingEventSummaryItemV1 as FundingEventSummaryItemV1,
+    type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
+    FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
     type FundingEventListParams as FundingEventListParams,
     type FundingEventGetParams as FundingEventGetParams,
   };
 
   export {
     Payments as Payments,
-    type PaymentSummaryPaged as PaymentSummaryPaged,
-    PaymentSummaryPagedDataPageNumberSchema as PaymentSummaryPagedDataPageNumberSchema,
+    type PaymentSummaryPagedV1 as PaymentSummaryPagedV1,
+    PaymentSummaryPagedV1DataPageNumberSchema as PaymentSummaryPagedV1DataPageNumberSchema,
     type PaymentListParams as PaymentListParams,
   };
 
   export {
     Payouts as Payouts,
-    type Payout as Payout,
+    type PayoutV1 as PayoutV1,
     type PayoutCreateParams as PayoutCreateParams,
     type PayoutUpdateParams as PayoutUpdateParams,
     type PayoutCancelParams as PayoutCancelParams,
@@ -344,6 +352,13 @@ export declare namespace Straddle {
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
   };
+
+  export type CustomerDetailsV1 = API.CustomerDetailsV1;
+  export type DeviceInfoV1 = API.DeviceInfoV1;
+  export type PagedResponseMetadata = API.PagedResponseMetadata;
+  export type PaykeyDetailsV1 = API.PaykeyDetailsV1;
+  export type ResponseMetadata = API.ResponseMetadata;
+  export type StatusDetailsV1 = API.StatusDetailsV1;
 }
 
 export { toFile, fileFromPath } from './uploads';

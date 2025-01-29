@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as Shared from '../shared';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Representatives extends APIResource {
@@ -107,6 +108,37 @@ export class Representatives extends APIResource {
       },
     });
   }
+
+  /**
+   * Retrieves the unmasked details of a representative that has previously been
+   * created. Supply the unique representative ID, and Straddle will return the
+   * corresponding representative information, including sensitive details. This
+   * endpoint requires additional authentication and should be used with caution.
+   */
+  unmask(
+    representativeId: string,
+    params?: RepresentativeUnmaskParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Representative>;
+  unmask(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
+  unmask(
+    representativeId: string,
+    params: RepresentativeUnmaskParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Representative> {
+    if (isRequestOptions(params)) {
+      return this.unmask(representativeId, {}, params);
+    }
+    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    return this._client.get(`/v1/representatives/${representativeId}/unmask`, {
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(requestId != null ? { 'request-id': requestId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
 }
 
 export class RepresentativePagedDataPageNumberSchema extends PageNumberSchema<RepresentativePaged.Data> {}
@@ -117,7 +149,7 @@ export interface Representative {
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  meta: Representative.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -264,7 +296,8 @@ export namespace Representative {
         | 'stuck'
         | 'verified'
         | 'failed_verification'
-        | 'disabled';
+        | 'disabled'
+        | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -272,21 +305,6 @@ export namespace Representative {
        */
       source: 'watchtower';
     }
-  }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
   }
 }
 
@@ -297,7 +315,7 @@ export interface RepresentativePaged {
    * Metadata about the API request, including an identifier, timestamp, and
    * pagination details.
    */
-  meta: RepresentativePaged.Meta;
+  meta: Shared.PagedResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -444,7 +462,8 @@ export namespace RepresentativePaged {
         | 'stuck'
         | 'verified'
         | 'failed_verification'
-        | 'disabled';
+        | 'disabled'
+        | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -452,52 +471,6 @@ export namespace RepresentativePaged {
        */
       source: 'watchtower';
     }
-  }
-
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-
-    /**
-     * Maximum allowed page size for this endpoint.
-     */
-    max_page_size: number;
-
-    /**
-     * Page number for paginated results.
-     */
-    page_number: number;
-
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
-
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
-
-    /**
-     * The order that the results were sorted by.
-     */
-    sort_order: 'asc' | 'desc';
-
-    /**
-     * Total number of items returned in this response.
-     */
-    total_items: number;
   }
 }
 
@@ -698,6 +671,16 @@ export interface RepresentativeListParams extends PageNumberSchemaParams {
   account_id?: string;
 
   /**
+   * Query param:
+   */
+  organization_id?: string;
+
+  /**
+   * Query param:
+   */
+  platform_id?: string;
+
+  /**
    * Query param: Sort By.
    */
   sort_by?: string;
@@ -731,6 +714,18 @@ export interface RepresentativeGetParams {
   'request-id'?: string;
 }
 
+export interface RepresentativeUnmaskParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
 Representatives.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
 
 export declare namespace Representatives {
@@ -742,5 +737,6 @@ export declare namespace Representatives {
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
     type RepresentativeGetParams as RepresentativeGetParams,
+    type RepresentativeUnmaskParams as RepresentativeUnmaskParams,
   };
 }

@@ -3,6 +3,7 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import * as Shared from './shared';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class FundingEvents extends APIResource {
@@ -13,14 +14,14 @@ export class FundingEvents extends APIResource {
   list(
     params?: FundingEventListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryPagedDataPageNumberSchema, FundingEventSummaryPaged.Data>;
+  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryPagedDataPageNumberSchema, FundingEventSummaryPaged.Data>;
+  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data>;
   list(
     params: FundingEventListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryPagedDataPageNumberSchema, FundingEventSummaryPaged.Data> {
+  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
@@ -30,7 +31,7 @@ export class FundingEvents extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
       ...query
     } = params;
-    return this._client.getAPIList('/v1/funding_events', FundingEventSummaryPagedDataPageNumberSchema, {
+    return this._client.getAPIList('/v1/funding_events', FundingEventSummaryPagedV1DataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -51,13 +52,13 @@ export class FundingEvents extends APIResource {
     id: string,
     params?: FundingEventGetParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryItem>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<FundingEventSummaryItem>;
+  ): Core.APIPromise<FundingEventSummaryItemV1>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<FundingEventSummaryItemV1>;
   get(
     id: string,
     params: FundingEventGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryItem> {
+  ): Core.APIPromise<FundingEventSummaryItemV1> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -78,15 +79,15 @@ export class FundingEvents extends APIResource {
   }
 }
 
-export class FundingEventSummaryPagedDataPageNumberSchema extends PageNumberSchema<FundingEventSummaryPaged.Data> {}
+export class FundingEventSummaryPagedV1DataPageNumberSchema extends PageNumberSchema<FundingEventSummaryPagedV1.Data> {}
 
-export interface FundingEventSummaryItem {
-  data: FundingEventSummaryItem.Data;
+export interface FundingEventSummaryItemV1 {
+  data: FundingEventSummaryItemV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  meta: FundingEventSummaryItem.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -100,7 +101,7 @@ export interface FundingEventSummaryItem {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace FundingEventSummaryItem {
+export namespace FundingEventSummaryItemV1 {
   export interface Data {
     /**
      * Unique identifier for the funding event.
@@ -128,6 +129,11 @@ export namespace FundingEventSummaryItem {
      * The number of payments associated with the funding event.
      */
     payment_count: number;
+
+    /**
+     * Trace number.
+     */
+    trace_numbers: Array<string>;
 
     /**
      * The date on which the funding event occurred. For `deposits` and `returns`, this
@@ -141,27 +147,12 @@ export namespace FundingEventSummaryItem {
      */
     trace_number?: string | null;
   }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
 }
 
-export interface FundingEventSummaryPaged {
-  data: Array<FundingEventSummaryPaged.Data>;
+export interface FundingEventSummaryPagedV1 {
+  data: Array<FundingEventSummaryPagedV1.Data>;
 
-  meta: FundingEventSummaryPaged.Meta;
+  meta: FundingEventSummaryPagedV1.Meta;
 
   /**
    * Indicates the structure of the returned content.
@@ -175,7 +166,7 @@ export interface FundingEventSummaryPaged {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace FundingEventSummaryPaged {
+export namespace FundingEventSummaryPagedV1 {
   export interface Data {
     /**
      * Unique identifier for the funding event.
@@ -203,6 +194,11 @@ export namespace FundingEventSummaryPaged {
      * The number of payments associated with the funding event.
      */
     payment_count: number;
+
+    /**
+     * Trace number.
+     */
+    trace_numbers: Array<string>;
 
     /**
      * The date on which the funding event occurred. For `deposits` and `returns`, this
@@ -251,6 +247,11 @@ export namespace FundingEventSummaryPaged {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
@@ -329,13 +330,13 @@ export interface FundingEventGetParams {
   'Straddle-Account-Id'?: string;
 }
 
-FundingEvents.FundingEventSummaryPagedDataPageNumberSchema = FundingEventSummaryPagedDataPageNumberSchema;
+FundingEvents.FundingEventSummaryPagedV1DataPageNumberSchema = FundingEventSummaryPagedV1DataPageNumberSchema;
 
 export declare namespace FundingEvents {
   export {
-    type FundingEventSummaryItem as FundingEventSummaryItem,
-    type FundingEventSummaryPaged as FundingEventSummaryPaged,
-    FundingEventSummaryPagedDataPageNumberSchema as FundingEventSummaryPagedDataPageNumberSchema,
+    type FundingEventSummaryItemV1 as FundingEventSummaryItemV1,
+    type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
+    FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
     type FundingEventListParams as FundingEventListParams,
     type FundingEventGetParams as FundingEventGetParams,
   };

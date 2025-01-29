@@ -3,6 +3,7 @@
 import { APIResource } from '../../../resource';
 import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
+import * as Shared from '../../shared';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
 
 export class CapabilityRequests extends APIResource {
@@ -14,13 +15,13 @@ export class CapabilityRequests extends APIResource {
     accountId: string,
     params?: CapabilityRequestCreateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CapabilityRequestPaged>;
-  create(accountId: string, options?: Core.RequestOptions): Core.APIPromise<CapabilityRequestPaged>;
+  ): Core.APIPromise<CapabilityRequestPagedV1>;
+  create(accountId: string, options?: Core.RequestOptions): Core.APIPromise<CapabilityRequestPagedV1>;
   create(
     accountId: string,
     params: CapabilityRequestCreateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CapabilityRequestPaged> {
+  ): Core.APIPromise<CapabilityRequestPagedV1> {
     if (isRequestOptions(params)) {
       return this.create(accountId, {}, params);
     }
@@ -45,23 +46,23 @@ export class CapabilityRequests extends APIResource {
     accountId: string,
     params?: CapabilityRequestListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data>;
+  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data>;
   list(
     accountId: string,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data>;
+  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data>;
   list(
     accountId: string,
     params: CapabilityRequestListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<CapabilityRequestPagedDataPageNumberSchema, CapabilityRequestPaged.Data> {
+  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list(accountId, {}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList(
       `/v1/accounts/${accountId}/capability_requests`,
-      CapabilityRequestPagedDataPageNumberSchema,
+      CapabilityRequestPagedV1DataPageNumberSchema,
       {
         query,
         ...options,
@@ -75,16 +76,16 @@ export class CapabilityRequests extends APIResource {
   }
 }
 
-export class CapabilityRequestPagedDataPageNumberSchema extends PageNumberSchema<CapabilityRequestPaged.Data> {}
+export class CapabilityRequestPagedV1DataPageNumberSchema extends PageNumberSchema<CapabilityRequestPagedV1.Data> {}
 
-export interface CapabilityRequestPaged {
-  data: Array<CapabilityRequestPaged.Data>;
+export interface CapabilityRequestPagedV1 {
+  data: Array<CapabilityRequestPagedV1.Data>;
 
   /**
    * Metadata about the API request, including an identifier, timestamp, and
    * pagination details.
    */
-  meta: CapabilityRequestPaged.Meta;
+  meta: Shared.PagedResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -98,7 +99,7 @@ export interface CapabilityRequestPaged {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace CapabilityRequestPaged {
+export namespace CapabilityRequestPagedV1 {
   export interface Data {
     /**
      * Unique identifier for the capability request.
@@ -125,7 +126,7 @@ export namespace CapabilityRequestPaged {
     /**
      * The current status of the capability request.
      */
-    status: 'active' | 'inactive' | 'in_review' | 'rejected';
+    status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing';
 
     /**
      * The specific type of capability being requested within the category.
@@ -141,52 +142,6 @@ export namespace CapabilityRequestPaged {
      * Any specific settings or configurations related to the requested capability.
      */
     settings?: Record<string, unknown> | null;
-  }
-
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-
-    /**
-     * Maximum allowed page size for this endpoint.
-     */
-    max_page_size: number;
-
-    /**
-     * Page number for paginated results.
-     */
-    page_number: number;
-
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
-
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
-
-    /**
-     * The order that the results were sorted by.
-     */
-    sort_order: 'asc' | 'desc';
-
-    /**
-     * Total number of items returned in this response.
-     */
-    total_items: number;
   }
 }
 
@@ -365,12 +320,13 @@ export interface CapabilityRequestListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
-CapabilityRequests.CapabilityRequestPagedDataPageNumberSchema = CapabilityRequestPagedDataPageNumberSchema;
+CapabilityRequests.CapabilityRequestPagedV1DataPageNumberSchema =
+  CapabilityRequestPagedV1DataPageNumberSchema;
 
 export declare namespace CapabilityRequests {
   export {
-    type CapabilityRequestPaged as CapabilityRequestPaged,
-    CapabilityRequestPagedDataPageNumberSchema as CapabilityRequestPagedDataPageNumberSchema,
+    type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
+    CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };
