@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-01-29)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/straddleio/straddle-node/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Features
+
+* **api:** Add new endpoints ([#18](https://github.com/straddleio/straddle-node/issues/18)) ([2258de1](https://github.com/straddleio/straddle-node/commit/2258de19391535fb1a743fc362d259cff93e600e))
+* **api:** Release Updates to SDK based on Open API Spec ([#16](https://github.com/straddleio/straddle-node/issues/16)) ([2550837](https://github.com/straddleio/straddle-node/commit/255083717789f19c79636c0c3fd9822ef81aca59))
+* **api:** Release Updates to SDK based on Open API Spec ([#19](https://github.com/straddleio/straddle-node/issues/19)) ([a141983](https://github.com/straddleio/straddle-node/commit/a141983c5d1f55dab1de7caf1e6776864b11b90c))
+* **api:** Update Config to add versioning to DTOs. Add Shared models to avoid duplication where possible. ([#21](https://github.com/straddleio/straddle-node/issues/21)) ([56691d7](https://github.com/straddleio/straddle-node/commit/56691d7dfdd9a4e590f57644afca278a309acfae))
+* **docs:** Preliminary update to SDK Spec ([#22](https://github.com/straddleio/straddle-node/issues/22)) ([ce41fe8](https://github.com/straddleio/straddle-node/commit/ce41fe8418669397d027e26dd6963088616cc14a))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([#20](https://github.com/straddleio/straddle-node/issues/20)) ([c1c37b5](https://github.com/straddleio/straddle-node/commit/c1c37b5f24ea6f72dbe2a0005bd0c1e5a5c2b5d0))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([#23](https://github.com/straddleio/straddle-node/issues/23)) ([1caaa19](https://github.com/straddleio/straddle-node/commit/1caaa19eff9f619138adb11ac54a0e75008ecd42))
+
 ## 0.1.0-alpha.2 (2025-01-28)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/straddleio/straddle-node/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
