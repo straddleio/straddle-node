@@ -224,6 +224,11 @@ export namespace ChargeV1 {
     consent_type: 'internet' | 'signed';
 
     /**
+     * Timestamp of when the charge was created.
+     */
+    created_at: string | null;
+
+    /**
      * The currency of the charge. Only USD is supported.
      */
     currency: string;
@@ -265,12 +270,15 @@ export namespace ChargeV1 {
      */
     status_details: Shared.StatusDetailsV1;
 
+    /**
+     * Status history.
+     */
     status_history: Array<Data.StatusHistory>;
 
     /**
-     * Timestamp of when the charge was created.
+     * Timestamp of when the charge was last updated.
      */
-    created_at?: string | null;
+    updated_at: string | null;
 
     /**
      * Information about the customer associated with the charge.
@@ -304,11 +312,6 @@ export namespace ChargeV1 {
      * payment rail.
      */
     processed_at?: string | null;
-
-    /**
-     * Timestamp of when the charge was last updated.
-     */
-    updated_at?: string | null;
   }
 
   export namespace Data {

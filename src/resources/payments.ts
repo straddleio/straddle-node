@@ -186,6 +186,11 @@ export namespace PaymentSummaryPagedV1 {
     sort_order: 'asc' | 'desc';
 
     total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
