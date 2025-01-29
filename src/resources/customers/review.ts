@@ -3,6 +3,8 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as ReviewAPI from './review';
+import * as Shared from '../shared';
 import * as CustomersAPI from './customers';
 
 export class Review extends APIResource {
@@ -16,7 +18,7 @@ export class Review extends APIResource {
     id: string,
     params: ReviewDecisionParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomersAPI.Customer> {
+  ): Core.APIPromise<CustomersAPI.CustomerV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -46,13 +48,13 @@ export class Review extends APIResource {
    * - Any network alerts detected Use this endpoint to gain insights into the
    *   verification process and make informed decisions about customer onboarding.
    */
-  get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReview>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReview>;
+  get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
   get(
     id: string,
     params: ReviewGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerReview> {
+  ): Core.APIPromise<CustomerReviewV1> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -73,13 +75,13 @@ export class Review extends APIResource {
   }
 }
 
-export interface CustomerReview {
-  data: CustomerReview.Data;
+export interface CustomerReviewV1 {
+  data: CustomerReviewV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  meta: CustomerReview.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -93,7 +95,7 @@ export interface CustomerReview {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace CustomerReview {
+export namespace CustomerReviewV1 {
   export interface Data {
     customer_details: Data.CustomerDetails;
 
@@ -136,7 +138,7 @@ export namespace CustomerReview {
        */
       updated_at: string;
 
-      address?: CustomerDetails.Address | null;
+      address?: CustomersAPI.CustomerAddressV1 | null;
 
       /**
        * Compliance profile for individual customers
@@ -161,33 +163,6 @@ export namespace CustomerReview {
     }
 
     export namespace CustomerDetails {
-      export interface Address {
-        /**
-         * Primary address line (e.g., street, PO Box).
-         */
-        address1: string;
-
-        /**
-         * City, district, suburb, town, or village.
-         */
-        city: string;
-
-        /**
-         * Two-letter state code.
-         */
-        state: string;
-
-        /**
-         * Zip or postal code.
-         */
-        zip: string;
-
-        /**
-         * Secondary address line (e.g., apartment, suite, unit, or building).
-         */
-        address2?: string;
-      }
-
       /**
        * Compliance profile for individual customers
        */
@@ -275,122 +250,15 @@ export namespace CustomerReview {
        * risk scores, correlation score, and more.
        */
       export interface Breakdown {
-        address?: Breakdown.Address;
+        address?: ReviewAPI.IdentityVerificationBreakdownV1;
 
-        email?: Breakdown.Email;
+        email?: ReviewAPI.IdentityVerificationBreakdownV1;
 
-        fraud?: Breakdown.Fraud;
+        fraud?: ReviewAPI.IdentityVerificationBreakdownV1;
 
-        phone?: Breakdown.Phone;
+        phone?: ReviewAPI.IdentityVerificationBreakdownV1;
 
-        synthetic?: Breakdown.Synthetic;
-      }
-
-      export namespace Breakdown {
-        export interface Address {
-          /**
-           * List of specific result codes from the fraud and risk screening.
-           */
-          codes?: Array<string> | null;
-
-          /**
-           * Represents the strength of the correlation between provided and known
-           * information. A higher score indicates a stronger correlation.
-           */
-          correlation_score?: number | null;
-
-          decision?: 'accept' | 'reject' | 'review';
-
-          /**
-           * Predicts the inherent risk associated with the customer for a given module. A
-           * higher score indicates a greater likelihood of fraud.
-           */
-          risk_score?: number | null;
-        }
-
-        export interface Email {
-          /**
-           * List of specific result codes from the fraud and risk screening.
-           */
-          codes?: Array<string> | null;
-
-          /**
-           * Represents the strength of the correlation between provided and known
-           * information. A higher score indicates a stronger correlation.
-           */
-          correlation_score?: number | null;
-
-          decision?: 'accept' | 'reject' | 'review';
-
-          /**
-           * Predicts the inherent risk associated with the customer for a given module. A
-           * higher score indicates a greater likelihood of fraud.
-           */
-          risk_score?: number | null;
-        }
-
-        export interface Fraud {
-          /**
-           * List of specific result codes from the fraud and risk screening.
-           */
-          codes?: Array<string> | null;
-
-          /**
-           * Represents the strength of the correlation between provided and known
-           * information. A higher score indicates a stronger correlation.
-           */
-          correlation_score?: number | null;
-
-          decision?: 'accept' | 'reject' | 'review';
-
-          /**
-           * Predicts the inherent risk associated with the customer for a given module. A
-           * higher score indicates a greater likelihood of fraud.
-           */
-          risk_score?: number | null;
-        }
-
-        export interface Phone {
-          /**
-           * List of specific result codes from the fraud and risk screening.
-           */
-          codes?: Array<string> | null;
-
-          /**
-           * Represents the strength of the correlation between provided and known
-           * information. A higher score indicates a stronger correlation.
-           */
-          correlation_score?: number | null;
-
-          decision?: 'accept' | 'reject' | 'review';
-
-          /**
-           * Predicts the inherent risk associated with the customer for a given module. A
-           * higher score indicates a greater likelihood of fraud.
-           */
-          risk_score?: number | null;
-        }
-
-        export interface Synthetic {
-          /**
-           * List of specific result codes from the fraud and risk screening.
-           */
-          codes?: Array<string> | null;
-
-          /**
-           * Represents the strength of the correlation between provided and known
-           * information. A higher score indicates a stronger correlation.
-           */
-          correlation_score?: number | null;
-
-          decision?: 'accept' | 'reject' | 'review';
-
-          /**
-           * Predicts the inherent risk associated with the customer for a given module. A
-           * higher score indicates a greater likelihood of fraud.
-           */
-          risk_score?: number | null;
-        }
+        synthetic?: ReviewAPI.IdentityVerificationBreakdownV1;
       }
 
       export interface KYC {
@@ -463,21 +331,27 @@ export namespace CustomerReview {
       }
     }
   }
+}
+
+export interface IdentityVerificationBreakdownV1 {
+  /**
+   * List of specific result codes from the fraud and risk screening.
+   */
+  codes?: Array<string> | null;
 
   /**
-   * Metadata about the API request, including an identifier and timestamp.
+   * Represents the strength of the correlation between provided and known
+   * information. A higher score indicates a stronger correlation.
    */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
+  correlation_score?: number | null;
 
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
+  decision?: 'accept' | 'reject' | 'review';
+
+  /**
+   * Predicts the inherent risk associated with the customer for a given module. A
+   * higher score indicates a greater likelihood of fraud.
+   */
+  risk_score?: number | null;
 }
 
 export interface ReviewDecisionParams {
@@ -523,7 +397,8 @@ export interface ReviewGetParams {
 
 export declare namespace Review {
   export {
-    type CustomerReview as CustomerReview,
+    type CustomerReviewV1 as CustomerReviewV1,
+    type IdentityVerificationBreakdownV1 as IdentityVerificationBreakdownV1,
     type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
   };

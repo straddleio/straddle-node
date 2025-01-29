@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as Shared from '../shared';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Representatives extends APIResource {
@@ -117,7 +118,7 @@ export interface Representative {
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  meta: Representative.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -273,21 +274,6 @@ export namespace Representative {
       source: 'watchtower';
     }
   }
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
 }
 
 export interface RepresentativePaged {
@@ -297,7 +283,7 @@ export interface RepresentativePaged {
    * Metadata about the API request, including an identifier, timestamp, and
    * pagination details.
    */
-  meta: RepresentativePaged.Meta;
+  meta: Shared.PagedResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -452,52 +438,6 @@ export namespace RepresentativePaged {
        */
       source: 'watchtower';
     }
-  }
-
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-
-    /**
-     * Maximum allowed page size for this endpoint.
-     */
-    max_page_size: number;
-
-    /**
-     * Page number for paginated results.
-     */
-    page_number: number;
-
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
-
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
-
-    /**
-     * The order that the results were sorted by.
-     */
-    sort_order: 'asc' | 'desc';
-
-    /**
-     * Total number of items returned in this response.
-     */
-    total_items: number;
   }
 }
 
