@@ -3,12 +3,14 @@
 import { APIResource } from '../../../resource';
 import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
+import * as AccountsAPI from './accounts';
+import * as Shared from '../../shared';
 import * as CapabilityRequestsAPI from './capability-requests';
 import {
   CapabilityRequestCreateParams,
   CapabilityRequestListParams,
-  CapabilityRequestPaged,
-  CapabilityRequestPagedDataPageNumberSchema,
+  CapabilityRequestPagedV1,
+  CapabilityRequestPagedV1DataPageNumberSchema,
   CapabilityRequests,
 } from './capability-requests';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
@@ -23,7 +25,7 @@ export class Accounts extends APIResource {
    * endpoint allows you to set up an account with specified details, including
    * business information and access levels.
    */
-  create(params: AccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<Account> {
+  create(params: AccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<AccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.post('/v1/accounts', {
       body,
@@ -44,7 +46,7 @@ export class Accounts extends APIResource {
     accountId: string,
     params: AccountUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Account> {
+  ): Core.APIPromise<AccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.put(`/v1/accounts/${accountId}`, {
       body,
@@ -66,17 +68,19 @@ export class Accounts extends APIResource {
   list(
     params?: AccountListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data>;
-  list(options?: Core.RequestOptions): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data>;
+  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
   list(
     params: AccountListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedDataPageNumberSchema, AccountPaged.Data> {
+  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/accounts', AccountPagedDataPageNumberSchema, {
+    return this._client.getAPIList('/v1/accounts', AccountPagedV1DataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -92,13 +96,17 @@ export class Accounts extends APIResource {
    * unique account ID that was returned from your previous request, and Straddle
    * will return the corresponding account information.
    */
-  get(accountId: string, params?: AccountGetParams, options?: Core.RequestOptions): Core.APIPromise<Account>;
-  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<Account>;
+  get(
+    accountId: string,
+    params?: AccountGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<AccountV1>;
+  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
   get(
     accountId: string,
     params: AccountGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Account> {
+  ): Core.APIPromise<AccountV1> {
     if (isRequestOptions(params)) {
       return this.get(accountId, {}, params);
     }
@@ -122,7 +130,7 @@ export class Accounts extends APIResource {
     accountId: string,
     params: AccountOnboardParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Account> {
+  ): Core.APIPromise<AccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.post(`/v1/accounts/${accountId}/onboard`, {
       body,
@@ -143,13 +151,13 @@ export class Accounts extends APIResource {
     accountId: string,
     params?: AccountSimulateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Account>;
-  simulate(accountId: string, options?: Core.RequestOptions): Core.APIPromise<Account>;
+  ): Core.APIPromise<AccountV1>;
+  simulate(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
   simulate(
     accountId: string,
     params: AccountSimulateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Account> {
+  ): Core.APIPromise<AccountV1> {
     if (isRequestOptions(params)) {
       return this.simulate(accountId, {}, params);
     }
@@ -166,15 +174,16 @@ export class Accounts extends APIResource {
   }
 }
 
-export class AccountPagedDataPageNumberSchema extends PageNumberSchema<AccountPaged.Data> {}
+export class AccountPagedV1DataPageNumberSchema extends PageNumberSchema<AccountPagedV1.Data> {}
 
-export interface Account {
-  data: Account.Data;
+export interface AccountPagedV1 {
+  data: Array<AccountPagedV1.Data>;
 
   /**
-   * Metadata about the API request, including an identifier and timestamp.
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
    */
-  meta: Account.Meta;
+  meta: Shared.PagedResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -188,7 +197,7 @@ export interface Account {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace Account {
+export namespace AccountPagedV1 {
   export interface Data {
     /**
      * Unique identifier for the account.
@@ -218,7 +227,7 @@ export namespace Account {
      */
     type: 'business';
 
-    business_profile?: Data.BusinessProfile;
+    business_profile?: AccountsAPI.BusinessProfileV1;
 
     capabilities?: Data.Capabilities;
 
@@ -241,7 +250,7 @@ export namespace Account {
 
     settings?: Data.Settings;
 
-    terms_of_service?: Data.TermsOfService;
+    terms_of_service?: AccountsAPI.TermsOfServiceV1;
 
     /**
      * Timestamp of the most recent update to the account.
@@ -283,123 +292,6 @@ export namespace Account {
       source: 'watchtower';
     }
 
-    export interface BusinessProfile {
-      /**
-       * The operating or trade name of the business.
-       */
-      name: string;
-
-      /**
-       * URL of the business's primary marketing website.
-       */
-      website: string;
-
-      /**
-       * The address object is optional. If provided, it must be a valid address.
-       */
-      address?: BusinessProfile.Address | null;
-
-      /**
-       * A brief description of the business and its products or services.
-       */
-      description?: string | null;
-
-      industry?: BusinessProfile.Industry;
-
-      /**
-       * The official registered name of the business.
-       */
-      legal_name?: string | null;
-
-      /**
-       * The primary contact phone number for the business.
-       */
-      phone?: string | null;
-
-      support_channels?: BusinessProfile.SupportChannels;
-
-      /**
-       * The business's tax identification number (e.g., EIN in the US).
-       */
-      tax_id?: string | null;
-
-      /**
-       * A description of how the business intends to use Straddle's services.
-       */
-      use_case?: string | null;
-    }
-
-    export namespace BusinessProfile {
-      /**
-       * The address object is optional. If provided, it must be a valid address.
-       */
-      export interface Address {
-        /**
-         * City, district, suburb, town, or village.
-         */
-        city?: string | null;
-
-        /**
-         * The country of the address, in ISO 3166-1 alpha-2 format.
-         */
-        country?: string | null;
-
-        /**
-         * Primary address line (e.g., street, PO Box).
-         */
-        line1?: string | null;
-
-        /**
-         * Secondary address line (e.g., apartment, suite, unit, or building).
-         */
-        line2?: string | null;
-
-        /**
-         * Postal or ZIP code.
-         */
-        postal_code?: string | null;
-
-        /**
-         * Two-letter state code.
-         */
-        state?: string | null;
-      }
-
-      export interface Industry {
-        /**
-         * The general category of the industry. Required if not providing MCC.
-         */
-        category?: string | null;
-
-        /**
-         * The Merchant Category Code (MCC) that best describes the business. Optional.
-         */
-        mcc?: string | null;
-
-        /**
-         * The specific sector within the industry category. Required if not providing MCC.
-         */
-        sector?: string | null;
-      }
-
-      export interface SupportChannels {
-        /**
-         * The email address for customer support inquiries.
-         */
-        email?: string | null;
-
-        /**
-         * The phone number for customer support.
-         */
-        phone?: string | null;
-
-        /**
-         * The URL of the business's customer support page or contact form.
-         */
-        url?: string | null;
-      }
-    }
-
     export interface Capabilities {
       consent_types: Capabilities.ConsentTypes;
 
@@ -414,63 +306,25 @@ export namespace Account {
          * Whether the internet payment authorization capability is enabled for the
          * account.
          */
-        internet: ConsentTypes.Internet;
+        internet: AccountsAPI.CapabilityV1;
 
         /**
          * Whether the signed agreement payment authorization capability is enabled for the
          * account.
          */
-        signed_agreement: ConsentTypes.SignedAgreement;
-      }
-
-      export namespace ConsentTypes {
-        /**
-         * Whether the internet payment authorization capability is enabled for the
-         * account.
-         */
-        export interface Internet {
-          capability_status: 'active' | 'inactive';
-        }
-
-        /**
-         * Whether the signed agreement payment authorization capability is enabled for the
-         * account.
-         */
-        export interface SignedAgreement {
-          capability_status: 'active' | 'inactive';
-        }
+        signed_agreement: AccountsAPI.CapabilityV1;
       }
 
       export interface CustomerTypes {
-        businesses: CustomerTypes.Businesses;
+        businesses: AccountsAPI.CapabilityV1;
 
-        individuals: CustomerTypes.Individuals;
-      }
-
-      export namespace CustomerTypes {
-        export interface Businesses {
-          capability_status: 'active' | 'inactive';
-        }
-
-        export interface Individuals {
-          capability_status: 'active' | 'inactive';
-        }
+        individuals: AccountsAPI.CapabilityV1;
       }
 
       export interface PaymentTypes {
-        charges: PaymentTypes.Charges;
+        charges: AccountsAPI.CapabilityV1;
 
-        payouts: PaymentTypes.Payouts;
-      }
-
-      export namespace PaymentTypes {
-        export interface Charges {
-          capability_status: 'active' | 'inactive';
-        }
-
-        export interface Payouts {
-          capability_status: 'active' | 'inactive';
-        }
+        payouts: AccountsAPI.CapabilityV1;
       }
     }
 
@@ -548,60 +402,16 @@ export namespace Account {
         monthly_count: number;
       }
     }
-
-    export interface TermsOfService {
-      /**
-       * The datetime of when the terms of service were accepted, in ISO 8601 format.
-       */
-      accepted_date: string;
-
-      /**
-       * The type or version of the agreement accepted. Use `embedded` unless your
-       * platform was specifically enabled for `direct` agreements.
-       */
-      agreement_type: 'embedded' | 'direct';
-
-      /**
-       * The IP address from which the terms of service were accepted.
-       */
-      accepted_ip?: string | null;
-
-      /**
-       * The user agent string of the browser or application used to accept the terms.
-       */
-      accepted_user_agent?: string | null;
-
-      /**
-       * The URL where the full text of the accepted agreement can be found.
-       */
-      agreement_url?: string | null;
-    }
   }
+}
+
+export interface AccountV1 {
+  data: AccountV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
-}
-
-export interface AccountPaged {
-  data: Array<AccountPaged.Data>;
-
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
-  meta: AccountPaged.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -615,7 +425,7 @@ export interface AccountPaged {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace AccountPaged {
+export namespace AccountV1 {
   export interface Data {
     /**
      * Unique identifier for the account.
@@ -645,7 +455,7 @@ export namespace AccountPaged {
      */
     type: 'business';
 
-    business_profile?: Data.BusinessProfile;
+    business_profile?: AccountsAPI.BusinessProfileV1;
 
     capabilities?: Data.Capabilities;
 
@@ -668,7 +478,7 @@ export namespace AccountPaged {
 
     settings?: Data.Settings;
 
-    terms_of_service?: Data.TermsOfService;
+    terms_of_service?: AccountsAPI.TermsOfServiceV1;
 
     /**
      * Timestamp of the most recent update to the account.
@@ -710,123 +520,6 @@ export namespace AccountPaged {
       source: 'watchtower';
     }
 
-    export interface BusinessProfile {
-      /**
-       * The operating or trade name of the business.
-       */
-      name: string;
-
-      /**
-       * URL of the business's primary marketing website.
-       */
-      website: string;
-
-      /**
-       * The address object is optional. If provided, it must be a valid address.
-       */
-      address?: BusinessProfile.Address | null;
-
-      /**
-       * A brief description of the business and its products or services.
-       */
-      description?: string | null;
-
-      industry?: BusinessProfile.Industry;
-
-      /**
-       * The official registered name of the business.
-       */
-      legal_name?: string | null;
-
-      /**
-       * The primary contact phone number for the business.
-       */
-      phone?: string | null;
-
-      support_channels?: BusinessProfile.SupportChannels;
-
-      /**
-       * The business's tax identification number (e.g., EIN in the US).
-       */
-      tax_id?: string | null;
-
-      /**
-       * A description of how the business intends to use Straddle's services.
-       */
-      use_case?: string | null;
-    }
-
-    export namespace BusinessProfile {
-      /**
-       * The address object is optional. If provided, it must be a valid address.
-       */
-      export interface Address {
-        /**
-         * City, district, suburb, town, or village.
-         */
-        city?: string | null;
-
-        /**
-         * The country of the address, in ISO 3166-1 alpha-2 format.
-         */
-        country?: string | null;
-
-        /**
-         * Primary address line (e.g., street, PO Box).
-         */
-        line1?: string | null;
-
-        /**
-         * Secondary address line (e.g., apartment, suite, unit, or building).
-         */
-        line2?: string | null;
-
-        /**
-         * Postal or ZIP code.
-         */
-        postal_code?: string | null;
-
-        /**
-         * Two-letter state code.
-         */
-        state?: string | null;
-      }
-
-      export interface Industry {
-        /**
-         * The general category of the industry. Required if not providing MCC.
-         */
-        category?: string | null;
-
-        /**
-         * The Merchant Category Code (MCC) that best describes the business. Optional.
-         */
-        mcc?: string | null;
-
-        /**
-         * The specific sector within the industry category. Required if not providing MCC.
-         */
-        sector?: string | null;
-      }
-
-      export interface SupportChannels {
-        /**
-         * The email address for customer support inquiries.
-         */
-        email?: string | null;
-
-        /**
-         * The phone number for customer support.
-         */
-        phone?: string | null;
-
-        /**
-         * The URL of the business's customer support page or contact form.
-         */
-        url?: string | null;
-      }
-    }
-
     export interface Capabilities {
       consent_types: Capabilities.ConsentTypes;
 
@@ -841,63 +534,25 @@ export namespace AccountPaged {
          * Whether the internet payment authorization capability is enabled for the
          * account.
          */
-        internet: ConsentTypes.Internet;
+        internet: AccountsAPI.CapabilityV1;
 
         /**
          * Whether the signed agreement payment authorization capability is enabled for the
          * account.
          */
-        signed_agreement: ConsentTypes.SignedAgreement;
-      }
-
-      export namespace ConsentTypes {
-        /**
-         * Whether the internet payment authorization capability is enabled for the
-         * account.
-         */
-        export interface Internet {
-          capability_status: 'active' | 'inactive';
-        }
-
-        /**
-         * Whether the signed agreement payment authorization capability is enabled for the
-         * account.
-         */
-        export interface SignedAgreement {
-          capability_status: 'active' | 'inactive';
-        }
+        signed_agreement: AccountsAPI.CapabilityV1;
       }
 
       export interface CustomerTypes {
-        businesses: CustomerTypes.Businesses;
+        businesses: AccountsAPI.CapabilityV1;
 
-        individuals: CustomerTypes.Individuals;
-      }
-
-      export namespace CustomerTypes {
-        export interface Businesses {
-          capability_status: 'active' | 'inactive';
-        }
-
-        export interface Individuals {
-          capability_status: 'active' | 'inactive';
-        }
+        individuals: AccountsAPI.CapabilityV1;
       }
 
       export interface PaymentTypes {
-        charges: PaymentTypes.Charges;
+        charges: AccountsAPI.CapabilityV1;
 
-        payouts: PaymentTypes.Payouts;
-      }
-
-      export namespace PaymentTypes {
-        export interface Charges {
-          capability_status: 'active' | 'inactive';
-        }
-
-        export interface Payouts {
-          capability_status: 'active' | 'inactive';
-        }
+        payouts: AccountsAPI.CapabilityV1;
       }
     }
 
@@ -975,81 +630,154 @@ export namespace AccountPaged {
         monthly_count: number;
       }
     }
-
-    export interface TermsOfService {
-      /**
-       * The datetime of when the terms of service were accepted, in ISO 8601 format.
-       */
-      accepted_date: string;
-
-      /**
-       * The type or version of the agreement accepted. Use `embedded` unless your
-       * platform was specifically enabled for `direct` agreements.
-       */
-      agreement_type: 'embedded' | 'direct';
-
-      /**
-       * The IP address from which the terms of service were accepted.
-       */
-      accepted_ip?: string | null;
-
-      /**
-       * The user agent string of the browser or application used to accept the terms.
-       */
-      accepted_user_agent?: string | null;
-
-      /**
-       * The URL where the full text of the accepted agreement can be found.
-       */
-      agreement_url?: string | null;
-    }
   }
+}
+
+/**
+ * The address object is optional. If provided, it must be a valid address.
+ */
+export interface AddressV1 {
+  /**
+   * City, district, suburb, town, or village.
+   */
+  city?: string | null;
 
   /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
+   * The country of the address, in ISO 3166-1 alpha-2 format.
    */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
+  country?: string | null;
 
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
+  /**
+   * Primary address line (e.g., street, PO Box).
+   */
+  line1?: string | null;
 
-    /**
-     * Maximum allowed page size for this endpoint.
-     */
-    max_page_size: number;
+  /**
+   * Secondary address line (e.g., apartment, suite, unit, or building).
+   */
+  line2?: string | null;
 
-    /**
-     * Page number for paginated results.
-     */
-    page_number: number;
+  /**
+   * Postal or ZIP code.
+   */
+  postal_code?: string | null;
 
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
+  /**
+   * Two-letter state code.
+   */
+  state?: string | null;
+}
 
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
+export interface BusinessProfileV1 {
+  /**
+   * The operating or trade name of the business.
+   */
+  name: string;
 
-    /**
-     * The order that the results were sorted by.
-     */
-    sort_order: 'asc' | 'desc';
+  /**
+   * URL of the business's primary marketing website.
+   */
+  website: string;
 
-    /**
-     * Total number of items returned in this response.
-     */
-    total_items: number;
-  }
+  /**
+   * The address object is optional. If provided, it must be a valid address.
+   */
+  address?: AddressV1 | null;
+
+  /**
+   * A brief description of the business and its products or services.
+   */
+  description?: string | null;
+
+  industry?: IndustryV1;
+
+  /**
+   * The official registered name of the business.
+   */
+  legal_name?: string | null;
+
+  /**
+   * The primary contact phone number for the business.
+   */
+  phone?: string | null;
+
+  support_channels?: SupportChannelsV1;
+
+  /**
+   * The business's tax identification number (e.g., EIN in the US).
+   */
+  tax_id?: string | null;
+
+  /**
+   * A description of how the business intends to use Straddle's services.
+   */
+  use_case?: string | null;
+}
+
+export interface CapabilityV1 {
+  capability_status: 'active' | 'inactive';
+}
+
+export interface IndustryV1 {
+  /**
+   * The general category of the industry. Required if not providing MCC.
+   */
+  category?: string | null;
+
+  /**
+   * The Merchant Category Code (MCC) that best describes the business. Optional.
+   */
+  mcc?: string | null;
+
+  /**
+   * The specific sector within the industry category. Required if not providing MCC.
+   */
+  sector?: string | null;
+}
+
+export interface SupportChannelsV1 {
+  /**
+   * The email address for customer support inquiries.
+   */
+  email?: string | null;
+
+  /**
+   * The phone number for customer support.
+   */
+  phone?: string | null;
+
+  /**
+   * The URL of the business's customer support page or contact form.
+   */
+  url?: string | null;
+}
+
+export interface TermsOfServiceV1 {
+  /**
+   * The datetime of when the terms of service were accepted, in ISO 8601 format.
+   */
+  accepted_date: string;
+
+  /**
+   * The type or version of the agreement accepted. Use `embedded` unless your
+   * platform was specifically enabled for `direct` agreements.
+   */
+  agreement_type: 'embedded' | 'direct';
+
+  /**
+   * The IP address from which the terms of service were accepted.
+   */
+  accepted_ip?: string | null;
+
+  /**
+   * The user agent string of the browser or application used to accept the terms.
+   */
+  accepted_user_agent?: string | null;
+
+  /**
+   * The URL where the full text of the accepted agreement can be found.
+   */
+  agreement_url?: string | null;
 }
 
 export interface AccountCreateParams {
@@ -1068,7 +796,7 @@ export interface AccountCreateParams {
   /**
    * Body param:
    */
-  business_profile: AccountCreateParams.BusinessProfile;
+  business_profile: BusinessProfileV1;
 
   /**
    * Body param: The unique identifier of the organization related to this account.
@@ -1099,130 +827,11 @@ export interface AccountCreateParams {
   'request-id'?: string;
 }
 
-export namespace AccountCreateParams {
-  export interface BusinessProfile {
-    /**
-     * The operating or trade name of the business.
-     */
-    name: string;
-
-    /**
-     * URL of the business's primary marketing website.
-     */
-    website: string;
-
-    /**
-     * The address object is optional. If provided, it must be a valid address.
-     */
-    address?: BusinessProfile.Address | null;
-
-    /**
-     * A brief description of the business and its products or services.
-     */
-    description?: string | null;
-
-    industry?: BusinessProfile.Industry;
-
-    /**
-     * The official registered name of the business.
-     */
-    legal_name?: string | null;
-
-    /**
-     * The primary contact phone number for the business.
-     */
-    phone?: string | null;
-
-    support_channels?: BusinessProfile.SupportChannels;
-
-    /**
-     * The business's tax identification number (e.g., EIN in the US).
-     */
-    tax_id?: string | null;
-
-    /**
-     * A description of how the business intends to use Straddle's services.
-     */
-    use_case?: string | null;
-  }
-
-  export namespace BusinessProfile {
-    /**
-     * The address object is optional. If provided, it must be a valid address.
-     */
-    export interface Address {
-      /**
-       * City, district, suburb, town, or village.
-       */
-      city?: string | null;
-
-      /**
-       * The country of the address, in ISO 3166-1 alpha-2 format.
-       */
-      country?: string | null;
-
-      /**
-       * Primary address line (e.g., street, PO Box).
-       */
-      line1?: string | null;
-
-      /**
-       * Secondary address line (e.g., apartment, suite, unit, or building).
-       */
-      line2?: string | null;
-
-      /**
-       * Postal or ZIP code.
-       */
-      postal_code?: string | null;
-
-      /**
-       * Two-letter state code.
-       */
-      state?: string | null;
-    }
-
-    export interface Industry {
-      /**
-       * The general category of the industry. Required if not providing MCC.
-       */
-      category?: string | null;
-
-      /**
-       * The Merchant Category Code (MCC) that best describes the business. Optional.
-       */
-      mcc?: string | null;
-
-      /**
-       * The specific sector within the industry category. Required if not providing MCC.
-       */
-      sector?: string | null;
-    }
-
-    export interface SupportChannels {
-      /**
-       * The email address for customer support inquiries.
-       */
-      email?: string | null;
-
-      /**
-       * The phone number for customer support.
-       */
-      phone?: string | null;
-
-      /**
-       * The URL of the business's customer support page or contact form.
-       */
-      url?: string | null;
-    }
-  }
-}
-
 export interface AccountUpdateParams {
   /**
    * Body param:
    */
-  business_profile: AccountUpdateParams.BusinessProfile;
+  business_profile: BusinessProfileV1;
 
   /**
    * Body param: Unique identifier for the account in your database, used for
@@ -1246,125 +855,6 @@ export interface AccountUpdateParams {
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
-}
-
-export namespace AccountUpdateParams {
-  export interface BusinessProfile {
-    /**
-     * The operating or trade name of the business.
-     */
-    name: string;
-
-    /**
-     * URL of the business's primary marketing website.
-     */
-    website: string;
-
-    /**
-     * The address object is optional. If provided, it must be a valid address.
-     */
-    address?: BusinessProfile.Address | null;
-
-    /**
-     * A brief description of the business and its products or services.
-     */
-    description?: string | null;
-
-    industry?: BusinessProfile.Industry;
-
-    /**
-     * The official registered name of the business.
-     */
-    legal_name?: string | null;
-
-    /**
-     * The primary contact phone number for the business.
-     */
-    phone?: string | null;
-
-    support_channels?: BusinessProfile.SupportChannels;
-
-    /**
-     * The business's tax identification number (e.g., EIN in the US).
-     */
-    tax_id?: string | null;
-
-    /**
-     * A description of how the business intends to use Straddle's services.
-     */
-    use_case?: string | null;
-  }
-
-  export namespace BusinessProfile {
-    /**
-     * The address object is optional. If provided, it must be a valid address.
-     */
-    export interface Address {
-      /**
-       * City, district, suburb, town, or village.
-       */
-      city?: string | null;
-
-      /**
-       * The country of the address, in ISO 3166-1 alpha-2 format.
-       */
-      country?: string | null;
-
-      /**
-       * Primary address line (e.g., street, PO Box).
-       */
-      line1?: string | null;
-
-      /**
-       * Secondary address line (e.g., apartment, suite, unit, or building).
-       */
-      line2?: string | null;
-
-      /**
-       * Postal or ZIP code.
-       */
-      postal_code?: string | null;
-
-      /**
-       * Two-letter state code.
-       */
-      state?: string | null;
-    }
-
-    export interface Industry {
-      /**
-       * The general category of the industry. Required if not providing MCC.
-       */
-      category?: string | null;
-
-      /**
-       * The Merchant Category Code (MCC) that best describes the business. Optional.
-       */
-      mcc?: string | null;
-
-      /**
-       * The specific sector within the industry category. Required if not providing MCC.
-       */
-      sector?: string | null;
-    }
-
-    export interface SupportChannels {
-      /**
-       * The email address for customer support inquiries.
-       */
-      email?: string | null;
-
-      /**
-       * The phone number for customer support.
-       */
-      phone?: string | null;
-
-      /**
-       * The URL of the business's customer support page or contact form.
-       */
-      url?: string | null;
-    }
-  }
 }
 
 export interface AccountListParams extends PageNumberSchemaParams {
@@ -1406,7 +896,7 @@ export interface AccountOnboardParams {
   /**
    * Body param:
    */
-  terms_of_service: AccountOnboardParams.TermsOfService;
+  terms_of_service: TermsOfServiceV1;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -1418,36 +908,6 @@ export interface AccountOnboardParams {
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
-}
-
-export namespace AccountOnboardParams {
-  export interface TermsOfService {
-    /**
-     * The datetime of when the terms of service were accepted, in ISO 8601 format.
-     */
-    accepted_date: string;
-
-    /**
-     * The type or version of the agreement accepted. Use `embedded` unless your
-     * platform was specifically enabled for `direct` agreements.
-     */
-    agreement_type: 'embedded' | 'direct';
-
-    /**
-     * The IP address from which the terms of service were accepted.
-     */
-    accepted_ip?: string | null;
-
-    /**
-     * The user agent string of the browser or application used to accept the terms.
-     */
-    accepted_user_agent?: string | null;
-
-    /**
-     * The URL where the full text of the accepted agreement can be found.
-     */
-    agreement_url?: string | null;
-  }
 }
 
 export interface AccountSimulateParams {
@@ -1468,15 +928,21 @@ export interface AccountSimulateParams {
   'request-id'?: string;
 }
 
-Accounts.AccountPagedDataPageNumberSchema = AccountPagedDataPageNumberSchema;
+Accounts.AccountPagedV1DataPageNumberSchema = AccountPagedV1DataPageNumberSchema;
 Accounts.CapabilityRequests = CapabilityRequests;
-Accounts.CapabilityRequestPagedDataPageNumberSchema = CapabilityRequestPagedDataPageNumberSchema;
+Accounts.CapabilityRequestPagedV1DataPageNumberSchema = CapabilityRequestPagedV1DataPageNumberSchema;
 
 export declare namespace Accounts {
   export {
-    type Account as Account,
-    type AccountPaged as AccountPaged,
-    AccountPagedDataPageNumberSchema as AccountPagedDataPageNumberSchema,
+    type AccountPagedV1 as AccountPagedV1,
+    type AccountV1 as AccountV1,
+    type AddressV1 as AddressV1,
+    type BusinessProfileV1 as BusinessProfileV1,
+    type CapabilityV1 as CapabilityV1,
+    type IndustryV1 as IndustryV1,
+    type SupportChannelsV1 as SupportChannelsV1,
+    type TermsOfServiceV1 as TermsOfServiceV1,
+    AccountPagedV1DataPageNumberSchema as AccountPagedV1DataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
     type AccountUpdateParams as AccountUpdateParams,
     type AccountListParams as AccountListParams,
@@ -1487,8 +953,8 @@ export declare namespace Accounts {
 
   export {
     CapabilityRequests as CapabilityRequests,
-    type CapabilityRequestPaged as CapabilityRequestPaged,
-    CapabilityRequestPagedDataPageNumberSchema as CapabilityRequestPagedDataPageNumberSchema,
+    type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
+    CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };

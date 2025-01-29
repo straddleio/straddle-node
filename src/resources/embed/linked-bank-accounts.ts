@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as Shared from '../shared';
 import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class LinkedBankAccounts extends APIResource {
@@ -15,7 +16,7 @@ export class LinkedBankAccounts extends APIResource {
   create(
     params: LinkedBankAccountCreateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccount> {
+  ): Core.APIPromise<LinkedBankAccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.post('/v1/linked_bank_accounts', {
       body,
@@ -38,7 +39,7 @@ export class LinkedBankAccounts extends APIResource {
     linkedBankAccountId: string,
     params: LinkedBankAccountUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccount> {
+  ): Core.APIPromise<LinkedBankAccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.put(`/v1/linked_bank_accounts/${linkedBankAccountId}`, {
       body,
@@ -60,19 +61,19 @@ export class LinkedBankAccounts extends APIResource {
   list(
     params?: LinkedBankAccountListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedDataPageNumberSchema, LinkedBankAccountPaged.Data>;
+  ): Core.PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedDataPageNumberSchema, LinkedBankAccountPaged.Data>;
+  ): Core.PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data>;
   list(
     params: LinkedBankAccountListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedDataPageNumberSchema, LinkedBankAccountPaged.Data> {
+  ): Core.PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/linked_bank_accounts', LinkedBankAccountPagedDataPageNumberSchema, {
+    return this._client.getAPIList('/v1/linked_bank_accounts', LinkedBankAccountPagedV1DataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -93,13 +94,13 @@ export class LinkedBankAccounts extends APIResource {
     linkedBankAccountId: string,
     params?: LinkedBankAccountGetParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccount>;
-  get(linkedBankAccountId: string, options?: Core.RequestOptions): Core.APIPromise<LinkedBankAccount>;
+  ): Core.APIPromise<LinkedBankAccountV1>;
+  get(linkedBankAccountId: string, options?: Core.RequestOptions): Core.APIPromise<LinkedBankAccountV1>;
   get(
     linkedBankAccountId: string,
     params: LinkedBankAccountGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccount> {
+  ): Core.APIPromise<LinkedBankAccountV1> {
     if (isRequestOptions(params)) {
       return this.get(linkedBankAccountId, {}, params);
     }
@@ -125,16 +126,16 @@ export class LinkedBankAccounts extends APIResource {
     linkedBankAccountId: string,
     params?: LinkedBankAccountUnmaskParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountUnmask>;
+  ): Core.APIPromise<LinkedBankAccountUnmaskV1>;
   unmask(
     linkedBankAccountId: string,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountUnmask>;
+  ): Core.APIPromise<LinkedBankAccountUnmaskV1>;
   unmask(
     linkedBankAccountId: string,
     params: LinkedBankAccountUnmaskParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountUnmask> {
+  ): Core.APIPromise<LinkedBankAccountUnmaskV1> {
     if (isRequestOptions(params)) {
       return this.unmask(linkedBankAccountId, {}, params);
     }
@@ -150,15 +151,16 @@ export class LinkedBankAccounts extends APIResource {
   }
 }
 
-export class LinkedBankAccountPagedDataPageNumberSchema extends PageNumberSchema<LinkedBankAccountPaged.Data> {}
+export class LinkedBankAccountPagedV1DataPageNumberSchema extends PageNumberSchema<LinkedBankAccountPagedV1.Data> {}
 
-export interface LinkedBankAccount {
-  data: LinkedBankAccount.Data;
+export interface LinkedBankAccountPagedV1 {
+  data: Array<LinkedBankAccountPagedV1.Data>;
 
   /**
-   * Metadata about the API request, including an identifier and timestamp.
+   * Metadata about the API request, including an identifier, timestamp, and
+   * pagination details.
    */
-  meta: LinkedBankAccount.Meta;
+  meta: Shared.PagedResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -172,7 +174,7 @@ export interface LinkedBankAccount {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace LinkedBankAccount {
+export namespace LinkedBankAccountPagedV1 {
   export interface Data {
     /**
      * Unique identifier for the linked bank account.
@@ -253,31 +255,15 @@ export namespace LinkedBankAccount {
       source: 'watchtower';
     }
   }
+}
+
+export interface LinkedBankAccountUnmaskV1 {
+  data: LinkedBankAccountUnmaskV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-  }
-}
-
-export interface LinkedBankAccountPaged {
-  data: Array<LinkedBankAccountPaged.Data>;
-
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
-  meta: LinkedBankAccountPaged.Meta;
+  meta: Shared.ResponseMetadata;
 
   /**
    * Indicates the structure of the returned content.
@@ -291,156 +277,7 @@ export interface LinkedBankAccountPaged {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace LinkedBankAccountPaged {
-  export interface Data {
-    /**
-     * Unique identifier for the linked bank account.
-     */
-    id: string;
-
-    /**
-     * The unique identifier of the Straddle account related to this bank account.
-     */
-    account_id: string;
-
-    bank_account: Data.BankAccount;
-
-    /**
-     * Timestamp of when the bank account object was created.
-     */
-    created_at: string;
-
-    /**
-     * The current status of the linked bank account.
-     */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
-
-    status_detail: Data.StatusDetail;
-
-    /**
-     * Timestamp of the most recent update to the linked bank account.
-     */
-    updated_at: string;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the linked bank account in a structured format.
-     */
-    metadata?: Record<string, string | null> | null;
-  }
-
-  export namespace Data {
-    export interface BankAccount {
-      account_holder: string;
-
-      account_mask: string;
-
-      institution_name: string;
-
-      routing_number: string;
-    }
-
-    export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
-      code: string;
-
-      /**
-       * A human-readable message describing the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled';
-
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
-      source: 'watchtower';
-    }
-  }
-
-  /**
-   * Metadata about the API request, including an identifier, timestamp, and
-   * pagination details.
-   */
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-
-    /**
-     * Maximum allowed page size for this endpoint.
-     */
-    max_page_size: number;
-
-    /**
-     * Page number for paginated results.
-     */
-    page_number: number;
-
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
-
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
-
-    /**
-     * The order that the results were sorted by.
-     */
-    sort_order: 'asc' | 'desc';
-
-    /**
-     * Total number of items returned in this response.
-     */
-    total_items: number;
-  }
-}
-
-export interface LinkedBankAccountUnmask {
-  data: LinkedBankAccountUnmask.Data;
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: LinkedBankAccountUnmask.Meta;
-
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace LinkedBankAccountUnmask {
+export namespace LinkedBankAccountUnmaskV1 {
   export interface Data {
     /**
      * Unique identifier for the linked bank account.
@@ -529,20 +366,108 @@ export namespace LinkedBankAccountUnmask {
       source: 'watchtower';
     }
   }
+}
+
+export interface LinkedBankAccountV1 {
+  data: LinkedBankAccountV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
    */
-  export interface Meta {
+  meta: Shared.ResponseMetadata;
+
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
+  response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace LinkedBankAccountV1 {
+  export interface Data {
     /**
-     * Unique identifier for this API request, useful for troubleshooting.
+     * Unique identifier for the linked bank account.
      */
-    api_request_id: string;
+    id: string;
 
     /**
-     * Timestamp for this API request, useful for troubleshooting.
+     * The unique identifier of the Straddle account related to this bank account.
      */
-    api_request_timestamp: string;
+    account_id: string;
+
+    bank_account: Data.BankAccount;
+
+    /**
+     * Timestamp of when the bank account object was created.
+     */
+    created_at: string;
+
+    /**
+     * The current status of the linked bank account.
+     */
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+
+    status_detail: Data.StatusDetail;
+
+    /**
+     * Timestamp of the most recent update to the linked bank account.
+     */
+    updated_at: string;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the linked bank account in a structured format.
+     */
+    metadata?: Record<string, string | null> | null;
+  }
+
+  export namespace Data {
+    export interface BankAccount {
+      account_holder: string;
+
+      account_mask: string;
+
+      institution_name: string;
+
+      routing_number: string;
+    }
+
+    export interface StatusDetail {
+      /**
+       * A machine-readable code for the specific status, useful for programmatic
+       * handling.
+       */
+      code: string;
+
+      /**
+       * A human-readable message describing the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason:
+        | 'unverified'
+        | 'in_review'
+        | 'pending'
+        | 'stuck'
+        | 'verified'
+        | 'failed_verification'
+        | 'disabled';
+
+      /**
+       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
+       * tracking the cause of status updates.
+       */
+      source: 'watchtower';
+    }
   }
 }
 
@@ -692,14 +617,15 @@ export interface LinkedBankAccountUnmaskParams {
   'request-id'?: string;
 }
 
-LinkedBankAccounts.LinkedBankAccountPagedDataPageNumberSchema = LinkedBankAccountPagedDataPageNumberSchema;
+LinkedBankAccounts.LinkedBankAccountPagedV1DataPageNumberSchema =
+  LinkedBankAccountPagedV1DataPageNumberSchema;
 
 export declare namespace LinkedBankAccounts {
   export {
-    type LinkedBankAccount as LinkedBankAccount,
-    type LinkedBankAccountPaged as LinkedBankAccountPaged,
-    type LinkedBankAccountUnmask as LinkedBankAccountUnmask,
-    LinkedBankAccountPagedDataPageNumberSchema as LinkedBankAccountPagedDataPageNumberSchema,
+    type LinkedBankAccountPagedV1 as LinkedBankAccountPagedV1,
+    type LinkedBankAccountUnmaskV1 as LinkedBankAccountUnmaskV1,
+    type LinkedBankAccountV1 as LinkedBankAccountV1,
+    LinkedBankAccountPagedV1DataPageNumberSchema as LinkedBankAccountPagedV1DataPageNumberSchema,
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
     type LinkedBankAccountListParams as LinkedBankAccountListParams,

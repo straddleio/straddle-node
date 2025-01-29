@@ -13,7 +13,7 @@ export class Link extends APIResource {
   bankAccount(
     params: LinkBankAccountParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeysAPI.Paykey> {
+  ): Core.APIPromise<PaykeysAPI.PaykeyV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -37,7 +37,7 @@ export class Link extends APIResource {
    * endpoint allows you to create a secure payment token linked to a bank account
    * authenticated through Plaid.
    */
-  plaid(params: LinkPlaidParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.Paykey> {
+  plaid(params: LinkPlaidParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.PaykeyV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
