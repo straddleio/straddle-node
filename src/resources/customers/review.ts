@@ -362,32 +362,6 @@ export namespace CustomerReviewV1 {
          * Information about any matches found during screening.
          */
         matched?: Array<string> | null;
-
-        /**
-         * Information about any matches found during screening.
-         */
-        matches?: Array<WatchList.Match> | null;
-      }
-
-      export namespace WatchList {
-        export interface Match {
-          correlation: 'unknown' | 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
-
-          /**
-           * The name of the list the match was found.
-           */
-          list_name: string;
-
-          /**
-           * Data fields that matched.
-           */
-          match_fields: Array<string>;
-
-          /**
-           * Relevent Urls to review.
-           */
-          urls: Array<string>;
-        }
       }
     }
   }
