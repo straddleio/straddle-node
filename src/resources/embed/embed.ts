@@ -7,7 +7,6 @@ import {
   LinkedBankAccountGetParams,
   LinkedBankAccountListParams,
   LinkedBankAccountPagedV1,
-  LinkedBankAccountPagedV1DataPageNumberSchema,
   LinkedBankAccountUnmaskParams,
   LinkedBankAccountUnmaskV1,
   LinkedBankAccountUpdateParams,
@@ -20,7 +19,6 @@ import {
   OrganizationGetParams,
   OrganizationListParams,
   OrganizationPagedV1,
-  OrganizationPagedV1DataPageNumberSchema,
   OrganizationV1,
   Organizations,
 } from './organizations';
@@ -31,7 +29,6 @@ import {
   RepresentativeGetParams,
   RepresentativeListParams,
   RepresentativePaged,
-  RepresentativePagedDataPageNumberSchema,
   RepresentativeUnmaskParams,
   RepresentativeUpdateParams,
   Representatives,
@@ -43,7 +40,6 @@ import {
   AccountListParams,
   AccountOnboardParams,
   AccountPagedV1,
-  AccountPagedV1DataPageNumberSchema,
   AccountSimulateParams,
   AccountUpdateParams,
   AccountV1,
@@ -66,13 +62,9 @@ export class Embed extends APIResource {
 }
 
 Embed.Accounts = Accounts;
-Embed.AccountPagedV1DataPageNumberSchema = AccountPagedV1DataPageNumberSchema;
 Embed.LinkedBankAccounts = LinkedBankAccounts;
-Embed.LinkedBankAccountPagedV1DataPageNumberSchema = LinkedBankAccountPagedV1DataPageNumberSchema;
 Embed.Organizations = Organizations;
-Embed.OrganizationPagedV1DataPageNumberSchema = OrganizationPagedV1DataPageNumberSchema;
 Embed.Representatives = Representatives;
-Embed.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
 
 export declare namespace Embed {
   export {
@@ -85,7 +77,6 @@ export declare namespace Embed {
     type IndustryV1 as IndustryV1,
     type SupportChannelsV1 as SupportChannelsV1,
     type TermsOfServiceV1 as TermsOfServiceV1,
-    AccountPagedV1DataPageNumberSchema as AccountPagedV1DataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
     type AccountUpdateParams as AccountUpdateParams,
     type AccountListParams as AccountListParams,
@@ -99,7 +90,6 @@ export declare namespace Embed {
     type LinkedBankAccountPagedV1 as LinkedBankAccountPagedV1,
     type LinkedBankAccountUnmaskV1 as LinkedBankAccountUnmaskV1,
     type LinkedBankAccountV1 as LinkedBankAccountV1,
-    LinkedBankAccountPagedV1DataPageNumberSchema as LinkedBankAccountPagedV1DataPageNumberSchema,
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
@@ -111,7 +101,6 @@ export declare namespace Embed {
     Organizations as Organizations,
     type OrganizationPagedV1 as OrganizationPagedV1,
     type OrganizationV1 as OrganizationV1,
-    OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
     type OrganizationGetParams as OrganizationGetParams,
@@ -121,7 +110,6 @@ export declare namespace Embed {
     Representatives as Representatives,
     type Representative as Representative,
     type RepresentativePaged as RepresentativePaged,
-    RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
