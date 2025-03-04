@@ -49,7 +49,7 @@ export class PaymentSummaryPagedV1DataPageNumberSchema extends PageNumberSchema<
 export interface PaymentSummaryPagedV1 {
   data: Array<PaymentSummaryPagedV1.Data>;
 
-  meta: PaymentSummaryPagedV1.Meta;
+  meta: Shared.PagedResponseMetadata2;
 
   /**
    * Indicates the structure of the returned content.
@@ -60,7 +60,7 @@ export interface PaymentSummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: Shared.ResponseTypeEnum;
 }
 
 export namespace PaymentSummaryPagedV1 {
@@ -111,12 +111,12 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * The type of payment. Valid values are `charge` or `payout`.
      */
-    payment_type: 'charge' | 'payout';
+    payment_type: Shared.PaymentTypeV1;
 
     /**
      * The current status of the `charge` or `payout`.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status: Shared.PaymentStatusV1;
 
     /**
      * Details about the current status of the `charge` or `payout`.
@@ -151,47 +151,6 @@ export namespace PaymentSummaryPagedV1 {
      */
     paykey_details?: Shared.PaykeyDetailsV1;
   }
-
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-
-    /**
-     * Maximum allowed page size for this endpoint.
-     */
-    max_page_size: number;
-
-    /**
-     * Page number for paginated results.
-     */
-    page_number: number;
-
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
-
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
-
-    sort_order: 'asc' | 'desc';
-
-    total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
-  }
 }
 
 export interface PaymentListParams extends PageNumberSchemaParams {
@@ -208,12 +167,12 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
+  default_sort?: Shared.PaymentSortByV1;
 
   /**
    * Query param:
    */
-  default_sort_order?: 'asc' | 'desc';
+  default_sort_order?: Shared.SortOrder;
 
   /**
    * Query param: Search using the `external_id` of a `charge` or `payout`.
@@ -286,14 +245,12 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: Search by the status of a `charge` or `payout`.
    */
-  payment_status?: Array<
-    'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
-  >;
+  payment_status?: Array<Shared.PaymentStatusV1>;
 
   /**
    * Query param: Search by the type of a `charge` or `payout`.
    */
-  payment_type?: Array<'charge' | 'payout'>;
+  payment_type?: Array<Shared.PaymentTypeV1>;
 
   /**
    * Query param: Search using a text string associated with a `charge` or `payout`.
@@ -303,12 +260,12 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
+  sort_by?: Shared.PaymentSortByV1;
 
   /**
    * Query param:
    */
-  sort_order?: 'asc' | 'desc';
+  sort_order?: Shared.SortOrder;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

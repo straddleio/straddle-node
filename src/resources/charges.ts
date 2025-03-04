@@ -9,7 +9,10 @@ export class Charges extends APIResource {
   /**
    * Use charges to collect money from a customer for the sale of goods or services.
    */
-  create(params: ChargeCreateParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1> {
+  create(
+    params: ChargeCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -32,7 +35,11 @@ export class Charges extends APIResource {
    * Change the values of parameters associated with a charge prior to processing.
    * The status of the charge must be `created`, `scheduled`, or `on_hold`.
    */
-  update(id: string, params: ChargeUpdateParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1> {
+  update(
+    id: string,
+    params: ChargeUpdateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -55,13 +62,17 @@ export class Charges extends APIResource {
    * Cancel a charge to prevent it from being originated for processing. The status
    * of the charge must be `created`, `scheduled`, or `on_hold`.
    */
-  cancel(id: string, params?: ChargeCancelParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
-  cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  cancel(
+    id: string,
+    params?: ChargeCancelParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse>;
+  cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.ChargeV1ItemResponse>;
   cancel(
     id: string,
     params: ChargeCancelParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ChargeV1> {
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse> {
     if (isRequestOptions(params)) {
       return this.cancel(id, {}, params);
     }
@@ -87,13 +98,17 @@ export class Charges extends APIResource {
    * Retrieves the details of an existing charge. Supply the unique charge `id`, and
    * Straddle will return the corresponding charge information.
    */
-  get(id: string, params?: ChargeGetParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  get(
+    id: string,
+    params?: ChargeGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.ChargeV1ItemResponse>;
   get(
     id: string,
     params: ChargeGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ChargeV1> {
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -117,13 +132,17 @@ export class Charges extends APIResource {
    * Place a charge on hold to prevent it from being originated for processing. The
    * status of the charge must be `created` or `scheduled`.
    */
-  hold(id: string, params?: ChargeHoldParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
-  hold(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  hold(
+    id: string,
+    params?: ChargeHoldParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse>;
+  hold(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.ChargeV1ItemResponse>;
   hold(
     id: string,
     params: ChargeHoldParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ChargeV1> {
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse> {
     if (isRequestOptions(params)) {
       return this.hold(id, {}, params);
     }
@@ -149,13 +168,17 @@ export class Charges extends APIResource {
    * Release a charge from an `on_hold` status to allow it to be rescheduled for
    * processing.
    */
-  release(id: string, params?: ChargeReleaseParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
-  release(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
+  release(
+    id: string,
+    params?: ChargeReleaseParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse>;
+  release(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.ChargeV1ItemResponse>;
   release(
     id: string,
     params: ChargeReleaseParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ChargeV1> {
+  ): Core.APIPromise<Shared.ChargeV1ItemResponse> {
     if (isRequestOptions(params)) {
       return this.release(id, {}, params);
     }
@@ -195,7 +218,7 @@ export interface ChargeV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: Shared.ResponseTypeEnum;
 }
 
 export namespace ChargeV1 {
@@ -213,7 +236,7 @@ export namespace ChargeV1 {
     /**
      * Configuration options for the charge.
      */
-    config: Data.Config;
+    config: Shared.ChargeConfigurationV1;
 
     /**
      * The channel or mechanism through which the payment was authorized. Use
@@ -221,7 +244,7 @@ export namespace ChargeV1 {
      * signed agreements where there is a consent form or contract. Use `signed` for
      * PDF signatures.
      */
-    consent_type: 'internet' | 'signed';
+    consent_type: Shared.ConsentTypeV1;
 
     /**
      * Timestamp of when the charge was created.
@@ -263,7 +286,7 @@ export namespace ChargeV1 {
     /**
      * The current status of the charge.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status: Shared.PaymentStatusV1;
 
     /**
      * Additional details about the current status of the charge.
@@ -273,7 +296,7 @@ export namespace ChargeV1 {
     /**
      * Status history.
      */
-    status_history: Array<Data.StatusHistory>;
+    status_history: Array<Shared.StatusHistoryV1>;
 
     /**
      * Timestamp of when the charge was last updated.
@@ -305,82 +328,13 @@ export namespace ChargeV1 {
     /**
      * The payment rail that the charge will be processed through.
      */
-    payment_rail?: 'ach';
+    payment_rail?: Shared.PaymentRailV1;
 
     /**
      * Timestamp of when the charge was processed by Straddle and originated to the
      * payment rail.
      */
     processed_at?: string | null;
-  }
-
-  export namespace Data {
-    /**
-     * Configuration options for the charge.
-     */
-    export interface Config {
-      /**
-       * Defines whether to check the customer's balance before processing the charge.
-       */
-      balance_check: 'required' | 'enabled' | 'disabled';
-    }
-
-    /**
-     * A record of the charge's status changes over time.
-     */
-    export interface StatusHistory {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The current status of the `charge` or `payout`.
-       */
-      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
   }
 }
 
@@ -393,7 +347,7 @@ export interface ChargeCreateParams {
   /**
    * Body param:
    */
-  config: ChargeCreateParams.Config;
+  config: Shared.ChargeConfigurationV1;
 
   /**
    * Body param: The channel or mechanism through which the payment was authorized.
@@ -401,7 +355,7 @@ export interface ChargeCreateParams {
    * signed agreements where there is a consent form or contract. Use `signed` for
    * PDF signatures.
    */
-  consent_type: 'internet' | 'signed';
+  consent_type: Shared.ConsentTypeV1;
 
   /**
    * Body param: The currency of the charge. Only USD is supported.
@@ -457,15 +411,6 @@ export interface ChargeCreateParams {
    * request.
    */
   'Straddle-Account-Id'?: string;
-}
-
-export namespace ChargeCreateParams {
-  export interface Config {
-    /**
-     * Defines whether to check the customer's balance before processing the charge.
-     */
-    balance_check: 'required' | 'enabled' | 'disabled';
-  }
 }
 
 export interface ChargeUpdateParams {

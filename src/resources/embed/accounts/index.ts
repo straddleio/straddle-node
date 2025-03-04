@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  AccountPagedV1DataPageNumberSchema,
   Accounts,
   type AccountPagedV1,
   type AccountV1,
@@ -19,7 +18,6 @@ export {
   type AccountSimulateParams,
 } from './accounts';
 export {
-  CapabilityRequestPagedV1DataPageNumberSchema,
   CapabilityRequests,
   type CapabilityRequestPagedV1,
   type CapabilityRequestCreateParams,

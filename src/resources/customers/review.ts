@@ -3,9 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import * as ReviewAPI from './review';
 import * as Shared from '../shared';
-import * as CustomersAPI from './customers';
 
 export class Review extends APIResource {
   /**
@@ -18,7 +16,7 @@ export class Review extends APIResource {
     id: string,
     params: ReviewDecisionParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomersAPI.CustomerV1> {
+  ): Core.APIPromise<Shared.CustomerV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -92,156 +90,17 @@ export interface CustomerReviewV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: Shared.ResponseTypeEnum;
 }
 
 export namespace CustomerReviewV1 {
   export interface Data {
-    customer_details: Data.CustomerDetails;
+    customer_details: Shared.CustomerV1;
 
     identity_details?: Data.IdentityDetails;
   }
 
   export namespace Data {
-    export interface CustomerDetails {
-      /**
-       * Unique identifier for the customer.
-       */
-      id: string;
-
-      /**
-       * Timestamp of when the customer record was created.
-       */
-      created_at: string;
-
-      /**
-       * The customer's email address.
-       */
-      email: string;
-
-      /**
-       * Full name of the individual or business name.
-       */
-      name: string;
-
-      /**
-       * The customer's phone number in E.164 format.
-       */
-      phone: string;
-
-      status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
-
-      type: 'individual' | 'business';
-
-      /**
-       * Timestamp of the most recent update to the customer record.
-       */
-      updated_at: string;
-
-      address?: CustomersAPI.CustomerAddressV1 | null;
-
-      /**
-       * Compliance profile for individual customers
-       */
-      compliance_profile?:
-        | CustomerDetails.IndividualComplianceProfile
-        | CustomerDetails.BusinessComplianceProfile;
-
-      device?: CustomerDetails.Device;
-
-      /**
-       * Unique identifier for the customer in your database, used for cross-referencing
-       * between Straddle and your systems.
-       */
-      external_id?: string | null;
-
-      /**
-       * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-       * information about the customer in a structured format.
-       */
-      metadata?: Record<string, string> | null;
-    }
-
-    export namespace CustomerDetails {
-      /**
-       * Compliance profile for individual customers
-       */
-      export interface IndividualComplianceProfile {
-        /**
-         * Date of birth in YYYY-MM-DD format.
-         */
-        dob: string;
-
-        /**
-         * Social Security Number in the format XXX-XX-XXXX.
-         */
-        ssn: string;
-
-        /**
-         * Full 9-digit Employer Identification Number for businesses. This data is
-         * required to trigger Patriot Act compliant Know Your Business (KYB) verification.
-         * Only valid where customer type is 'business'.
-         */
-        ein?: string | null;
-
-        /**
-         * The official name of the business. This name should be correlated with the ein
-         * value. Only valid where customer type is 'business'.
-         */
-        legal_business_name?: string | null;
-
-        /**
-         * URL of the company's official website. Only valid where customer type is
-         * 'business'.
-         */
-        website?: string | null;
-      }
-
-      /**
-       * Compliance profile for business customers
-       */
-      export interface BusinessComplianceProfile {
-        /**
-         * Employer Identification Number in the format XX-XXXXXXX.
-         */
-        ein: string;
-
-        /**
-         * The official registered name of the business. This name should be correlated
-         * with the `ein` value.
-         */
-        legal_business_name: string;
-
-        /**
-         * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
-         * data is required to trigger Patriot Act compliant Know Your Customer (KYC)
-         * verification. Required if SSN is provided. Only valid where customer type is
-         * 'individual'.
-         */
-        dob?: string | null;
-
-        /**
-         * Full 9-digit Social Security Number or government identifier for individuals.
-         * This data is required to trigger Patriot Act compliant KYC verification.
-         * Required if DOB is provided. Only valid where customer type is 'individual'.
-         */
-        ssn?: string | null;
-
-        /**
-         * Business website URL.
-         */
-        website?: string;
-      }
-
-      export interface Device {
-        /**
-         * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
-         * represent an offline customer registration.
-         */
-        ip_address: string;
-      }
-    }
-
     export interface IdentityDetails {
       /**
        * Detailed breakdown of the customer verification results, including decisions,
@@ -254,7 +113,7 @@ export namespace CustomerReviewV1 {
        */
       created_at: string;
 
-      decision: 'accept' | 'reject' | 'review';
+      decision: Shared.IdentityDecisionV1;
 
       /**
        * Unique identifier for the review.
@@ -284,15 +143,15 @@ export namespace CustomerReviewV1 {
        * risk scores, correlation score, and more.
        */
       export interface Breakdown {
-        address?: ReviewAPI.IdentityVerificationBreakdownV1;
+        address?: Shared.IdentityVerificationBreakdownV1;
 
-        email?: ReviewAPI.IdentityVerificationBreakdownV1;
+        email?: Shared.IdentityVerificationBreakdownV1;
 
-        fraud?: ReviewAPI.IdentityVerificationBreakdownV1;
+        fraud?: Shared.IdentityVerificationBreakdownV1;
 
-        phone?: ReviewAPI.IdentityVerificationBreakdownV1;
+        phone?: Shared.IdentityVerificationBreakdownV1;
 
-        synthetic?: ReviewAPI.IdentityVerificationBreakdownV1;
+        synthetic?: Shared.IdentityVerificationBreakdownV1;
       }
 
       export interface KYC {
@@ -306,7 +165,7 @@ export namespace CustomerReviewV1 {
          */
         codes?: Array<string> | null;
 
-        decision?: 'accept' | 'reject' | 'review';
+        decision?: Shared.IdentityDecisionV1;
       }
 
       export namespace KYC {
@@ -347,7 +206,7 @@ export namespace CustomerReviewV1 {
          */
         codes?: Array<string> | null;
 
-        decision?: 'accept' | 'reject' | 'review';
+        decision?: Shared.IdentityDecisionV1;
       }
 
       export interface WatchList {
@@ -356,7 +215,7 @@ export namespace CustomerReviewV1 {
          */
         codes?: Array<string> | null;
 
-        decision?: 'accept' | 'reject' | 'review';
+        decision?: Shared.IdentityDecisionV1;
 
         /**
          * Information about any matches found during screening.
@@ -379,7 +238,7 @@ export interface IdentityVerificationBreakdownV1 {
    */
   correlation_score?: number | null;
 
-  decision?: 'accept' | 'reject' | 'review';
+  decision?: Shared.IdentityDecisionV1;
 
   /**
    * Predicts the inherent risk associated with the customer for a given module. A

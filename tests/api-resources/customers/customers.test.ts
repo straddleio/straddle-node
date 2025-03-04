@@ -52,7 +52,7 @@ describe('resource customers', () => {
   test('update: only required params', async () => {
     const responsePromise = client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       device: { ip_address: '192.168.1.1' },
-      email: 'dev@stainlessapi.com',
+      email: 'dev@stainless.com',
       name: 'name',
       phone: '+46991022',
       status: 'pending',
@@ -69,7 +69,7 @@ describe('resource customers', () => {
   test('update: required and optional params', async () => {
     const response = await client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       device: { ip_address: '192.168.1.1' },
-      email: 'dev@stainlessapi.com',
+      email: 'dev@stainless.com',
       name: 'name',
       phone: '+46991022',
       status: 'pending',
