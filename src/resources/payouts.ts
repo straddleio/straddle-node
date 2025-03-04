@@ -9,7 +9,10 @@ export class Payouts extends APIResource {
   /**
    * Use payouts to send money to your customers.
    */
-  create(params: PayoutCreateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
+  create(
+    params: PayoutCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.PayoutV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -32,7 +35,11 @@ export class Payouts extends APIResource {
    * Update the details of a payout prior to processing. The status of the payout
    * must be `created`, `scheduled`, or `on_hold`.
    */
-  update(id: string, params: PayoutUpdateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
+  update(
+    id: string,
+    params: PayoutUpdateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.PayoutV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -55,7 +62,11 @@ export class Payouts extends APIResource {
    * Cancel a payout to prevent it from being processed. The status of the payout
    * must be `created`, `scheduled`, or `on_hold`.
    */
-  cancel(id: string, params: PayoutCancelParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
+  cancel(
+    id: string,
+    params: PayoutCancelParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.PayoutV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -78,13 +89,17 @@ export class Payouts extends APIResource {
    * Retrieves the details of an existing payout. Supply the unique payout `id` to
    * retrieve the corresponding payout information.
    */
-  get(id: string, params?: PayoutGetParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<PayoutV1>;
+  get(
+    id: string,
+    params?: PayoutGetParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.PayoutV1ItemResponse>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.PayoutV1ItemResponse>;
   get(
     id: string,
     params: PayoutGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<PayoutV1> {
+  ): Core.APIPromise<Shared.PayoutV1ItemResponse> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -108,7 +123,11 @@ export class Payouts extends APIResource {
    * Hold a payout to prevent it from being processed. The status of the payout must
    * be `created`, `scheduled`, or `on_hold`.
    */
-  hold(id: string, params: PayoutHoldParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
+  hold(
+    id: string,
+    params: PayoutHoldParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.PayoutV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -131,7 +150,11 @@ export class Payouts extends APIResource {
    * Release a payout from a `hold` status to allow it to be rescheduled for
    * processing.
    */
-  release(id: string, params: PayoutReleaseParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
+  release(
+    id: string,
+    params: PayoutReleaseParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.PayoutV1ItemResponse> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -168,7 +191,7 @@ export interface PayoutV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: Shared.ResponseTypeEnum;
 }
 
 export namespace PayoutV1 {
@@ -223,7 +246,7 @@ export namespace PayoutV1 {
     /**
      * The current status of the payout.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status: Shared.PaymentStatusV1;
 
     /**
      * Details about the current status of the payout.
@@ -233,7 +256,7 @@ export namespace PayoutV1 {
     /**
      * History of the status changes for the payout.
      */
-    status_history: Array<Data.StatusHistory>;
+    status_history: Array<Shared.StatusHistoryV1>;
 
     /**
      * The time the payout was created.
@@ -265,7 +288,7 @@ export namespace PayoutV1 {
     /**
      * The payment rail used for the payout.
      */
-    payment_rail?: 'ach';
+    payment_rail?: Shared.PaymentRailV1;
 
     /**
      * The time the payout was processed by Straddle and originated to the payment
@@ -277,62 +300,6 @@ export namespace PayoutV1 {
      * The time the payout was last updated.
      */
     updated_at?: string | null;
-  }
-
-  export namespace Data {
-    export interface StatusHistory {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The current status of the `charge` or `payout`.
-       */
-      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
   }
 }
 

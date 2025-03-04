@@ -4,7 +4,8 @@ import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as Shared from '../shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
+import { RepresentativeV1sPageNumberSchema } from '../shared';
+import { type PageNumberSchemaParams } from '../../pagination';
 
 export class Representatives extends APIResource {
   /**
@@ -12,7 +13,10 @@ export class Representatives extends APIResource {
    * individuals who have legal authority or significant responsibility within the
    * business.
    */
-  create(params: RepresentativeCreateParams, options?: Core.RequestOptions): Core.APIPromise<Representative> {
+  create(
+    params: RepresentativeCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.post('/v1/representatives', {
       body,
@@ -34,7 +38,7 @@ export class Representatives extends APIResource {
     representativeId: string,
     params: RepresentativeUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.put(`/v1/representatives/${representativeId}`, {
       body,
@@ -56,19 +60,19 @@ export class Representatives extends APIResource {
   list(
     params?: RepresentativeListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
+  ): Core.PagePromise<RepresentativeV1sPageNumberSchema, Shared.RepresentativeV1>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
+  ): Core.PagePromise<RepresentativeV1sPageNumberSchema, Shared.RepresentativeV1>;
   list(
     params: RepresentativeListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
+  ): Core.PagePromise<RepresentativeV1sPageNumberSchema, Shared.RepresentativeV1> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/representatives', RepresentativePagedDataPageNumberSchema, {
+    return this._client.getAPIList('/v1/representatives', RepresentativeV1sPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -88,13 +92,16 @@ export class Representatives extends APIResource {
     representativeId: string,
     params?: RepresentativeGetParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative>;
-  get(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1>;
+  get(
+    representativeId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1>;
   get(
     representativeId: string,
     params: RepresentativeGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1> {
     if (isRequestOptions(params)) {
       return this.get(representativeId, {}, params);
     }
@@ -119,13 +126,16 @@ export class Representatives extends APIResource {
     representativeId: string,
     params?: RepresentativeUnmaskParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative>;
-  unmask(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1>;
+  unmask(
+    representativeId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1>;
   unmask(
     representativeId: string,
     params: RepresentativeUnmaskParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
+  ): Core.APIPromise<Shared.ItemResponseOfRepresentativeV1> {
     if (isRequestOptions(params)) {
       return this.unmask(representativeId, {}, params);
     }
@@ -141,10 +151,8 @@ export class Representatives extends APIResource {
   }
 }
 
-export class RepresentativePagedDataPageNumberSchema extends PageNumberSchema<RepresentativePaged.Data> {}
-
 export interface Representative {
-  data: Representative.Data;
+  data: Shared.RepresentativeV1;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
@@ -163,153 +171,8 @@ export interface Representative {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
-export namespace Representative {
-  export interface Data {
-    /**
-     * Unique identifier for the representative.
-     */
-    id: string;
-
-    /**
-     * The unique identifier of the account this representative is associated with.
-     */
-    account_id: string;
-
-    /**
-     * Timestamp of when the representative was created.
-     */
-    created_at: string;
-
-    /**
-     * The date of birth of the representative, in ISO 8601 format (YYYY-MM-DD).
-     */
-    dob: string;
-
-    /**
-     * The email address of the representative.
-     */
-    email: string;
-
-    /**
-     * The first name of the representative.
-     */
-    first_name: string;
-
-    /**
-     * The last name of the representative.
-     */
-    last_name: string;
-
-    /**
-     * The mobile phone number of the representative.
-     */
-    mobile_number: string;
-
-    relationship: Data.Relationship;
-
-    /**
-     * The last 4 digits of the representative's Social Security Number.
-     */
-    ssn_last4: string;
-
-    /**
-     * The current status of the representative.
-     */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
-
-    status_detail: Data.StatusDetail;
-
-    /**
-     * Timestamp of the most recent update to the representative.
-     */
-    updated_at: string;
-
-    /**
-     * Unique identifier for the representative in your database, used for
-     * cross-referencing between Straddle and your systems.
-     */
-    external_id?: string | null;
-
-    /**
-     * The unique identifier of the user account associated with this representative,
-     * if applicable.
-     */
-    user_id?: string | null;
-  }
-
-  export namespace Data {
-    export interface Relationship {
-      /**
-       * Whether the representative has significant responsibility to control, manage, or
-       * direct the organization. One representative must be identified under the control
-       * prong for each legal entity.
-       */
-      control: boolean;
-
-      /**
-       * Whether the representative owns any percentage of of the equity interests of the
-       * legal entity.
-       */
-      owner: boolean;
-
-      /**
-       * Whether the person is authorized as the primary representative of the account.
-       * This is the person chosen by the business to provide information about
-       * themselves, general information about the account, and who consented to the
-       * services agreement.
-       *
-       * There can be only one primary representative for an account at a time.
-       */
-      primary: boolean;
-
-      /**
-       * The percentage of ownership the representative has. Required if 'Owner' is true.
-       */
-      percent_ownership?: number | null;
-
-      /**
-       * The job title of the representative.
-       */
-      title?: string | null;
-    }
-
-    export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
-      code: string;
-
-      /**
-       * A human-readable message describing the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'new';
-
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
-      source: 'watchtower';
-    }
-  }
-}
-
 export interface RepresentativePaged {
-  data: Array<RepresentativePaged.Data>;
+  data: Array<Shared.RepresentativeV1>;
 
   /**
    * Metadata about the API request, including an identifier, timestamp, and
@@ -327,151 +190,6 @@ export interface RepresentativePaged {
    * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace RepresentativePaged {
-  export interface Data {
-    /**
-     * Unique identifier for the representative.
-     */
-    id: string;
-
-    /**
-     * The unique identifier of the account this representative is associated with.
-     */
-    account_id: string;
-
-    /**
-     * Timestamp of when the representative was created.
-     */
-    created_at: string;
-
-    /**
-     * The date of birth of the representative, in ISO 8601 format (YYYY-MM-DD).
-     */
-    dob: string;
-
-    /**
-     * The email address of the representative.
-     */
-    email: string;
-
-    /**
-     * The first name of the representative.
-     */
-    first_name: string;
-
-    /**
-     * The last name of the representative.
-     */
-    last_name: string;
-
-    /**
-     * The mobile phone number of the representative.
-     */
-    mobile_number: string;
-
-    relationship: Data.Relationship;
-
-    /**
-     * The last 4 digits of the representative's Social Security Number.
-     */
-    ssn_last4: string;
-
-    /**
-     * The current status of the representative.
-     */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
-
-    status_detail: Data.StatusDetail;
-
-    /**
-     * Timestamp of the most recent update to the representative.
-     */
-    updated_at: string;
-
-    /**
-     * Unique identifier for the representative in your database, used for
-     * cross-referencing between Straddle and your systems.
-     */
-    external_id?: string | null;
-
-    /**
-     * The unique identifier of the user account associated with this representative,
-     * if applicable.
-     */
-    user_id?: string | null;
-  }
-
-  export namespace Data {
-    export interface Relationship {
-      /**
-       * Whether the representative has significant responsibility to control, manage, or
-       * direct the organization. One representative must be identified under the control
-       * prong for each legal entity.
-       */
-      control: boolean;
-
-      /**
-       * Whether the representative owns any percentage of of the equity interests of the
-       * legal entity.
-       */
-      owner: boolean;
-
-      /**
-       * Whether the person is authorized as the primary representative of the account.
-       * This is the person chosen by the business to provide information about
-       * themselves, general information about the account, and who consented to the
-       * services agreement.
-       *
-       * There can be only one primary representative for an account at a time.
-       */
-      primary: boolean;
-
-      /**
-       * The percentage of ownership the representative has. Required if 'Owner' is true.
-       */
-      percent_ownership?: number | null;
-
-      /**
-       * The job title of the representative.
-       */
-      title?: string | null;
-    }
-
-    export interface StatusDetail {
-      /**
-       * A machine-readable code for the specific status, useful for programmatic
-       * handling.
-       */
-      code: string;
-
-      /**
-       * A human-readable message describing the current status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'new';
-
-      /**
-       * Identifies the origin of the status change (e.g., `watchtower`). This helps in
-       * tracking the cause of status updates.
-       */
-      source: 'watchtower';
-    }
-  }
 }
 
 export interface RepresentativeCreateParams {
@@ -510,7 +228,7 @@ export interface RepresentativeCreateParams {
   /**
    * Body param:
    */
-  relationship: RepresentativeCreateParams.Relationship;
+  relationship: Shared.RelationshipV1;
 
   /**
    * Body param: The last 4 digits of the representative's Social Security Number.
@@ -533,43 +251,6 @@ export interface RepresentativeCreateParams {
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
-}
-
-export namespace RepresentativeCreateParams {
-  export interface Relationship {
-    /**
-     * Whether the representative has significant responsibility to control, manage, or
-     * direct the organization. One representative must be identified under the control
-     * prong for each legal entity.
-     */
-    control: boolean;
-
-    /**
-     * Whether the representative owns any percentage of of the equity interests of the
-     * legal entity.
-     */
-    owner: boolean;
-
-    /**
-     * Whether the person is authorized as the primary representative of the account.
-     * This is the person chosen by the business to provide information about
-     * themselves, general information about the account, and who consented to the
-     * services agreement.
-     *
-     * There can be only one primary representative for an account at a time.
-     */
-    primary: boolean;
-
-    /**
-     * The percentage of ownership the representative has. Required if 'Owner' is true.
-     */
-    percent_ownership?: number | null;
-
-    /**
-     * The job title of the representative.
-     */
-    title?: string | null;
-  }
 }
 
 export interface RepresentativeUpdateParams {
@@ -602,7 +283,7 @@ export interface RepresentativeUpdateParams {
   /**
    * Body param:
    */
-  relationship: RepresentativeUpdateParams.Relationship;
+  relationship: Shared.RelationshipV1;
 
   /**
    * Body param: The last 4 digits of the representative's Social Security Number.
@@ -625,43 +306,6 @@ export interface RepresentativeUpdateParams {
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
-}
-
-export namespace RepresentativeUpdateParams {
-  export interface Relationship {
-    /**
-     * Whether the representative has significant responsibility to control, manage, or
-     * direct the organization. One representative must be identified under the control
-     * prong for each legal entity.
-     */
-    control: boolean;
-
-    /**
-     * Whether the representative owns any percentage of of the equity interests of the
-     * legal entity.
-     */
-    owner: boolean;
-
-    /**
-     * Whether the person is authorized as the primary representative of the account.
-     * This is the person chosen by the business to provide information about
-     * themselves, general information about the account, and who consented to the
-     * services agreement.
-     *
-     * There can be only one primary representative for an account at a time.
-     */
-    primary: boolean;
-
-    /**
-     * The percentage of ownership the representative has. Required if 'Owner' is true.
-     */
-    percent_ownership?: number | null;
-
-    /**
-     * The job title of the representative.
-     */
-    title?: string | null;
-  }
 }
 
 export interface RepresentativeListParams extends PageNumberSchemaParams {
@@ -726,13 +370,10 @@ export interface RepresentativeUnmaskParams {
   'request-id'?: string;
 }
 
-Representatives.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
-
 export declare namespace Representatives {
   export {
     type Representative as Representative,
     type RepresentativePaged as RepresentativePaged,
-    RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
@@ -740,3 +381,5 @@ export declare namespace Representatives {
     type RepresentativeUnmaskParams as RepresentativeUnmaskParams,
   };
 }
+
+export { RepresentativeV1sPageNumberSchema };
