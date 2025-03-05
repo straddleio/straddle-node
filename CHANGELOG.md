@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.2.0 (2025-03-05)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/straddleio/straddle-node/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** manual updates ([#37](https://github.com/straddleio/straddle-node/issues/37)) ([a66ae5e](https://github.com/straddleio/straddle-node/commit/a66ae5ef7df9d124db81b0d1f4dee671d5828097))
+* **docs:** Preliminary update to SDK Spec ([#27](https://github.com/straddleio/straddle-node/issues/27)) ([aa4f66d](https://github.com/straddleio/straddle-node/commit/aa4f66db46c8b95583c3df07751decee3a25bf85))
+* **docs:** Preliminary update to SDK Spec ([#31](https://github.com/straddleio/straddle-node/issues/31)) ([c323517](https://github.com/straddleio/straddle-node/commit/c323517db618766228a994f0e90c855d3674c87e))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([#29](https://github.com/straddleio/straddle-node/issues/29)) ([d781166](https://github.com/straddleio/straddle-node/commit/d78116673e41cd3e2d6582ee9873ca0bfde32a2d))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([#33](https://github.com/straddleio/straddle-node/issues/33)) ([46aee0e](https://github.com/straddleio/straddle-node/commit/46aee0e23249c33574b7f4448865c80c2a06601b))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([#36](https://github.com/straddleio/straddle-node/issues/36)) ([2fc42af](https://github.com/straddleio/straddle-node/commit/2fc42afa267d7c7b2126b99df480952554650b9e))
+
+
+### Bug Fixes
+
+* **client:** fix export map for index exports ([#32](https://github.com/straddleio/straddle-node/issues/32)) ([d521e45](https://github.com/straddleio/straddle-node/commit/d521e450c19947dccafbb77392cbf17082d332c5))
+
+
+### Chores
+
+* **internal:** codegen related update ([#30](https://github.com/straddleio/straddle-node/issues/30)) ([a155ca5](https://github.com/straddleio/straddle-node/commit/a155ca512a6a67f7ef5558efff712b5cd7d3391f))
+* **internal:** codegen related update ([#34](https://github.com/straddleio/straddle-node/issues/34)) ([848d8ee](https://github.com/straddleio/straddle-node/commit/848d8ee254be49ba5288b511e9323efbe5c3e042))
+
+
+### Documentation
+
+* update URLs from stainlessapi.com to stainless.com ([#35](https://github.com/straddleio/straddle-node/issues/35)) ([6478370](https://github.com/straddleio/straddle-node/commit/647837072e05ef9249b5b7e287ee92f4a348970d))
+
 ## 0.1.0 (2025-01-29)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0](https://github.com/straddleio/straddle-node/compare/v0.1.0-alpha.3...v0.1.0)
