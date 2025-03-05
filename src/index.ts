@@ -23,6 +23,7 @@ import {
   FundingEventListParams,
   FundingEventSummaryItemV1,
   FundingEventSummaryPagedV1,
+  FundingEventSummaryPagedV1DataPageNumberSchema,
   FundingEvents,
 } from './resources/funding-events';
 import {
@@ -53,11 +54,6 @@ import {
   PayoutV1,
   Payouts,
 } from './resources/payouts';
-import {
-  ReportCreateTotalCustomersByStatusParams,
-  ReportCreateTotalCustomersByStatusResponse,
-  Reports,
-} from './resources/reports';
 import { Bridge, BridgeInitializeParams, BridgeTokenV1 } from './resources/bridge/bridge';
 import {
   CustomerAddressV1,
@@ -70,7 +66,9 @@ import {
   CustomerUnmaskedParams,
   CustomerUnmaskedV1,
   CustomerUpdateParams,
+  CustomerV1,
   Customers,
+  DeviceUnmaskedV1,
 } from './resources/customers/customers';
 import { Embed } from './resources/embed/embed';
 
@@ -218,7 +216,6 @@ export class Straddle extends Core.APIClient {
   fundingEvents: API.FundingEvents = new API.FundingEvents(this);
   payments: API.Payments = new API.Payments(this);
   payouts: API.Payouts = new API.Payouts(this);
-  reports: API.Reports = new API.Reports(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -268,10 +265,10 @@ Straddle.Paykeys = Paykeys;
 Straddle.PaykeySummaryPagedV1DataPageNumberSchema = PaykeySummaryPagedV1DataPageNumberSchema;
 Straddle.Charges = Charges;
 Straddle.FundingEvents = FundingEvents;
+Straddle.FundingEventSummaryPagedV1DataPageNumberSchema = FundingEventSummaryPagedV1DataPageNumberSchema;
 Straddle.Payments = Payments;
 Straddle.PaymentSummaryPagedV1DataPageNumberSchema = PaymentSummaryPagedV1DataPageNumberSchema;
 Straddle.Payouts = Payouts;
-Straddle.Reports = Reports;
 export declare namespace Straddle {
   export type RequestOptions = Core.RequestOptions;
 
@@ -333,6 +330,7 @@ export declare namespace Straddle {
     FundingEvents as FundingEvents,
     type FundingEventSummaryItemV1 as FundingEventSummaryItemV1,
     type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
+    FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
     type FundingEventListParams as FundingEventListParams,
     type FundingEventGetParams as FundingEventGetParams,
   };
@@ -355,75 +353,12 @@ export declare namespace Straddle {
     type PayoutReleaseParams as PayoutReleaseParams,
   };
 
-  export {
-    Reports as Reports,
-    type ReportCreateTotalCustomersByStatusResponse as ReportCreateTotalCustomersByStatusResponse,
-    type ReportCreateTotalCustomersByStatusParams as ReportCreateTotalCustomersByStatusParams,
-  };
-
-  export type AccountTypeV1 = API.AccountTypeV1;
-  export type AccountV1 = API.AccountV1;
-  export type AddressV11 = API.AddressV11;
-  export type BankAccountV1Request = API.BankAccountV1Request;
-  export type BusinessProfileV1 = API.BusinessProfileV1;
-  export type Capability = API.Capability;
-  export type ChargeConfigurationV1 = API.ChargeConfigurationV1;
-  export type ChargeV1ItemResponse = API.ChargeV1ItemResponse;
-  export type ComplianceProfileUnmaskedV1 = API.ComplianceProfileUnmaskedV1;
-  export type ConsentTypeV1 = API.ConsentTypeV1;
-  export type CustomerDetailsV1 = API.CustomerDetailsV1;
-  export type CustomerStatusV1 = API.CustomerStatusV1;
-  export type CustomerTypeV1 = API.CustomerTypeV1;
-  export type CustomerV1 = API.CustomerV1;
-  export type CustomerV1ItemResponse = API.CustomerV1ItemResponse;
   export type CustomerDetailsV1 = API.CustomerDetailsV1;
   export type DeviceInfoV1 = API.DeviceInfoV1;
-  export type DeviceUnmaskedV1 = API.DeviceUnmaskedV1;
-  export type DeviceInfoV1 = API.DeviceInfoV1;
-  export type FundingEventSummaryV1 = API.FundingEventSummaryV1;
-  export type FundingEventTypeV1 = API.FundingEventTypeV1;
-  export type IdentityDecisionV1 = API.IdentityDecisionV1;
-  export type IdentityVerificationBreakdownV1 = API.IdentityVerificationBreakdownV1;
-  export type ItemResponseOfAccountV1 = API.ItemResponseOfAccountV1;
-  export type ItemResponseOfLinkedBankAccountV1 = API.ItemResponseOfLinkedBankAccountV1;
-  export type ItemResponseOfOrganizationV1 = API.ItemResponseOfOrganizationV1;
-  export type ItemResponseOfRepresentativeV1 = API.ItemResponseOfRepresentativeV1;
-  export type LinkedBankAccountV1 = API.LinkedBankAccountV1;
-  export type OrganizationV1 = API.OrganizationV1;
   export type PagedResponseMetadata = API.PagedResponseMetadata;
-  export type PagedResponseMetadata1 = API.PagedResponseMetadata1;
-  export type PagedResponseMetadata2 = API.PagedResponseMetadata2;
-  export type PagedResponseOfCapabilityRequestV1 = API.PagedResponseOfCapabilityRequestV1;
-  export type PagedResponseMetadata = API.PagedResponseMetadata;
-  export type PaykeyBankDetailsV1 = API.PaykeyBankDetailsV1;
   export type PaykeyDetailsV1 = API.PaykeyDetailsV1;
-  export type PaykeySourceV1 = API.PaykeySourceV1;
-  export type PaykeyStatusV1 = API.PaykeyStatusV1;
-  export type PaykeyV1ItemResponse = API.PaykeyV1ItemResponse;
-  export type PaykeyDetailsV1 = API.PaykeyDetailsV1;
-  export type PaymentRailV1 = API.PaymentRailV1;
-  export type PaymentSortByV1 = API.PaymentSortByV1;
-  export type PaymentStatusV1 = API.PaymentStatusV1;
-  export type PaymentTypeV1 = API.PaymentTypeV1;
-  export type PayoutV1ItemResponse = API.PayoutV1ItemResponse;
-  export type RelationshipV1 = API.RelationshipV1;
-  export type RepresentativeV1 = API.RepresentativeV1;
   export type ResponseMetadata = API.ResponseMetadata;
-  export type ResponseTypeEnum = API.ResponseTypeEnum;
-  export type ResponseMetadata = API.ResponseMetadata;
-  export type SortOrder = API.SortOrder;
-  export type StatusDetailOfLinkedBankAccountStatusDetailEnum =
-    API.StatusDetailOfLinkedBankAccountStatusDetailEnum;
   export type StatusDetailsV1 = API.StatusDetailsV1;
-  export type StatusDetailsV1_1 = API.StatusDetailsV1_1;
-  export type StatusHistoryV1 = API.StatusHistoryV1;
-  export type StatusReasonV1 = API.StatusReasonV1;
-  export type StatusSourceV1 = API.StatusSourceV1;
-  export type StatusDetailsV1 = API.StatusDetailsV1;
-  export type TermsOfServiceV1 = API.TermsOfServiceV1;
-  export type TransferDirectionV1 = API.TransferDirectionV1;
-  export type UpdateChargeStatusV1Request = API.UpdateChargeStatusV1Request;
-  export type UpdatePayoutStatusV1Request = API.UpdatePayoutStatusV1Request;
 }
 
 export { toFile, fileFromPath } from './uploads';

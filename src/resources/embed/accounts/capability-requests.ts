@@ -4,8 +4,7 @@ import { APIResource } from '../../../resource';
 import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as Shared from '../../shared';
-import { PagedResponseOfCapabilityRequestV1DataPageNumberSchema } from '../../shared';
-import { type PageNumberSchemaParams } from '../../../pagination';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
 
 export class CapabilityRequests extends APIResource {
   /**
@@ -16,16 +15,13 @@ export class CapabilityRequests extends APIResource {
     accountId: string,
     params?: CapabilityRequestCreateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.PagedResponseOfCapabilityRequestV1>;
-  create(
-    accountId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.PagedResponseOfCapabilityRequestV1>;
+  ): Core.APIPromise<CapabilityRequestPagedV1>;
+  create(accountId: string, options?: Core.RequestOptions): Core.APIPromise<CapabilityRequestPagedV1>;
   create(
     accountId: string,
     params: CapabilityRequestCreateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.PagedResponseOfCapabilityRequestV1> {
+  ): Core.APIPromise<CapabilityRequestPagedV1> {
     if (isRequestOptions(params)) {
       return this.create(accountId, {}, params);
     }
@@ -50,32 +46,23 @@ export class CapabilityRequests extends APIResource {
     accountId: string,
     params?: CapabilityRequestListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<
-    PagedResponseOfCapabilityRequestV1DataPageNumberSchema,
-    Shared.PagedResponseOfCapabilityRequestV1.Data
-  >;
+  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data>;
   list(
     accountId: string,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<
-    PagedResponseOfCapabilityRequestV1DataPageNumberSchema,
-    Shared.PagedResponseOfCapabilityRequestV1.Data
-  >;
+  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data>;
   list(
     accountId: string,
     params: CapabilityRequestListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<
-    PagedResponseOfCapabilityRequestV1DataPageNumberSchema,
-    Shared.PagedResponseOfCapabilityRequestV1.Data
-  > {
+  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list(accountId, {}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
     return this._client.getAPIList(
       `/v1/accounts/${accountId}/capability_requests`,
-      PagedResponseOfCapabilityRequestV1DataPageNumberSchema,
+      CapabilityRequestPagedV1DataPageNumberSchema,
       {
         query,
         ...options,
@@ -88,6 +75,8 @@ export class CapabilityRequests extends APIResource {
     );
   }
 }
+
+export class CapabilityRequestPagedV1DataPageNumberSchema extends PageNumberSchema<CapabilityRequestPagedV1.Data> {}
 
 export interface CapabilityRequestPagedV1 {
   data: Array<CapabilityRequestPagedV1.Data>;
@@ -331,12 +320,14 @@ export interface CapabilityRequestListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
+CapabilityRequests.CapabilityRequestPagedV1DataPageNumberSchema =
+  CapabilityRequestPagedV1DataPageNumberSchema;
+
 export declare namespace CapabilityRequests {
   export {
     type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
+    CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };
 }
-
-export { PagedResponseOfCapabilityRequestV1DataPageNumberSchema };

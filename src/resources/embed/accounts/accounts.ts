@@ -3,16 +3,17 @@
 import { APIResource } from '../../../resource';
 import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
+import * as AccountsAPI from './accounts';
 import * as Shared from '../../shared';
-import { AccountV1sPageNumberSchema } from '../../shared';
 import * as CapabilityRequestsAPI from './capability-requests';
 import {
   CapabilityRequestCreateParams,
   CapabilityRequestListParams,
   CapabilityRequestPagedV1,
+  CapabilityRequestPagedV1DataPageNumberSchema,
   CapabilityRequests,
 } from './capability-requests';
-import { type PageNumberSchemaParams } from '../../../pagination';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
 
 export class Accounts extends APIResource {
   capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(
@@ -24,10 +25,7 @@ export class Accounts extends APIResource {
    * endpoint allows you to set up an account with specified details, including
    * business information and access levels.
    */
-  create(
-    params: AccountCreateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfAccountV1> {
+  create(params: AccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<AccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.post('/v1/accounts', {
       body,
@@ -48,7 +46,7 @@ export class Accounts extends APIResource {
     accountId: string,
     params: AccountUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfAccountV1> {
+  ): Core.APIPromise<AccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.put(`/v1/accounts/${accountId}`, {
       body,
@@ -70,17 +68,19 @@ export class Accounts extends APIResource {
   list(
     params?: AccountListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountV1sPageNumberSchema, Shared.AccountV1>;
-  list(options?: Core.RequestOptions): Core.PagePromise<AccountV1sPageNumberSchema, Shared.AccountV1>;
+  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
   list(
     params: AccountListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountV1sPageNumberSchema, Shared.AccountV1> {
+  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/accounts', AccountV1sPageNumberSchema, {
+    return this._client.getAPIList('/v1/accounts', AccountPagedV1DataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -100,13 +100,13 @@ export class Accounts extends APIResource {
     accountId: string,
     params?: AccountGetParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfAccountV1>;
-  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<Shared.ItemResponseOfAccountV1>;
+  ): Core.APIPromise<AccountV1>;
+  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
   get(
     accountId: string,
     params: AccountGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfAccountV1> {
+  ): Core.APIPromise<AccountV1> {
     if (isRequestOptions(params)) {
       return this.get(accountId, {}, params);
     }
@@ -130,7 +130,7 @@ export class Accounts extends APIResource {
     accountId: string,
     params: AccountOnboardParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfAccountV1> {
+  ): Core.APIPromise<AccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.post(`/v1/accounts/${accountId}/onboard`, {
       body,
@@ -151,13 +151,13 @@ export class Accounts extends APIResource {
     accountId: string,
     params?: AccountSimulateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfAccountV1>;
-  simulate(accountId: string, options?: Core.RequestOptions): Core.APIPromise<Shared.ItemResponseOfAccountV1>;
+  ): Core.APIPromise<AccountV1>;
+  simulate(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
   simulate(
     accountId: string,
     params: AccountSimulateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfAccountV1> {
+  ): Core.APIPromise<AccountV1> {
     if (isRequestOptions(params)) {
       return this.simulate(accountId, {}, params);
     }
@@ -174,8 +174,10 @@ export class Accounts extends APIResource {
   }
 }
 
+export class AccountPagedV1DataPageNumberSchema extends PageNumberSchema<AccountPagedV1.Data> {}
+
 export interface AccountPagedV1 {
-  data: Array<Shared.AccountV1>;
+  data: Array<AccountPagedV1.Data>;
 
   /**
    * Metadata about the API request, including an identifier, timestamp, and
@@ -195,8 +197,217 @@ export interface AccountPagedV1 {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
+export namespace AccountPagedV1 {
+  export interface Data {
+    /**
+     * Unique identifier for the account.
+     */
+    id: string;
+
+    /**
+     * The access level granted to the account. This is determined by your platform
+     * configuration. Use `standard` unless instructed otherwise by Straddle.
+     */
+    access_level: 'standard' | 'managed';
+
+    /**
+     * The unique identifier of the organization this account belongs to.
+     */
+    organization_id: string;
+
+    /**
+     * The current status of the account (e.g., 'active', 'inactive', 'pending').
+     */
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+
+    status_detail: Data.StatusDetail;
+
+    /**
+     * The type of account (e.g., 'individual', 'business').
+     */
+    type: 'business';
+
+    business_profile?: AccountsAPI.BusinessProfileV1;
+
+    capabilities?: Data.Capabilities;
+
+    /**
+     * Timestamp of when the account was created.
+     */
+    created_at?: string | null;
+
+    /**
+     * Unique identifier for the account in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the account in a structured format.
+     */
+    metadata?: Record<string, string | null> | null;
+
+    settings?: Data.Settings;
+
+    terms_of_service?: AccountsAPI.TermsOfServiceV1;
+
+    /**
+     * Timestamp of the most recent update to the account.
+     */
+    updated_at?: string | null;
+  }
+
+  export namespace Data {
+    export interface StatusDetail {
+      /**
+       * A machine-readable code for the specific status, useful for programmatic
+       * handling.
+       */
+      code: string;
+
+      /**
+       * A human-readable message describing the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason:
+        | 'unverified'
+        | 'in_review'
+        | 'pending'
+        | 'stuck'
+        | 'verified'
+        | 'failed_verification'
+        | 'disabled'
+        | 'terminated'
+        | 'new';
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: 'watchtower';
+    }
+
+    export interface Capabilities {
+      consent_types: Capabilities.ConsentTypes;
+
+      customer_types: Capabilities.CustomerTypes;
+
+      payment_types: Capabilities.PaymentTypes;
+    }
+
+    export namespace Capabilities {
+      export interface ConsentTypes {
+        /**
+         * Whether the internet payment authorization capability is enabled for the
+         * account.
+         */
+        internet: AccountsAPI.CapabilityV1;
+
+        /**
+         * Whether the signed agreement payment authorization capability is enabled for the
+         * account.
+         */
+        signed_agreement: AccountsAPI.CapabilityV1;
+      }
+
+      export interface CustomerTypes {
+        businesses: AccountsAPI.CapabilityV1;
+
+        individuals: AccountsAPI.CapabilityV1;
+      }
+
+      export interface PaymentTypes {
+        charges: AccountsAPI.CapabilityV1;
+
+        payouts: AccountsAPI.CapabilityV1;
+      }
+    }
+
+    export interface Settings {
+      charges: Settings.Charges;
+
+      payouts: Settings.Payouts;
+    }
+
+    export namespace Settings {
+      export interface Charges {
+        /**
+         * The maximum dollar amount of charges in a calendar day.
+         */
+        daily_amount: number;
+
+        /**
+         * The amount of time it takes for a charge to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+
+        /**
+         * The unique identifier of the linked bank account associated with charges. This
+         * value is defined by Straddle.
+         */
+        linked_bank_account_id: string;
+
+        /**
+         * The maximum amount of a single charge.
+         */
+        max_amount: number;
+
+        /**
+         * The maximum dollar amount of charges in a calendar month.
+         */
+        monthly_amount: number;
+
+        /**
+         * The maximum number of charges in a calendar month.
+         */
+        monthly_count: number;
+      }
+
+      export interface Payouts {
+        /**
+         * The maximum dollar amount of payouts in a day.
+         */
+        daily_amount: number;
+
+        /**
+         * The amount of time it takes for a payout to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+
+        /**
+         * The unique identifier of the linked bank account to use for payouts.
+         */
+        linked_bank_account_id: string;
+
+        /**
+         * The maximum amount of a single payout.
+         */
+        max_amount: number;
+
+        /**
+         * The maximum dollar amount of payouts in a month.
+         */
+        monthly_amount: number;
+
+        /**
+         * The maximum number of payouts in a month.
+         */
+        monthly_count: number;
+      }
+    }
+  }
+}
+
 export interface AccountV1 {
-  data: Shared.AccountV1;
+  data: AccountV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
@@ -213,6 +424,215 @@ export interface AccountV1 {
    * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace AccountV1 {
+  export interface Data {
+    /**
+     * Unique identifier for the account.
+     */
+    id: string;
+
+    /**
+     * The access level granted to the account. This is determined by your platform
+     * configuration. Use `standard` unless instructed otherwise by Straddle.
+     */
+    access_level: 'standard' | 'managed';
+
+    /**
+     * The unique identifier of the organization this account belongs to.
+     */
+    organization_id: string;
+
+    /**
+     * The current status of the account (e.g., 'active', 'inactive', 'pending').
+     */
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+
+    status_detail: Data.StatusDetail;
+
+    /**
+     * The type of account (e.g., 'individual', 'business').
+     */
+    type: 'business';
+
+    business_profile?: AccountsAPI.BusinessProfileV1;
+
+    capabilities?: Data.Capabilities;
+
+    /**
+     * Timestamp of when the account was created.
+     */
+    created_at?: string | null;
+
+    /**
+     * Unique identifier for the account in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the account in a structured format.
+     */
+    metadata?: Record<string, string | null> | null;
+
+    settings?: Data.Settings;
+
+    terms_of_service?: AccountsAPI.TermsOfServiceV1;
+
+    /**
+     * Timestamp of the most recent update to the account.
+     */
+    updated_at?: string | null;
+  }
+
+  export namespace Data {
+    export interface StatusDetail {
+      /**
+       * A machine-readable code for the specific status, useful for programmatic
+       * handling.
+       */
+      code: string;
+
+      /**
+       * A human-readable message describing the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason:
+        | 'unverified'
+        | 'in_review'
+        | 'pending'
+        | 'stuck'
+        | 'verified'
+        | 'failed_verification'
+        | 'disabled'
+        | 'terminated'
+        | 'new';
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: 'watchtower';
+    }
+
+    export interface Capabilities {
+      consent_types: Capabilities.ConsentTypes;
+
+      customer_types: Capabilities.CustomerTypes;
+
+      payment_types: Capabilities.PaymentTypes;
+    }
+
+    export namespace Capabilities {
+      export interface ConsentTypes {
+        /**
+         * Whether the internet payment authorization capability is enabled for the
+         * account.
+         */
+        internet: AccountsAPI.CapabilityV1;
+
+        /**
+         * Whether the signed agreement payment authorization capability is enabled for the
+         * account.
+         */
+        signed_agreement: AccountsAPI.CapabilityV1;
+      }
+
+      export interface CustomerTypes {
+        businesses: AccountsAPI.CapabilityV1;
+
+        individuals: AccountsAPI.CapabilityV1;
+      }
+
+      export interface PaymentTypes {
+        charges: AccountsAPI.CapabilityV1;
+
+        payouts: AccountsAPI.CapabilityV1;
+      }
+    }
+
+    export interface Settings {
+      charges: Settings.Charges;
+
+      payouts: Settings.Payouts;
+    }
+
+    export namespace Settings {
+      export interface Charges {
+        /**
+         * The maximum dollar amount of charges in a calendar day.
+         */
+        daily_amount: number;
+
+        /**
+         * The amount of time it takes for a charge to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+
+        /**
+         * The unique identifier of the linked bank account associated with charges. This
+         * value is defined by Straddle.
+         */
+        linked_bank_account_id: string;
+
+        /**
+         * The maximum amount of a single charge.
+         */
+        max_amount: number;
+
+        /**
+         * The maximum dollar amount of charges in a calendar month.
+         */
+        monthly_amount: number;
+
+        /**
+         * The maximum number of charges in a calendar month.
+         */
+        monthly_count: number;
+      }
+
+      export interface Payouts {
+        /**
+         * The maximum dollar amount of payouts in a day.
+         */
+        daily_amount: number;
+
+        /**
+         * The amount of time it takes for a payout to be funded. This value is defined by
+         * Straddle.
+         */
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+
+        /**
+         * The unique identifier of the linked bank account to use for payouts.
+         */
+        linked_bank_account_id: string;
+
+        /**
+         * The maximum amount of a single payout.
+         */
+        max_amount: number;
+
+        /**
+         * The maximum dollar amount of payouts in a month.
+         */
+        monthly_amount: number;
+
+        /**
+         * The maximum number of payouts in a month.
+         */
+        monthly_count: number;
+      }
+    }
+  }
 }
 
 /**
@@ -378,7 +798,7 @@ export interface AccountCreateParams {
   /**
    * Body param:
    */
-  business_profile: Shared.BusinessProfileV1;
+  business_profile: BusinessProfileV1;
 
   /**
    * Body param: The unique identifier of the organization related to this account.
@@ -413,7 +833,7 @@ export interface AccountUpdateParams {
   /**
    * Body param:
    */
-  business_profile: Shared.BusinessProfileV1;
+  business_profile: BusinessProfileV1;
 
   /**
    * Body param: Unique identifier for the account in your database, used for
@@ -483,7 +903,7 @@ export interface AccountOnboardParams {
   /**
    * Body param:
    */
-  terms_of_service: Shared.TermsOfServiceV1;
+  terms_of_service: TermsOfServiceV1;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -515,7 +935,9 @@ export interface AccountSimulateParams {
   'request-id'?: string;
 }
 
+Accounts.AccountPagedV1DataPageNumberSchema = AccountPagedV1DataPageNumberSchema;
 Accounts.CapabilityRequests = CapabilityRequests;
+Accounts.CapabilityRequestPagedV1DataPageNumberSchema = CapabilityRequestPagedV1DataPageNumberSchema;
 
 export declare namespace Accounts {
   export {
@@ -527,6 +949,7 @@ export declare namespace Accounts {
     type IndustryV1 as IndustryV1,
     type SupportChannelsV1 as SupportChannelsV1,
     type TermsOfServiceV1 as TermsOfServiceV1,
+    AccountPagedV1DataPageNumberSchema as AccountPagedV1DataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
     type AccountUpdateParams as AccountUpdateParams,
     type AccountListParams as AccountListParams,
@@ -538,9 +961,8 @@ export declare namespace Accounts {
   export {
     CapabilityRequests as CapabilityRequests,
     type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
+    CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };
 }
-
-export { AccountV1sPageNumberSchema };

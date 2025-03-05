@@ -29,6 +29,7 @@ export {
 } from './customers/customers';
 export { Embed } from './embed/embed';
 export {
+  FundingEventSummaryPagedV1DataPageNumberSchema,
   FundingEvents,
   type FundingEventSummaryItemV1,
   type FundingEventSummaryPagedV1,
@@ -63,8 +64,3 @@ export {
   type PayoutHoldParams,
   type PayoutReleaseParams,
 } from './payouts';
-export {
-  Reports,
-  type ReportCreateTotalCustomersByStatusResponse,
-  type ReportCreateTotalCustomersByStatusParams,
-} from './reports';

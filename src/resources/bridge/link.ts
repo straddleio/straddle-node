@@ -2,7 +2,7 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
-import * as Shared from '../shared';
+import * as PaykeysAPI from '../paykeys';
 
 export class Link extends APIResource {
   /**
@@ -13,7 +13,7 @@ export class Link extends APIResource {
   bankAccount(
     params: LinkBankAccountParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.PaykeyV1ItemResponse> {
+  ): Core.APIPromise<PaykeysAPI.PaykeyV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -37,10 +37,7 @@ export class Link extends APIResource {
    * endpoint allows you to create a secure payment token linked to a bank account
    * authenticated through Plaid.
    */
-  plaid(
-    params: LinkPlaidParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.PaykeyV1ItemResponse> {
+  plaid(params: LinkPlaidParams, options?: Core.RequestOptions): Core.APIPromise<PaykeysAPI.PaykeyV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -69,7 +66,7 @@ export interface LinkBankAccountParams {
   /**
    * Body param:
    */
-  account_type: Shared.AccountTypeV1;
+  account_type: 'checking' | 'savings';
 
   /**
    * Body param: Unique identifier of the related customer object.

@@ -48,17 +48,13 @@ export class Paykeys extends APIResource {
    * Straddle will return the corresponding paykey record , including the `paykey`
    * token value and masked bank account details.
    */
-  get(
-    id: string,
-    params?: PaykeyGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.PaykeyV1ItemResponse>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.PaykeyV1ItemResponse>;
+  get(id: string, params?: PaykeyGetParams, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
   get(
     id: string,
     params: PaykeyGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.PaykeyV1ItemResponse> {
+  ): Core.APIPromise<PaykeyV1> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -156,7 +152,7 @@ export class PaykeySummaryPagedV1DataPageNumberSchema extends PageNumberSchema<P
 export interface PaykeySummaryPagedV1 {
   data: Array<PaykeySummaryPagedV1.Data>;
 
-  meta: Shared.PagedResponseMetadata1;
+  meta: PaykeySummaryPagedV1.Meta;
 
   /**
    * Indicates the structure of the returned content.
@@ -167,7 +163,7 @@ export interface PaykeySummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeySummaryPagedV1 {
@@ -193,16 +189,16 @@ export namespace PaykeySummaryPagedV1 {
      */
     paykey: string;
 
-    source: Shared.PaykeySourceV1;
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
-    status: Shared.PaykeyStatusV1;
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
 
-    bank_data?: Shared.PaykeyBankDetailsV1;
+    bank_data?: Data.BankData;
 
     /**
      * Unique identifier of the related customer object.
@@ -219,7 +215,84 @@ export namespace PaykeySummaryPagedV1 {
      */
     institution_name?: string | null;
 
-    status_details?: Shared.StatusDetailsV1;
+    status_details?: Data.StatusDetails;
+  }
+
+  export namespace Data {
+    export interface BankData {
+      /**
+       * Bank account number. This value is masked by default for security reasons. Use
+       * the /unmask endpoint to access the unmasked value.
+       */
+      account_number: string;
+
+      account_type: 'checking' | 'savings';
+
+      /**
+       * The routing number of the bank account.
+       */
+      routing_number: string;
+    }
+
+    export interface StatusDetails {
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason: string;
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: string;
+    }
+  }
+
+  export interface Meta {
+    /**
+     * Unique identifier for this API request, useful for troubleshooting.
+     */
+    api_request_id: string;
+
+    /**
+     * Timestamp for this API request, useful for troubleshooting.
+     */
+    api_request_timestamp: string;
+
+    /**
+     * Maximum allowed page size for this endpoint.
+     */
+    max_page_size: number;
+
+    /**
+     * Page number for paginated results.
+     */
+    page_number: number;
+
+    /**
+     * Number of items per page in this response.
+     */
+    page_size: number;
+
+    /**
+     * The field that the results were sorted by.
+     */
+    sort_by: string;
+
+    sort_order: 'asc' | 'desc';
+
+    total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
@@ -240,7 +313,7 @@ export interface PaykeyUnmaskedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeyUnmaskedV1 {
@@ -266,9 +339,9 @@ export namespace PaykeyUnmaskedV1 {
      */
     paykey: string;
 
-    source: Shared.PaykeySourceV1;
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
-    status: Shared.PaykeyStatusV1;
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -298,7 +371,7 @@ export namespace PaykeyUnmaskedV1 {
      */
     metadata?: Record<string, string> | null;
 
-    status_details?: Shared.StatusDetailsV1;
+    status_details?: Data.StatusDetails;
   }
 
   export namespace Data {
@@ -309,12 +382,31 @@ export namespace PaykeyUnmaskedV1 {
        */
       account_number: string;
 
-      account_type: Shared.AccountTypeV1;
+      account_type: 'checking' | 'savings';
 
       /**
        * The routing number of the bank account.
        */
       routing_number: string;
+    }
+
+    export interface StatusDetails {
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason: string;
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: string;
     }
   }
 }
@@ -336,7 +428,7 @@ export interface PaykeyV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeyV1 {
@@ -362,16 +454,16 @@ export namespace PaykeyV1 {
      */
     paykey: string;
 
-    source: Shared.PaykeySourceV1;
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
-    status: Shared.PaykeyStatusV1;
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
 
-    bank_data?: Shared.PaykeyBankDetailsV1;
+    bank_data?: Data.BankData;
 
     /**
      * Unique identifier of the related customer object.
@@ -394,7 +486,43 @@ export namespace PaykeyV1 {
      */
     metadata?: Record<string, string> | null;
 
-    status_details?: Shared.StatusDetailsV1;
+    status_details?: Data.StatusDetails;
+  }
+
+  export namespace Data {
+    export interface BankData {
+      /**
+       * Bank account number. This value is masked by default for security reasons. Use
+       * the /unmask endpoint to access the unmasked value.
+       */
+      account_number: string;
+
+      account_type: 'checking' | 'savings';
+
+      /**
+       * The routing number of the bank account.
+       */
+      routing_number: string;
+    }
+
+    export interface StatusDetails {
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason: string;
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: string;
+    }
   }
 }
 
@@ -415,7 +543,7 @@ export interface PaykeyRevealResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeyRevealResponse {
@@ -441,16 +569,16 @@ export namespace PaykeyRevealResponse {
      */
     paykey: string;
 
-    source: Shared.PaykeySourceV1;
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
-    status: Shared.PaykeyStatusV1;
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
 
-    bank_data?: Shared.PaykeyBankDetailsV1;
+    bank_data?: Data.BankData;
 
     /**
      * Unique identifier of the related customer object.
@@ -473,7 +601,43 @@ export namespace PaykeyRevealResponse {
      */
     metadata?: Record<string, string> | null;
 
-    status_details?: Shared.StatusDetailsV1;
+    status_details?: Data.StatusDetails;
+  }
+
+  export namespace Data {
+    export interface BankData {
+      /**
+       * Bank account number. This value is masked by default for security reasons. Use
+       * the /unmask endpoint to access the unmasked value.
+       */
+      account_number: string;
+
+      account_type: 'checking' | 'savings';
+
+      /**
+       * The routing number of the bank account.
+       */
+      routing_number: string;
+    }
+
+    export interface StatusDetails {
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason: string;
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: string;
+    }
   }
 }
 
@@ -491,12 +655,12 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param:
    */
-  sort_order?: Shared.SortOrder;
+  sort_order?: 'asc' | 'desc';
 
   /**
    * Query param: Filter paykeys by their current status.
    */
-  status?: Array<Shared.PaykeyStatusV1>;
+  status?: Array<'pending' | 'active' | 'inactive' | 'rejected'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
