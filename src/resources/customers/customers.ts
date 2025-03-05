@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as CustomersAPI from './customers';
 import * as Shared from '../shared';
 import * as ReviewAPI from './review';
 import {
@@ -22,10 +23,7 @@ export class Customers extends APIResource {
    * risk assessment scores. This endpoint allows you to create a customer profile
    * and associate it with paykeys and payments.
    */
-  create(
-    params: CustomerCreateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.CustomerV1ItemResponse> {
+  create(params: CustomerCreateParams, options?: Core.RequestOptions): Core.APIPromise<CustomerV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -52,7 +50,7 @@ export class Customers extends APIResource {
     id: string,
     params: CustomerUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.CustomerV1ItemResponse> {
+  ): Core.APIPromise<CustomerV1> {
     const {
       'Correlation-Id': correlationId,
       'Request-Id': requestId,
@@ -118,13 +116,13 @@ export class Customers extends APIResource {
     id: string,
     params?: CustomerDeleteParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.CustomerV1ItemResponse>;
-  delete(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.CustomerV1ItemResponse>;
+  ): Core.APIPromise<CustomerV1>;
+  delete(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
   delete(
     id: string,
     params: CustomerDeleteParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.CustomerV1ItemResponse> {
+  ): Core.APIPromise<CustomerV1> {
     if (isRequestOptions(params)) {
       return this.delete(id, {}, params);
     }
@@ -149,17 +147,13 @@ export class Customers extends APIResource {
    * that was returned from your 'create customer' request, and Straddle will return
    * the corresponding customer information.
    */
-  get(
-    id: string,
-    params?: CustomerGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.CustomerV1ItemResponse>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.CustomerV1ItemResponse>;
+  get(id: string, params?: CustomerGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
+  get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
   get(
     id: string,
     params: CustomerGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.CustomerV1ItemResponse> {
+  ): Core.APIPromise<CustomerV1> {
     if (isRequestOptions(params)) {
       return this.get(id, {}, params);
     }
@@ -249,7 +243,7 @@ export interface CustomerAddressV1 {
 export interface CustomerSummaryPagedV1 {
   data: Array<CustomerSummaryPagedV1.Data>;
 
-  meta: Shared.PagedResponseMetadata1;
+  meta: CustomerSummaryPagedV1.Meta;
 
   /**
    * Indicates the structure of the returned content.
@@ -260,7 +254,7 @@ export interface CustomerSummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace CustomerSummaryPagedV1 {
@@ -290,9 +284,9 @@ export namespace CustomerSummaryPagedV1 {
      */
     phone: string;
 
-    status: Shared.CustomerStatusV1;
+    status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: Shared.CustomerTypeV1;
+    type: 'individual' | 'business';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -304,6 +298,47 @@ export namespace CustomerSummaryPagedV1 {
      * between Straddle and your systems.
      */
     external_id?: string | null;
+  }
+
+  export interface Meta {
+    /**
+     * Unique identifier for this API request, useful for troubleshooting.
+     */
+    api_request_id: string;
+
+    /**
+     * Timestamp for this API request, useful for troubleshooting.
+     */
+    api_request_timestamp: string;
+
+    /**
+     * Maximum allowed page size for this endpoint.
+     */
+    max_page_size: number;
+
+    /**
+     * Page number for paginated results.
+     */
+    page_number: number;
+
+    /**
+     * Number of items per page in this response.
+     */
+    page_size: number;
+
+    /**
+     * The field that the results were sorted by.
+     */
+    sort_by: string;
+
+    sort_order: 'asc' | 'desc';
+
+    total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
   }
 }
 
@@ -324,7 +359,7 @@ export interface CustomerUnmaskedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace CustomerUnmaskedV1 {
@@ -354,23 +389,23 @@ export namespace CustomerUnmaskedV1 {
      */
     phone: string;
 
-    status: Shared.CustomerStatusV1;
+    status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: Shared.CustomerTypeV1;
+    type: 'individual' | 'business';
 
     /**
      * Timestamp of the most recent update to the customer record.
      */
     updated_at: string;
 
-    address?: Shared.AddressV11 | null;
+    address?: CustomersAPI.CustomerAddressV1 | null;
 
     /**
      * Compliance profile for individual customers
      */
-    compliance_profile?: Shared.ComplianceProfileUnmaskedV1;
+    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile;
 
-    device?: Shared.DeviceUnmaskedV1;
+    device?: CustomersAPI.DeviceUnmaskedV1;
 
     /**
      * Unique identifier for the customer in your database, used for cross-referencing
@@ -384,10 +419,80 @@ export namespace CustomerUnmaskedV1 {
      */
     metadata?: Record<string, string> | null;
   }
+
+  export namespace Data {
+    /**
+     * Compliance profile for individual customers
+     */
+    export interface IndividualComplianceProfile {
+      /**
+       * Date of birth in YYYY-MM-DD format.
+       */
+      dob: string;
+
+      /**
+       * Social Security Number in the format XXX-XX-XXXX.
+       */
+      ssn: string;
+
+      /**
+       * Full 9-digit Employer Identification Number for businesses. This data is
+       * required to trigger Patriot Act compliant KYB verification. Only valid where
+       * customer type is 'business'.
+       */
+      ein?: string | null;
+
+      /**
+       * The official name of the business. This name should be correlated with the ein
+       * value. Only valid where customer type is 'business'.
+       */
+      legal_business_name?: string | null;
+
+      /**
+       * URL of the company's official website.
+       */
+      website?: string | null;
+    }
+
+    /**
+     * Compliance profile for business customers
+     */
+    export interface BusinessComplianceProfile {
+      /**
+       * Employer Identification Number in the format XX-XXXXXXX.
+       */
+      ein: string;
+
+      /**
+       * The official registered name of the business. This name should be correlated
+       * with the `ein` value.
+       */
+      legal_business_name: string;
+
+      /**
+       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+       * data is required to trigger Patriot Act compliant KYC verification. Required if
+       * SSN is provided. Only valid where customer type is 'individual'.
+       */
+      dob?: string | null;
+
+      /**
+       * Full 9-digit Social Security Number or government identifier for individuals.
+       * This data is required to trigger Patriot Act compliant KYC verification.
+       * Required if DOB is provided. Only valid where customer type is 'individual'.
+       */
+      ssn?: string | null;
+
+      /**
+       * Business website URL.
+       */
+      website?: string;
+    }
+  }
 }
 
 export interface CustomerV1 {
-  data: Shared.CustomerV1;
+  data: CustomerV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
@@ -403,7 +508,146 @@ export interface CustomerV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace CustomerV1 {
+  export interface Data {
+    /**
+     * Unique identifier for the customer.
+     */
+    id: string;
+
+    /**
+     * Timestamp of when the customer record was created.
+     */
+    created_at: string;
+
+    /**
+     * The customer's email address.
+     */
+    email: string;
+
+    /**
+     * Full name of the individual or business name.
+     */
+    name: string;
+
+    /**
+     * The customer's phone number in E.164 format.
+     */
+    phone: string;
+
+    status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
+
+    type: 'individual' | 'business';
+
+    /**
+     * Timestamp of the most recent update to the customer record.
+     */
+    updated_at: string;
+
+    address?: CustomersAPI.CustomerAddressV1 | null;
+
+    /**
+     * Compliance profile for individual customers
+     */
+    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile;
+
+    device?: Data.Device;
+
+    /**
+     * Unique identifier for the customer in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the customer in a structured format.
+     */
+    metadata?: Record<string, string> | null;
+  }
+
+  export namespace Data {
+    /**
+     * Compliance profile for individual customers
+     */
+    export interface IndividualComplianceProfile {
+      /**
+       * Date of birth in YYYY-MM-DD format.
+       */
+      dob: string;
+
+      /**
+       * Social Security Number in the format XXX-XX-XXXX.
+       */
+      ssn: string;
+
+      /**
+       * Full 9-digit Employer Identification Number for businesses. This data is
+       * required to trigger Patriot Act compliant Know Your Business (KYB) verification.
+       * Only valid where customer type is 'business'.
+       */
+      ein?: string | null;
+
+      /**
+       * The official name of the business. This name should be correlated with the ein
+       * value. Only valid where customer type is 'business'.
+       */
+      legal_business_name?: string | null;
+
+      /**
+       * URL of the company's official website. Only valid where customer type is
+       * 'business'.
+       */
+      website?: string | null;
+    }
+
+    /**
+     * Compliance profile for business customers
+     */
+    export interface BusinessComplianceProfile {
+      /**
+       * Employer Identification Number in the format XX-XXXXXXX.
+       */
+      ein: string;
+
+      /**
+       * The official registered name of the business. This name should be correlated
+       * with the `ein` value.
+       */
+      legal_business_name: string;
+
+      /**
+       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+       * data is required to trigger Patriot Act compliant Know Your Customer (KYC)
+       * verification. Required if SSN is provided. Only valid where customer type is
+       * 'individual'.
+       */
+      dob?: string | null;
+
+      /**
+       * Full 9-digit Social Security Number or government identifier for individuals.
+       * This data is required to trigger Patriot Act compliant KYC verification.
+       * Required if DOB is provided. Only valid where customer type is 'individual'.
+       */
+      ssn?: string | null;
+
+      /**
+       * Business website URL.
+       */
+      website?: string;
+    }
+
+    export interface Device {
+      /**
+       * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
+       * represent an offline customer registration.
+       */
+      ip_address: string;
+    }
+  }
 }
 
 export interface DeviceUnmaskedV1 {
@@ -418,7 +662,7 @@ export interface CustomerCreateParams {
   /**
    * Body param:
    */
-  device: Shared.DeviceUnmaskedV1;
+  device: DeviceUnmaskedV1;
 
   /**
    * Body param: The customer's email address.
@@ -439,20 +683,22 @@ export interface CustomerCreateParams {
   /**
    * Body param:
    */
-  type: Shared.CustomerTypeV1;
+  type: 'individual' | 'business';
 
   /**
    * Body param: An object containing the customer's address. This is optional, but
    * if provided, all required fields must be present.
    */
-  address?: Shared.AddressV11 | null;
+  address?: CustomerAddressV1 | null;
 
   /**
    * Body param: An object containing the customer's compliance profile. This is
    * optional, but if provided, all required fields must be present for the
    * appropriate customer type.
    */
-  compliance_profile?: Shared.ComplianceProfileUnmaskedV1;
+  compliance_profile?:
+    | CustomerCreateParams.IndividualComplianceProfile
+    | CustomerCreateParams.BusinessComplianceProfile;
 
   /**
    * Body param: Unique identifier for the customer in your database, used for
@@ -484,11 +730,81 @@ export interface CustomerCreateParams {
   'Straddle-Account-Id'?: string;
 }
 
+export namespace CustomerCreateParams {
+  /**
+   * Compliance profile for individual customers
+   */
+  export interface IndividualComplianceProfile {
+    /**
+     * Date of birth in YYYY-MM-DD format.
+     */
+    dob: string;
+
+    /**
+     * Social Security Number in the format XXX-XX-XXXX.
+     */
+    ssn: string;
+
+    /**
+     * Full 9-digit Employer Identification Number for businesses. This data is
+     * required to trigger Patriot Act compliant KYB verification. Only valid where
+     * customer type is 'business'.
+     */
+    ein?: string | null;
+
+    /**
+     * The official name of the business. This name should be correlated with the ein
+     * value. Only valid where customer type is 'business'.
+     */
+    legal_business_name?: string | null;
+
+    /**
+     * URL of the company's official website.
+     */
+    website?: string | null;
+  }
+
+  /**
+   * Compliance profile for business customers
+   */
+  export interface BusinessComplianceProfile {
+    /**
+     * Employer Identification Number in the format XX-XXXXXXX.
+     */
+    ein: string;
+
+    /**
+     * The official registered name of the business. This name should be correlated
+     * with the `ein` value.
+     */
+    legal_business_name: string;
+
+    /**
+     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+     * data is required to trigger Patriot Act compliant KYC verification. Required if
+     * SSN is provided. Only valid where customer type is 'individual'.
+     */
+    dob?: string | null;
+
+    /**
+     * Full 9-digit Social Security Number or government identifier for individuals.
+     * This data is required to trigger Patriot Act compliant KYC verification.
+     * Required if DOB is provided. Only valid where customer type is 'individual'.
+     */
+    ssn?: string | null;
+
+    /**
+     * Business website URL.
+     */
+    website?: string;
+  }
+}
+
 export interface CustomerUpdateParams {
   /**
    * Body param:
    */
-  device: Shared.DeviceUnmaskedV1;
+  device: DeviceUnmaskedV1;
 
   /**
    * Body param: The customer's email address.
@@ -514,12 +830,14 @@ export interface CustomerUpdateParams {
    * Body param: An object containing the customer's address. This is optional, but
    * if provided, all required fields must be present.
    */
-  address?: Shared.AddressV11 | null;
+  address?: CustomerAddressV1 | null;
 
   /**
    * Body param: Compliance profile for individual customers
    */
-  compliance_profile?: Shared.ComplianceProfileUnmaskedV1;
+  compliance_profile?:
+    | CustomerUpdateParams.IndividualComplianceProfile
+    | CustomerUpdateParams.BusinessComplianceProfile;
 
   /**
    * Body param: Unique identifier for the customer in your database, used for
@@ -549,6 +867,76 @@ export interface CustomerUpdateParams {
    * request.
    */
   'Straddle-Account-Id'?: string;
+}
+
+export namespace CustomerUpdateParams {
+  /**
+   * Compliance profile for individual customers
+   */
+  export interface IndividualComplianceProfile {
+    /**
+     * Date of birth in YYYY-MM-DD format.
+     */
+    dob: string;
+
+    /**
+     * Social Security Number in the format XXX-XX-XXXX.
+     */
+    ssn: string;
+
+    /**
+     * Full 9-digit Employer Identification Number for businesses. This data is
+     * required to trigger Patriot Act compliant KYB verification. Only valid where
+     * customer type is 'business'.
+     */
+    ein?: string | null;
+
+    /**
+     * The official name of the business. This name should be correlated with the ein
+     * value. Only valid where customer type is 'business'.
+     */
+    legal_business_name?: string | null;
+
+    /**
+     * URL of the company's official website.
+     */
+    website?: string | null;
+  }
+
+  /**
+   * Compliance profile for business customers
+   */
+  export interface BusinessComplianceProfile {
+    /**
+     * Employer Identification Number in the format XX-XXXXXXX.
+     */
+    ein: string;
+
+    /**
+     * The official registered name of the business. This name should be correlated
+     * with the `ein` value.
+     */
+    legal_business_name: string;
+
+    /**
+     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+     * data is required to trigger Patriot Act compliant KYC verification. Required if
+     * SSN is provided. Only valid where customer type is 'individual'.
+     */
+    dob?: string | null;
+
+    /**
+     * Full 9-digit Social Security Number or government identifier for individuals.
+     * This data is required to trigger Patriot Act compliant KYC verification.
+     * Required if DOB is provided. Only valid where customer type is 'individual'.
+     */
+    ssn?: string | null;
+
+    /**
+     * Business website URL.
+     */
+    website?: string;
+  }
 }
 
 export interface CustomerListParams extends PageNumberSchemaParams {
@@ -590,17 +978,17 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   /**
    * Query param:
    */
-  sort_order?: Shared.SortOrder;
+  sort_order?: 'asc' | 'desc';
 
   /**
    * Query param: Filter customers by their current `status`.
    */
-  status?: Array<Shared.CustomerStatusV1>;
+  status?: Array<'pending' | 'review' | 'verified' | 'inactive' | 'rejected'>;
 
   /**
    * Query param: Filter by customer type `individual` or `business`.
    */
-  types?: Array<Shared.CustomerTypeV1>;
+  types?: Array<'individual' | 'business'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

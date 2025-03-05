@@ -4,8 +4,7 @@ import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
 import * as Shared from './shared';
-import { FundingEventSummaryV1sPageNumberSchema } from './shared';
-import { type PageNumberSchemaParams } from '../pagination';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
 
 export class FundingEvents extends APIResource {
   /**
@@ -15,14 +14,14 @@ export class FundingEvents extends APIResource {
   list(
     params?: FundingEventListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryV1sPageNumberSchema, Shared.FundingEventSummaryV1>;
+  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryV1sPageNumberSchema, Shared.FundingEventSummaryV1>;
+  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data>;
   list(
     params: FundingEventListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryV1sPageNumberSchema, Shared.FundingEventSummaryV1> {
+  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
@@ -32,7 +31,7 @@ export class FundingEvents extends APIResource {
       'Straddle-Account-Id': straddleAccountId,
       ...query
     } = params;
-    return this._client.getAPIList('/v1/funding_events', FundingEventSummaryV1sPageNumberSchema, {
+    return this._client.getAPIList('/v1/funding_events', FundingEventSummaryPagedV1DataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -80,8 +79,10 @@ export class FundingEvents extends APIResource {
   }
 }
 
+export class FundingEventSummaryPagedV1DataPageNumberSchema extends PageNumberSchema<FundingEventSummaryPagedV1.Data> {}
+
 export interface FundingEventSummaryItemV1 {
-  data: Shared.FundingEventSummaryV1;
+  data: FundingEventSummaryItemV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
@@ -97,13 +98,61 @@ export interface FundingEventSummaryItemV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace FundingEventSummaryItemV1 {
+  export interface Data {
+    /**
+     * Unique identifier for the funding event.
+     */
+    id: string;
+
+    /**
+     * The amount of the funding event in cents.
+     */
+    amount: number;
+
+    /**
+     * Describes the direction of the funding event from the perspective of the
+     * `linked_bank_account`.
+     */
+    direction: 'deposit' | 'withdrawal';
+
+    /**
+     * The funding event types describes the direction and reason for the funding
+     * event.
+     */
+    event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
+
+    /**
+     * The number of payments associated with the funding event.
+     */
+    payment_count: number;
+
+    /**
+     * Trace number.
+     */
+    trace_numbers: Array<string>;
+
+    /**
+     * The date on which the funding event occurred. For `deposits` and `returns`, this
+     * is the date the funds were credited to your bank account. For `withdrawals` and
+     * `reversals`, this is the date the funds were debited from your bank account.
+     */
+    transfer_date: string;
+
+    /**
+     * The trace number of the funding event.
+     */
+    trace_number?: string | null;
+  }
 }
 
 export interface FundingEventSummaryPagedV1 {
-  data: Array<Shared.FundingEventSummaryV1>;
+  data: Array<FundingEventSummaryPagedV1.Data>;
 
-  meta: Shared.PagedResponseMetadata2;
+  meta: FundingEventSummaryPagedV1.Meta;
 
   /**
    * Indicates the structure of the returned content.
@@ -114,7 +163,96 @@ export interface FundingEventSummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace FundingEventSummaryPagedV1 {
+  export interface Data {
+    /**
+     * Unique identifier for the funding event.
+     */
+    id: string;
+
+    /**
+     * The amount of the funding event in cents.
+     */
+    amount: number;
+
+    /**
+     * Describes the direction of the funding event from the perspective of the
+     * `linked_bank_account`.
+     */
+    direction: 'deposit' | 'withdrawal';
+
+    /**
+     * The funding event types describes the direction and reason for the funding
+     * event.
+     */
+    event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
+
+    /**
+     * The number of payments associated with the funding event.
+     */
+    payment_count: number;
+
+    /**
+     * Trace number.
+     */
+    trace_numbers: Array<string>;
+
+    /**
+     * The date on which the funding event occurred. For `deposits` and `returns`, this
+     * is the date the funds were credited to your bank account. For `withdrawals` and
+     * `reversals`, this is the date the funds were debited from your bank account.
+     */
+    transfer_date: string;
+
+    /**
+     * The trace number of the funding event.
+     */
+    trace_number?: string | null;
+  }
+
+  export interface Meta {
+    /**
+     * Unique identifier for this API request, useful for troubleshooting.
+     */
+    api_request_id: string;
+
+    /**
+     * Timestamp for this API request, useful for troubleshooting.
+     */
+    api_request_timestamp: string;
+
+    /**
+     * Maximum allowed page size for this endpoint.
+     */
+    max_page_size: number;
+
+    /**
+     * Page number for paginated results.
+     */
+    page_number: number;
+
+    /**
+     * Number of items per page in this response.
+     */
+    page_size: number;
+
+    /**
+     * The field that the results were sorted by.
+     */
+    sort_by: string;
+
+    sort_order: 'asc' | 'desc';
+
+    total_items: number;
+
+    /**
+     * The number of pages available.
+     */
+    total_pages: number;
+  }
 }
 
 export interface FundingEventListParams extends PageNumberSchemaParams {
@@ -134,13 +272,13 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
    * Query param: Describes the direction of the funding event from the perspective
    * of the `linked_bank_account`.
    */
-  direction?: Shared.TransferDirectionV1;
+  direction?: 'deposit' | 'withdrawal';
 
   /**
    * Query param: The funding event types describes the direction and reason for the
    * funding event.
    */
-  event_type?: Shared.FundingEventTypeV1;
+  event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
 
   /**
    * Query param: The field to sort the results by.
@@ -150,7 +288,7 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
   /**
    * Query param: The order in which to sort the results.
    */
-  sort_order?: Shared.SortOrder;
+  sort_order?: 'asc' | 'desc';
 
   /**
    * Query param: Trace number.
@@ -192,13 +330,14 @@ export interface FundingEventGetParams {
   'Straddle-Account-Id'?: string;
 }
 
+FundingEvents.FundingEventSummaryPagedV1DataPageNumberSchema = FundingEventSummaryPagedV1DataPageNumberSchema;
+
 export declare namespace FundingEvents {
   export {
     type FundingEventSummaryItemV1 as FundingEventSummaryItemV1,
     type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
+    FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
     type FundingEventListParams as FundingEventListParams,
     type FundingEventGetParams as FundingEventGetParams,
   };
 }
-
-export { FundingEventSummaryV1sPageNumberSchema };

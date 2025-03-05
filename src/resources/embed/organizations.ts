@@ -4,8 +4,7 @@ import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as Shared from '../shared';
-import { OrganizationV1sPageNumberSchema } from '../shared';
-import { type PageNumberSchemaParams } from '../../pagination';
+import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
 
 export class Organizations extends APIResource {
   /**
@@ -13,10 +12,7 @@ export class Organizations extends APIResource {
    * can be used to group related accounts and manage permissions across multiple
    * users.
    */
-  create(
-    params: OrganizationCreateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfOrganizationV1> {
+  create(params: OrganizationCreateParams, options?: Core.RequestOptions): Core.APIPromise<OrganizationV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
     return this._client.post('/v1/organizations', {
       body,
@@ -38,19 +34,19 @@ export class Organizations extends APIResource {
   list(
     params?: OrganizationListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<OrganizationV1sPageNumberSchema, Shared.OrganizationV1>;
+  ): Core.PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<OrganizationV1sPageNumberSchema, Shared.OrganizationV1>;
+  ): Core.PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data>;
   list(
     params: OrganizationListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<OrganizationV1sPageNumberSchema, Shared.OrganizationV1> {
+  ): Core.PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data> {
     if (isRequestOptions(params)) {
       return this.list({}, params);
     }
     const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/organizations', OrganizationV1sPageNumberSchema, {
+    return this._client.getAPIList('/v1/organizations', OrganizationPagedV1DataPageNumberSchema, {
       query,
       ...options,
       headers: {
@@ -70,16 +66,13 @@ export class Organizations extends APIResource {
     organizationId: string,
     params?: OrganizationGetParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfOrganizationV1>;
-  get(
-    organizationId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfOrganizationV1>;
+  ): Core.APIPromise<OrganizationV1>;
+  get(organizationId: string, options?: Core.RequestOptions): Core.APIPromise<OrganizationV1>;
   get(
     organizationId: string,
     params: OrganizationGetParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.ItemResponseOfOrganizationV1> {
+  ): Core.APIPromise<OrganizationV1> {
     if (isRequestOptions(params)) {
       return this.get(organizationId, {}, params);
     }
@@ -95,8 +88,10 @@ export class Organizations extends APIResource {
   }
 }
 
+export class OrganizationPagedV1DataPageNumberSchema extends PageNumberSchema<OrganizationPagedV1.Data> {}
+
 export interface OrganizationPagedV1 {
-  data: Array<Shared.OrganizationV1>;
+  data: Array<OrganizationPagedV1.Data>;
 
   /**
    * Metadata about the API request, including an identifier, timestamp, and
@@ -116,8 +111,44 @@ export interface OrganizationPagedV1 {
   response_type: 'object' | 'array' | 'error' | 'none';
 }
 
+export namespace OrganizationPagedV1 {
+  export interface Data {
+    /**
+     * Straddle's unique identifier for the organization.
+     */
+    id: string;
+
+    /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
+     * The name of the organization.
+     */
+    name: string;
+
+    /**
+     * Timestamp of the most recent update to the organization.
+     */
+    updated_at: string;
+
+    /**
+     * Unique identifier for the organization in your database, used for
+     * cross-referencing between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the organization in a structured format.
+     */
+    metadata?: Record<string, string | null> | null;
+  }
+}
+
 export interface OrganizationV1 {
-  data: Shared.OrganizationV1;
+  data: OrganizationV1.Data;
 
   /**
    * Metadata about the API request, including an identifier and timestamp.
@@ -134,6 +165,42 @@ export interface OrganizationV1 {
    * - "none" means no data is returned.
    */
   response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace OrganizationV1 {
+  export interface Data {
+    /**
+     * Straddle's unique identifier for the organization.
+     */
+    id: string;
+
+    /**
+     * Timestamp of when the organization was created.
+     */
+    created_at: string;
+
+    /**
+     * The name of the organization.
+     */
+    name: string;
+
+    /**
+     * Timestamp of the most recent update to the organization.
+     */
+    updated_at: string;
+
+    /**
+     * Unique identifier for the organization in your database, used for
+     * cross-referencing between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the organization in a structured format.
+     */
+    metadata?: Record<string, string | null> | null;
+  }
 }
 
 export interface OrganizationCreateParams {
@@ -211,14 +278,15 @@ export interface OrganizationGetParams {
   'request-id'?: string;
 }
 
+Organizations.OrganizationPagedV1DataPageNumberSchema = OrganizationPagedV1DataPageNumberSchema;
+
 export declare namespace Organizations {
   export {
     type OrganizationPagedV1 as OrganizationPagedV1,
     type OrganizationV1 as OrganizationV1,
+    OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
     type OrganizationGetParams as OrganizationGetParams,
   };
 }
-
-export { OrganizationV1sPageNumberSchema };
