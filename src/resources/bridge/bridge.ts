@@ -49,7 +49,7 @@ export interface BridgeTokenV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: Shared.ResponseTypeEnum;
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace BridgeTokenV1 {

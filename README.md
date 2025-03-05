@@ -28,7 +28,7 @@ const client = new Straddle({
 });
 
 async function main() {
-  const chargeV1ItemResponse = await client.charges.create({
+  const chargeV1 = await client.charges.create({
     amount: 0,
     config: { balance_check: 'required' },
     consent_type: 'internet',
@@ -40,7 +40,7 @@ async function main() {
     payment_date: '2019-12-27',
   });
 
-  console.log(chargeV1ItemResponse.data);
+  console.log(chargeV1.data);
 }
 
 main();
@@ -71,7 +71,7 @@ async function main() {
     paykey: 'paykey',
     payment_date: '2019-12-27',
   };
-  const chargeV1ItemResponse: Straddle.ChargeV1ItemResponse = await client.charges.create(params);
+  const chargeV1: Straddle.ChargeV1 = await client.charges.create(params);
 }
 
 main();
@@ -88,7 +88,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const chargeV1ItemResponse = await client.charges
+  const chargeV1 = await client.charges
     .create({
       amount: 0,
       config: { balance_check: 'required' },
@@ -228,7 +228,7 @@ const response = await client.charges
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: chargeV1ItemResponse, response: raw } = await client.charges
+const { data: chargeV1, response: raw } = await client.charges
   .create({
     amount: 0,
     config: { balance_check: 'required' },
@@ -242,7 +242,7 @@ const { data: chargeV1ItemResponse, response: raw } = await client.charges
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(chargeV1ItemResponse.data);
+console.log(chargeV1.data);
 ```
 
 ### Making custom/undocumented requests
