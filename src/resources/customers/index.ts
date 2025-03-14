@@ -13,6 +13,7 @@ export {
   type CustomerListParams,
   type CustomerDeleteParams,
   type CustomerGetParams,
+  type CustomerRefreshReviewParams,
   type CustomerUnmaskedParams,
 } from './customers';
 export {

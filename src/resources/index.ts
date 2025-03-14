@@ -25,6 +25,7 @@ export {
   type CustomerListParams,
   type CustomerDeleteParams,
   type CustomerGetParams,
+  type CustomerRefreshReviewParams,
   type CustomerUnmaskedParams,
 } from './customers/customers';
 export { Embed } from './embed/embed';
@@ -64,3 +65,8 @@ export {
   type PayoutHoldParams,
   type PayoutReleaseParams,
 } from './payouts';
+export {
+  Reports,
+  type ReportCreateTotalCustomersByStatusResponse,
+  type ReportCreateTotalCustomersByStatusParams,
+} from './reports';
