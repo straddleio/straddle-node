@@ -438,7 +438,10 @@ export namespace CustomerUnmaskedV1 {
     /**
      * Compliance profile for individual customers
      */
-    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile;
+    compliance_profile?:
+      | Data.UnionMember0
+      | Data.IndividualComplianceProfile
+      | Data.BusinessComplianceProfile;
 
     device?: CustomersAPI.DeviceUnmaskedV1;
 
@@ -456,6 +459,40 @@ export namespace CustomerUnmaskedV1 {
   }
 
   export namespace Data {
+    export interface UnionMember0 {
+      /**
+       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+       * data is required to trigger Patriot Act compliant KYC verification. Required if
+       * SSN is provided. Only valid where customer type is 'individual'.
+       */
+      dob?: string | null;
+
+      /**
+       * Full 9-digit Employer Identification Number for businesses. This data is
+       * required to trigger Patriot Act compliant KYB verification. Only valid where
+       * customer type is 'business'.
+       */
+      ein?: string | null;
+
+      /**
+       * The official name of the business. This name should be correlated with the ein
+       * value. Only valid where customer type is 'business'.
+       */
+      legal_business_name?: string | null;
+
+      /**
+       * Full 9-digit Social Security Number or government identifier for individuals.
+       * This data is required to trigger Patriot Act compliant KYC verification.
+       * Required if DOB is provided. Only valid where customer type is 'individual'.
+       */
+      ssn?: string | null;
+
+      /**
+       * URL of the company's official website.
+       */
+      website?: string | null;
+    }
+
     /**
      * Compliance profile for individual customers
      */
@@ -587,7 +624,11 @@ export namespace CustomerV1 {
     /**
      * Compliance profile for individual customers
      */
-    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile;
+    compliance_profile?:
+      | Data.UnionMember0
+      | Data.IndividualComplianceProfile
+      | Data.BusinessComplianceProfile
+      | null;
 
     device?: Data.Device;
 
@@ -605,6 +646,42 @@ export namespace CustomerV1 {
   }
 
   export namespace Data {
+    export interface UnionMember0 {
+      /**
+       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+       * data is required to trigger Patriot Act compliant Know Your Customer (KYC)
+       * verification. Required if SSN is provided. Only valid where customer type is
+       * 'individual'.
+       */
+      dob?: string | null;
+
+      /**
+       * Full 9-digit Employer Identification Number for businesses. This data is
+       * required to trigger Patriot Act compliant Know Your Business (KYB) verification.
+       * Only valid where customer type is 'business'.
+       */
+      ein?: string | null;
+
+      /**
+       * The official name of the business. This name should be correlated with the ein
+       * value. Only valid where customer type is 'business'.
+       */
+      legal_business_name?: string | null;
+
+      /**
+       * Full 9-digit Social Security Number or government identifier for individuals.
+       * This data is required to trigger Patriot Act compliant KYC verification.
+       * Required if DOB is provided. Only valid where customer type is 'individual'.
+       */
+      ssn?: string | null;
+
+      /**
+       * URL of the company's official website. Only valid where customer type is
+       * 'business'.
+       */
+      website?: string | null;
+    }
+
     /**
      * Compliance profile for individual customers
      */
@@ -732,6 +809,7 @@ export interface CustomerCreateParams {
    * appropriate customer type.
    */
   compliance_profile?:
+    | CustomerCreateParams.UnionMember0
     | CustomerCreateParams.IndividualComplianceProfile
     | CustomerCreateParams.BusinessComplianceProfile;
 
@@ -766,6 +844,40 @@ export interface CustomerCreateParams {
 }
 
 export namespace CustomerCreateParams {
+  export interface UnionMember0 {
+    /**
+     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+     * data is required to trigger Patriot Act compliant KYC verification. Required if
+     * SSN is provided. Only valid where customer type is 'individual'.
+     */
+    dob?: string | null;
+
+    /**
+     * Full 9-digit Employer Identification Number for businesses. This data is
+     * required to trigger Patriot Act compliant KYB verification. Only valid where
+     * customer type is 'business'.
+     */
+    ein?: string | null;
+
+    /**
+     * The official name of the business. This name should be correlated with the ein
+     * value. Only valid where customer type is 'business'.
+     */
+    legal_business_name?: string | null;
+
+    /**
+     * Full 9-digit Social Security Number or government identifier for individuals.
+     * This data is required to trigger Patriot Act compliant KYC verification.
+     * Required if DOB is provided. Only valid where customer type is 'individual'.
+     */
+    ssn?: string | null;
+
+    /**
+     * URL of the company's official website.
+     */
+    website?: string | null;
+  }
+
   /**
    * Compliance profile for individual customers
    */
@@ -871,6 +983,7 @@ export interface CustomerUpdateParams {
    * Body param: Compliance profile for individual customers
    */
   compliance_profile?:
+    | CustomerUpdateParams.UnionMember0
     | CustomerUpdateParams.IndividualComplianceProfile
     | CustomerUpdateParams.BusinessComplianceProfile;
 
@@ -905,6 +1018,40 @@ export interface CustomerUpdateParams {
 }
 
 export namespace CustomerUpdateParams {
+  export interface UnionMember0 {
+    /**
+     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
+     * data is required to trigger Patriot Act compliant KYC verification. Required if
+     * SSN is provided. Only valid where customer type is 'individual'.
+     */
+    dob?: string | null;
+
+    /**
+     * Full 9-digit Employer Identification Number for businesses. This data is
+     * required to trigger Patriot Act compliant KYB verification. Only valid where
+     * customer type is 'business'.
+     */
+    ein?: string | null;
+
+    /**
+     * The official name of the business. This name should be correlated with the ein
+     * value. Only valid where customer type is 'business'.
+     */
+    legal_business_name?: string | null;
+
+    /**
+     * Full 9-digit Social Security Number or government identifier for individuals.
+     * This data is required to trigger Patriot Act compliant KYC verification.
+     * Required if DOB is provided. Only valid where customer type is 'individual'.
+     */
+    ssn?: string | null;
+
+    /**
+     * URL of the company's official website.
+     */
+    website?: string | null;
+  }
+
   /**
    * Compliance profile for individual customers
    */
