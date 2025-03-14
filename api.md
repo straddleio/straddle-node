@@ -122,6 +122,7 @@ Methods:
 - <code title="get /v1/customers">client.customers.<a href="./src/resources/customers/customers.ts">list</a>({ ...params }) -> CustomerSummaryPagedV1DataPageNumberSchema</code>
 - <code title="delete /v1/customers/{id}">client.customers.<a href="./src/resources/customers/customers.ts">delete</a>(id, { ...params }) -> CustomerV1</code>
 - <code title="get /v1/customers/{id}">client.customers.<a href="./src/resources/customers/customers.ts">get</a>(id, { ...params }) -> CustomerV1</code>
+- <code title="put /v1/customers/{id}/refresh_review">client.customers.<a href="./src/resources/customers/customers.ts">refreshReview</a>(id, { ...params }) -> CustomerV1</code>
 - <code title="get /v1/customers/{id}/unmasked">client.customers.<a href="./src/resources/customers/customers.ts">unmasked</a>(id, { ...params }) -> CustomerUnmaskedV1</code>
 
 ## Review
@@ -203,3 +204,13 @@ Methods:
 - <code title="get /v1/payouts/{id}">client.payouts.<a href="./src/resources/payouts.ts">get</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="put /v1/payouts/{id}/hold">client.payouts.<a href="./src/resources/payouts.ts">hold</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="put /v1/payouts/{id}/release">client.payouts.<a href="./src/resources/payouts.ts">release</a>(id, { ...params }) -> PayoutV1</code>
+
+# Reports
+
+Types:
+
+- <code><a href="./src/resources/reports.ts">ReportCreateTotalCustomersByStatusResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/reports/total_customers_by_status">client.reports.<a href="./src/resources/reports.ts">createTotalCustomersByStatus</a>({ ...params }) -> ReportCreateTotalCustomersByStatusResponse</code>

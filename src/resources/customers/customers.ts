@@ -174,6 +174,41 @@ export class Customers extends APIResource {
   }
 
   /**
+   * Updates the decision of a customer's identity validation. This endpoint allows
+   * you to modify the outcome of a customer decision and is useful for correcting or
+   * updating the status of a customer's verification.
+   */
+  refreshReview(
+    id: string,
+    params?: CustomerRefreshReviewParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CustomerV1>;
+  refreshReview(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
+  refreshReview(
+    id: string,
+    params: CustomerRefreshReviewParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CustomerV1> {
+    if (isRequestOptions(params)) {
+      return this.refreshReview(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+    } = params;
+    return this._client.put(`/v1/customers/${id}/refresh_review`, {
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
    * Retrieves the unmasked details, including PII, of an existing customer. Supply
    * the unique customer ID that was returned from your 'create customer' request,
    * and Straddle will return the corresponding customer information. This endpoint
@@ -1042,6 +1077,23 @@ export interface CustomerGetParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface CustomerRefreshReviewParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface CustomerUnmaskedParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -1075,6 +1127,7 @@ export declare namespace Customers {
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
     type CustomerGetParams as CustomerGetParams,
+    type CustomerRefreshReviewParams as CustomerRefreshReviewParams,
     type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 

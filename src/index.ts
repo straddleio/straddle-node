@@ -54,6 +54,11 @@ import {
   PayoutV1,
   Payouts,
 } from './resources/payouts';
+import {
+  ReportCreateTotalCustomersByStatusParams,
+  ReportCreateTotalCustomersByStatusResponse,
+  Reports,
+} from './resources/reports';
 import { Bridge, BridgeInitializeParams, BridgeTokenV1 } from './resources/bridge/bridge';
 import {
   CustomerAddressV1,
@@ -61,6 +66,7 @@ import {
   CustomerDeleteParams,
   CustomerGetParams,
   CustomerListParams,
+  CustomerRefreshReviewParams,
   CustomerSummaryPagedV1,
   CustomerSummaryPagedV1DataPageNumberSchema,
   CustomerUnmaskedParams,
@@ -216,6 +222,7 @@ export class Straddle extends Core.APIClient {
   fundingEvents: API.FundingEvents = new API.FundingEvents(this);
   payments: API.Payments = new API.Payments(this);
   payouts: API.Payouts = new API.Payouts(this);
+  reports: API.Reports = new API.Reports(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -269,6 +276,7 @@ Straddle.FundingEventSummaryPagedV1DataPageNumberSchema = FundingEventSummaryPag
 Straddle.Payments = Payments;
 Straddle.PaymentSummaryPagedV1DataPageNumberSchema = PaymentSummaryPagedV1DataPageNumberSchema;
 Straddle.Payouts = Payouts;
+Straddle.Reports = Reports;
 export declare namespace Straddle {
   export type RequestOptions = Core.RequestOptions;
 
@@ -299,6 +307,7 @@ export declare namespace Straddle {
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
     type CustomerGetParams as CustomerGetParams,
+    type CustomerRefreshReviewParams as CustomerRefreshReviewParams,
     type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 
@@ -351,6 +360,12 @@ export declare namespace Straddle {
     type PayoutGetParams as PayoutGetParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
+  };
+
+  export {
+    Reports as Reports,
+    type ReportCreateTotalCustomersByStatusResponse as ReportCreateTotalCustomersByStatusResponse,
+    type ReportCreateTotalCustomersByStatusParams as ReportCreateTotalCustomersByStatusParams,
   };
 
   export type CustomerDetailsV1 = API.CustomerDetailsV1;
