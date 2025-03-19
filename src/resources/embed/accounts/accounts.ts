@@ -144,7 +144,7 @@ export class Accounts extends APIResource {
   }
 
   /**
-   * Simulte the status transitions for sandbox accounts. This endpoint can only be
+   * Simulate the status transitions for sandbox accounts. This endpoint can only be
    * used for sandbox accounts.
    */
   simulate(
