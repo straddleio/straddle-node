@@ -179,7 +179,8 @@ export namespace PaykeySummaryPagedV1 {
     created_at: string;
 
     /**
-     * Human-readable label used to represent this paykey in a UI.
+     * Human-readable label that combines the bank name and masked account number to
+     * help easility represent this paykey in a UI
      */
     label: string;
 
@@ -558,12 +559,13 @@ export namespace PaykeyRevealResponse {
     created_at: string;
 
     /**
-     * Human-readable label used to represent this paykey in a UI.
+     * Human-readable label that combines the bank name and masked account number to
+     * help easility represent this paykey in a UI
      */
     label: string;
 
     /**
-     * The tokenized paykey value. This value is used to create payments and should be
+     * The tokenized paykey value. This token is used to create payments and should be
      * stored securely.
      */
     paykey: string;
