@@ -5,27 +5,27 @@
  */
 export interface CustomerDetailsV1 {
   /**
-   * Unique identifier for the customer.
+   * Unique identifier for the customer
    */
   id: string;
 
   /**
-   * The type of customer.
+   * The type of customer
    */
   customer_type: 'individual' | 'business';
 
   /**
-   * Email.
+   * The customer's email address
    */
   email: string;
 
   /**
-   * The name of the customer.
+   * The name of the customer
    */
   name: string;
 
   /**
-   * Phone.
+   * The customer's phone number in E.164 format
    */
   phone: string;
 }
@@ -101,7 +101,8 @@ export interface PaykeyDetailsV1 {
   customer_id: string;
 
   /**
-   * Human-readable label used to represent this paykey in a UI.
+   * Human-readable label that combines the bank name and masked account number to
+   * help easility represent this paykey in a UI
    */
   label: string;
 
