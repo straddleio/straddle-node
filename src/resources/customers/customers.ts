@@ -446,10 +446,7 @@ export namespace CustomerUnmaskedV1 {
     /**
      * Individual PII data required to trigger Patriot Act compliant KYC verification.
      */
-    compliance_profile?:
-      | Data.IndividualCustomerComplianceProfile
-      | Data.BusinessCustomerComplianceProfile
-      | null;
+    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
 
     device?: CustomersAPI.DeviceUnmaskedV1;
 
@@ -470,7 +467,7 @@ export namespace CustomerUnmaskedV1 {
     /**
      * Individual PII data required to trigger Patriot Act compliant KYC verification.
      */
-    export interface IndividualCustomerComplianceProfile {
+    export interface IndividualComplianceProfile {
       /**
        * Date of birth (YYYY-MM-DD). Required for Patriot Act-compliant KYC verification.
        */
@@ -487,7 +484,7 @@ export namespace CustomerUnmaskedV1 {
      * Business registration data required to trigger Patriot Act compliant KYB
      * verification.
      */
-    export interface BusinessCustomerComplianceProfile {
+    export interface BusinessComplianceProfile {
       /**
        * Employer Identification Number (format XX-XXXXXXX). Required for Patriot
        * Act-compliant KYB verification.
@@ -688,8 +685,8 @@ export interface CustomerCreateParams {
    * appropriate customer type.
    */
   compliance_profile?:
-    | CustomerCreateParams.IndividualCustomerComplianceProfile
-    | CustomerCreateParams.BusinessCustomerComplianceProfile
+    | CustomerCreateParams.IndividualComplianceProfile
+    | CustomerCreateParams.BusinessComplianceProfile
     | null;
 
   /**
@@ -726,7 +723,7 @@ export namespace CustomerCreateParams {
   /**
    * Individual PII data required to trigger Patriot Act compliant KYC verification.
    */
-  export interface IndividualCustomerComplianceProfile {
+  export interface IndividualComplianceProfile {
     /**
      * Date of birth (YYYY-MM-DD). Required for Patriot Act-compliant KYC verification.
      */
@@ -743,7 +740,7 @@ export namespace CustomerCreateParams {
    * Business registration data required to trigger Patriot Act compliant KYB
    * verification.
    */
-  export interface BusinessCustomerComplianceProfile {
+  export interface BusinessComplianceProfile {
     /**
      * Employer Identification Number (format XX-XXXXXXX). Required for Patriot
      * Act-compliant KYB verification.
@@ -800,8 +797,8 @@ export interface CustomerUpdateParams {
    * verification.
    */
   compliance_profile?:
-    | CustomerUpdateParams.IndividualCustomerComplianceProfile
-    | CustomerUpdateParams.BusinessCustomerComplianceProfile
+    | CustomerUpdateParams.IndividualComplianceProfile
+    | CustomerUpdateParams.BusinessComplianceProfile
     | null;
 
   /**
@@ -838,7 +835,7 @@ export namespace CustomerUpdateParams {
   /**
    * Individual PII data required to trigger Patriot Act compliant KYC verification.
    */
-  export interface IndividualCustomerComplianceProfile {
+  export interface IndividualComplianceProfile {
     /**
      * Date of birth (YYYY-MM-DD). Required for Patriot Act-compliant KYC verification.
      */
@@ -855,7 +852,7 @@ export namespace CustomerUpdateParams {
    * Business registration data required to trigger Patriot Act compliant KYB
    * verification.
    */
-  export interface BusinessCustomerComplianceProfile {
+  export interface BusinessComplianceProfile {
     /**
      * Employer Identification Number (format XX-XXXXXXX). Required for Patriot
      * Act-compliant KYB verification.

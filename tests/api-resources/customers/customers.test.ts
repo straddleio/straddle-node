@@ -67,7 +67,7 @@ describe('resource customers', () => {
       name: 'name',
       phone: '+46991022',
       status: 'pending',
-      address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '94105', address2: null },
+      address: { address1: 'address1', city: 'city', state: 'SE', zip: '21029-1360', address2: 'address2' },
       compliance_profile: { dob: '1969-04-20', ssn: '123-45-6789' },
       external_id: 'external_id',
       metadata: { foo: 'string' },
