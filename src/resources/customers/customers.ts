@@ -678,8 +678,8 @@ export interface CustomerCreateParams {
 
   /**
    * Body param: An object containing the customer's compliance profile. **This is
-   * optional.** If used, all required fields must be present for the appropriate
-   * customer type.
+   * optional.** If all required fields must be present for the appropriate customer
+   * type.
    */
   compliance_profile?:
     | CustomerCreateParams.IndividualComplianceProfile
