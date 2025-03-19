@@ -570,10 +570,7 @@ export namespace CustomerV1 {
     /**
      * PII required to trigger Patriot Act compliant KYC verification.
      */
-    compliance_profile?:
-      | Data.IndividualCustomerComplianceProfile
-      | Data.BusinessCustomerComplianceProfile
-      | null;
+    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
 
     device?: Data.Device;
 
@@ -594,7 +591,7 @@ export namespace CustomerV1 {
     /**
      * PII required to trigger Patriot Act compliant KYC verification.
      */
-    export interface IndividualCustomerComplianceProfile {
+    export interface IndividualComplianceProfile {
       /**
        * Masked date of birth in \***\*-**-\*\* format.
        */
@@ -610,7 +607,7 @@ export namespace CustomerV1 {
      * Business registration data required to trigger Patriot Act compliant KYB
      * verification.
      */
-    export interface BusinessCustomerComplianceProfile {
+    export interface BusinessComplianceProfile {
       /**
        * Masked Employer Identification Number in the format **-**\*****
        */

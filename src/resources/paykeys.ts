@@ -377,8 +377,7 @@ export namespace PaykeyUnmaskedV1 {
   export namespace Data {
     export interface BankData {
       /**
-       * The bank account number. This value is masked by default for security reasons.
-       * Use the /unmask endpoint to access the unmasked value.
+       * The bank account number
        */
       account_number: string;
 
