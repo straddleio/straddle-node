@@ -671,15 +671,15 @@ export interface CustomerCreateParams {
   type: 'individual' | 'business';
 
   /**
-   * Body param: An object containing the customer's address. This is optional, but
-   * if provided, all required fields must be present.
+   * Body param: An object containing the customer's address. **This is optional.**
+   * If used, all required fields must be present.
    */
   address?: CustomerAddressV1 | null;
 
   /**
    * Body param: An object containing the customer's compliance profile. **This is
-   * optional**, but if provided, all required fields must be present for the
-   * appropriate customer type.
+   * optional.** If used, all required fields must be present for the appropriate
+   * customer type.
    */
   compliance_profile?:
     | CustomerCreateParams.IndividualComplianceProfile
