@@ -164,7 +164,11 @@ describe('resource accounts', () => {
 
   test('onboard: only required params', async () => {
     const responsePromise = client.embed.accounts.onboard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      terms_of_service: { accepted_date: '2019-12-27T18:11:19.117Z', agreement_type: 'embedded' },
+      terms_of_service: {
+        accepted_date: '2019-12-27T18:11:19.117Z',
+        agreement_type: 'embedded',
+        agreement_url: 'agreement_url',
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -180,9 +184,9 @@ describe('resource accounts', () => {
       terms_of_service: {
         accepted_date: '2019-12-27T18:11:19.117Z',
         agreement_type: 'embedded',
+        agreement_url: 'agreement_url',
         accepted_ip: 'accepted_ip',
         accepted_user_agent: 'accepted_user_agent',
-        agreement_url: 'agreement_url',
       },
       'correlation-id': 'correlation-id',
       'request-id': 'request-id',
