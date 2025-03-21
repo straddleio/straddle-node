@@ -767,6 +767,11 @@ export interface TermsOfServiceV1 {
   agreement_type: 'embedded' | 'direct';
 
   /**
+   * The URL where the full text of the accepted agreement can be found.
+   */
+  agreement_url: string | null;
+
+  /**
    * The IP address from which the terms of service were accepted.
    */
   accepted_ip?: string | null;
@@ -775,11 +780,6 @@ export interface TermsOfServiceV1 {
    * The user agent string of the browser or application used to accept the terms.
    */
   accepted_user_agent?: string | null;
-
-  /**
-   * The URL where the full text of the accepted agreement can be found.
-   */
-  agreement_url?: string | null;
 }
 
 export interface AccountCreateParams {
