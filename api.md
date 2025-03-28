@@ -204,3 +204,13 @@ Methods:
 - <code title="get /v1/payouts/{id}">client.payouts.<a href="./src/resources/payouts.ts">get</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="put /v1/payouts/{id}/hold">client.payouts.<a href="./src/resources/payouts.ts">hold</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="put /v1/payouts/{id}/release">client.payouts.<a href="./src/resources/payouts.ts">release</a>(id, { ...params }) -> PayoutV1</code>
+
+# Reports
+
+Types:
+
+- <code><a href="./src/resources/reports.ts">ReportCreateTotalCustomersByStatusResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/reports/total_customers_by_status">client.reports.<a href="./src/resources/reports.ts">createTotalCustomersByStatus</a>({ ...params }) -> ReportCreateTotalCustomersByStatusResponse</code>
