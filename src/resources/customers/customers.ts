@@ -478,41 +478,6 @@ export namespace CustomerUnmaskedV1 {
        * KYC verification.
        */
       ssn: string | null;
-
-      /**
-       * Full 9-digit Employer Identification Number for businesses. This data is
-       * required to trigger Patriot Act compliant KYB verification. Only valid where
-       * customer type is 'business'.
-       */
-      ein?: string | null;
-
-      /**
-       * The official name of the business. This name should be correlated with the ein
-       * value. Only valid where customer type is 'business'.
-       */
-      legal_business_name?: string | null;
-
-      /**
-       * A list of people related to the company. Only valid where customer type is
-       * 'business'.
-       */
-      representatives?: Array<IndividualComplianceProfile.Representative> | null;
-
-      /**
-       * URL of the company's official website. Only valid where customer type is
-       * 'business'.
-       */
-      website?: string | null;
-    }
-
-    export namespace IndividualComplianceProfile {
-      export interface Representative {
-        name: string;
-
-        email?: string | null;
-
-        phone?: string | null;
-      }
     }
 
     /**
@@ -533,39 +498,9 @@ export namespace CustomerUnmaskedV1 {
       legal_business_name: string | null;
 
       /**
-       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
-       * data is required to trigger Patriot Act compliant KYC verification. Required if
-       * SSN is provided. Only valid where customer type is 'individual'.
-       */
-      dob?: string | null;
-
-      /**
-       * A list of people related to the company. Only valid where customer type is
-       * 'business'.
-       */
-      representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-      /**
-       * Full 9-digit Social Security Number or government identifier for individuals.
-       * This data is required to trigger Patriot Act compliant KYC verification.
-       * Required if DOB is provided. Only valid where customer type is 'individual'.
-       */
-      ssn?: string | null;
-
-      /**
        * Official business website URL. Optional but recommended for enhanced KYB.
        */
       website?: string | null;
-    }
-
-    export namespace BusinessComplianceProfile {
-      export interface Representative {
-        name: string;
-
-        email?: string | null;
-
-        phone?: string | null;
-      }
     }
   }
 }
@@ -666,41 +601,6 @@ export namespace CustomerV1 {
        * Masked Social Security Number in the format **\*-**-\*\*\*\*.
        */
       ssn: string | null;
-
-      /**
-       * Full 9-digit Employer Identification Number for businesses. This data is
-       * required to trigger Patriot Act compliant Know Your Business (KYB) verification.
-       * Only valid where customer type is 'business'.
-       */
-      ein?: string | null;
-
-      /**
-       * The official name of the business. This name should be correlated with the ein
-       * value. Only valid where customer type is 'business'.
-       */
-      legal_business_name?: string | null;
-
-      /**
-       * A list of people related to the company. Only valid where customer type is
-       * 'business'.
-       */
-      representatives?: Array<IndividualComplianceProfile.Representative> | null;
-
-      /**
-       * URL of the company's official website. Only valid where customer type is
-       * 'business'.
-       */
-      website?: string | null;
-    }
-
-    export namespace IndividualComplianceProfile {
-      export interface Representative {
-        name: string;
-
-        email?: string | null;
-
-        phone?: string | null;
-      }
     }
 
     /**
@@ -720,40 +620,9 @@ export namespace CustomerV1 {
       legal_business_name: string | null;
 
       /**
-       * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
-       * data is required to trigger Patriot Act compliant Know Your Customer (KYC)
-       * verification. Required if SSN is provided. Only valid where customer type is
-       * 'individual'.
-       */
-      dob?: string | null;
-
-      /**
-       * A list of people related to the company. Only valid where customer type is
-       * 'business'.
-       */
-      representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-      /**
-       * Full 9-digit Social Security Number or government identifier for individuals.
-       * This data is required to trigger Patriot Act compliant KYC verification.
-       * Required if DOB is provided. Only valid where customer type is 'individual'.
-       */
-      ssn?: string | null;
-
-      /**
        * Official business website URL. Optional but recommended for enhanced KYB.
        */
       website?: string | null;
-    }
-
-    export namespace BusinessComplianceProfile {
-      export interface Representative {
-        name: string;
-
-        email?: string | null;
-
-        phone?: string | null;
-      }
     }
 
     export interface Device {
@@ -862,41 +731,6 @@ export namespace CustomerCreateParams {
      * KYC verification.
      */
     ssn: string | null;
-
-    /**
-     * Full 9-digit Employer Identification Number for businesses. This data is
-     * required to trigger Patriot Act compliant KYB verification. Only valid where
-     * customer type is 'business'.
-     */
-    ein?: string | null;
-
-    /**
-     * The official name of the business. This name should be correlated with the ein
-     * value. Only valid where customer type is 'business'.
-     */
-    legal_business_name?: string | null;
-
-    /**
-     * A list of people related to the company. Only valid where customer type is
-     * 'business'.
-     */
-    representatives?: Array<IndividualComplianceProfile.Representative> | null;
-
-    /**
-     * URL of the company's official website. Only valid where customer type is
-     * 'business'.
-     */
-    website?: string | null;
-  }
-
-  export namespace IndividualComplianceProfile {
-    export interface Representative {
-      name: string;
-
-      email?: string | null;
-
-      phone?: string | null;
-    }
   }
 
   /**
@@ -917,39 +751,9 @@ export namespace CustomerCreateParams {
     legal_business_name: string | null;
 
     /**
-     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
-     * data is required to trigger Patriot Act compliant KYC verification. Required if
-     * SSN is provided. Only valid where customer type is 'individual'.
-     */
-    dob?: string | null;
-
-    /**
-     * A list of people related to the company. Only valid where customer type is
-     * 'business'.
-     */
-    representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-    /**
-     * Full 9-digit Social Security Number or government identifier for individuals.
-     * This data is required to trigger Patriot Act compliant KYC verification.
-     * Required if DOB is provided. Only valid where customer type is 'individual'.
-     */
-    ssn?: string | null;
-
-    /**
      * Official business website URL. Optional but recommended for enhanced KYB.
      */
     website?: string | null;
-  }
-
-  export namespace BusinessComplianceProfile {
-    export interface Representative {
-      name: string;
-
-      email?: string | null;
-
-      phone?: string | null;
-    }
   }
 }
 
@@ -1039,41 +843,6 @@ export namespace CustomerUpdateParams {
      * KYC verification.
      */
     ssn: string | null;
-
-    /**
-     * Full 9-digit Employer Identification Number for businesses. This data is
-     * required to trigger Patriot Act compliant KYB verification. Only valid where
-     * customer type is 'business'.
-     */
-    ein?: string | null;
-
-    /**
-     * The official name of the business. This name should be correlated with the ein
-     * value. Only valid where customer type is 'business'.
-     */
-    legal_business_name?: string | null;
-
-    /**
-     * A list of people related to the company. Only valid where customer type is
-     * 'business'.
-     */
-    representatives?: Array<IndividualComplianceProfile.Representative> | null;
-
-    /**
-     * URL of the company's official website. Only valid where customer type is
-     * 'business'.
-     */
-    website?: string | null;
-  }
-
-  export namespace IndividualComplianceProfile {
-    export interface Representative {
-      name: string;
-
-      email?: string | null;
-
-      phone?: string | null;
-    }
   }
 
   /**
@@ -1094,39 +863,9 @@ export namespace CustomerUpdateParams {
     legal_business_name: string | null;
 
     /**
-     * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
-     * data is required to trigger Patriot Act compliant KYC verification. Required if
-     * SSN is provided. Only valid where customer type is 'individual'.
-     */
-    dob?: string | null;
-
-    /**
-     * A list of people related to the company. Only valid where customer type is
-     * 'business'.
-     */
-    representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-    /**
-     * Full 9-digit Social Security Number or government identifier for individuals.
-     * This data is required to trigger Patriot Act compliant KYC verification.
-     * Required if DOB is provided. Only valid where customer type is 'individual'.
-     */
-    ssn?: string | null;
-
-    /**
      * Official business website URL. Optional but recommended for enhanced KYB.
      */
     website?: string | null;
-  }
-
-  export namespace BusinessComplianceProfile {
-    export interface Representative {
-      name: string;
-
-      email?: string | null;
-
-      phone?: string | null;
-    }
   }
 }
 
