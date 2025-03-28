@@ -673,6 +673,11 @@ export interface RepresentativeListParams extends PageNumberSchemaParams {
   /**
    * Query param:
    */
+  level?: 'account' | 'platform';
+
+  /**
+   * Query param:
+   */
   organization_id?: string;
 
   /**

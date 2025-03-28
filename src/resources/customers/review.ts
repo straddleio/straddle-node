@@ -200,9 +200,25 @@ export namespace CustomerReviewV1 {
         legal_business_name: string | null;
 
         /**
+         * A list of people related to the company. Only valid where customer type is
+         * 'business'.
+         */
+        representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+        /**
          * Official business website URL. Optional but recommended for enhanced KYB.
          */
         website?: string | null;
+      }
+
+      export namespace BusinessComplianceProfile {
+        export interface Representative {
+          name: string;
+
+          email?: string | null;
+
+          phone?: string | null;
+        }
       }
 
       export interface Device {
@@ -257,6 +273,12 @@ export namespace CustomerReviewV1 {
        */
       export interface Breakdown {
         address?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_evaluation?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_identification?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_validation?: ReviewAPI.IdentityVerificationBreakdownV1;
 
         email?: ReviewAPI.IdentityVerificationBreakdownV1;
 
