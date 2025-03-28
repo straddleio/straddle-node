@@ -12,7 +12,7 @@ export interface CustomerDetailsV1 {
   /**
    * The type of customer
    */
-  customer_type: 'individual' | 'business';
+  customer_type: 'individual' | 'business' | 'unknown';
 
   /**
    * The customer's email address
