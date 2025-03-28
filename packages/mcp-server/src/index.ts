@@ -738,6 +738,10 @@ registerApiMethod({
         type: 'string',
         description: 'The unique identifier of the related account.',
       },
+      level: {
+        type: 'string',
+        enum: ['account', 'platform'],
+      },
       page_number: {
         type: 'integer',
         description: 'Results page number. Starts at page 1.',
@@ -1100,6 +1104,10 @@ registerApiMethod({
         type: 'string',
         description: 'The unique identifier of the account to list representatives for.',
       },
+      level: {
+        type: 'string',
+        enum: ['account', 'platform'],
+      },
       organization_id: {
         type: 'string',
       },
@@ -1394,6 +1402,26 @@ registerApiMethod({
                 description:
                   "Official registered business name as listed with the IRS. This value will be matched against the 'legal_business name'.",
               },
+              representatives: {
+                type: 'array',
+                description:
+                  "A list of people related to the company. Only valid where customer type is 'business'.",
+                items: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    email: {
+                      type: 'string',
+                    },
+                    phone: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['name'],
+                },
+              },
               website: {
                 type: 'string',
                 description: 'Official business website URL. Optional but recommended for enhanced KYB.',
@@ -1533,6 +1561,26 @@ registerApiMethod({
                 type: 'string',
                 description:
                   "Official registered business name as listed with the IRS. This value will be matched against the 'legal_business name'.",
+              },
+              representatives: {
+                type: 'array',
+                description:
+                  "A list of people related to the company. Only valid where customer type is 'business'.",
+                items: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    email: {
+                      type: 'string',
+                    },
+                    phone: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['name'],
+                },
               },
               website: {
                 type: 'string',
