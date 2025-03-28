@@ -97,11 +97,6 @@ export namespace PaymentSummaryPagedV1 {
     external_id: string;
 
     /**
-     * Funding ids.
-     */
-    funding_ids: Array<string>;
-
-    /**
      * Value of the `paykey` used for the `charge` or `payout`.
      */
     paykey: string;
