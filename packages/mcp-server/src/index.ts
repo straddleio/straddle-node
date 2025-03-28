@@ -40,7 +40,7 @@ registerApiMethod({
       account_type: {
         type: 'string',
         description: 'The type of account to be created. Currently, only `business` is supported.',
-        enum: ['business'],
+        enum: ['business', 'unknown'],
       },
       business_profile: {
         type: 'object',
@@ -738,6 +738,10 @@ registerApiMethod({
         type: 'string',
         description: 'The unique identifier of the related account.',
       },
+      level: {
+        type: 'string',
+        enum: ['account', 'platform'],
+      },
       page_number: {
         type: 'integer',
         description: 'Results page number. Starts at page 1.',
@@ -1100,6 +1104,10 @@ registerApiMethod({
         type: 'string',
         description: 'The unique identifier of the account to list representatives for.',
       },
+      level: {
+        type: 'string',
+        enum: ['account', 'platform'],
+      },
       organization_id: {
         type: 'string',
       },
@@ -1375,6 +1383,41 @@ registerApiMethod({
                 description:
                   'Social Security Number (format XXX-XX-XXXX). Required for Patriot Act-compliant KYC verification.',
               },
+              ein: {
+                type: 'string',
+                description:
+                  "Full 9-digit Employer Identification Number for businesses. This data is required to trigger Patriot Act compliant KYB verification. Only valid where customer type is 'business'.",
+              },
+              legal_business_name: {
+                type: 'string',
+                description:
+                  "The official name of the business. This name should be correlated with the ein value. Only valid where customer type is 'business'.",
+              },
+              representatives: {
+                type: 'array',
+                description:
+                  "A list of people related to the company. Only valid where customer type is 'business'.",
+                items: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    email: {
+                      type: 'string',
+                    },
+                    phone: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['name'],
+                },
+              },
+              website: {
+                type: 'string',
+                description:
+                  "URL of the company's official website. Only valid where customer type is 'business'.",
+              },
             },
             required: ['dob', 'ssn'],
           },
@@ -1393,6 +1436,36 @@ registerApiMethod({
                 type: 'string',
                 description:
                   "Official registered business name as listed with the IRS. This value will be matched against the 'legal_business name'.",
+              },
+              dob: {
+                type: 'string',
+                description:
+                  "Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This data is required to trigger Patriot Act compliant KYC verification. Required if SSN is provided. Only valid where customer type is 'individual'.",
+              },
+              representatives: {
+                type: 'array',
+                description:
+                  "A list of people related to the company. Only valid where customer type is 'business'.",
+                items: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    email: {
+                      type: 'string',
+                    },
+                    phone: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['name'],
+                },
+              },
+              ssn: {
+                type: 'string',
+                description:
+                  "Full 9-digit Social Security Number or government identifier for individuals. This data is required to trigger Patriot Act compliant KYC verification. Required if DOB is provided. Only valid where customer type is 'individual'.",
               },
               website: {
                 type: 'string',
@@ -1515,6 +1588,41 @@ registerApiMethod({
                 description:
                   'Social Security Number (format XXX-XX-XXXX). Required for Patriot Act-compliant KYC verification.',
               },
+              ein: {
+                type: 'string',
+                description:
+                  "Full 9-digit Employer Identification Number for businesses. This data is required to trigger Patriot Act compliant KYB verification. Only valid where customer type is 'business'.",
+              },
+              legal_business_name: {
+                type: 'string',
+                description:
+                  "The official name of the business. This name should be correlated with the ein value. Only valid where customer type is 'business'.",
+              },
+              representatives: {
+                type: 'array',
+                description:
+                  "A list of people related to the company. Only valid where customer type is 'business'.",
+                items: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    email: {
+                      type: 'string',
+                    },
+                    phone: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['name'],
+                },
+              },
+              website: {
+                type: 'string',
+                description:
+                  "URL of the company's official website. Only valid where customer type is 'business'.",
+              },
             },
             required: ['dob', 'ssn'],
           },
@@ -1533,6 +1641,36 @@ registerApiMethod({
                 type: 'string',
                 description:
                   "Official registered business name as listed with the IRS. This value will be matched against the 'legal_business name'.",
+              },
+              dob: {
+                type: 'string',
+                description:
+                  "Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This data is required to trigger Patriot Act compliant KYC verification. Required if SSN is provided. Only valid where customer type is 'individual'.",
+              },
+              representatives: {
+                type: 'array',
+                description:
+                  "A list of people related to the company. Only valid where customer type is 'business'.",
+                items: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    email: {
+                      type: 'string',
+                    },
+                    phone: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['name'],
+                },
+              },
+              ssn: {
+                type: 'string',
+                description:
+                  "Full 9-digit Social Security Number or government identifier for individuals. This data is required to trigger Patriot Act compliant KYC verification. Required if DOB is provided. Only valid where customer type is 'individual'.",
               },
               website: {
                 type: 'string',

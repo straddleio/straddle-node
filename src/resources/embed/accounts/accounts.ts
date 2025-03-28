@@ -218,14 +218,14 @@ export namespace AccountPagedV1 {
     /**
      * The current status of the account (e.g., 'active', 'inactive', 'pending').
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'unknown';
 
     status_detail: Data.StatusDetail;
 
     /**
      * The type of account (e.g., 'individual', 'business').
      */
-    type: 'business';
+    type: 'business' | 'unknown';
 
     business_profile?: AccountsAPI.BusinessProfileV1;
 
@@ -284,7 +284,8 @@ export namespace AccountPagedV1 {
         | 'failed_verification'
         | 'disabled'
         | 'terminated'
-        | 'new';
+        | 'new'
+        | 'unknown';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -346,7 +347,7 @@ export namespace AccountPagedV1 {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -380,7 +381,7 @@ export namespace AccountPagedV1 {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -447,14 +448,14 @@ export namespace AccountV1 {
     /**
      * The current status of the account (e.g., 'active', 'inactive', 'pending').
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'unknown';
 
     status_detail: Data.StatusDetail;
 
     /**
      * The type of account (e.g., 'individual', 'business').
      */
-    type: 'business';
+    type: 'business' | 'unknown';
 
     business_profile?: AccountsAPI.BusinessProfileV1;
 
@@ -513,7 +514,8 @@ export namespace AccountV1 {
         | 'failed_verification'
         | 'disabled'
         | 'terminated'
-        | 'new';
+        | 'new'
+        | 'unknown';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -575,7 +577,7 @@ export namespace AccountV1 {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -609,7 +611,7 @@ export namespace AccountV1 {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'unknown';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -793,7 +795,7 @@ export interface AccountCreateParams {
    * Body param: The type of account to be created. Currently, only `business` is
    * supported.
    */
-  account_type: 'business';
+  account_type: 'business' | 'unknown';
 
   /**
    * Body param:
