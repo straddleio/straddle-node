@@ -95,7 +95,6 @@ describe('resource linkedBankAccounts', () => {
       client.embed.linkedBankAccounts.list(
         {
           account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          level: 'account',
           page_number: 0,
           page_size: 0,
           sort_by: 'sort_by',

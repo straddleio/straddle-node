@@ -258,12 +258,6 @@ export namespace CustomerReviewV1 {
       export interface Breakdown {
         address?: ReviewAPI.IdentityVerificationBreakdownV1;
 
-        business_evaluation?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        business_identification?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        business_validation?: ReviewAPI.IdentityVerificationBreakdownV1;
-
         email?: ReviewAPI.IdentityVerificationBreakdownV1;
 
         fraud?: ReviewAPI.IdentityVerificationBreakdownV1;
@@ -349,7 +343,7 @@ export namespace CustomerReviewV1 {
 
       export namespace WatchList {
         export interface Match {
-          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence' | 'unknown';
+          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
 
           /**
            * The name of the list the match was found.
