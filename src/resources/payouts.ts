@@ -210,6 +210,11 @@ export namespace PayoutV1 {
     external_id: string;
 
     /**
+     * Funding Ids
+     */
+    funding_ids: Array<string>;
+
+    /**
      * Value of the `paykey` used for the payout.
      */
     paykey: string;
