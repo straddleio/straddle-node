@@ -498,9 +498,25 @@ export namespace CustomerUnmaskedV1 {
       legal_business_name: string | null;
 
       /**
+       * A list of people related to the company. Only valid where customer type is
+       * 'business'.
+       */
+      representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+      /**
        * Official business website URL. Optional but recommended for enhanced KYB.
        */
       website?: string | null;
+    }
+
+    export namespace BusinessComplianceProfile {
+      export interface Representative {
+        name: string;
+
+        email?: string | null;
+
+        phone?: string | null;
+      }
     }
   }
 }
@@ -620,9 +636,25 @@ export namespace CustomerV1 {
       legal_business_name: string | null;
 
       /**
+       * A list of people related to the company. Only valid where customer type is
+       * 'business'.
+       */
+      representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+      /**
        * Official business website URL. Optional but recommended for enhanced KYB.
        */
       website?: string | null;
+    }
+
+    export namespace BusinessComplianceProfile {
+      export interface Representative {
+        name: string;
+
+        email?: string | null;
+
+        phone?: string | null;
+      }
     }
 
     export interface Device {
@@ -751,9 +783,25 @@ export namespace CustomerCreateParams {
     legal_business_name: string | null;
 
     /**
+     * A list of people related to the company. Only valid where customer type is
+     * 'business'.
+     */
+    representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+    /**
      * Official business website URL. Optional but recommended for enhanced KYB.
      */
     website?: string | null;
+  }
+
+  export namespace BusinessComplianceProfile {
+    export interface Representative {
+      name: string;
+
+      email?: string | null;
+
+      phone?: string | null;
+    }
   }
 }
 
@@ -863,9 +911,25 @@ export namespace CustomerUpdateParams {
     legal_business_name: string | null;
 
     /**
+     * A list of people related to the company. Only valid where customer type is
+     * 'business'.
+     */
+    representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+    /**
      * Official business website URL. Optional but recommended for enhanced KYB.
      */
     website?: string | null;
+  }
+
+  export namespace BusinessComplianceProfile {
+    export interface Representative {
+      name: string;
+
+      email?: string | null;
+
+      phone?: string | null;
+    }
   }
 }
 
