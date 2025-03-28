@@ -184,7 +184,7 @@ export namespace LinkedBankAccountPagedV1 {
     /**
      * The unique identifier of the Straddle account related to this bank account.
      */
-    account_id: string;
+    account_id: string | null;
 
     bank_account: Data.BankAccount;
 
@@ -210,6 +210,11 @@ export namespace LinkedBankAccountPagedV1 {
      * information about the linked bank account in a structured format.
      */
     metadata?: Record<string, string | null> | null;
+
+    /**
+     * The unique identifier of the Straddle Platform relatd to this bank account.
+     */
+    platform_id?: string | null;
   }
 
   export namespace Data {
@@ -400,7 +405,7 @@ export namespace LinkedBankAccountV1 {
     /**
      * The unique identifier of the Straddle account related to this bank account.
      */
-    account_id: string;
+    account_id: string | null;
 
     bank_account: Data.BankAccount;
 
@@ -426,6 +431,11 @@ export namespace LinkedBankAccountV1 {
      * information about the linked bank account in a structured format.
      */
     metadata?: Record<string, string | null> | null;
+
+    /**
+     * The unique identifier of the Straddle Platform relatd to this bank account.
+     */
+    platform_id?: string | null;
   }
 
   export namespace Data {
@@ -573,6 +583,11 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
    * Query param: The unique identifier of the related account.
    */
   account_id?: string;
+
+  /**
+   * Query param:
+   */
+  level?: 'account' | 'platform';
 
   /**
    * Query param: Sort By.
