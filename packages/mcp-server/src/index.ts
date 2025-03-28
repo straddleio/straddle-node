@@ -40,7 +40,7 @@ registerApiMethod({
       account_type: {
         type: 'string',
         description: 'The type of account to be created. Currently, only `business` is supported.',
-        enum: ['business'],
+        enum: ['business', 'unknown'],
       },
       business_profile: {
         type: 'object',
@@ -738,6 +738,10 @@ registerApiMethod({
         type: 'string',
         description: 'The unique identifier of the related account.',
       },
+      level: {
+        type: 'string',
+        enum: ['account', 'platform'],
+      },
       page_number: {
         type: 'integer',
         description: 'Results page number. Starts at page 1.',
@@ -1099,6 +1103,10 @@ registerApiMethod({
       account_id: {
         type: 'string',
         description: 'The unique identifier of the account to list representatives for.',
+      },
+      level: {
+        type: 'string',
+        enum: ['account', 'platform'],
       },
       organization_id: {
         type: 'string',
