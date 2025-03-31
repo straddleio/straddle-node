@@ -11,7 +11,7 @@ const client = new Straddle({
 describe('resource charges', () => {
   test('create: only required params', async () => {
     const responsePromise = client.charges.create({
-      amount: 0,
+      amount: 10000,
       config: { balance_check: 'required' },
       consent_type: 'internet',
       currency: 'currency',
@@ -32,7 +32,7 @@ describe('resource charges', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.charges.create({
-      amount: 0,
+      amount: 10000,
       config: { balance_check: 'required' },
       consent_type: 'internet',
       currency: 'currency',
@@ -50,7 +50,7 @@ describe('resource charges', () => {
 
   test('update: only required params', async () => {
     const responsePromise = client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      amount: 0,
+      amount: 10000,
       description: 'Monthly subscription fee',
       payment_date: '2019-12-27',
     });
@@ -65,7 +65,7 @@ describe('resource charges', () => {
 
   test('update: required and optional params', async () => {
     const response = await client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      amount: 0,
+      amount: 10000,
       description: 'Monthly subscription fee',
       payment_date: '2019-12-27',
       metadata: { foo: 'string' },

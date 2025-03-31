@@ -29,7 +29,7 @@ const client = new Straddle({
 
 async function main() {
   const chargeV1 = await client.charges.create({
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',
@@ -61,7 +61,7 @@ const client = new Straddle({
 
 async function main() {
   const params: Straddle.ChargeCreateParams = {
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',
@@ -90,7 +90,7 @@ a subclass of `APIError` will be thrown:
 async function main() {
   const chargeV1 = await client.charges
     .create({
-      amount: 0,
+      amount: 10000,
       config: { balance_check: 'required' },
       consent_type: 'internet',
       currency: 'currency',
@@ -143,7 +143,7 @@ const client = new Straddle({
 });
 
 // Or, configure per-request:
-await client.charges.create({ amount: 0, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
+await client.charges.create({ amount: 10000, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
   maxRetries: 5,
 });
 ```
@@ -160,7 +160,7 @@ const client = new Straddle({
 });
 
 // Override per-request:
-await client.charges.create({ amount: 0, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
+await client.charges.create({ amount: 10000, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -214,7 +214,7 @@ const client = new Straddle();
 
 const response = await client.charges
   .create({
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',
@@ -230,7 +230,7 @@ console.log(response.statusText); // access the underlying Response object
 
 const { data: chargeV1, response: raw } = await client.charges
   .create({
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',
@@ -348,7 +348,7 @@ const client = new Straddle({
 // Override per-request:
 await client.charges.create(
   {
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',
