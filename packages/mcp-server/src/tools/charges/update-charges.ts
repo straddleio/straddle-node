@@ -1,0 +1,53 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import Straddle from '@straddleio/straddle';
+
+export const tool: Tool = {
+  name: 'update_charges',
+  description:
+    'Change the values of parameters associated with a charge prior to processing. The status of the charge must be `created`, `scheduled`, or `on_hold`.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      id: {
+        type: 'string',
+      },
+      amount: {
+        type: 'integer',
+        description: 'The amount of the charge in cents.',
+      },
+      description: {
+        type: 'string',
+        description: 'An arbitrary description for the charge.',
+      },
+      payment_date: {
+        type: 'string',
+        description:
+          'The desired date on which the payment should be occur. For charges, this means the date you want the customer to be debited on.',
+        format: 'date',
+      },
+      metadata: {
+        type: 'object',
+        description:
+          'Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the charge in a structured format.',
+      },
+      'Correlation-Id': {
+        type: 'string',
+      },
+      'Request-Id': {
+        type: 'string',
+      },
+      'Straddle-Account-Id': {
+        type: 'string',
+      },
+    },
+  },
+};
+
+export const handler = (client: Straddle, args: any) => {
+  const { id, ...body } = args;
+  return client.charges.update(id, body);
+};
+
+export default { tool, handler };
