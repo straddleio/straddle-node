@@ -18,7 +18,7 @@ Add the following value to your `mcpServers` section. Make sure to provide any n
 ```json
 {
   "mcpServers": {
-    "straddle_api": {
+    "straddleio_straddle_api": {
       "command": "npx",
       "args": ["-y", "@straddleio/straddle-mcp"],
       "env": {
