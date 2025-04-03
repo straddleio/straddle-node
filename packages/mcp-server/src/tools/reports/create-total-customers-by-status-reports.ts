@@ -1,7 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import type { Metadata } from '../';
 import Straddle from '@straddleio/straddle';
+
+export const metadata: Metadata = {
+  resource: 'reports',
+  operation: 'write',
+  tags: [],
+};
 
 export const tool: Tool = {
   name: 'create_total_customers_by_status_reports',
@@ -27,4 +34,4 @@ export const handler = (client: Straddle, args: any) => {
   return client.reports.createTotalCustomersByStatus(body);
 };
 
-export default { tool, handler };
+export default { metadata, tool, handler };
