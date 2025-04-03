@@ -1,7 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import type { Metadata } from '../../';
 import Straddle from '@straddleio/straddle';
+
+export const metadata: Metadata = {
+  resource: 'bridge.link',
+  operation: 'write',
+  tags: [],
+};
 
 export const tool: Tool = {
   name: 'plaid_bridge_link',
@@ -41,4 +48,4 @@ export const handler = (client: Straddle, args: any) => {
   return client.bridge.link.plaid(body);
 };
 
-export default { tool, handler };
+export default { metadata, tool, handler };
