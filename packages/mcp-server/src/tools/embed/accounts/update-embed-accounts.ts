@@ -1,7 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import type { Metadata } from '../../';
 import Straddle from '@straddleio/straddle';
+
+export const metadata: Metadata = {
+  resource: 'embed.accounts',
+  operation: 'write',
+  tags: [],
+};
 
 export const tool: Tool = {
   name: 'update_embed_accounts',
@@ -140,4 +147,4 @@ export const handler = (client: Straddle, args: any) => {
   return client.embed.accounts.update(account_id, body);
 };
 
-export default { tool, handler };
+export default { metadata, tool, handler };
