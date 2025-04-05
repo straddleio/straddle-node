@@ -9,7 +9,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 You can run the MCP Server directly via `npx`:
 
 ```sh
-export STRADDLE_API_KEY = "My API Key"
+export STRADDLE_API_KEY="My API Key"
 npx -y @straddleio/straddle-mcp
 ```
 
