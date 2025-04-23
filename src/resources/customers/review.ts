@@ -263,8 +263,6 @@ export namespace CustomerReviewV1 {
 
       network_alerts?: IdentityDetails.NetworkAlerts;
 
-      reputation?: IdentityDetails.Reputation;
-
       watch_list?: IdentityDetails.WatchList;
     }
 
@@ -346,89 +344,6 @@ export namespace CustomerReviewV1 {
         decision?: 'accept' | 'reject' | 'review';
       }
 
-      export interface Reputation {
-        /**
-         * Specific codes related to the Straddle reputation screening results.
-         */
-        codes?: Array<string> | null;
-
-        decision?: 'accept' | 'reject' | 'review';
-
-        insights?: Reputation.Insights;
-
-        risk_score?: number | null;
-      }
-
-      export namespace Reputation {
-        export interface Insights {
-          accounts_active_count?: number | null;
-
-          accounts_closed_count?: number | null;
-
-          accounts_closed_dates?: Array<string> | null;
-
-          accounts_count?: number | null;
-
-          accounts_fraud_count?: number | null;
-
-          accounts_fraud_labeled_dates?: Array<string> | null;
-
-          accounts_fraud_loss_total_amount?: number | null;
-
-          ach_fraud_transactions_count?: number | null;
-
-          ach_fraud_transactions_dates?: Array<string> | null;
-
-          ach_fraud_transactions_total_amount?: number | null;
-
-          ach_returned_transactions_count?: number | null;
-
-          ach_returned_transactions_dates?: Array<string> | null;
-
-          ach_returned_transactions_total_amount?: number | null;
-
-          applications_approved_count?: number | null;
-
-          applications_count?: number | null;
-
-          applications_dates?: Array<string> | null;
-
-          applications_declined_count?: number | null;
-
-          applications_fraud_count?: number | null;
-
-          card_disputed_transactions_count?: number | null;
-
-          card_disputed_transactions_dates?: Array<string> | null;
-
-          card_disputed_transactions_total_amount?: number | null;
-
-          card_fraud_transactions_count?: number | null;
-
-          card_fraud_transactions_dates?: Array<string> | null;
-
-          card_fraud_transactions_total_amount?: number | null;
-
-          card_stopped_transactions_count?: number | null;
-
-          card_stopped_transactions_dates?: Array<string> | null;
-
-          user_active_profile_count?: number | null;
-
-          user_address_count?: number | null;
-
-          user_closed_profile_count?: number | null;
-
-          user_dob_count?: number | null;
-
-          user_email_count?: number | null;
-
-          user_institution_count?: number | null;
-
-          user_mobile_count?: number | null;
-        }
-      }
-
       export interface WatchList {
         /**
          * Specific codes related to the Straddle watchlist screening results.
@@ -450,7 +365,7 @@ export namespace CustomerReviewV1 {
 
       export namespace WatchList {
         export interface Match {
-          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence' | 'unknown';
+          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
 
           /**
            * The name of the list the match was found.
@@ -477,8 +392,6 @@ export interface IdentityVerificationBreakdownV1 {
    * List of specific result codes from the fraud and risk screening.
    */
   codes?: Array<string> | null;
-
-  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence' | 'unknown';
 
   /**
    * Represents the strength of the correlation between provided and known

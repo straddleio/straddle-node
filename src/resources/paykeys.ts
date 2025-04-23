@@ -190,7 +190,7 @@ export namespace PaykeySummaryPagedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected';
 
@@ -340,7 +340,7 @@ export namespace PaykeyUnmaskedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected';
 
@@ -454,7 +454,7 @@ export namespace PaykeyV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected';
 
@@ -570,7 +570,7 @@ export namespace PaykeyRevealResponse {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected';
 

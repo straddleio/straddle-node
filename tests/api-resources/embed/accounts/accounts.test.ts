@@ -125,8 +125,6 @@ describe('resource accounts', () => {
           search_text: 'search_text',
           sort_by: 'sort_by',
           sort_order: 'asc',
-          status: 'unknown',
-          type: 'unknown',
           'correlation-id': 'correlation-id',
           'request-id': 'request-id',
         },

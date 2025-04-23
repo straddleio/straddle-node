@@ -37,14 +37,6 @@ export const tool: Tool = {
         description: "Sort Order. Default value: 'asc'.",
         enum: ['asc', 'desc'],
       },
-      status: {
-        type: 'string',
-        enum: ['unknown', 'created', 'onboarding', 'active', 'rejected', 'inactive'],
-      },
-      type: {
-        type: 'string',
-        enum: ['unknown', 'business'],
-      },
       'correlation-id': {
         type: 'string',
       },

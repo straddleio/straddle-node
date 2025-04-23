@@ -26,7 +26,7 @@ export const tool: Tool = {
       account_type: {
         type: 'string',
         description: 'The type of account to be created. Currently, only `business` is supported.',
-        enum: ['business', 'unknown'],
+        enum: ['business'],
       },
       business_profile: {
         type: 'object',
