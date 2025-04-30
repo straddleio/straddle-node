@@ -30,8 +30,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { organization_id, ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const { organization_id, ...body } = args as any;
   return client.embed.organizations.get(organization_id, body);
 };
 

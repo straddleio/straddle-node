@@ -62,8 +62,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { account_id, ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const { account_id, ...body } = args as any;
   return client.embed.accounts.capabilityRequests.list(account_id, body);
 };
 

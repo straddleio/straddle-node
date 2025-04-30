@@ -21,6 +21,17 @@ export const tool: Tool = {
         type: 'string',
       },
       terms_of_service: {
+        $ref: '#/$defs/terms_of_service_v1',
+      },
+      'correlation-id': {
+        type: 'string',
+      },
+      'request-id': {
+        type: 'string',
+      },
+    },
+    $defs: {
+      terms_of_service_v1: {
         type: 'object',
         properties: {
           accepted_date: {
@@ -49,18 +60,12 @@ export const tool: Tool = {
         },
         required: ['accepted_date', 'agreement_type', 'agreement_url'],
       },
-      'correlation-id': {
-        type: 'string',
-      },
-      'request-id': {
-        type: 'string',
-      },
     },
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { account_id, ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const { account_id, ...body } = args as any;
   return client.embed.accounts.onboard(account_id, body);
 };
 

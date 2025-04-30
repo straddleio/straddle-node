@@ -54,8 +54,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { linked_bank_account_id, ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const { linked_bank_account_id, ...body } = args as any;
   return client.embed.linkedBankAccounts.update(linked_bank_account_id, body);
 };
 

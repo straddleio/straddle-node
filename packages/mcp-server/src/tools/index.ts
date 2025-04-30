@@ -57,7 +57,7 @@ import hold_payouts from './payouts/hold-payouts';
 import release_payouts from './payouts/release-payouts';
 import create_total_customers_by_status_reports from './reports/create-total-customers-by-status-reports';
 
-export type HandlerFunction = (client: Straddle, args: any) => Promise<any>;
+export type HandlerFunction = (client: Straddle, args: Record<string, unknown> | undefined) => Promise<any>;
 
 export type Metadata = {
   resource: string;
@@ -141,19 +141,33 @@ export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
   if (filters.length === 0) {
     return endpoints;
   }
-  const allExcludes = filters.every((filter) => filter.op === 'exclude');
 
-  return endpoints.filter((endpoint: Endpoint) => {
+  const allExcludes = filters.every((filter) => filter.op === 'exclude');
+  const unmatchedFilters = new Set(filters);
+
+  const filtered = endpoints.filter((endpoint: Endpoint) => {
     let included = false || allExcludes;
 
     for (const filter of filters) {
       if (match(filter, endpoint)) {
+        unmatchedFilters.delete(filter);
         included = filter.op === 'include';
       }
     }
 
     return included;
   });
+
+  // Check if any filters didn't match
+  if (unmatchedFilters.size > 0) {
+    throw new Error(
+      `The following filters did not match any endpoints: ${[...unmatchedFilters]
+        .map((f) => `${f.type}=${f.value}`)
+        .join(', ')}`,
+    );
+  }
+
+  return filtered;
 }
 
 function match({ type, value }: Filter, endpoint: Endpoint): boolean {

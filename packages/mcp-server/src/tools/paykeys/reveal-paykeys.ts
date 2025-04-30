@@ -33,8 +33,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { id, ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const { id, ...body } = args as any;
   return client.paykeys.reveal(id, body);
 };
 

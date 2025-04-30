@@ -29,106 +29,7 @@ export const tool: Tool = {
         enum: ['business'],
       },
       business_profile: {
-        type: 'object',
-        properties: {
-          name: {
-            type: 'string',
-            description: 'The operating or trade name of the business.',
-          },
-          website: {
-            type: 'string',
-            description: "URL of the business's primary marketing website.",
-          },
-          address: {
-            type: 'object',
-            description: 'The address object is optional. If provided, it must be a valid address.',
-            properties: {
-              city: {
-                type: 'string',
-                description: 'City, district, suburb, town, or village.',
-              },
-              country: {
-                type: 'string',
-                description: 'The country of the address, in ISO 3166-1 alpha-2 format.',
-              },
-              line1: {
-                type: 'string',
-                description: 'Primary address line (e.g., street, PO Box).',
-              },
-              line2: {
-                type: 'string',
-                description: 'Secondary address line (e.g., apartment, suite, unit, or building).',
-              },
-              postal_code: {
-                type: 'string',
-                description: 'Postal or ZIP code.',
-              },
-              state: {
-                type: 'string',
-                description: 'Two-letter state code.',
-              },
-            },
-            required: [],
-          },
-          description: {
-            type: 'string',
-            description: 'A brief description of the business and its products or services.',
-          },
-          industry: {
-            type: 'object',
-            properties: {
-              category: {
-                type: 'string',
-                description: 'The general category of the industry. Required if not providing MCC.',
-              },
-              mcc: {
-                type: 'string',
-                description: 'The Merchant Category Code (MCC) that best describes the business. Optional.',
-              },
-              sector: {
-                type: 'string',
-                description:
-                  'The specific sector within the industry category. Required if not providing MCC.',
-              },
-            },
-            required: [],
-          },
-          legal_name: {
-            type: 'string',
-            description: 'The official registered name of the business.',
-          },
-          phone: {
-            type: 'string',
-            description: 'The primary contact phone number for the business.',
-          },
-          support_channels: {
-            type: 'object',
-            properties: {
-              email: {
-                type: 'string',
-                description: 'The email address for customer support inquiries.',
-              },
-              phone: {
-                type: 'string',
-                description: 'The phone number for customer support.',
-              },
-              url: {
-                type: 'string',
-                description: "The URL of the business's customer support page or contact form.",
-              },
-            },
-            required: [],
-          },
-          tax_id: {
-            type: 'string',
-            description: "The business's tax identification number (e.g., EIN in the US).",
-          },
-          use_case: {
-            type: 'string',
-            description: "A description of how the business intends to use Straddle's services.",
-          },
-        },
-        required: ['name', 'website'],
+        $ref: '#/$defs/business_profile_v1',
       },
       organization_id: {
         type: 'string',
@@ -151,11 +52,123 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    $defs: {
+      address_v1: {
+        type: 'object',
+        description: 'The address object is optional. If provided, it must be a valid address.',
+        properties: {
+          city: {
+            type: 'string',
+            description: 'City, district, suburb, town, or village.',
+          },
+          country: {
+            type: 'string',
+            description: 'The country of the address, in ISO 3166-1 alpha-2 format.',
+          },
+          line1: {
+            type: 'string',
+            description: 'Primary address line (e.g., street, PO Box).',
+          },
+          line2: {
+            type: 'string',
+            description: 'Secondary address line (e.g., apartment, suite, unit, or building).',
+          },
+          postal_code: {
+            type: 'string',
+            description: 'Postal or ZIP code.',
+          },
+          state: {
+            type: 'string',
+            description: 'Two-letter state code.',
+          },
+        },
+        required: [],
+      },
+      industry_v1: {
+        type: 'object',
+        properties: {
+          category: {
+            type: 'string',
+            description: 'The general category of the industry. Required if not providing MCC.',
+          },
+          mcc: {
+            type: 'string',
+            description: 'The Merchant Category Code (MCC) that best describes the business. Optional.',
+          },
+          sector: {
+            type: 'string',
+            description: 'The specific sector within the industry category. Required if not providing MCC.',
+          },
+        },
+        required: [],
+      },
+      support_channels_v1: {
+        type: 'object',
+        properties: {
+          email: {
+            type: 'string',
+            description: 'The email address for customer support inquiries.',
+          },
+          phone: {
+            type: 'string',
+            description: 'The phone number for customer support.',
+          },
+          url: {
+            type: 'string',
+            description: "The URL of the business's customer support page or contact form.",
+          },
+        },
+        required: [],
+      },
+      business_profile_v1: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+            description: 'The operating or trade name of the business.',
+          },
+          website: {
+            type: 'string',
+            description: "URL of the business's primary marketing website.",
+          },
+          address: {
+            $ref: '#/$defs/address_v1',
+          },
+          description: {
+            type: 'string',
+            description: 'A brief description of the business and its products or services.',
+          },
+          industry: {
+            $ref: '#/$defs/industry_v1',
+          },
+          legal_name: {
+            type: 'string',
+            description: 'The official registered name of the business.',
+          },
+          phone: {
+            type: 'string',
+            description: 'The primary contact phone number for the business.',
+          },
+          support_channels: {
+            $ref: '#/$defs/support_channels_v1',
+          },
+          tax_id: {
+            type: 'string',
+            description: "The business's tax identification number (e.g., EIN in the US).",
+          },
+          use_case: {
+            type: 'string',
+            description: "A description of how the business intends to use Straddle's services.",
+          },
+        },
+        required: ['name', 'website'],
+      },
+    },
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const body = args as any;
   return client.embed.accounts.create(body);
 };
 

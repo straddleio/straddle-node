@@ -29,15 +29,7 @@ export const tool: Tool = {
         description: 'An arbitrary description for the payout.',
       },
       device: {
-        type: 'object',
-        properties: {
-          ip_address: {
-            type: 'string',
-            description:
-              'The IP address of the device used when the customer authorized the charge or payout. Use `0.0.0.0` to represent an offline consent interaction.',
-          },
-        },
-        required: ['ip_address'],
+        $ref: '#/$defs/device_info_v1',
       },
       external_id: {
         type: 'string',
@@ -72,11 +64,24 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    $defs: {
+      device_info_v1: {
+        type: 'object',
+        properties: {
+          ip_address: {
+            type: 'string',
+            description:
+              'The IP address of the device used when the customer authorized the charge or payout. Use `0.0.0.0` to represent an offline consent interaction.',
+          },
+        },
+        required: ['ip_address'],
+      },
+    },
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const body = args as any;
   return client.payouts.create(body);
 };
 

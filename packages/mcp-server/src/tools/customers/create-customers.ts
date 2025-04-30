@@ -18,15 +18,7 @@ export const tool: Tool = {
     type: 'object',
     properties: {
       device: {
-        type: 'object',
-        properties: {
-          ip_address: {
-            type: 'string',
-            description:
-              "The customer's IP address at the time of profile creation. Use `0.0.0.0` to represent an offline customer registration.",
-          },
-        },
-        required: ['ip_address'],
+        $ref: '#/$defs/device_unmasked_v1',
       },
       email: {
         type: 'string',
@@ -45,32 +37,7 @@ export const tool: Tool = {
         enum: ['individual', 'business'],
       },
       address: {
-        type: 'object',
-        description:
-          "An object containing the customer's address. This is optional, but if provided, all required fields must be present.",
-        properties: {
-          address1: {
-            type: 'string',
-            description: 'Primary address line (e.g., street, PO Box).',
-          },
-          city: {
-            type: 'string',
-            description: 'City, district, suburb, town, or village.',
-          },
-          state: {
-            type: 'string',
-            description: 'Two-letter state code.',
-          },
-          zip: {
-            type: 'string',
-            description: 'Zip or postal code.',
-          },
-          address2: {
-            type: 'string',
-            description: 'Secondary address line (e.g., apartment, suite, unit, or building).',
-          },
-        },
-        required: ['address1', 'city', 'state', 'zip'],
+        $ref: '#/$defs/customer_address_v1',
       },
       compliance_profile: {
         anyOf: [
@@ -160,11 +127,52 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    $defs: {
+      device_unmasked_v1: {
+        type: 'object',
+        properties: {
+          ip_address: {
+            type: 'string',
+            description:
+              "The customer's IP address at the time of profile creation. Use `0.0.0.0` to represent an offline customer registration.",
+          },
+        },
+        required: ['ip_address'],
+      },
+      customer_address_v1: {
+        type: 'object',
+        description:
+          "An object containing the customer's address. This is optional, but if provided, all required fields must be present.",
+        properties: {
+          address1: {
+            type: 'string',
+            description: 'Primary address line (e.g., street, PO Box).',
+          },
+          city: {
+            type: 'string',
+            description: 'City, district, suburb, town, or village.',
+          },
+          state: {
+            type: 'string',
+            description: 'Two-letter state code.',
+          },
+          zip: {
+            type: 'string',
+            description: 'Zip or postal code.',
+          },
+          address2: {
+            type: 'string',
+            description: 'Secondary address line (e.g., apartment, suite, unit, or building).',
+          },
+        },
+        required: ['address1', 'city', 'state', 'zip'],
+      },
+    },
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const body = args as any;
   return client.customers.create(body);
 };
 

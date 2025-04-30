@@ -30,8 +30,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: Straddle, args: any) => {
-  const { representative_id, ...body } = args;
+export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const { representative_id, ...body } = args as any;
   return client.embed.representatives.unmask(representative_id, body);
 };
 
