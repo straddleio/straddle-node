@@ -86,14 +86,9 @@ type Environment = keyof typeof environments;
 
 export interface ClientOptions {
   /**
-   * Api Key for authenticating with the Straddle API.
+   * Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.
    */
   apiKey?: string | undefined;
-
-  /**
-   * API environment for testing (sandbox) or live transactions (production)
-   */
-  environments?: string | undefined;
 
   /**
    * API environment for testing (sandbox) or live transactions (production)
@@ -171,7 +166,6 @@ export interface ClientOptions {
  */
 export class Straddle extends Core.APIClient {
   apiKey: string;
-  environments: string;
   environment: string;
 
   private _options: ClientOptions;
@@ -180,7 +174,6 @@ export class Straddle extends Core.APIClient {
    * API Client for interfacing with the Straddle API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
-   * @param {string | undefined} [opts.environments=process.env['STRADDLE_ENVIRONMENT'] ?? sandbox]
    * @param {string | undefined} [opts.environment=process.env['STRADDLE_ENVIRONMENT'] ?? sandbox]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://production.straddle.io] - Override the default base URL for the API.
@@ -194,7 +187,6 @@ export class Straddle extends Core.APIClient {
   constructor({
     baseURL = Core.readEnv('STRADDLE_BASE_URL'),
     apiKey = Core.readEnv('STRADDLE_API_KEY'),
-    environments = Core.readEnv('STRADDLE_ENVIRONMENT') ?? 'sandbox',
     environment = Core.readEnv('STRADDLE_ENVIRONMENT') ?? 'sandbox',
     ...opts
   }: ClientOptions = {}) {
@@ -206,7 +198,6 @@ export class Straddle extends Core.APIClient {
 
     const options: ClientOptions = {
       apiKey,
-      environments,
       environment,
       ...opts,
       baseURL,
@@ -230,7 +221,6 @@ export class Straddle extends Core.APIClient {
     this._options = options;
 
     this.apiKey = apiKey;
-    this.environments = environments;
     this.environment = environment;
   }
 

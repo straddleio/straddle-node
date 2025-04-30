@@ -10,7 +10,6 @@ You can run the MCP Server directly via `npx`:
 
 ```sh
 export STRADDLE_API_KEY="My API Key"
-export STRADDLE_ENVIRONMENT="My-Environments"
 export STRADDLE_ENVIRONMENT="My-Environment"
 npx -y @straddleio/straddle-mcp
 ```
@@ -30,7 +29,6 @@ For clients with a configuration JSON, it might look something like this:
       "args": ["-y", "@straddleio/straddle-mcp", "--client=claude"],
       "env": {
         "STRADDLE_API_KEY": "My API Key",
-        "STRADDLE_ENVIRONMENT": "My-Environments",
         "STRADDLE_ENVIRONMENT": "My-Environment"
       }
     }
