@@ -5,12 +5,14 @@ export { Bridge, type BridgeTokenV1, type BridgeInitializeParams } from './bridg
 export {
   Charges,
   type ChargeV1,
+  type ChargeUnmaskResponse,
   type ChargeCreateParams,
   type ChargeUpdateParams,
   type ChargeCancelParams,
   type ChargeGetParams,
   type ChargeHoldParams,
   type ChargeReleaseParams,
+  type ChargeUnmaskParams,
 } from './charges';
 export {
   CustomerSummaryPagedV1DataPageNumberSchema,
@@ -58,12 +60,14 @@ export {
 export {
   Payouts,
   type PayoutV1,
+  type PayoutUnmaskResponse,
   type PayoutCreateParams,
   type PayoutUpdateParams,
   type PayoutCancelParams,
   type PayoutGetParams,
   type PayoutHoldParams,
   type PayoutReleaseParams,
+  type PayoutUnmaskParams,
 } from './payouts';
 export {
   Reports,

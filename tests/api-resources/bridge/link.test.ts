@@ -38,6 +38,35 @@ describe('resource link', () => {
     });
   });
 
+  test('createTan: only required params', async () => {
+    const responsePromise = client.bridge.link.createTan({
+      account_type: 'checking',
+      customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      routing_number: 'routing_number',
+      tan: 'tan',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('createTan: required and optional params', async () => {
+    const response = await client.bridge.link.createTan({
+      account_type: 'checking',
+      customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      routing_number: 'routing_number',
+      tan: 'tan',
+      metadata: { foo: 'string' },
+      'Correlation-Id': 'Correlation-Id',
+      'Request-Id': 'Request-Id',
+      'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
   test('plaid: only required params', async () => {
     const responsePromise = client.bridge.link.plaid({
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',

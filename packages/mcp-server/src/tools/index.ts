@@ -26,6 +26,7 @@ import get_embed_representatives from './embed/representatives/get-embed-represe
 import unmask_embed_representatives from './embed/representatives/unmask-embed-representatives';
 import initialize_bridge from './bridge/initialize-bridge';
 import bank_account_bridge_link from './bridge/link/bank-account-bridge-link';
+import create_tan_bridge_link from './bridge/link/create-tan-bridge-link';
 import plaid_bridge_link from './bridge/link/plaid-bridge-link';
 import create_customers from './customers/create-customers';
 import update_customers from './customers/update-customers';
@@ -46,6 +47,7 @@ import cancel_charges from './charges/cancel-charges';
 import get_charges from './charges/get-charges';
 import hold_charges from './charges/hold-charges';
 import release_charges from './charges/release-charges';
+import unmask_charges from './charges/unmask-charges';
 import list_funding_events from './funding-events/list-funding-events';
 import get_funding_events from './funding-events/get-funding-events';
 import list_payments from './payments/list-payments';
@@ -55,6 +57,7 @@ import cancel_payouts from './payouts/cancel-payouts';
 import get_payouts from './payouts/get-payouts';
 import hold_payouts from './payouts/hold-payouts';
 import release_payouts from './payouts/release-payouts';
+import unmask_payouts from './payouts/unmask-payouts';
 import create_total_customers_by_status_reports from './reports/create-total-customers-by-status-reports';
 
 export type HandlerFunction = (client: Straddle, args: Record<string, unknown> | undefined) => Promise<any>;
@@ -100,6 +103,7 @@ addEndpoint(get_embed_representatives);
 addEndpoint(unmask_embed_representatives);
 addEndpoint(initialize_bridge);
 addEndpoint(bank_account_bridge_link);
+addEndpoint(create_tan_bridge_link);
 addEndpoint(plaid_bridge_link);
 addEndpoint(create_customers);
 addEndpoint(update_customers);
@@ -120,6 +124,7 @@ addEndpoint(cancel_charges);
 addEndpoint(get_charges);
 addEndpoint(hold_charges);
 addEndpoint(release_charges);
+addEndpoint(unmask_charges);
 addEndpoint(list_funding_events);
 addEndpoint(get_funding_events);
 addEndpoint(list_payments);
@@ -129,6 +134,7 @@ addEndpoint(cancel_payouts);
 addEndpoint(get_payouts);
 addEndpoint(hold_payouts);
 addEndpoint(release_payouts);
+addEndpoint(unmask_payouts);
 addEndpoint(create_total_customers_by_status_reports);
 
 export type Filter = {

@@ -4,7 +4,13 @@ import { APIResource } from '../../resource';
 import * as Core from '../../core';
 import * as Shared from '../shared';
 import * as LinkAPI from './link';
-import { Link, LinkBankAccountParams, LinkPlaidParams } from './link';
+import {
+  Link,
+  LinkBankAccountParams,
+  LinkCreateTanParams,
+  LinkCreateTanResponse,
+  LinkPlaidParams,
+} from './link';
 
 export class Bridge extends APIResource {
   link: LinkAPI.Link = new LinkAPI.Link(this._client);
@@ -93,7 +99,9 @@ export declare namespace Bridge {
 
   export {
     Link as Link,
+    type LinkCreateTanResponse as LinkCreateTanResponse,
     type LinkBankAccountParams as LinkBankAccountParams,
+    type LinkCreateTanParams as LinkCreateTanParams,
     type LinkPlaidParams as LinkPlaidParams,
   };
 }

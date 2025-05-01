@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
 import * as PaykeysAPI from '../paykeys';
+import * as Shared from '../shared';
 
 export class Link extends APIResource {
   /**
@@ -21,6 +22,28 @@ export class Link extends APIResource {
       ...body
     } = params;
     return this._client.post('/v1/bridge/bank_account', {
+      body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  createTan(
+    params: LinkCreateTanParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<LinkCreateTanResponse> {
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+      ...body
+    } = params;
+    return this._client.post('/v1/bridge/tan', {
       body,
       ...options,
       headers: {
@@ -57,6 +80,122 @@ export class Link extends APIResource {
   }
 }
 
+export interface LinkCreateTanResponse {
+  data: LinkCreateTanResponse.Data;
+
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
+  meta: Shared.ResponseMetadata;
+
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
+  response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace LinkCreateTanResponse {
+  export interface Data {
+    /**
+     * Unique identifier for the paykey.
+     */
+    id: string;
+
+    /**
+     * Timestamp of when the paykey was created.
+     */
+    created_at: string;
+
+    /**
+     * Human-readable label that combines the bank name and masked account number to
+     * help easility represent this paykey in a UI
+     */
+    label: string;
+
+    /**
+     * The tokenized paykey value. This token is used to create payments and should be
+     * stored securely.
+     */
+    paykey: string;
+
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
+
+    /**
+     * Timestamp of the most recent update to the paykey.
+     */
+    updated_at: string;
+
+    bank_data?: Data.BankData;
+
+    /**
+     * Unique identifier of the related customer object.
+     */
+    customer_id?: string | null;
+
+    /**
+     * Expiration date and time of the paykey, if applicable.
+     */
+    expires_at?: string | null;
+
+    /**
+     * Name of the financial institution.
+     */
+    institution_name?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the paykey in a structured format.
+     */
+    metadata?: Record<string, string> | null;
+
+    status_details?: Data.StatusDetails;
+  }
+
+  export namespace Data {
+    export interface BankData {
+      /**
+       * Bank account number. This value is masked by default for security reasons. Use
+       * the /unmask endpoint to access the unmasked value.
+       */
+      account_number: string;
+
+      account_type: 'checking' | 'savings';
+
+      /**
+       * The routing number of the bank account.
+       */
+      routing_number: string;
+    }
+
+    export interface StatusDetails {
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      /**
+       * A machine-readable identifier for the specific status, useful for programmatic
+       * handling.
+       */
+      reason: string;
+
+      /**
+       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
+       * This helps in tracking the cause of status updates.
+       */
+      source: string;
+    }
+  }
+}
+
 export interface LinkBankAccountParams {
   /**
    * Body param: The bank account number.
@@ -77,6 +216,51 @@ export interface LinkBankAccountParams {
    * Body param: The routing number of the bank account.
    */
   routing_number: string;
+
+  /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the paykey in a structured format.
+   */
+  metadata?: Record<string, string> | null;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
+export interface LinkCreateTanParams {
+  /**
+   * Body param:
+   */
+  account_type: 'checking' | 'savings';
+
+  /**
+   * Body param: Unique identifier of the related customer object.
+   */
+  customer_id: string;
+
+  /**
+   * Body param: Bank routing number.
+   */
+  routing_number: string;
+
+  /**
+   * Body param: Tokenized account number.
+   */
+  tan: string;
 
   /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
@@ -139,5 +323,10 @@ export interface LinkPlaidParams {
 }
 
 export declare namespace Link {
-  export { type LinkBankAccountParams as LinkBankAccountParams, type LinkPlaidParams as LinkPlaidParams };
+  export {
+    type LinkCreateTanResponse as LinkCreateTanResponse,
+    type LinkBankAccountParams as LinkBankAccountParams,
+    type LinkCreateTanParams as LinkCreateTanParams,
+    type LinkPlaidParams as LinkPlaidParams,
+  };
 }

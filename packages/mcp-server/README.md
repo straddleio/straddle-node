@@ -188,6 +188,7 @@ The following tools are available in this MCP server.
 ### Resource `bridge.link`:
 
 - `bank_account_bridge_link` (`write`): Use Bridge to create a new paykey using a bank routing and account number as the source. This endpoint allows you to create a secure payment token linked to a specific bank account.
+- `create_tan_bridge_link` (`write`):
 - `plaid_bridge_link` (`write`): Use Bridge to create a new paykey using a Plaid token as the source. This endpoint allows you to create a secure payment token linked to a bank account authenticated through Plaid.
 
 ### Resource `customers`:
@@ -226,6 +227,7 @@ The following tools are available in this MCP server.
 - `get_charges` (`read`): Retrieves the details of an existing charge. Supply the unique charge `id`, and Straddle will return the corresponding charge information.
 - `hold_charges` (`write`): Place a charge on hold to prevent it from being originated for processing. The status of the charge must be `created` or `scheduled`.
 - `release_charges` (`write`): Release a charge from an `on_hold` status to allow it to be rescheduled for processing.
+- `unmask_charges` (`read`): Get a charge by id.
 
 ### Resource `funding_events`:
 
@@ -244,6 +246,7 @@ The following tools are available in this MCP server.
 - `get_payouts` (`read`): Retrieves the details of an existing payout. Supply the unique payout `id` to retrieve the corresponding payout information.
 - `hold_payouts` (`write`): Hold a payout to prevent it from being processed. The status of the payout must be `created`, `scheduled`, or `on_hold`.
 - `release_payouts` (`write`): Release a payout from a `hold` status to allow it to be rescheduled for processing.
+- `unmask_payouts` (`read`): Get a payout by id.
 
 ### Resource `reports`:
 

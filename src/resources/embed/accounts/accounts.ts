@@ -876,6 +876,16 @@ export interface AccountListParams extends PageNumberSchemaParams {
   sort_order?: 'asc' | 'desc';
 
   /**
+   * Query param:
+   */
+  status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+
+  /**
+   * Query param:
+   */
+  type?: 'business';
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */

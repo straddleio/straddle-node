@@ -14,6 +14,8 @@ import {
   ChargeGetParams,
   ChargeHoldParams,
   ChargeReleaseParams,
+  ChargeUnmaskParams,
+  ChargeUnmaskResponse,
   ChargeUpdateParams,
   ChargeV1,
   Charges,
@@ -50,6 +52,8 @@ import {
   PayoutGetParams,
   PayoutHoldParams,
   PayoutReleaseParams,
+  PayoutUnmaskParams,
+  PayoutUnmaskResponse,
   PayoutUpdateParams,
   PayoutV1,
   Payouts,
@@ -337,12 +341,14 @@ export declare namespace Straddle {
   export {
     Charges as Charges,
     type ChargeV1 as ChargeV1,
+    type ChargeUnmaskResponse as ChargeUnmaskResponse,
     type ChargeCreateParams as ChargeCreateParams,
     type ChargeUpdateParams as ChargeUpdateParams,
     type ChargeCancelParams as ChargeCancelParams,
     type ChargeGetParams as ChargeGetParams,
     type ChargeHoldParams as ChargeHoldParams,
     type ChargeReleaseParams as ChargeReleaseParams,
+    type ChargeUnmaskParams as ChargeUnmaskParams,
   };
 
   export {
@@ -364,12 +370,14 @@ export declare namespace Straddle {
   export {
     Payouts as Payouts,
     type PayoutV1 as PayoutV1,
+    type PayoutUnmaskResponse as PayoutUnmaskResponse,
     type PayoutCreateParams as PayoutCreateParams,
     type PayoutUpdateParams as PayoutUpdateParams,
     type PayoutCancelParams as PayoutCancelParams,
     type PayoutGetParams as PayoutGetParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
+    type PayoutUnmaskParams as PayoutUnmaskParams,
   };
 
   export {

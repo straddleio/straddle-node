@@ -1,4 +1,4 @@
-configured_endpoints: 53
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/straddle%2Fstraddle-79878ef6b594d574ae6c9e413f034e2ad49a4afb6549c3be74fc0372699ec818.yml
-openapi_spec_hash: 71fc2122b1d321b962f864f8a44d12d5
-config_hash: b84d8ffa5d934152034dc93eddba6d79
+configured_endpoints: 56
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/straddle%2Fstraddle-27102e0b3f8765ce9be331d86a5415c79843dbcc1081d17d738567c2b249ba12.yml
+openapi_spec_hash: 3c117be9e7e88f5ecdad86004b51db88
+config_hash: 61ee1b4232da43d3059f9247a5e14ae0
