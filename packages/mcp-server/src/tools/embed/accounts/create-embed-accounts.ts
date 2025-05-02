@@ -53,6 +53,49 @@ export const tool: Tool = {
       },
     },
     $defs: {
+      business_profile_v1: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+            description: 'The operating or trade name of the business.',
+          },
+          website: {
+            type: 'string',
+            description: "URL of the business's primary marketing website.",
+          },
+          address: {
+            $ref: '#/$defs/address_v1',
+          },
+          description: {
+            type: 'string',
+            description: 'A brief description of the business and its products or services.',
+          },
+          industry: {
+            $ref: '#/$defs/industry_v1',
+          },
+          legal_name: {
+            type: 'string',
+            description: 'The official registered name of the business.',
+          },
+          phone: {
+            type: 'string',
+            description: 'The primary contact phone number for the business.',
+          },
+          support_channels: {
+            $ref: '#/$defs/support_channels_v1',
+          },
+          tax_id: {
+            type: 'string',
+            description: "The business's tax identification number (e.g., EIN in the US).",
+          },
+          use_case: {
+            type: 'string',
+            description: "A description of how the business intends to use Straddle's services.",
+          },
+        },
+        required: ['name', 'website'],
+      },
       address_v1: {
         type: 'object',
         description: 'The address object is optional. If provided, it must be a valid address.',
@@ -119,49 +162,6 @@ export const tool: Tool = {
           },
         },
         required: [],
-      },
-      business_profile_v1: {
-        type: 'object',
-        properties: {
-          name: {
-            type: 'string',
-            description: 'The operating or trade name of the business.',
-          },
-          website: {
-            type: 'string',
-            description: "URL of the business's primary marketing website.",
-          },
-          address: {
-            $ref: '#/$defs/address_v1',
-          },
-          description: {
-            type: 'string',
-            description: 'A brief description of the business and its products or services.',
-          },
-          industry: {
-            $ref: '#/$defs/industry_v1',
-          },
-          legal_name: {
-            type: 'string',
-            description: 'The official registered name of the business.',
-          },
-          phone: {
-            type: 'string',
-            description: 'The primary contact phone number for the business.',
-          },
-          support_channels: {
-            $ref: '#/$defs/support_channels_v1',
-          },
-          tax_id: {
-            type: 'string',
-            description: "The business's tax identification number (e.g., EIN in the US).",
-          },
-          use_case: {
-            type: 'string',
-            description: "A description of how the business intends to use Straddle's services.",
-          },
-        },
-        required: ['name', 'website'],
       },
     },
   },
