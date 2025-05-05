@@ -47,6 +47,7 @@ export {
   type PaykeyV1,
   type PaykeyRevealResponse,
   type PaykeyListParams,
+  type PaykeyCancelParams,
   type PaykeyGetParams,
   type PaykeyRevealParams,
   type PaykeyUnmaskedParams,

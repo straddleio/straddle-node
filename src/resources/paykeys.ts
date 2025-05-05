@@ -43,6 +43,34 @@ export class Paykeys extends APIResource {
     });
   }
 
+  cancel(id: string, params?: PaykeyCancelParams, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
+  cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
+  cancel(
+    id: string,
+    params: PaykeyCancelParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<PaykeyV1> {
+    if (isRequestOptions(params)) {
+      return this.cancel(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+      ...body
+    } = params;
+    return this._client.put(`/v1/paykeys/${id}/cancel`, {
+      body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
   /**
    * Retrieves the details of an existing paykey. Supply the unique paykey `id` and
    * Straddle will return the corresponding paykey record , including the `paykey`
@@ -817,6 +845,30 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface PaykeyCancelParams {
+  /**
+   * Body param:
+   */
+  reason?: string | null;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface PaykeyGetParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -878,6 +930,7 @@ export declare namespace Paykeys {
     type PaykeyRevealResponse as PaykeyRevealResponse,
     PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
+    type PaykeyCancelParams as PaykeyCancelParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,

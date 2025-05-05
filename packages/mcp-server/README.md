@@ -215,6 +215,7 @@ The following tools are available in this MCP server.
 ### Resource `paykeys`:
 
 - `list_paykeys` (`read`): Returns a list of paykeys associated with a Straddle account. This endpoint supports advanced sorting and filtering options.
+- `cancel_paykeys` (`write`):
 - `get_paykeys` (`read`): Retrieves the details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record , including the `paykey` token value and masked bank account details.
 - `reveal_paykeys` (`read`): Retrieves the details of a paykey that has previously been created, including unmasked bank account fields. Supply the unique paykey ID that was returned from your previous request, and Straddle will return the corresponding paykey information.
 - `unmasked_paykeys` (`read`): Retrieves the unmasked details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record, including the unmasked bank account details. This endpoint needs to be enabled by Straddle for your account and should only be used when absolutely necessary.

@@ -29,6 +29,7 @@ import {
   FundingEvents,
 } from './resources/funding-events';
 import {
+  PaykeyCancelParams,
   PaykeyGetParams,
   PaykeyListParams,
   PaykeyRevealParams,
@@ -333,6 +334,7 @@ export declare namespace Straddle {
     type PaykeyRevealResponse as PaykeyRevealResponse,
     PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
+    type PaykeyCancelParams as PaykeyCancelParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,

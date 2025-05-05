@@ -154,6 +154,7 @@ Types:
 Methods:
 
 - <code title="get /v1/paykeys">client.paykeys.<a href="./src/resources/paykeys.ts">list</a>({ ...params }) -> PaykeySummaryPagedV1DataPageNumberSchema</code>
+- <code title="put /v1/paykeys/{id}/cancel">client.paykeys.<a href="./src/resources/paykeys.ts">cancel</a>(id, { ...params }) -> PaykeyV1</code>
 - <code title="get /v1/paykeys/{id}">client.paykeys.<a href="./src/resources/paykeys.ts">get</a>(id, { ...params }) -> PaykeyV1</code>
 - <code title="get /v1/paykeys/{id}/reveal">client.paykeys.<a href="./src/resources/paykeys.ts">reveal</a>(id, { ...params }) -> PaykeyRevealResponse</code>
 - <code title="get /v1/paykeys/{id}/unmasked">client.paykeys.<a href="./src/resources/paykeys.ts">unmasked</a>(id, { ...params }) -> PaykeyUnmaskedV1</code>
