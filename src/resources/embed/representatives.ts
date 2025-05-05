@@ -188,7 +188,7 @@ export namespace Representative {
     /**
      * The email address of the representative.
      */
-    email: string;
+    email: string | null;
 
     /**
      * The first name of the representative.
@@ -204,6 +204,8 @@ export namespace Representative {
      * The mobile phone number of the representative.
      */
     mobile_number: string;
+
+    name: string;
 
     relationship: Data.Relationship;
 
@@ -229,6 +231,8 @@ export namespace Representative {
      * cross-referencing between Straddle and your systems.
      */
     external_id?: string | null;
+
+    phone?: string | null;
 
     /**
      * The unique identifier of the user account associated with this representative,
@@ -354,7 +358,7 @@ export namespace RepresentativePaged {
     /**
      * The email address of the representative.
      */
-    email: string;
+    email: string | null;
 
     /**
      * The first name of the representative.
@@ -370,6 +374,8 @@ export namespace RepresentativePaged {
      * The mobile phone number of the representative.
      */
     mobile_number: string;
+
+    name: string;
 
     relationship: Data.Relationship;
 
@@ -395,6 +401,8 @@ export namespace RepresentativePaged {
      * cross-referencing between Straddle and your systems.
      */
     external_id?: string | null;
+
+    phone?: string | null;
 
     /**
      * The unique identifier of the user account associated with this representative,

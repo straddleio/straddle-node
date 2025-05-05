@@ -325,18 +325,30 @@ export namespace CustomerSummaryPagedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
      */
     updated_at: string;
 
+    account_id?: string | null;
+
+    account_name?: string | null;
+
     /**
      * Unique identifier for the customer in your database, used for cross-referencing
      * between Straddle and your systems.
      */
     external_id?: string | null;
+
+    organization_id?: string | null;
+
+    organization_name?: string | null;
+
+    platform_id?: string | null;
+
+    platform_name?: string | null;
   }
 
   export interface Meta {
@@ -430,12 +442,16 @@ export namespace CustomerUnmaskedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
      */
     updated_at: string;
+
+    account_id?: string | null;
+
+    account_name?: string | null;
 
     /**
      * An object containing the customer's address. This is optional, but if provided,
@@ -461,6 +477,14 @@ export namespace CustomerUnmaskedV1 {
      * information about the customer in a structured format.
      */
     metadata?: Record<string, string> | null;
+
+    organization_id?: string | null;
+
+    organization_name?: string | null;
+
+    platform_id?: string | null;
+
+    platform_name?: string | null;
   }
 
   export namespace Data {
@@ -570,12 +594,16 @@ export namespace CustomerV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
      */
     updated_at: string;
+
+    account_id?: string | null;
+
+    account_name?: string | null;
 
     /**
      * An object containing the customer's address. This is optional, but if provided,
@@ -601,6 +629,14 @@ export namespace CustomerV1 {
      * information about the customer in a structured format.
      */
     metadata?: Record<string, string> | null;
+
+    organization_id?: string | null;
+
+    organization_name?: string | null;
+
+    platform_id?: string | null;
+
+    platform_name?: string | null;
   }
 
   export namespace Data {
@@ -700,7 +736,7 @@ export interface CustomerCreateParams {
   /**
    * Body param:
    */
-  type: 'individual' | 'business';
+  type: 'individual' | 'business' | 'unknown';
 
   /**
    * Body param: An object containing the customer's address. **This is optional.**
@@ -982,7 +1018,7 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter by customer type `individual` or `business`.
    */
-  types?: Array<'individual' | 'business'>;
+  types?: Array<'individual' | 'business' | 'unknown'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

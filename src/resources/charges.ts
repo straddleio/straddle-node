@@ -318,6 +318,10 @@ export namespace ChargeV1 {
      */
     updated_at: string | null;
 
+    account_id?: string | null;
+
+    account_name?: string | null;
+
     /**
      * Information about the customer associated with the charge.
      */
@@ -335,6 +339,10 @@ export namespace ChargeV1 {
      */
     metadata?: Record<string, string> | null;
 
+    organization_id?: string | null;
+
+    organization_name?: string | null;
+
     /**
      * Information about the paykey used for the charge.
      */
@@ -344,6 +352,10 @@ export namespace ChargeV1 {
      * The payment rail that the charge will be processed through.
      */
     payment_rail?: 'ach';
+
+    platform_id?: string | null;
+
+    platform_name?: string | null;
 
     /**
      * Timestamp of when the charge was processed by Straddle and originated to the
@@ -518,6 +530,10 @@ export namespace ChargeUnmaskResponse {
      */
     updated_at: string;
 
+    account_id?: string | null;
+
+    account_name?: string | null;
+
     /**
      * Information about the customer associated with the charge or payout.
      */
@@ -533,12 +549,20 @@ export namespace ChargeUnmaskResponse {
      */
     metadata?: Record<string, string> | null;
 
+    organization_id?: string | null;
+
+    organization_name?: string | null;
+
     paykey_details?: Shared.PaykeyDetailsV1;
 
     /**
      * The payment rail used for the charge or payout.
      */
     payment_rail?: 'ach';
+
+    platform_id?: string | null;
+
+    platform_name?: string | null;
 
     /**
      * Processed at.

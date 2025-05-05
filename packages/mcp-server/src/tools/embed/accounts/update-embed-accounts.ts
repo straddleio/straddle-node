@@ -88,9 +88,25 @@ export const tool: Tool = {
         type: 'object',
         description: 'The address object is optional. If provided, it must be a valid address.',
         properties: {
+          address1: {
+            type: 'string',
+            description: 'Primary address line (e.g., street, PO Box).',
+          },
           city: {
             type: 'string',
             description: 'City, district, suburb, town, or village.',
+          },
+          state: {
+            type: 'string',
+            description: 'Two-letter state code.',
+          },
+          zip: {
+            type: 'string',
+            description: 'Zip or postal code.',
+          },
+          address2: {
+            type: 'string',
+            description: 'Secondary address line (e.g., apartment, suite, unit, or building).',
           },
           country: {
             type: 'string',
@@ -108,12 +124,8 @@ export const tool: Tool = {
             type: 'string',
             description: 'Postal or ZIP code.',
           },
-          state: {
-            type: 'string',
-            description: 'Two-letter state code.',
-          },
         },
-        required: [],
+        required: ['address1', 'city', 'state', 'zip'],
       },
       industry_v1: {
         type: 'object',

@@ -131,12 +131,16 @@ export namespace CustomerReviewV1 {
 
       status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-      type: 'individual' | 'business';
+      type: 'individual' | 'business' | 'unknown';
 
       /**
        * Timestamp of the most recent update to the customer record.
        */
       updated_at: string;
+
+      account_id?: string | null;
+
+      account_name?: string | null;
 
       /**
        * An object containing the customer's address. This is optional, but if provided,
@@ -165,6 +169,14 @@ export namespace CustomerReviewV1 {
        * information about the customer in a structured format.
        */
       metadata?: Record<string, string> | null;
+
+      organization_id?: string | null;
+
+      organization_name?: string | null;
+
+      platform_id?: string | null;
+
+      platform_name?: string | null;
     }
 
     export namespace CustomerDetails {
@@ -450,7 +462,7 @@ export namespace CustomerReviewV1 {
 
       export namespace WatchList {
         export interface Match {
-          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
+          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence' | 'unknown';
 
           /**
            * The name of the list the match was found.
@@ -478,7 +490,7 @@ export interface IdentityVerificationBreakdownV1 {
    */
   codes?: Array<string> | null;
 
-  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
+  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence' | 'unknown';
 
   /**
    * Represents the strength of the correlation between provided and known

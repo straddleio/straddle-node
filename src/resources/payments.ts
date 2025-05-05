@@ -133,6 +133,10 @@ export namespace PaymentSummaryPagedV1 {
      */
     updated_at: string;
 
+    account_id?: string | null;
+
+    account_name?: string | null;
+
     /**
      * Information about the customer associated with the charge or payout.
      */
@@ -151,10 +155,18 @@ export namespace PaymentSummaryPagedV1 {
      */
     funding_id?: string | null;
 
+    organization_id?: string | null;
+
+    organization_name?: string | null;
+
     /**
      * Information about the paykey used for the `charge` or `payout`.
      */
     paykey_details?: Shared.PaykeyDetailsV1;
+
+    platform_id?: string | null;
+
+    platform_name?: string | null;
   }
 
   export interface Meta {
