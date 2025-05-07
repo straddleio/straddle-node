@@ -8,6 +8,19 @@ import * as Shared from './shared';
 export class Payouts extends APIResource {
   /**
    * Use payouts to send money to your customers.
+   *
+   * @example
+   * ```ts
+   * const payoutV1 = await client.payouts.create({
+   *   amount: 10000,
+   *   currency: 'currency',
+   *   description: 'Vendor invoice payment',
+   *   device: { ip_address: '192.168.1.1' },
+   *   external_id: 'external_id',
+   *   paykey: 'paykey',
+   *   payment_date: '2019-12-27',
+   * });
+   * ```
    */
   create(params: PayoutCreateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
@@ -31,6 +44,18 @@ export class Payouts extends APIResource {
   /**
    * Update the details of a payout prior to processing. The status of the payout
    * must be `created`, `scheduled`, or `on_hold`.
+   *
+   * @example
+   * ```ts
+   * const payoutV1 = await client.payouts.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     amount: 10000,
+   *     description: 'description',
+   *     payment_date: '2019-12-27',
+   *   },
+   * );
+   * ```
    */
   update(id: string, params: PayoutUpdateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
@@ -54,6 +79,14 @@ export class Payouts extends APIResource {
   /**
    * Cancel a payout to prevent it from being processed. The status of the payout
    * must be `created`, `scheduled`, or `on_hold`.
+   *
+   * @example
+   * ```ts
+   * const payoutV1 = await client.payouts.cancel(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { reason: 'reason' },
+   * );
+   * ```
    */
   cancel(id: string, params: PayoutCancelParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
@@ -77,6 +110,13 @@ export class Payouts extends APIResource {
   /**
    * Retrieves the details of an existing payout. Supply the unique payout `id` to
    * retrieve the corresponding payout information.
+   *
+   * @example
+   * ```ts
+   * const payoutV1 = await client.payouts.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(id: string, params?: PayoutGetParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<PayoutV1>;
@@ -107,6 +147,14 @@ export class Payouts extends APIResource {
   /**
    * Hold a payout to prevent it from being processed. The status of the payout must
    * be `created`, `scheduled`, or `on_hold`.
+   *
+   * @example
+   * ```ts
+   * const payoutV1 = await client.payouts.hold(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { reason: 'reason' },
+   * );
+   * ```
    */
   hold(id: string, params: PayoutHoldParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
@@ -130,6 +178,14 @@ export class Payouts extends APIResource {
   /**
    * Release a payout from a `hold` status to allow it to be rescheduled for
    * processing.
+   *
+   * @example
+   * ```ts
+   * const payoutV1 = await client.payouts.release(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { reason: 'reason' },
+   * );
+   * ```
    */
   release(id: string, params: PayoutReleaseParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
@@ -152,6 +208,13 @@ export class Payouts extends APIResource {
 
   /**
    * Get a payout by id.
+   *
+   * @example
+   * ```ts
+   * const response = await client.payouts.unmask(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   unmask(
     id: string,

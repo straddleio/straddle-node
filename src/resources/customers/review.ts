@@ -13,6 +13,14 @@ export class Review extends APIResource {
    * to modify the outcome of a customer risk screening and is useful for correcting
    * or updating the status of a customer's verification. Note that this endpoint is
    * only available for customers with a current status of `review`.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.review.decision(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { status: 'verified' },
+   * );
+   * ```
    */
   decision(
     id: string,
@@ -47,6 +55,13 @@ export class Review extends APIResource {
    * - Results of watchlist screening
    * - Any network alerts detected Use this endpoint to gain insights into the
    *   verification process and make informed decisions about customer onboarding.
+   *
+   * @example
+   * ```ts
+   * const customerReviewV1 = await client.customers.review.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;

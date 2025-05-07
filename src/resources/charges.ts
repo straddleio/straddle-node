@@ -8,6 +8,21 @@ import * as Shared from './shared';
 export class Charges extends APIResource {
   /**
    * Use charges to collect money from a customer for the sale of goods or services.
+   *
+   * @example
+   * ```ts
+   * const chargeV1 = await client.charges.create({
+   *   amount: 10000,
+   *   config: { balance_check: 'required' },
+   *   consent_type: 'internet',
+   *   currency: 'currency',
+   *   description: 'Monthly subscription fee',
+   *   device: { ip_address: '192.168.1.1' },
+   *   external_id: 'external_id',
+   *   paykey: 'paykey',
+   *   payment_date: '2019-12-27',
+   * });
+   * ```
    */
   create(params: ChargeCreateParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1> {
     const {
@@ -31,6 +46,18 @@ export class Charges extends APIResource {
   /**
    * Change the values of parameters associated with a charge prior to processing.
    * The status of the charge must be `created`, `scheduled`, or `on_hold`.
+   *
+   * @example
+   * ```ts
+   * const chargeV1 = await client.charges.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     amount: 10000,
+   *     description: 'Monthly subscription fee',
+   *     payment_date: '2019-12-27',
+   *   },
+   * );
+   * ```
    */
   update(id: string, params: ChargeUpdateParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1> {
     const {
@@ -54,6 +81,13 @@ export class Charges extends APIResource {
   /**
    * Cancel a charge to prevent it from being originated for processing. The status
    * of the charge must be `created`, `scheduled`, or `on_hold`.
+   *
+   * @example
+   * ```ts
+   * const chargeV1 = await client.charges.cancel(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   cancel(id: string, params?: ChargeCancelParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
@@ -86,6 +120,13 @@ export class Charges extends APIResource {
   /**
    * Retrieves the details of an existing charge. Supply the unique charge `id`, and
    * Straddle will return the corresponding charge information.
+   *
+   * @example
+   * ```ts
+   * const chargeV1 = await client.charges.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(id: string, params?: ChargeGetParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
@@ -116,6 +157,13 @@ export class Charges extends APIResource {
   /**
    * Place a charge on hold to prevent it from being originated for processing. The
    * status of the charge must be `created` or `scheduled`.
+   *
+   * @example
+   * ```ts
+   * const chargeV1 = await client.charges.hold(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   hold(id: string, params?: ChargeHoldParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   hold(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
@@ -148,6 +196,13 @@ export class Charges extends APIResource {
   /**
    * Release a charge from an `on_hold` status to allow it to be rescheduled for
    * processing.
+   *
+   * @example
+   * ```ts
+   * const chargeV1 = await client.charges.release(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   release(id: string, params?: ChargeReleaseParams, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
   release(id: string, options?: Core.RequestOptions): Core.APIPromise<ChargeV1>;
@@ -179,6 +234,13 @@ export class Charges extends APIResource {
 
   /**
    * Get a charge by id.
+   *
+   * @example
+   * ```ts
+   * const response = await client.charges.unmask(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   unmask(
     id: string,

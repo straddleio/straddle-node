@@ -12,6 +12,19 @@ export class LinkedBankAccounts extends APIResource {
    * endpoint allows you to associate external bank accounts with a Straddle account
    * for various payment operations such as payment deposits, payout withdrawals, and
    * more.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.create({
+   *     account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     bank_account: {
+   *       account_holder: 'account_holder',
+   *       account_number: 'account_number',
+   *       routing_number: 'xxxxxxxxx',
+   *     },
+   *   });
+   * ```
    */
   create(
     params: LinkedBankAccountCreateParams,
@@ -34,6 +47,21 @@ export class LinkedBankAccounts extends APIResource {
    * update account details during onboarding or to update metadata associated with
    * the linked account. The linked bank account must be in 'created' or 'onboarding'
    * status.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     {
+   *       bank_account: {
+   *         account_holder: 'account_holder',
+   *         account_number: 'account_number',
+   *         routing_number: 'xxxxxxxxx',
+   *       },
+   *     },
+   *   );
+   * ```
    */
   update(
     linkedBankAccountId: string,
@@ -57,6 +85,14 @@ export class LinkedBankAccounts extends APIResource {
    * linked bank accounts are returned sorted by creation date, with the most
    * recently created appearing first. This endpoint supports pagination to handle
    * accounts with multiple linked bank accounts.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const linkedBankAccount of client.embed.linkedBankAccounts.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     params?: LinkedBankAccountListParams,
@@ -89,6 +125,14 @@ export class LinkedBankAccounts extends APIResource {
    * Supply the unique linked bank account `id`, and Straddle will return the
    * corresponding information. The response includes masked account details for
    * security purposes.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.get(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   get(
     linkedBankAccountId: string,
@@ -121,6 +165,14 @@ export class LinkedBankAccounts extends APIResource {
    * the corresponding information, including sensitive details. This endpoint needs
    * to be enabled by Straddle for your account and should only be used when
    * absolutely necessary.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountUnmaskV1 =
+   *   await client.embed.linkedBankAccounts.unmask(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   unmask(
     linkedBankAccountId: string,

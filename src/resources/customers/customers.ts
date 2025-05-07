@@ -22,6 +22,17 @@ export class Customers extends APIResource {
    * Creates a new customer record and automatically initiates identity, fraud, and
    * risk assessment scores. This endpoint allows you to create a customer profile
    * and associate it with paykeys and payments.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.create({
+   *   device: { ip_address: '192.168.1.1' },
+   *   email: 'ron.swanson@pawnee.com',
+   *   name: 'Ron Swanson',
+   *   phone: '+12128675309',
+   *   type: 'individual',
+   * });
+   * ```
    */
   create(params: CustomerCreateParams, options?: Core.RequestOptions): Core.APIPromise<CustomerV1> {
     const {
@@ -45,6 +56,20 @@ export class Customers extends APIResource {
   /**
    * Updates an existing customer's information. This endpoint allows you to modify
    * the customer's contact details, PII, and metadata.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     device: { ip_address: '192.168.1.1' },
+   *     email: 'dev@stainless.com',
+   *     name: 'name',
+   *     phone: '+46991022',
+   *     status: 'pending',
+   *   },
+   * );
+   * ```
    */
   update(
     id: string,
@@ -74,6 +99,14 @@ export class Customers extends APIResource {
    * parameters are optional. If none are provided, the response will include all
    * customers connected to your account. This endpoint supports advanced sorting and
    * filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const customer of client.customers.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     params?: CustomerListParams,
@@ -111,6 +144,13 @@ export class Customers extends APIResource {
    * Permanently removes a customer record from Straddle. This action cannot be
    * undone and should only be used to satisfy regulatory requirements or for privacy
    * compliance.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     id: string,
@@ -146,6 +186,13 @@ export class Customers extends APIResource {
    * Retrieves the details of an existing customer. Supply the unique customer ID
    * that was returned from your 'create customer' request, and Straddle will return
    * the corresponding customer information.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(id: string, params?: CustomerGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
@@ -177,6 +224,13 @@ export class Customers extends APIResource {
    * Updates the decision of a customer's identity validation. This endpoint allows
    * you to modify the outcome of a customer decision and is useful for correcting or
    * updating the status of a customer's verification.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.refreshReview(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   refreshReview(
     id: string,
@@ -214,6 +268,13 @@ export class Customers extends APIResource {
    * and Straddle will return the corresponding customer information. This endpoint
    * needs to be enabled by Straddle and should only be used when absolutely
    * necessary.
+   *
+   * @example
+   * ```ts
+   * const customerUnmaskedV1 = await client.customers.unmasked(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   unmasked(
     id: string,

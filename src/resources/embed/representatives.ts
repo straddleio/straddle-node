@@ -11,6 +11,25 @@ export class Representatives extends APIResource {
    * Creates a new representative associated with an account. Representatives are
    * individuals who have legal authority or significant responsibility within the
    * business.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.create({
+   *     account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     dob: '1980-01-01',
+   *     email: 'ron.swanson@pawnee.com',
+   *     first_name: 'first_name',
+   *     last_name: 'last_name',
+   *     mobile_number: '+12128675309',
+   *     relationship: {
+   *       control: true,
+   *       owner: true,
+   *       primary: true,
+   *     },
+   *     ssn_last4: '1234',
+   *   });
+   * ```
    */
   create(params: RepresentativeCreateParams, options?: Core.RequestOptions): Core.APIPromise<Representative> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
@@ -29,6 +48,27 @@ export class Representatives extends APIResource {
    * Updates an existing representative's information. This can be used to update
    * personal details, contact information, or the relationship to the account or
    * organization.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     {
+   *       dob: '1980-01-01',
+   *       email: 'ron.swanson@pawnee.com',
+   *       first_name: 'Ron',
+   *       last_name: 'Swanson',
+   *       mobile_number: '+12128675309',
+   *       relationship: {
+   *         control: true,
+   *         owner: true,
+   *         primary: true,
+   *       },
+   *       ssn_last4: '1234',
+   *     },
+   *   );
+   * ```
    */
   update(
     representativeId: string,
@@ -52,6 +92,14 @@ export class Representatives extends APIResource {
    * organization. The representatives are returned sorted by creation date, with the
    * most recently created representatives appearing first. This endpoint supports
    * advanced sorting and filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const representative of client.embed.representatives.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     params?: RepresentativeListParams,
@@ -83,6 +131,14 @@ export class Representatives extends APIResource {
    * Retrieves the details of an existing representative. Supply the unique
    * representative ID, and Straddle will return the corresponding representative
    * information.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.get(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   get(
     representativeId: string,
@@ -114,6 +170,14 @@ export class Representatives extends APIResource {
    * created. Supply the unique representative ID, and Straddle will return the
    * corresponding representative information, including sensitive details. This
    * endpoint requires additional authentication and should be used with caution.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.unmask(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   unmask(
     representativeId: string,
