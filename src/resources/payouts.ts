@@ -336,10 +336,6 @@ export namespace PayoutV1 {
      */
     status_history: Array<Data.StatusHistory>;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     /**
      * The time the payout was created.
      */
@@ -362,10 +358,6 @@ export namespace PayoutV1 {
      */
     metadata?: Record<string, string> | null;
 
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
     /**
      * Information about the paykey used for the payout.
      */
@@ -375,10 +367,6 @@ export namespace PayoutV1 {
      * The payment rail used for the payout.
      */
     payment_rail?: 'ach';
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     /**
      * The time the payout was processed by Straddle and originated to the payment
@@ -527,10 +515,6 @@ export namespace PayoutUnmaskResponse {
      */
     status_history: Array<Data.StatusHistory>;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     /**
      * Created at.
      */
@@ -551,20 +535,12 @@ export namespace PayoutUnmaskResponse {
      */
     metadata?: Record<string, string> | null;
 
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
     paykey_details?: Shared.PaykeyDetailsV1;
 
     /**
      * The payment rail used for the charge or payout.
      */
     payment_rail?: 'ach';
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     /**
      * Processed at.

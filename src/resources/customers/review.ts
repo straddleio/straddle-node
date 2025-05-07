@@ -153,10 +153,6 @@ export namespace CustomerReviewV1 {
        */
       updated_at: string;
 
-      account_id?: string | null;
-
-      account_name?: string | null;
-
       /**
        * An object containing the customer's address. This is optional, but if provided,
        * all required fields must be present.
@@ -184,14 +180,6 @@ export namespace CustomerReviewV1 {
        * information about the customer in a structured format.
        */
       metadata?: Record<string, string> | null;
-
-      organization_id?: string | null;
-
-      organization_name?: string | null;
-
-      platform_id?: string | null;
-
-      platform_name?: string | null;
     }
 
     export namespace CustomerDetails {

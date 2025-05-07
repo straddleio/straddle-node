@@ -227,10 +227,6 @@ export namespace PaykeySummaryPagedV1 {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     bank_data?: Data.BankData;
 
     /**
@@ -247,14 +243,6 @@ export namespace PaykeySummaryPagedV1 {
      * Name of the financial institution.
      */
     institution_name?: string | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     status_details?: Data.StatusDetails;
   }
@@ -411,10 +399,6 @@ export namespace PaykeyUnmaskedV1 {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     bank_data?: Data.BankData;
 
     /**
@@ -437,14 +421,6 @@ export namespace PaykeyUnmaskedV1 {
      * information about the paykey in a structured format.
      */
     metadata?: Record<string, string> | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     status_details?: Data.StatusDetails;
   }
@@ -559,10 +535,6 @@ export namespace PaykeyV1 {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     bank_data?: Data.BankData;
 
     /**
@@ -585,14 +557,6 @@ export namespace PaykeyV1 {
      * information about the paykey in a structured format.
      */
     metadata?: Record<string, string> | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     status_details?: Data.StatusDetails;
   }
@@ -709,10 +673,6 @@ export namespace PaykeyRevealResponse {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     bank_data?: Data.BankData;
 
     /**
@@ -735,14 +695,6 @@ export namespace PaykeyRevealResponse {
      * information about the paykey in a structured format.
      */
     metadata?: Record<string, string> | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     status_details?: Data.StatusDetails;
   }

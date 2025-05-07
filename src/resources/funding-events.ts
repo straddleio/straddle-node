@@ -142,18 +142,6 @@ export namespace FundingEventSummaryItemV1 {
      */
     transfer_date: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
-
     /**
      * The trace number of the funding event.
      */
@@ -218,18 +206,6 @@ export namespace FundingEventSummaryPagedV1 {
      * `reversals`, this is the date the funds were debited from your bank account.
      */
     transfer_date: string;
-
-    account_id?: string | null;
-
-    account_name?: string | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     /**
      * The trace number of the funding event.

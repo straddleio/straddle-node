@@ -393,23 +393,11 @@ export namespace CustomerSummaryPagedV1 {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     /**
      * Unique identifier for the customer in your database, used for cross-referencing
      * between Straddle and your systems.
      */
     external_id?: string | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
   }
 
   export interface Meta {
@@ -510,10 +498,6 @@ export namespace CustomerUnmaskedV1 {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     /**
      * An object containing the customer's address. This is optional, but if provided,
      * all required fields must be present.
@@ -538,14 +522,6 @@ export namespace CustomerUnmaskedV1 {
      * information about the customer in a structured format.
      */
     metadata?: Record<string, string> | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
   }
 
   export namespace Data {
@@ -662,10 +638,6 @@ export namespace CustomerV1 {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     /**
      * An object containing the customer's address. This is optional, but if provided,
      * all required fields must be present.
@@ -690,14 +662,6 @@ export namespace CustomerV1 {
      * information about the customer in a structured format.
      */
     metadata?: Record<string, string> | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
   }
 
   export namespace Data {

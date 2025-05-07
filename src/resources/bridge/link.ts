@@ -133,10 +133,6 @@ export namespace LinkCreateTanResponse {
      */
     updated_at: string;
 
-    account_id?: string | null;
-
-    account_name?: string | null;
-
     bank_data?: Data.BankData;
 
     /**
@@ -159,14 +155,6 @@ export namespace LinkCreateTanResponse {
      * information about the paykey in a structured format.
      */
     metadata?: Record<string, string> | null;
-
-    organization_id?: string | null;
-
-    organization_name?: string | null;
-
-    platform_id?: string | null;
-
-    platform_name?: string | null;
 
     status_details?: Data.StatusDetails;
   }
