@@ -386,7 +386,7 @@ export namespace CustomerSummaryPagedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -491,7 +491,7 @@ export namespace CustomerUnmaskedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -631,7 +631,7 @@ export namespace CustomerV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -761,7 +761,7 @@ export interface CustomerCreateParams {
   /**
    * Body param:
    */
-  type: 'individual' | 'business';
+  type: 'individual' | 'business' | 'unknown';
 
   /**
    * Body param: An object containing the customer's address. **This is optional.**
@@ -1043,7 +1043,7 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter by customer type `individual` or `business`.
    */
-  types?: Array<'individual' | 'business'>;
+  types?: Array<'individual' | 'business' | 'unknown'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
