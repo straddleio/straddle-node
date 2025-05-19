@@ -72,7 +72,7 @@ export const tool: Tool = {
         description: 'Filter by customer type `individual` or `business`.',
         items: {
           type: 'string',
-          enum: ['individual', 'business'],
+          enum: ['individual', 'business', 'unknown'],
         },
       },
       'Correlation-Id': {

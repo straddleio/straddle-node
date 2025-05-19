@@ -146,7 +146,7 @@ export namespace CustomerReviewV1 {
 
       status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-      type: 'individual' | 'business';
+      type: 'individual' | 'business' | 'unknown';
 
       /**
        * Timestamp of the most recent update to the customer record.
@@ -465,7 +465,7 @@ export namespace CustomerReviewV1 {
 
       export namespace WatchList {
         export interface Match {
-          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
+          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence' | 'unknown';
 
           /**
            * The name of the list the match was found.
@@ -493,7 +493,7 @@ export interface IdentityVerificationBreakdownV1 {
    */
   codes?: Array<string> | null;
 
-  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
+  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence' | 'unknown';
 
   /**
    * Represents the strength of the correlation between provided and known
