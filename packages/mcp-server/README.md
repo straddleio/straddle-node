@@ -229,12 +229,11 @@ The following tools are available in this MCP server.
 
 - `decision_customers_review` (`write`): Updates the status of a customer's identity decision. This endpoint allows you to modify the outcome of a customer risk screening and is useful for correcting or updating the status of a customer's verification. Note that this endpoint is only available for customers with a current status of `review`.
 - `get_customers_review` (`read`): Retrieves and analyzes the results of a customer's identity validation and fraud score. This endpoint provides a comprehensive breakdown of the validation outcome, including:
-
-* Risk and correlation scores
-* Reason codes for the decision
-* Results of watchlist screening
-* Any network alerts detected
-  Use this endpoint to gain insights into the verification process and make informed decisions about customer onboarding.
+  - Risk and correlation scores
+  - Reason codes for the decision
+  - Results of watchlist screening
+  - Any network alerts detected
+    Use this endpoint to gain insights into the verification process and make informed decisions about customer onboarding.
 
 ### Resource `paykeys`:
 
