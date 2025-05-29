@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'payouts',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/payouts',
+  operationId: 'CreatePayout',
 };
 
 export const tool: Tool = {

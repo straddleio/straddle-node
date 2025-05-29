@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   resource: 'embed.representatives',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/v1/representatives/{representative_id}/unmask',
 };
 
 export const tool: Tool = {

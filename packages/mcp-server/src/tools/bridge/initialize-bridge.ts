@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'bridge',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/bridge/initialize',
+  operationId: 'CreateBridgeToken',
 };
 
 export const tool: Tool = {

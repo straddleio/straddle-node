@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'embed.accounts',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/accounts',
+  operationId: 'CreateAccount',
 };
 
 export const tool: Tool = {

@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   resource: 'reports',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/reports/total_customers_by_status',
 };
 
 export const tool: Tool = {

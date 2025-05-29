@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'funding_events',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/v1/funding_events',
+  operationId: 'ListFundingEvents',
 };
 
 export const tool: Tool = {

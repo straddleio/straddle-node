@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'bridge.link',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/bridge/plaid',
+  operationId: 'CreatePlaidPaykey',
 };
 
 export const tool: Tool = {

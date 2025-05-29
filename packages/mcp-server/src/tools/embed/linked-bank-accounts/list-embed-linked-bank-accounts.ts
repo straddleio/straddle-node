@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   resource: 'embed.linked_bank_accounts',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/v1/linked_bank_accounts',
 };
 
 export const tool: Tool = {

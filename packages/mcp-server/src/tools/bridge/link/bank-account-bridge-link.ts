@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'bridge.link',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/bridge/bank_account',
+  operationId: 'CreateBankAccountPaykey',
 };
 
 export const tool: Tool = {

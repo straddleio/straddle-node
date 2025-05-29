@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   resource: 'customers',
   operation: 'write',
   tags: [],
+  httpMethod: 'put',
+  httpPath: '/v1/customers/{id}/refresh_review',
 };
 
 export const tool: Tool = {

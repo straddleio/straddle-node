@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   resource: 'paykeys',
   operation: 'write',
   tags: [],
+  httpMethod: 'put',
+  httpPath: '/v1/paykeys/{id}/cancel',
 };
 
 export const tool: Tool = {

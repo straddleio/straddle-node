@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'embed.accounts.capability_requests',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/accounts/{account_id}/capability_requests',
+  operationId: 'CreateCapabilityRequest',
 };
 
 export const tool: Tool = {

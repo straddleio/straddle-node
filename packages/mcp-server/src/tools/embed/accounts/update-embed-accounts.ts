@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'embed.accounts',
   operation: 'write',
   tags: [],
+  httpMethod: 'put',
+  httpPath: '/v1/accounts/{account_id}',
+  operationId: 'UpdateAccount',
 };
 
 export const tool: Tool = {

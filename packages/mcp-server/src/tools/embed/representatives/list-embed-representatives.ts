@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'embed.representatives',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/v1/representatives',
+  operationId: 'ListRepresentatives',
 };
 
 export const tool: Tool = {

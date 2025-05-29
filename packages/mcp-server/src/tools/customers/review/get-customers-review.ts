@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'customers.review',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/v1/customers/{id}/review',
+  operationId: 'GetCustomerReview',
 };
 
 export const tool: Tool = {

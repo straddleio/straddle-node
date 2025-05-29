@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'embed.organizations',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/v1/organizations',
+  operationId: 'ListOrganizations',
 };
 
 export const tool: Tool = {

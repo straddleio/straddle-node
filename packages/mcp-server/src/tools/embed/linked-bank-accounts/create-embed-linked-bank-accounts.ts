@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'embed.linked_bank_accounts',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/linked_bank_accounts',
+  operationId: 'CreateLinkedBankAccount',
 };
 
 export const tool: Tool = {

@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'charges',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/v1/charges/{id}/unmask',
+  operationId: 'ChargesUnmaskV1Get',
 };
 
 export const tool: Tool = {

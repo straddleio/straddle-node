@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   resource: 'bridge.link',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/bridge/tan',
 };
 
 export const tool: Tool = {

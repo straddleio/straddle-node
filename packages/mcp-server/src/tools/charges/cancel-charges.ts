@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'charges',
   operation: 'write',
   tags: [],
+  httpMethod: 'put',
+  httpPath: '/v1/charges/{id}/cancel',
+  operationId: 'CancelCharge',
 };
 
 export const tool: Tool = {

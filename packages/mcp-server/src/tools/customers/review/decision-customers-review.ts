@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'customers.review',
   operation: 'write',
   tags: [],
+  httpMethod: 'patch',
+  httpPath: '/v1/customers/{id}/review',
+  operationId: 'UpdateCustomerReview',
 };
 
 export const tool: Tool = {

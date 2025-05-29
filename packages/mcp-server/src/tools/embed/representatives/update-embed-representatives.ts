@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'embed.representatives',
   operation: 'write',
   tags: [],
+  httpMethod: 'put',
+  httpPath: '/v1/representatives/{representative_id}',
+  operationId: 'UpdateRepresentative',
 };
 
 export const tool: Tool = {
