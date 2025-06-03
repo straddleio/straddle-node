@@ -216,7 +216,9 @@ export class Straddle extends Core.APIClient {
     }
 
     super({
-      baseURL: options.baseURL || environments[options.environment || 'production'],
+      baseURL:
+        options.baseURL ||
+        environments[options.environment || 'production'].replace(/{environment}/g, environment),
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
