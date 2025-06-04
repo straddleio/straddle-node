@@ -27,23 +27,19 @@ const client = new Straddle({
   environment: 'sandbox', // defaults to 'production'
 });
 
-async function main() {
-  const chargeV1 = await client.charges.create({
-    amount: 10000,
-    config: { balance_check: 'required' },
-    consent_type: 'internet',
-    currency: 'currency',
-    description: 'Monthly subscription fee',
-    device: { ip_address: '192.168.1.1' },
-    external_id: 'external_id',
-    paykey: 'paykey',
-    payment_date: '2019-12-27',
-  });
+const chargeV1 = await client.charges.create({
+  amount: 10000,
+  config: { balance_check: 'required' },
+  consent_type: 'internet',
+  currency: 'currency',
+  description: 'Monthly subscription fee',
+  device: { ip_address: '192.168.1.1' },
+  external_id: 'external_id',
+  paykey: 'paykey',
+  payment_date: '2019-12-27',
+});
 
-  console.log(chargeV1.data);
-}
-
-main();
+console.log(chargeV1.data);
 ```
 
 ### Request & Response types
@@ -59,22 +55,18 @@ const client = new Straddle({
   environment: 'sandbox', // defaults to 'production'
 });
 
-async function main() {
-  const params: Straddle.ChargeCreateParams = {
-    amount: 10000,
-    config: { balance_check: 'required' },
-    consent_type: 'internet',
-    currency: 'currency',
-    description: 'Monthly subscription fee',
-    device: { ip_address: '192.168.1.1' },
-    external_id: 'external_id',
-    paykey: 'paykey',
-    payment_date: '2019-12-27',
-  };
-  const chargeV1: Straddle.ChargeV1 = await client.charges.create(params);
-}
-
-main();
+const params: Straddle.ChargeCreateParams = {
+  amount: 10000,
+  config: { balance_check: 'required' },
+  consent_type: 'internet',
+  currency: 'currency',
+  description: 'Monthly subscription fee',
+  device: { ip_address: '192.168.1.1' },
+  external_id: 'external_id',
+  paykey: 'paykey',
+  payment_date: '2019-12-27',
+};
+const chargeV1: Straddle.ChargeV1 = await client.charges.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -87,31 +79,27 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const chargeV1 = await client.charges
-    .create({
-      amount: 10000,
-      config: { balance_check: 'required' },
-      consent_type: 'internet',
-      currency: 'currency',
-      description: 'Monthly subscription fee',
-      device: { ip_address: '192.168.1.1' },
-      external_id: 'external_id',
-      paykey: 'paykey',
-      payment_date: '2019-12-27',
-    })
-    .catch(async (err) => {
-      if (err instanceof Straddle.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    });
-}
-
-main();
+const chargeV1 = await client.charges
+  .create({
+    amount: 10000,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
+    device: { ip_address: '192.168.1.1' },
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
+  })
+  .catch(async (err) => {
+    if (err instanceof Straddle.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
