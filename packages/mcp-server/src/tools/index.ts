@@ -1,7 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Straddle from '@straddleio/straddle';
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { Metadata, Endpoint, HandlerFunction } from './types';
+
+export { Metadata, Endpoint, HandlerFunction };
 
 import create_embed_accounts from './embed/accounts/create-embed-accounts';
 import update_embed_accounts from './embed/accounts/update-embed-accounts';
@@ -60,24 +61,6 @@ import hold_payouts from './payouts/hold-payouts';
 import release_payouts from './payouts/release-payouts';
 import unmask_payouts from './payouts/unmask-payouts';
 import create_total_customers_by_status_reports from './reports/create-total-customers-by-status-reports';
-
-export type HandlerFunction = (client: Straddle, args: Record<string, unknown> | undefined) => Promise<any>;
-
-export type Metadata = {
-  resource: string;
-  operation: 'read' | 'write';
-  tags: string[];
-
-  httpMethod?: string;
-  httpPath?: string;
-  operationId?: string;
-};
-
-export type Endpoint = {
-  metadata: Metadata;
-  tool: Tool;
-  handler: HandlerFunction;
-};
 
 export const endpoints: Endpoint[] = [];
 

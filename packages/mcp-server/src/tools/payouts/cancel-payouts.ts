@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { asTextContentResult } from '@straddleio/straddle-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import type { Metadata } from '../';
 import Straddle from '@straddleio/straddle';
@@ -40,9 +42,9 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: Straddle, args: Record<string, unknown> | undefined) => {
+export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {
   const { id, ...body } = args as any;
-  return client.payouts.cancel(id, body);
+  return asTextContentResult(await client.payouts.cancel(id, body));
 };
 
 export default { metadata, tool, handler };
