@@ -212,6 +212,7 @@ The following tools are available in this MCP server.
 ### Resource `bridge.link`:
 
 - `bank_account_bridge_link` (`write`): Use Bridge to create a new paykey using a bank routing and account number as the source. This endpoint allows you to create a secure payment token linked to a specific bank account.
+- `create_paykey_bridge_link` (`write`): Creates a new paykey using a Quiltt token as the source. This endpoint allows you to create a secure payment token linked to a bank account authenticated through Quiltt.
 - `create_tan_bridge_link` (`write`):
 - `plaid_bridge_link` (`write`): Use Bridge to create a new paykey using a Plaid token as the source. This endpoint allows you to create a secure payment token linked to a bank account authenticated through Plaid.
 

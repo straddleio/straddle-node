@@ -102,11 +102,13 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/bridge/link.ts">LinkCreatePaykeyResponse</a></code>
 - <code><a href="./src/resources/bridge/link.ts">LinkCreateTanResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/bridge/bank_account">client.bridge.link.<a href="./src/resources/bridge/link.ts">bankAccount</a>({ ...params }) -> PaykeyV1</code>
+- <code title="post /v1/bridge/quiltt">client.bridge.link.<a href="./src/resources/bridge/link.ts">createPaykey</a>({ ...params }) -> LinkCreatePaykeyResponse</code>
 - <code title="post /v1/bridge/tan">client.bridge.link.<a href="./src/resources/bridge/link.ts">createTan</a>({ ...params }) -> LinkCreateTanResponse</code>
 - <code title="post /v1/bridge/plaid">client.bridge.link.<a href="./src/resources/bridge/link.ts">plaid</a>({ ...params }) -> PaykeyV1</code>
 

@@ -33,6 +33,33 @@ export class Link extends APIResource {
     });
   }
 
+  /**
+   * Creates a new paykey using a Quiltt token as the source. This endpoint allows
+   * you to create a secure payment token linked to a bank account authenticated
+   * through Quiltt.
+   */
+  createPaykey(
+    params: LinkCreatePaykeyParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<LinkCreatePaykeyResponse> {
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+      ...body
+    } = params;
+    return this._client.post('/v1/bridge/quiltt', {
+      body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
   createTan(
     params: LinkCreateTanParams,
     options?: Core.RequestOptions,
@@ -77,6 +104,166 @@ export class Link extends APIResource {
         ...options?.headers,
       },
     });
+  }
+}
+
+export interface LinkCreatePaykeyResponse {
+  data: LinkCreatePaykeyResponse.Data;
+
+  /**
+   * Metadata about the API request, including an identifier and timestamp.
+   */
+  meta: Shared.ResponseMetadata;
+
+  /**
+   * Indicates the structure of the returned content.
+   *
+   * - "object" means the `data` field contains a single JSON object.
+   * - "array" means the `data` field contains an array of objects.
+   * - "error" means the `data` field contains an error object with details of the
+   *   issue.
+   * - "none" means no data is returned.
+   */
+  response_type: 'object' | 'array' | 'error' | 'none';
+}
+
+export namespace LinkCreatePaykeyResponse {
+  export interface Data {
+    /**
+     * Unique identifier for the paykey.
+     */
+    id: string;
+
+    config: Data.Config;
+
+    /**
+     * Timestamp of when the paykey was created.
+     */
+    created_at: string;
+
+    /**
+     * Human-readable label that combines the bank name and masked account number to
+     * help easility represent this paykey in a UI
+     */
+    label: string;
+
+    /**
+     * The tokenized paykey value. This token is used to create payments and should be
+     * stored securely.
+     */
+    paykey: string;
+
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
+
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
+
+    /**
+     * Timestamp of the most recent update to the paykey.
+     */
+    updated_at: string;
+
+    balance?: Data.Balance;
+
+    bank_data?: Data.BankData;
+
+    /**
+     * Unique identifier of the related customer object.
+     */
+    customer_id?: string | null;
+
+    /**
+     * Expiration date and time of the paykey, if applicable.
+     */
+    expires_at?: string | null;
+
+    /**
+     * Name of the financial institution.
+     */
+    institution_name?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the paykey in a structured format.
+     */
+    metadata?: Record<string, string> | null;
+
+    status_details?: Data.StatusDetails;
+  }
+
+  export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
+    export interface BankData {
+      /**
+       * Bank account number. This value is masked by default for security reasons. Use
+       * the /unmask endpoint to access the unmasked value.
+       */
+      account_number: string;
+
+      account_type: 'checking' | 'savings';
+
+      /**
+       * The routing number of the bank account.
+       */
+      routing_number: string;
+    }
+
+    export interface StatusDetails {
+      /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+
+      /**
+       * The status code if applicable.
+       */
+      code?: string | null;
+    }
   }
 }
 
@@ -128,7 +315,7 @@ export namespace LinkCreateTanResponse {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -296,6 +483,53 @@ export namespace LinkBankAccountParams {
   }
 }
 
+export interface LinkCreatePaykeyParams {
+  /**
+   * Body param: Unique identifier of the related customer object.
+   */
+  customer_id: string;
+
+  /**
+   * Body param: Quiltt processor token generated by your application for use with
+   * the Straddle API.
+   */
+  quiltt_token: string;
+
+  /**
+   * Body param:
+   */
+  config?: LinkCreatePaykeyParams.Config;
+
+  /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the paykey in a structured format.
+   */
+  metadata?: Record<string, string> | null;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
+export namespace LinkCreatePaykeyParams {
+  export interface Config {
+    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+  }
+}
+
 export interface LinkCreateTanParams {
   /**
    * Body param:
@@ -401,8 +635,10 @@ export namespace LinkPlaidParams {
 
 export declare namespace Link {
   export {
+    type LinkCreatePaykeyResponse as LinkCreatePaykeyResponse,
     type LinkCreateTanResponse as LinkCreateTanResponse,
     type LinkBankAccountParams as LinkBankAccountParams,
+    type LinkCreatePaykeyParams as LinkCreatePaykeyParams,
     type LinkCreateTanParams as LinkCreateTanParams,
     type LinkPlaidParams as LinkPlaidParams,
   };

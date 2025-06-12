@@ -27,6 +27,7 @@ import get_embed_representatives from './embed/representatives/get-embed-represe
 import unmask_embed_representatives from './embed/representatives/unmask-embed-representatives';
 import initialize_bridge from './bridge/initialize-bridge';
 import bank_account_bridge_link from './bridge/link/bank-account-bridge-link';
+import create_paykey_bridge_link from './bridge/link/create-paykey-bridge-link';
 import create_tan_bridge_link from './bridge/link/create-tan-bridge-link';
 import plaid_bridge_link from './bridge/link/plaid-bridge-link';
 import create_customers from './customers/create-customers';
@@ -91,6 +92,7 @@ addEndpoint(get_embed_representatives);
 addEndpoint(unmask_embed_representatives);
 addEndpoint(initialize_bridge);
 addEndpoint(bank_account_bridge_link);
+addEndpoint(create_paykey_bridge_link);
 addEndpoint(create_tan_bridge_link);
 addEndpoint(plaid_bridge_link);
 addEndpoint(create_customers);

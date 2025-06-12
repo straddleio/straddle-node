@@ -7,6 +7,8 @@ import * as LinkAPI from './link';
 import {
   Link,
   LinkBankAccountParams,
+  LinkCreatePaykeyParams,
+  LinkCreatePaykeyResponse,
   LinkCreateTanParams,
   LinkCreateTanResponse,
   LinkPlaidParams,
@@ -99,8 +101,10 @@ export declare namespace Bridge {
 
   export {
     Link as Link,
+    type LinkCreatePaykeyResponse as LinkCreatePaykeyResponse,
     type LinkCreateTanResponse as LinkCreateTanResponse,
     type LinkBankAccountParams as LinkBankAccountParams,
+    type LinkCreatePaykeyParams as LinkCreatePaykeyParams,
     type LinkCreateTanParams as LinkCreateTanParams,
     type LinkPlaidParams as LinkPlaidParams,
   };

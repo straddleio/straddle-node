@@ -39,7 +39,7 @@ export const tool: Tool = {
       },
       type: {
         type: 'string',
-        enum: ['individual', 'business', 'unknown'],
+        enum: ['individual', 'business'],
       },
       address: {
         $ref: '#/$defs/customer_address_v1',
