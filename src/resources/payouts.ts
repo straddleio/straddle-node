@@ -282,7 +282,7 @@ export namespace PayoutV1 {
     /**
      * Configuration for the payout.
      */
-    config: unknown;
+    config: Data.Config;
 
     /**
      * The currency of the payout. Only USD is supported.
@@ -381,6 +381,27 @@ export namespace PayoutV1 {
   }
 
   export namespace Data {
+    /**
+     * Configuration for the payout.
+     */
+    export interface Config {
+      /**
+       * Payment will simulate processing if not Standard.
+       */
+      sandbox_outcome?:
+        | 'standard'
+        | 'paid'
+        | 'on_hold_daily_limit'
+        | 'cancelled_for_fraud_risk'
+        | 'cancelled_for_balance_check'
+        | 'failed_insufficient_funds'
+        | 'reversed_insufficient_funds'
+        | 'failed_customer_dispute'
+        | 'reversed_customer_dispute'
+        | 'failed_closed_bank_account'
+        | 'reversed_closed_bank_account';
+    }
+
     export interface StatusHistory {
       /**
        * The time the status change occurred.
@@ -469,7 +490,7 @@ export namespace PayoutUnmaskResponse {
      */
     amount: number;
 
-    config: unknown;
+    config: Data.Config;
 
     /**
      * Currency.
@@ -554,6 +575,24 @@ export namespace PayoutUnmaskResponse {
   }
 
   export namespace Data {
+    export interface Config {
+      /**
+       * Payment will simulate processing if not Standard.
+       */
+      sandbox_outcome?:
+        | 'standard'
+        | 'paid'
+        | 'on_hold_daily_limit'
+        | 'cancelled_for_fraud_risk'
+        | 'cancelled_for_balance_check'
+        | 'failed_insufficient_funds'
+        | 'reversed_insufficient_funds'
+        | 'failed_customer_dispute'
+        | 'reversed_customer_dispute'
+        | 'failed_closed_bank_account'
+        | 'reversed_closed_bank_account';
+    }
+
     export interface Device {
       /**
        * Ip address.
@@ -659,7 +698,7 @@ export interface PayoutCreateParams {
   /**
    * Body param:
    */
-  config?: unknown;
+  config?: PayoutCreateParams.Config;
 
   /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
@@ -683,6 +722,26 @@ export interface PayoutCreateParams {
    * request.
    */
   'Straddle-Account-Id'?: string;
+}
+
+export namespace PayoutCreateParams {
+  export interface Config {
+    /**
+     * Payment will simulate processing if not Standard.
+     */
+    sandbox_outcome?:
+      | 'standard'
+      | 'paid'
+      | 'on_hold_daily_limit'
+      | 'cancelled_for_fraud_risk'
+      | 'cancelled_for_balance_check'
+      | 'failed_insufficient_funds'
+      | 'reversed_insufficient_funds'
+      | 'failed_customer_dispute'
+      | 'reversed_customer_dispute'
+      | 'failed_closed_bank_account'
+      | 'reversed_closed_bank_account';
+  }
 }
 
 export interface PayoutUpdateParams {

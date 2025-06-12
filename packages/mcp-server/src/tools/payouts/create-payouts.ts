@@ -53,6 +53,26 @@ export const tool: Tool = {
       },
       config: {
         type: 'object',
+        properties: {
+          sandbox_outcome: {
+            type: 'string',
+            description: 'Payment will simulate processing if not Standard.',
+            enum: [
+              'standard',
+              'paid',
+              'on_hold_daily_limit',
+              'cancelled_for_fraud_risk',
+              'cancelled_for_balance_check',
+              'failed_insufficient_funds',
+              'reversed_insufficient_funds',
+              'failed_customer_dispute',
+              'reversed_customer_dispute',
+              'failed_closed_bank_account',
+              'reversed_closed_bank_account',
+            ],
+          },
+        },
+        required: [],
       },
       metadata: {
         type: 'object',

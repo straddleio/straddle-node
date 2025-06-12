@@ -423,6 +423,22 @@ export namespace ChargeV1 {
        * Defines whether to check the customer's balance before processing the charge.
        */
       balance_check: 'required' | 'enabled' | 'disabled';
+
+      /**
+       * Payment will simulate processing if not Standard.
+       */
+      sandbox_outcome?:
+        | 'standard'
+        | 'paid'
+        | 'on_hold_daily_limit'
+        | 'cancelled_for_fraud_risk'
+        | 'cancelled_for_balance_check'
+        | 'failed_insufficient_funds'
+        | 'reversed_insufficient_funds'
+        | 'failed_customer_dispute'
+        | 'reversed_customer_dispute'
+        | 'failed_closed_bank_account'
+        | 'reversed_closed_bank_account';
     }
 
     /**
@@ -614,6 +630,22 @@ export namespace ChargeUnmaskResponse {
        * Defines whether to check the customer's balance before processing the charge.
        */
       balance_check: 'required' | 'enabled' | 'disabled';
+
+      /**
+       * Payment will simulate processing if not Standard.
+       */
+      sandbox_outcome?:
+        | 'standard'
+        | 'paid'
+        | 'on_hold_daily_limit'
+        | 'cancelled_for_fraud_risk'
+        | 'cancelled_for_balance_check'
+        | 'failed_insufficient_funds'
+        | 'reversed_insufficient_funds'
+        | 'failed_customer_dispute'
+        | 'reversed_customer_dispute'
+        | 'failed_closed_bank_account'
+        | 'reversed_closed_bank_account';
     }
 
     export interface Device {
@@ -760,6 +792,22 @@ export namespace ChargeCreateParams {
      * Defines whether to check the customer's balance before processing the charge.
      */
     balance_check: 'required' | 'enabled' | 'disabled';
+
+    /**
+     * Payment will simulate processing if not Standard.
+     */
+    sandbox_outcome?:
+      | 'standard'
+      | 'paid'
+      | 'on_hold_daily_limit'
+      | 'cancelled_for_fraud_risk'
+      | 'cancelled_for_balance_check'
+      | 'failed_insufficient_funds'
+      | 'reversed_insufficient_funds'
+      | 'failed_customer_dispute'
+      | 'reversed_customer_dispute'
+      | 'failed_closed_bank_account'
+      | 'reversed_closed_bank_account';
   }
 }
 

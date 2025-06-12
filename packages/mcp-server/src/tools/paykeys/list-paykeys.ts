@@ -47,7 +47,7 @@ export const tool: Tool = {
         description: 'Filter paykeys by their current status.',
         items: {
           type: 'string',
-          enum: ['pending', 'active', 'inactive', 'rejected'],
+          enum: ['pending', 'active', 'inactive', 'rejected', 'review'],
         },
       },
       'Correlation-Id': {

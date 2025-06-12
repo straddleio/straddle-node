@@ -38,6 +38,16 @@ export const tool: Tool = {
         type: 'string',
         description: 'The routing number of the bank account.',
       },
+      config: {
+        type: 'object',
+        properties: {
+          sandbox_outcome: {
+            type: 'string',
+            enum: ['standard', 'active', 'rejected'],
+          },
+        },
+        required: [],
+      },
       metadata: {
         type: 'object',
         description:

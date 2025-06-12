@@ -37,7 +37,7 @@ describe('resource payouts', () => {
       external_id: 'external_id',
       paykey: 'paykey',
       payment_date: '2019-12-27',
-      config: {},
+      config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',

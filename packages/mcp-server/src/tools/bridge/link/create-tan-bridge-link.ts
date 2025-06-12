@@ -36,6 +36,16 @@ export const tool: Tool = {
         type: 'string',
         description: 'Tokenized account number.',
       },
+      config: {
+        type: 'object',
+        properties: {
+          sandbox_outcome: {
+            type: 'string',
+            enum: ['standard', 'active', 'rejected'],
+          },
+        },
+        required: [],
+      },
       metadata: {
         type: 'object',
         description:

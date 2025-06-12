@@ -107,6 +107,8 @@ export namespace LinkCreateTanResponse {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -124,14 +126,16 @@ export namespace LinkCreateTanResponse {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -160,6 +164,24 @@ export namespace LinkCreateTanResponse {
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -240,6 +262,11 @@ export interface LinkBankAccountParams {
   routing_number: string;
 
   /**
+   * Body param:
+   */
+  config?: LinkBankAccountParams.Config;
+
+  /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the paykey in a structured format.
    */
@@ -261,6 +288,12 @@ export interface LinkBankAccountParams {
    * request.
    */
   'Straddle-Account-Id'?: string;
+}
+
+export namespace LinkBankAccountParams {
+  export interface Config {
+    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+  }
 }
 
 export interface LinkCreateTanParams {
@@ -285,6 +318,11 @@ export interface LinkCreateTanParams {
   tan: string;
 
   /**
+   * Body param:
+   */
+  config?: LinkCreateTanParams.Config;
+
+  /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the paykey in a structured format.
    */
@@ -308,6 +346,12 @@ export interface LinkCreateTanParams {
   'Straddle-Account-Id'?: string;
 }
 
+export namespace LinkCreateTanParams {
+  export interface Config {
+    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+  }
+}
+
 export interface LinkPlaidParams {
   /**
    * Body param: Unique identifier of the related customer object.
@@ -319,6 +363,11 @@ export interface LinkPlaidParams {
    * Straddle API.
    */
   plaid_token: string;
+
+  /**
+   * Body param:
+   */
+  config?: LinkPlaidParams.Config;
 
   /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
@@ -342,6 +391,12 @@ export interface LinkPlaidParams {
    * request.
    */
   'Straddle-Account-Id'?: string;
+}
+
+export namespace LinkPlaidParams {
+  export interface Config {
+    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+  }
 }
 
 export declare namespace Link {

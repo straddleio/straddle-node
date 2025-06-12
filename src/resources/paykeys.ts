@@ -201,6 +201,8 @@ export namespace PaykeySummaryPagedV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -218,9 +220,9 @@ export namespace PaykeySummaryPagedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -248,6 +250,10 @@ export namespace PaykeySummaryPagedV1 {
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -374,6 +380,8 @@ export namespace PaykeyUnmaskedV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -390,14 +398,16 @@ export namespace PaykeyUnmaskedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -426,6 +436,24 @@ export namespace PaykeyUnmaskedV1 {
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * The bank account number
@@ -510,6 +538,8 @@ export namespace PaykeyV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -526,14 +556,16 @@ export namespace PaykeyV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -562,6 +594,24 @@ export namespace PaykeyV1 {
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -647,6 +697,8 @@ export namespace PaykeyRevealResponse {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -664,14 +716,16 @@ export namespace PaykeyRevealResponse {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -700,6 +754,24 @@ export namespace PaykeyRevealResponse {
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -777,7 +849,7 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter paykeys by their current status.
    */
-  status?: Array<'pending' | 'active' | 'inactive' | 'rejected'>;
+  status?: Array<'pending' | 'active' | 'inactive' | 'rejected' | 'review'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

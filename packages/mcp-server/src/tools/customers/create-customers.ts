@@ -39,7 +39,7 @@ export const tool: Tool = {
       },
       type: {
         type: 'string',
-        enum: ['individual', 'business'],
+        enum: ['individual', 'business', 'unknown'],
       },
       address: {
         $ref: '#/$defs/customer_address_v1',
@@ -111,6 +111,16 @@ export const tool: Tool = {
         ],
         description:
           "An object containing the customer's compliance profile. **This is optional.** If all required fields must be present for the appropriate customer type.",
+      },
+      config: {
+        type: 'object',
+        properties: {
+          sandbox_outcome: {
+            type: 'string',
+            enum: ['standard', 'verified', 'rejected', 'review'],
+          },
+        },
+        required: [],
       },
       external_id: {
         type: 'string',

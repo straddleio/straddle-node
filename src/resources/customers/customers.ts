@@ -386,7 +386,7 @@ export namespace CustomerSummaryPagedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -491,7 +491,7 @@ export namespace CustomerUnmaskedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -508,6 +508,8 @@ export namespace CustomerUnmaskedV1 {
      * Individual PII data required to trigger Patriot Act compliant KYC verification.
      */
     compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
+
+    config?: Data.Config;
 
     device?: CustomersAPI.DeviceUnmaskedV1;
 
@@ -579,6 +581,10 @@ export namespace CustomerUnmaskedV1 {
         phone?: string | null;
       }
     }
+
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
+    }
   }
 }
 
@@ -631,7 +637,7 @@ export namespace CustomerV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'unknown';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -648,6 +654,8 @@ export namespace CustomerV1 {
      * PII required to trigger Patriot Act compliant KYC verification.
      */
     compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
+
+    config?: Data.Config;
 
     device?: Data.Device;
 
@@ -718,6 +726,10 @@ export namespace CustomerV1 {
       }
     }
 
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
+    }
+
     export interface Device {
       /**
        * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
@@ -761,7 +773,7 @@ export interface CustomerCreateParams {
   /**
    * Body param:
    */
-  type: 'individual' | 'business';
+  type: 'individual' | 'business' | 'unknown';
 
   /**
    * Body param: An object containing the customer's address. **This is optional.**
@@ -778,6 +790,11 @@ export interface CustomerCreateParams {
     | CustomerCreateParams.IndividualComplianceProfile
     | CustomerCreateParams.BusinessComplianceProfile
     | null;
+
+  /**
+   * Body param:
+   */
+  config?: CustomerCreateParams.Config;
 
   /**
    * Body param: Unique identifier for the customer in your database, used for
@@ -863,6 +880,10 @@ export namespace CustomerCreateParams {
 
       phone?: string | null;
     }
+  }
+
+  export interface Config {
+    sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
   }
 }
 
@@ -1043,7 +1064,7 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter by customer type `individual` or `business`.
    */
-  types?: Array<'individual' | 'business'>;
+  types?: Array<'individual' | 'business' | 'unknown'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

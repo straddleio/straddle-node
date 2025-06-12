@@ -31,6 +31,7 @@ describe('resource link', () => {
       account_type: 'checking',
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       routing_number: 'xxxxxxxxx',
+      config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',
@@ -60,6 +61,7 @@ describe('resource link', () => {
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       routing_number: 'routing_number',
       tan: 'tan',
+      config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',
@@ -85,6 +87,7 @@ describe('resource link', () => {
     const response = await client.bridge.link.plaid({
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       plaid_token: 'plaid_token',
+      config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',
