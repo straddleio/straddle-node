@@ -219,6 +219,7 @@ export class Straddle extends Core.APIClient {
       baseURL:
         options.baseURL ||
         environments[options.environment || 'production'].replace(/{environment}/g, environment),
+      baseURLOverridden: baseURL ? baseURL !== environments[options.environment || 'production'] : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -240,6 +241,13 @@ export class Straddle extends Core.APIClient {
   payments: API.Payments = new API.Payments(this);
   payouts: API.Payouts = new API.Payouts(this);
   reports: API.Reports = new API.Reports(this);
+
+  /**
+   * Check whether the base URL is set to its default.
+   */
+  #baseURLOverridden(): boolean {
+    return this.baseURL !== environments[this._options.environment || 'production'];
+  }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
