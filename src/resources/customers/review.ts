@@ -181,7 +181,7 @@ export namespace CustomerReviewV1 {
        * Up to 20 additional user-defined key-value pairs. Useful for storing additional
        * information about the customer in a structured format.
        */
-      metadata?: Record<string, string> | null;
+      metadata?: { [key: string]: string } | null;
     }
 
     export namespace CustomerDetails {
@@ -280,7 +280,7 @@ export namespace CustomerReviewV1 {
       /**
        * Dictionary of all messages from the customer verification process.
        */
-      messages?: Record<string, string> | null;
+      messages?: { [key: string]: string } | null;
 
       network_alerts?: IdentityDetails.NetworkAlerts;
 

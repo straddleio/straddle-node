@@ -430,7 +430,7 @@ export namespace PaykeyUnmaskedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
@@ -588,7 +588,7 @@ export namespace PaykeyV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
@@ -748,7 +748,7 @@ export namespace PaykeyRevealResponse {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }

@@ -185,7 +185,7 @@ export namespace LinkCreatePaykeyResponse {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
@@ -345,7 +345,7 @@ export namespace LinkCreateTanResponse {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
@@ -457,7 +457,7 @@ export interface LinkBankAccountParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the paykey in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -504,7 +504,7 @@ export interface LinkCreatePaykeyParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the paykey in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -560,7 +560,7 @@ export interface LinkCreateTanParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the paykey in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -607,7 +607,7 @@ export interface LinkPlaidParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the paykey in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

@@ -159,7 +159,7 @@ export namespace CapabilityRequestPagedV1 {
     /**
      * Any specific settings or configurations related to the requested capability.
      */
-    settings?: Record<string, unknown> | null;
+    settings?: { [key: string]: unknown } | null;
   }
 }
 

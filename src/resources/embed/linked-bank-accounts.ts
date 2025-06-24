@@ -261,7 +261,7 @@ export namespace LinkedBankAccountPagedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the linked bank account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     /**
      * The unique identifier of the Straddle Platform relatd to this bank account.
@@ -372,7 +372,7 @@ export namespace LinkedBankAccountUnmaskV1 {
      */
     updated_at: string;
 
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
   }
 
   export namespace Data {
@@ -482,7 +482,7 @@ export namespace LinkedBankAccountV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the linked bank account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     /**
      * The unique identifier of the Straddle Platform relatd to this bank account.
@@ -552,7 +552,7 @@ export interface LinkedBankAccountCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the linked bank account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -596,7 +596,7 @@ export interface LinkedBankAccountUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the linked bank account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

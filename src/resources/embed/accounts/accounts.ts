@@ -308,7 +308,7 @@ export namespace AccountPagedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     settings?: Data.Settings;
 
@@ -537,7 +537,7 @@ export namespace AccountV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     settings?: Data.Settings;
 
@@ -892,7 +892,7 @@ export interface AccountCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -922,7 +922,7 @@ export interface AccountUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

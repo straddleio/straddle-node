@@ -164,7 +164,7 @@ export namespace OrganizationPagedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the organization in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
   }
 }
 
@@ -220,7 +220,7 @@ export namespace OrganizationV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the organization in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
   }
 }
 
@@ -240,7 +240,7 @@ export interface OrganizationCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the organization in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

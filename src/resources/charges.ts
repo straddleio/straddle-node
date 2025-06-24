@@ -395,7 +395,7 @@ export namespace ChargeV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the charge in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     /**
      * Information about the paykey used for the charge.
@@ -609,7 +609,7 @@ export namespace ChargeUnmaskResponse {
     /**
      * Metadata.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     paykey_details?: Shared.PaykeyDetailsV1;
 
@@ -766,7 +766,7 @@ export interface ChargeCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the charge in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -832,7 +832,7 @@ export interface ChargeUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the charge in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

@@ -356,7 +356,7 @@ export namespace PayoutV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the payout in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     /**
      * Information about the paykey used for the payout.
@@ -554,7 +554,7 @@ export namespace PayoutUnmaskResponse {
     /**
      * Metadata.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     paykey_details?: Shared.PaykeyDetailsV1;
 
@@ -704,7 +704,7 @@ export interface PayoutCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the payout in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -765,7 +765,7 @@ export interface PayoutUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the payout in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

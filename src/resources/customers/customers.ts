@@ -523,7 +523,7 @@ export namespace CustomerUnmaskedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the customer in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
   }
 
   export namespace Data {
@@ -669,7 +669,7 @@ export namespace CustomerV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the customer in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
   }
 
   export namespace Data {
@@ -806,7 +806,7 @@ export interface CustomerCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the customer in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -938,7 +938,7 @@ export interface CustomerUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the customer in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
