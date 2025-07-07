@@ -31,7 +31,7 @@ export const tool: Tool = {
       account_type: {
         type: 'string',
         description: 'The type of account to be created. Currently, only `business` is supported.',
-        enum: ['business'],
+        enum: ['business', 'unknown'],
       },
       business_profile: {
         $ref: '#/$defs/business_profile_v1',

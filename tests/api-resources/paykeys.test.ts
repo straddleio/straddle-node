@@ -37,6 +37,7 @@ describe('resource paykeys', () => {
           page_size: 0,
           sort_by: 'institution_name',
           sort_order: 'asc',
+          source: ['bank_account'],
           status: ['pending'],
           'Correlation-Id': 'Correlation-Id',
           'Request-Id': 'Request-Id',
