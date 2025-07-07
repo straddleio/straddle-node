@@ -96,11 +96,6 @@ export interface ClientOptions {
   apiKey?: string | undefined;
 
   /**
-   * API environment for testing (sandbox) or live transactions (production)
-   */
-  environment?: string | undefined;
-
-  /**
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
@@ -173,7 +168,6 @@ export interface ClientOptions {
  */
 export class Straddle extends Core.APIClient {
   apiKey: string;
-  environment: string;
 
   private _options: ClientOptions;
 
@@ -181,7 +175,6 @@ export class Straddle extends Core.APIClient {
    * API Client for interfacing with the Straddle API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
-   * @param {string | undefined} [opts.environment=process.env['STRADDLE_ENVIRONMENT'] ?? sandbox]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://production.straddle.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -194,7 +187,6 @@ export class Straddle extends Core.APIClient {
   constructor({
     baseURL = Core.readEnv('STRADDLE_BASE_URL'),
     apiKey = Core.readEnv('STRADDLE_API_KEY'),
-    environment = Core.readEnv('STRADDLE_ENVIRONMENT') ?? 'sandbox',
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
@@ -205,7 +197,6 @@ export class Straddle extends Core.APIClient {
 
     const options: ClientOptions = {
       apiKey,
-      environment,
       ...opts,
       baseURL,
       environment: opts.environment ?? 'production',
@@ -218,9 +209,7 @@ export class Straddle extends Core.APIClient {
     }
 
     super({
-      baseURL:
-        options.baseURL ||
-        environments[options.environment || 'production'].replace(/{environment}/g, environment),
+      baseURL: options.baseURL || environments[options.environment || 'production'],
       baseURLOverridden: baseURL ? baseURL !== environments[options.environment || 'production'] : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
@@ -231,7 +220,6 @@ export class Straddle extends Core.APIClient {
     this._options = options;
 
     this.apiKey = apiKey;
-    this.environment = environment;
   }
 
   embed: API.Embed = new API.Embed(this);
