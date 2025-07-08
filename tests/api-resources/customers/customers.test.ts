@@ -35,7 +35,7 @@ describe('resource customers', () => {
       type: 'individual',
       address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '12345', address2: 'Apt 1' },
       compliance_profile: { dob: '1969-04-20', ssn: '123-45-6789' },
-      config: { processing_method: 'inline', sandbox_outcome: 'standard' },
+      config: { sandbox_outcome: 'standard' },
       external_id: 'customer_123',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',

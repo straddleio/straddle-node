@@ -26,16 +26,6 @@ export const tool: Tool = {
         description:
           'The Straddle generated unique identifier of the `customer` to create a bridge token for.',
       },
-      config: {
-        type: 'object',
-        properties: {
-          sandbox_outcome: {
-            type: 'string',
-            enum: ['standard', 'active', 'rejected'],
-          },
-        },
-        required: [],
-      },
       'Correlation-Id': {
         type: 'string',
       },

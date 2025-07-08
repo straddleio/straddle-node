@@ -77,11 +77,6 @@ export interface BridgeInitializeParams {
   customer_id: string;
 
   /**
-   * Body param:
-   */
-  config?: BridgeInitializeParams.Config;
-
-  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
@@ -97,12 +92,6 @@ export interface BridgeInitializeParams {
    * request.
    */
   'Straddle-Account-Id'?: string;
-}
-
-export namespace BridgeInitializeParams {
-  export interface Config {
-    sandbox_outcome?: 'standard' | 'active' | 'rejected';
-  }
 }
 
 Bridge.Link = Link;

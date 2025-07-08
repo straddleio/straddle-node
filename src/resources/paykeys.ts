@@ -222,7 +222,7 @@ export namespace PaykeySummaryPagedV1 {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -400,7 +400,7 @@ export namespace PaykeyUnmaskedV1 {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -558,7 +558,7 @@ export namespace PaykeyV1 {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -718,7 +718,7 @@ export namespace PaykeyRevealResponse {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -847,14 +847,9 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   sort_order?: 'asc' | 'desc';
 
   /**
-   * Query param: Filter paykeys by their source.
-   */
-  source?: Array<'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'>;
-
-  /**
    * Query param: Filter paykeys by their current status.
    */
-  status?: Array<'pending' | 'active' | 'inactive' | 'rejected' | 'review'>;
+  status?: Array<'pending' | 'active' | 'inactive' | 'rejected'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

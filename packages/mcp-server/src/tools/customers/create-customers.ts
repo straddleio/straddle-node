@@ -39,7 +39,7 @@ export const tool: Tool = {
       },
       type: {
         type: 'string',
-        enum: ['individual', 'business', 'unknown'],
+        enum: ['individual', 'business'],
       },
       address: {
         $ref: '#/$defs/customer_address_v1',
@@ -115,10 +115,6 @@ export const tool: Tool = {
       config: {
         type: 'object',
         properties: {
-          processing_method: {
-            type: 'string',
-            enum: ['inline', 'background', 'skip'],
-          },
           sandbox_outcome: {
             type: 'string',
             enum: ['standard', 'verified', 'rejected', 'review'],

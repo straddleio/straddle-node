@@ -42,20 +42,12 @@ export const tool: Tool = {
         type: 'string',
         enum: ['asc', 'desc'],
       },
-      source: {
-        type: 'array',
-        description: 'Filter paykeys by their source.',
-        items: {
-          type: 'string',
-          enum: ['bank_account', 'straddle', 'mx', 'plaid', 'tan', 'quiltt'],
-        },
-      },
       status: {
         type: 'array',
         description: 'Filter paykeys by their current status.',
         items: {
           type: 'string',
-          enum: ['pending', 'active', 'inactive', 'rejected', 'review'],
+          enum: ['pending', 'active', 'inactive', 'rejected'],
         },
       },
       'Correlation-Id': {

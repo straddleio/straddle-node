@@ -155,7 +155,7 @@ export namespace LinkCreatePaykeyResponse {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -315,7 +315,7 @@ export namespace LinkCreateTanResponse {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected';
 
     /**
      * Timestamp of the most recent update to the paykey.
