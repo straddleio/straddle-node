@@ -5,12 +5,14 @@ export { Bridge, type BridgeTokenV1, type BridgeInitializeParams } from './bridg
 export {
   Charges,
   type ChargeV1,
+  type ChargeUnmaskResponse,
   type ChargeCreateParams,
   type ChargeUpdateParams,
   type ChargeCancelParams,
   type ChargeGetParams,
   type ChargeHoldParams,
   type ChargeReleaseParams,
+  type ChargeUnmaskParams,
 } from './charges';
 export {
   CustomerSummaryPagedV1DataPageNumberSchema,
@@ -25,6 +27,7 @@ export {
   type CustomerListParams,
   type CustomerDeleteParams,
   type CustomerGetParams,
+  type CustomerRefreshReviewParams,
   type CustomerUnmaskedParams,
 } from './customers/customers';
 export { Embed } from './embed/embed';
@@ -44,6 +47,7 @@ export {
   type PaykeyV1,
   type PaykeyRevealResponse,
   type PaykeyListParams,
+  type PaykeyCancelParams,
   type PaykeyGetParams,
   type PaykeyRevealParams,
   type PaykeyUnmaskedParams,
@@ -57,10 +61,17 @@ export {
 export {
   Payouts,
   type PayoutV1,
+  type PayoutUnmaskResponse,
   type PayoutCreateParams,
   type PayoutUpdateParams,
   type PayoutCancelParams,
   type PayoutGetParams,
   type PayoutHoldParams,
   type PayoutReleaseParams,
+  type PayoutUnmaskParams,
 } from './payouts';
+export {
+  Reports,
+  type ReportCreateTotalCustomersByStatusResponse,
+  type ReportCreateTotalCustomersByStatusParams,
+} from './reports';

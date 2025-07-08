@@ -24,6 +24,19 @@ export class Accounts extends APIResource {
    * Creates a new account associated with your Straddle platform integration. This
    * endpoint allows you to set up an account with specified details, including
    * business information and access levels.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.create({
+   *   access_level: 'standard',
+   *   account_type: 'business',
+   *   business_profile: {
+   *     name: 'name',
+   *     website: 'https://example.com',
+   *   },
+   *   organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * });
+   * ```
    */
   create(params: AccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<AccountV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
@@ -41,6 +54,19 @@ export class Accounts extends APIResource {
   /**
    * Updates an existing account's information. This endpoint allows you to update
    * various account details during onboarding or after the account has been created.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     business_profile: {
+   *       name: 'name',
+   *       website: 'https://example.com',
+   *     },
+   *   },
+   * );
+   * ```
    */
   update(
     accountId: string,
@@ -64,6 +90,14 @@ export class Accounts extends APIResource {
    * The accounts are returned sorted by creation date, with the most recently
    * created accounts appearing first. This endpoint supports advanced sorting and
    * filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const account of client.embed.accounts.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     params?: AccountListParams,
@@ -95,6 +129,13 @@ export class Accounts extends APIResource {
    * Retrieves the details of an account that has previously been created. Supply the
    * unique account ID that was returned from your previous request, and Straddle
    * will return the corresponding account information.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(
     accountId: string,
@@ -125,6 +166,20 @@ export class Accounts extends APIResource {
    * Initiates the onboarding process for a new account. This endpoint can only be
    * used for accounts where at least one representative and one bank account have
    * already been created.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.onboard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     terms_of_service: {
+   *       accepted_date: '2019-12-27T18:11:19.117Z',
+   *       agreement_type: 'embedded',
+   *       agreement_url: 'agreement_url',
+   *     },
+   *   },
+   * );
+   * ```
    */
   onboard(
     accountId: string,
@@ -144,8 +199,15 @@ export class Accounts extends APIResource {
   }
 
   /**
-   * Simulte the status transitions for sandbox accounts. This endpoint can only be
+   * Simulate the status transitions for sandbox accounts. This endpoint can only be
    * used for sandbox accounts.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.simulate(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   simulate(
     accountId: string,
@@ -246,7 +308,7 @@ export namespace AccountPagedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     settings?: Data.Settings;
 
@@ -475,7 +537,7 @@ export namespace AccountV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     settings?: Data.Settings;
 
@@ -640,9 +702,29 @@ export namespace AccountV1 {
  */
 export interface AddressV1 {
   /**
+   * Primary address line (e.g., street, PO Box).
+   */
+  address1: string;
+
+  /**
    * City, district, suburb, town, or village.
    */
-  city?: string | null;
+  city: string | null;
+
+  /**
+   * Two-letter state code.
+   */
+  state: string | null;
+
+  /**
+   * Zip or postal code.
+   */
+  zip: string;
+
+  /**
+   * Secondary address line (e.g., apartment, suite, unit, or building).
+   */
+  address2?: string | null;
 
   /**
    * The country of the address, in ISO 3166-1 alpha-2 format.
@@ -663,11 +745,6 @@ export interface AddressV1 {
    * Postal or ZIP code.
    */
   postal_code?: string | null;
-
-  /**
-   * Two-letter state code.
-   */
-  state?: string | null;
 }
 
 export interface BusinessProfileV1 {
@@ -767,6 +844,11 @@ export interface TermsOfServiceV1 {
   agreement_type: 'embedded' | 'direct';
 
   /**
+   * The URL where the full text of the accepted agreement can be found.
+   */
+  agreement_url: string | null;
+
+  /**
    * The IP address from which the terms of service were accepted.
    */
   accepted_ip?: string | null;
@@ -775,11 +857,6 @@ export interface TermsOfServiceV1 {
    * The user agent string of the browser or application used to accept the terms.
    */
   accepted_user_agent?: string | null;
-
-  /**
-   * The URL where the full text of the accepted agreement can be found.
-   */
-  agreement_url?: string | null;
 }
 
 export interface AccountCreateParams {
@@ -815,7 +892,7 @@ export interface AccountCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -845,7 +922,7 @@ export interface AccountUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -874,6 +951,16 @@ export interface AccountListParams extends PageNumberSchemaParams {
    * Query param: Sort Order. Default value: 'asc'.
    */
   sort_order?: 'asc' | 'desc';
+
+  /**
+   * Query param:
+   */
+  status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+
+  /**
+   * Query param:
+   */
+  type?: 'business';
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

@@ -13,6 +13,14 @@ export class Review extends APIResource {
    * to modify the outcome of a customer risk screening and is useful for correcting
    * or updating the status of a customer's verification. Note that this endpoint is
    * only available for customers with a current status of `review`.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.review.decision(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { status: 'verified' },
+   * );
+   * ```
    */
   decision(
     id: string,
@@ -47,6 +55,13 @@ export class Review extends APIResource {
    * - Results of watchlist screening
    * - Any network alerts detected Use this endpoint to gain insights into the
    *   verification process and make informed decisions about customer onboarding.
+   *
+   * @example
+   * ```ts
+   * const customerReviewV1 = await client.customers.review.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
   get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
@@ -138,14 +153,21 @@ export namespace CustomerReviewV1 {
        */
       updated_at: string;
 
+      /**
+       * An object containing the customer's address. This is optional, but if provided,
+       * all required fields must be present.
+       */
       address?: CustomersAPI.CustomerAddressV1 | null;
 
       /**
-       * Compliance profile for individual customers
+       * PII required to trigger Patriot Act compliant KYC verification.
        */
       compliance_profile?:
         | CustomerDetails.IndividualComplianceProfile
-        | CustomerDetails.BusinessComplianceProfile;
+        | CustomerDetails.BusinessComplianceProfile
+        | null;
+
+      config?: CustomerDetails.Config;
 
       device?: CustomerDetails.Device;
 
@@ -159,78 +181,67 @@ export namespace CustomerReviewV1 {
        * Up to 20 additional user-defined key-value pairs. Useful for storing additional
        * information about the customer in a structured format.
        */
-      metadata?: Record<string, string> | null;
+      metadata?: { [key: string]: string } | null;
     }
 
     export namespace CustomerDetails {
       /**
-       * Compliance profile for individual customers
+       * PII required to trigger Patriot Act compliant KYC verification.
        */
       export interface IndividualComplianceProfile {
         /**
-         * Date of birth in YYYY-MM-DD format.
+         * Masked date of birth in \***\*-**-\*\* format.
          */
-        dob: string;
+        dob: string | null;
 
         /**
-         * Social Security Number in the format XXX-XX-XXXX.
+         * Masked Social Security Number in the format **\*-**-\*\*\*\*.
          */
-        ssn: string;
-
-        /**
-         * Full 9-digit Employer Identification Number for businesses. This data is
-         * required to trigger Patriot Act compliant Know Your Business (KYB) verification.
-         * Only valid where customer type is 'business'.
-         */
-        ein?: string | null;
-
-        /**
-         * The official name of the business. This name should be correlated with the ein
-         * value. Only valid where customer type is 'business'.
-         */
-        legal_business_name?: string | null;
-
-        /**
-         * URL of the company's official website. Only valid where customer type is
-         * 'business'.
-         */
-        website?: string | null;
+        ssn: string | null;
       }
 
       /**
-       * Compliance profile for business customers
+       * Business registration data required to trigger Patriot Act compliant KYB
+       * verification.
        */
       export interface BusinessComplianceProfile {
         /**
-         * Employer Identification Number in the format XX-XXXXXXX.
+         * Masked Employer Identification Number in the format **-**\*****
          */
-        ein: string;
+        ein: string | null;
 
         /**
          * The official registered name of the business. This name should be correlated
          * with the `ein` value.
          */
-        legal_business_name: string;
+        legal_business_name: string | null;
 
         /**
-         * Date of birth for individual customers in ISO 8601 format (YYYY-MM-DD). This
-         * data is required to trigger Patriot Act compliant Know Your Customer (KYC)
-         * verification. Required if SSN is provided. Only valid where customer type is
-         * 'individual'.
+         * A list of people related to the company. Only valid where customer type is
+         * 'business'.
          */
-        dob?: string | null;
+        representatives?: Array<BusinessComplianceProfile.Representative> | null;
 
         /**
-         * Full 9-digit Social Security Number or government identifier for individuals.
-         * This data is required to trigger Patriot Act compliant KYC verification.
-         * Required if DOB is provided. Only valid where customer type is 'individual'.
+         * Official business website URL. Optional but recommended for enhanced KYB.
          */
-        ssn?: string | null;
+        website?: string | null;
+      }
 
-        /**
-         * Business website URL.
-         */
-        website?: string;
+      export namespace BusinessComplianceProfile {
+        export interface Representative {
+          name: string;
+
+          email?: string | null;
+
+          phone?: string | null;
+        }
+      }
+
+      export interface Config {
+        processing_method?: 'inline' | 'background' | 'skip';
+
+        sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
       }
 
       export interface Device {
@@ -271,9 +282,11 @@ export namespace CustomerReviewV1 {
       /**
        * Dictionary of all messages from the customer verification process.
        */
-      messages?: Record<string, string> | null;
+      messages?: { [key: string]: string } | null;
 
       network_alerts?: IdentityDetails.NetworkAlerts;
+
+      reputation?: IdentityDetails.Reputation;
 
       watch_list?: IdentityDetails.WatchList;
     }
@@ -285,6 +298,12 @@ export namespace CustomerReviewV1 {
        */
       export interface Breakdown {
         address?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_evaluation?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_identification?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_validation?: ReviewAPI.IdentityVerificationBreakdownV1;
 
         email?: ReviewAPI.IdentityVerificationBreakdownV1;
 
@@ -350,6 +369,89 @@ export namespace CustomerReviewV1 {
         decision?: 'accept' | 'reject' | 'review';
       }
 
+      export interface Reputation {
+        /**
+         * Specific codes related to the Straddle reputation screening results.
+         */
+        codes?: Array<string> | null;
+
+        decision?: 'accept' | 'reject' | 'review';
+
+        insights?: Reputation.Insights;
+
+        risk_score?: number | null;
+      }
+
+      export namespace Reputation {
+        export interface Insights {
+          accounts_active_count?: number | null;
+
+          accounts_closed_count?: number | null;
+
+          accounts_closed_dates?: Array<string> | null;
+
+          accounts_count?: number | null;
+
+          accounts_fraud_count?: number | null;
+
+          accounts_fraud_labeled_dates?: Array<string> | null;
+
+          accounts_fraud_loss_total_amount?: number | null;
+
+          ach_fraud_transactions_count?: number | null;
+
+          ach_fraud_transactions_dates?: Array<string> | null;
+
+          ach_fraud_transactions_total_amount?: number | null;
+
+          ach_returned_transactions_count?: number | null;
+
+          ach_returned_transactions_dates?: Array<string> | null;
+
+          ach_returned_transactions_total_amount?: number | null;
+
+          applications_approved_count?: number | null;
+
+          applications_count?: number | null;
+
+          applications_dates?: Array<string> | null;
+
+          applications_declined_count?: number | null;
+
+          applications_fraud_count?: number | null;
+
+          card_disputed_transactions_count?: number | null;
+
+          card_disputed_transactions_dates?: Array<string> | null;
+
+          card_disputed_transactions_total_amount?: number | null;
+
+          card_fraud_transactions_count?: number | null;
+
+          card_fraud_transactions_dates?: Array<string> | null;
+
+          card_fraud_transactions_total_amount?: number | null;
+
+          card_stopped_transactions_count?: number | null;
+
+          card_stopped_transactions_dates?: Array<string> | null;
+
+          user_active_profile_count?: number | null;
+
+          user_address_count?: number | null;
+
+          user_closed_profile_count?: number | null;
+
+          user_dob_count?: number | null;
+
+          user_email_count?: number | null;
+
+          user_institution_count?: number | null;
+
+          user_mobile_count?: number | null;
+        }
+      }
+
       export interface WatchList {
         /**
          * Specific codes related to the Straddle watchlist screening results.
@@ -362,6 +464,32 @@ export namespace CustomerReviewV1 {
          * Information about any matches found during screening.
          */
         matched?: Array<string> | null;
+
+        /**
+         * Information about any matches found during screening.
+         */
+        matches?: Array<WatchList.Match> | null;
+      }
+
+      export namespace WatchList {
+        export interface Match {
+          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
+
+          /**
+           * The name of the list the match was found.
+           */
+          list_name: string;
+
+          /**
+           * Data fields that matched.
+           */
+          match_fields: Array<string>;
+
+          /**
+           * Relevent Urls to review.
+           */
+          urls: Array<string>;
+        }
       }
     }
   }
@@ -372,6 +500,8 @@ export interface IdentityVerificationBreakdownV1 {
    * List of specific result codes from the fraud and risk screening.
    */
   codes?: Array<string> | null;
+
+  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
 
   /**
    * Represents the strength of the correlation between provided and known

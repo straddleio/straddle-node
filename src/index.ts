@@ -14,6 +14,8 @@ import {
   ChargeGetParams,
   ChargeHoldParams,
   ChargeReleaseParams,
+  ChargeUnmaskParams,
+  ChargeUnmaskResponse,
   ChargeUpdateParams,
   ChargeV1,
   Charges,
@@ -27,6 +29,7 @@ import {
   FundingEvents,
 } from './resources/funding-events';
 import {
+  PaykeyCancelParams,
   PaykeyGetParams,
   PaykeyListParams,
   PaykeyRevealParams,
@@ -50,10 +53,17 @@ import {
   PayoutGetParams,
   PayoutHoldParams,
   PayoutReleaseParams,
+  PayoutUnmaskParams,
+  PayoutUnmaskResponse,
   PayoutUpdateParams,
   PayoutV1,
   Payouts,
 } from './resources/payouts';
+import {
+  ReportCreateTotalCustomersByStatusParams,
+  ReportCreateTotalCustomersByStatusResponse,
+  Reports,
+} from './resources/reports';
 import { Bridge, BridgeInitializeParams, BridgeTokenV1 } from './resources/bridge/bridge';
 import {
   CustomerAddressV1,
@@ -61,6 +71,7 @@ import {
   CustomerDeleteParams,
   CustomerGetParams,
   CustomerListParams,
+  CustomerRefreshReviewParams,
   CustomerSummaryPagedV1,
   CustomerSummaryPagedV1DataPageNumberSchema,
   CustomerUnmaskedParams,
@@ -73,14 +84,14 @@ import {
 import { Embed } from './resources/embed/embed';
 
 const environments = {
-  production: 'https://production.straddle.io',
   sandbox: 'https://sandbox.straddle.io',
+  production: 'https://production.straddle.io',
 };
 type Environment = keyof typeof environments;
 
 export interface ClientOptions {
   /**
-   * Api Key for authenticating with the Straddle API.
+   * Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.
    */
   apiKey?: string | undefined;
 
@@ -88,8 +99,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `production` corresponds to `https://production.straddle.io`
    * - `sandbox` corresponds to `https://sandbox.straddle.io`
+   * - `production` corresponds to `https://production.straddle.io`
    */
   environment?: Environment | undefined;
 
@@ -106,6 +117,8 @@ export interface ClientOptions {
    *
    * Note that request timeouts are retried by default, so in a worst-case scenario you may wait
    * much longer than this timeout before the promise succeeds or fails.
+   *
+   * @unit milliseconds
    */
   timeout?: number | undefined;
 
@@ -162,8 +175,8 @@ export class Straddle extends Core.APIClient {
    * API Client for interfacing with the Straddle API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
-   * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://production.straddle.io] - Override the default base URL for the API.
+   * @param {Environment} [opts.environment=sandbox] - Specifies the environment URL to use for the API.
+   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://sandbox.straddle.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
    * @param {Core.Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -186,7 +199,7 @@ export class Straddle extends Core.APIClient {
       apiKey,
       ...opts,
       baseURL,
-      environment: opts.environment ?? 'production',
+      environment: opts.environment ?? 'sandbox',
     };
 
     if (baseURL && opts.environment) {
@@ -196,7 +209,8 @@ export class Straddle extends Core.APIClient {
     }
 
     super({
-      baseURL: options.baseURL || environments[options.environment || 'production'],
+      baseURL: options.baseURL || environments[options.environment || 'sandbox'],
+      baseURLOverridden: baseURL ? baseURL !== environments[options.environment || 'sandbox'] : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -216,6 +230,14 @@ export class Straddle extends Core.APIClient {
   fundingEvents: API.FundingEvents = new API.FundingEvents(this);
   payments: API.Payments = new API.Payments(this);
   payouts: API.Payouts = new API.Payouts(this);
+  reports: API.Reports = new API.Reports(this);
+
+  /**
+   * Check whether the base URL is set to its default.
+   */
+  #baseURLOverridden(): boolean {
+    return this.baseURL !== environments[this._options.environment || 'sandbox'];
+  }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -269,6 +291,7 @@ Straddle.FundingEventSummaryPagedV1DataPageNumberSchema = FundingEventSummaryPag
 Straddle.Payments = Payments;
 Straddle.PaymentSummaryPagedV1DataPageNumberSchema = PaymentSummaryPagedV1DataPageNumberSchema;
 Straddle.Payouts = Payouts;
+Straddle.Reports = Reports;
 export declare namespace Straddle {
   export type RequestOptions = Core.RequestOptions;
 
@@ -299,6 +322,7 @@ export declare namespace Straddle {
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
     type CustomerGetParams as CustomerGetParams,
+    type CustomerRefreshReviewParams as CustomerRefreshReviewParams,
     type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 
@@ -310,6 +334,7 @@ export declare namespace Straddle {
     type PaykeyRevealResponse as PaykeyRevealResponse,
     PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
+    type PaykeyCancelParams as PaykeyCancelParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
@@ -318,12 +343,14 @@ export declare namespace Straddle {
   export {
     Charges as Charges,
     type ChargeV1 as ChargeV1,
+    type ChargeUnmaskResponse as ChargeUnmaskResponse,
     type ChargeCreateParams as ChargeCreateParams,
     type ChargeUpdateParams as ChargeUpdateParams,
     type ChargeCancelParams as ChargeCancelParams,
     type ChargeGetParams as ChargeGetParams,
     type ChargeHoldParams as ChargeHoldParams,
     type ChargeReleaseParams as ChargeReleaseParams,
+    type ChargeUnmaskParams as ChargeUnmaskParams,
   };
 
   export {
@@ -345,12 +372,20 @@ export declare namespace Straddle {
   export {
     Payouts as Payouts,
     type PayoutV1 as PayoutV1,
+    type PayoutUnmaskResponse as PayoutUnmaskResponse,
     type PayoutCreateParams as PayoutCreateParams,
     type PayoutUpdateParams as PayoutUpdateParams,
     type PayoutCancelParams as PayoutCancelParams,
     type PayoutGetParams as PayoutGetParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
+    type PayoutUnmaskParams as PayoutUnmaskParams,
+  };
+
+  export {
+    Reports as Reports,
+    type ReportCreateTotalCustomersByStatusResponse as ReportCreateTotalCustomersByStatusResponse,
+    type ReportCreateTotalCustomersByStatusParams as ReportCreateTotalCustomersByStatusParams,
   };
 
   export type CustomerDetailsV1 = API.CustomerDetailsV1;

@@ -33,14 +33,9 @@ describe('resource customers', () => {
       name: 'Ron Swanson',
       phone: '+12128675309',
       type: 'individual',
-      address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '94105', address2: null },
-      compliance_profile: {
-        dob: '2019-12-27',
-        ssn: '210-69-1329',
-        ein: 'ein',
-        legal_business_name: 'legal_business_name',
-        website: 'website',
-      },
+      address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '12345', address2: 'Apt 1' },
+      compliance_profile: { dob: '1969-04-20', ssn: '123-45-6789' },
+      config: { processing_method: 'inline', sandbox_outcome: 'standard' },
       external_id: 'customer_123',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
@@ -52,7 +47,7 @@ describe('resource customers', () => {
   test('update: only required params', async () => {
     const responsePromise = client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       device: { ip_address: '192.168.1.1' },
-      email: 'dev@stainlessapi.com',
+      email: 'dev@stainless.com',
       name: 'name',
       phone: '+46991022',
       status: 'pending',
@@ -69,18 +64,12 @@ describe('resource customers', () => {
   test('update: required and optional params', async () => {
     const response = await client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       device: { ip_address: '192.168.1.1' },
-      email: 'dev@stainlessapi.com',
+      email: 'dev@stainless.com',
       name: 'name',
       phone: '+46991022',
       status: 'pending',
-      address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '94105', address2: null },
-      compliance_profile: {
-        dob: '2019-12-27',
-        ssn: '210-69-1329',
-        ein: 'ein',
-        legal_business_name: 'legal_business_name',
-        website: 'website',
-      },
+      address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '12345', address2: 'Apt 1' },
+      compliance_profile: { dob: '1969-04-20', ssn: '123-45-6789' },
       external_id: 'external_id',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
@@ -188,6 +177,41 @@ describe('resource customers', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.customers.get(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('refreshReview', async () => {
+    const responsePromise = client.customers.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('refreshReview: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.customers.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+        path: '/_stainless_unknown_path',
+      }),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('refreshReview: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.customers.refreshReview(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           'Correlation-Id': 'Correlation-Id',

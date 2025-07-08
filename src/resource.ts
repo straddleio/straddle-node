@@ -2,7 +2,7 @@
 
 import type { Straddle } from './index';
 
-export class APIResource {
+export abstract class APIResource {
   protected _client: Straddle;
 
   constructor(client: Straddle) {

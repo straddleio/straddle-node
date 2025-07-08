@@ -4,7 +4,15 @@ import { APIResource } from '../../resource';
 import * as Core from '../../core';
 import * as Shared from '../shared';
 import * as LinkAPI from './link';
-import { Link, LinkBankAccountParams, LinkPlaidParams } from './link';
+import {
+  Link,
+  LinkBankAccountParams,
+  LinkCreatePaykeyParams,
+  LinkCreatePaykeyResponse,
+  LinkCreateTanParams,
+  LinkCreateTanResponse,
+  LinkPlaidParams,
+} from './link';
 
 export class Bridge extends APIResource {
   link: LinkAPI.Link = new LinkAPI.Link(this._client);
@@ -69,6 +77,11 @@ export interface BridgeInitializeParams {
   customer_id: string;
 
   /**
+   * Body param:
+   */
+  config?: BridgeInitializeParams.Config;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
@@ -86,6 +99,12 @@ export interface BridgeInitializeParams {
   'Straddle-Account-Id'?: string;
 }
 
+export namespace BridgeInitializeParams {
+  export interface Config {
+    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+  }
+}
+
 Bridge.Link = Link;
 
 export declare namespace Bridge {
@@ -93,7 +112,11 @@ export declare namespace Bridge {
 
   export {
     Link as Link,
+    type LinkCreatePaykeyResponse as LinkCreatePaykeyResponse,
+    type LinkCreateTanResponse as LinkCreateTanResponse,
     type LinkBankAccountParams as LinkBankAccountParams,
+    type LinkCreatePaykeyParams as LinkCreatePaykeyParams,
+    type LinkCreateTanParams as LinkCreateTanParams,
     type LinkPlaidParams as LinkPlaidParams,
   };
 }

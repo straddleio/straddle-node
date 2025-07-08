@@ -56,6 +56,8 @@ describe('resource payments', () => {
           search_text: 'search_text',
           sort_by: 'created_at',
           sort_order: 'asc',
+          status_reason: ['insufficient_funds'],
+          status_source: ['watchtower'],
           'Correlation-Id': 'Correlation-Id',
           'Request-Id': 'Request-Id',
           'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',

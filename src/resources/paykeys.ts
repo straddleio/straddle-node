@@ -43,6 +43,34 @@ export class Paykeys extends APIResource {
     });
   }
 
+  cancel(id: string, params?: PaykeyCancelParams, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
+  cancel(id: string, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
+  cancel(
+    id: string,
+    params: PaykeyCancelParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<PaykeyV1> {
+    if (isRequestOptions(params)) {
+      return this.cancel(id, {}, params);
+    }
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+      ...body
+    } = params;
+    return this._client.put(`/v1/paykeys/${id}/cancel`, {
+      body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
   /**
    * Retrieves the details of an existing paykey. Supply the unique paykey `id` and
    * Straddle will return the corresponding paykey record , including the `paykey`
@@ -173,13 +201,16 @@ export namespace PaykeySummaryPagedV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
     created_at: string;
 
     /**
-     * Human-readable label used to represent this paykey in a UI.
+     * Human-readable label that combines the bank name and masked account number to
+     * help easility represent this paykey in a UI
      */
     label: string;
 
@@ -189,9 +220,9 @@ export namespace PaykeySummaryPagedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -219,6 +250,10 @@ export namespace PaykeySummaryPagedV1 {
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -236,21 +271,43 @@ export namespace PaykeySummaryPagedV1 {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 
@@ -323,6 +380,8 @@ export namespace PaykeyUnmaskedV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -339,14 +398,16 @@ export namespace PaykeyUnmaskedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -369,16 +430,33 @@ export namespace PaykeyUnmaskedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
-       * The bank account number. This value is masked by default for security reasons.
-       * Use the /unmask endpoint to access the unmasked value.
+       * The bank account number
        */
       account_number: string;
 
@@ -392,21 +470,43 @@ export namespace PaykeyUnmaskedV1 {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 }
@@ -438,6 +538,8 @@ export namespace PaykeyV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -454,14 +556,16 @@ export namespace PaykeyV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -484,12 +588,30 @@ export namespace PaykeyV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -507,21 +629,43 @@ export namespace PaykeyV1 {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 }
@@ -553,30 +697,35 @@ export namespace PaykeyRevealResponse {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
     created_at: string;
 
     /**
-     * Human-readable label used to represent this paykey in a UI.
+     * Human-readable label that combines the bank name and masked account number to
+     * help easility represent this paykey in a UI
      */
     label: string;
 
     /**
-     * The tokenized paykey value. This value is used to create payments and should be
+     * The tokenized paykey value. This token is used to create payments and should be
      * stored securely.
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -599,12 +748,30 @@ export namespace PaykeyRevealResponse {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -622,21 +789,43 @@ export namespace PaykeyRevealResponse {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 }
@@ -658,9 +847,38 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   sort_order?: 'asc' | 'desc';
 
   /**
+   * Query param: Filter paykeys by their source.
+   */
+  source?: Array<'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'>;
+
+  /**
    * Query param: Filter paykeys by their current status.
    */
-  status?: Array<'pending' | 'active' | 'inactive' | 'rejected'>;
+  status?: Array<'pending' | 'active' | 'inactive' | 'rejected' | 'review'>;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
+export interface PaykeyCancelParams {
+  /**
+   * Body param:
+   */
+  reason?: string | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -741,6 +959,7 @@ export declare namespace Paykeys {
     type PaykeyRevealResponse as PaykeyRevealResponse,
     PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
+    type PaykeyCancelParams as PaykeyCancelParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,

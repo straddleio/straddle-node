@@ -6,7 +6,7 @@ This library provides convenient access to the Straddle REST API from server-sid
 
 The REST API documentation can be found on [docs.straddle.io](https://docs.straddle.io). The full API of this library can be found in [api.md](api.md).
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
@@ -24,26 +24,22 @@ import Straddle from '@straddleio/straddle';
 
 const client = new Straddle({
   apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
-  environment: 'sandbox', // defaults to 'production'
+  environment: 'production', // defaults to 'sandbox'
 });
 
-async function main() {
-  const chargeV1 = await client.charges.create({
-    amount: 0,
-    config: { balance_check: 'required' },
-    consent_type: 'internet',
-    currency: 'currency',
-    description: 'Monthly subscription fee',
-    device: { ip_address: '192.168.1.1' },
-    external_id: 'external_id',
-    paykey: 'paykey',
-    payment_date: '2019-12-27',
-  });
+const chargeV1 = await client.charges.create({
+  amount: 10000,
+  config: { balance_check: 'required' },
+  consent_type: 'internet',
+  currency: 'currency',
+  description: 'Monthly subscription fee',
+  device: { ip_address: '192.168.1.1' },
+  external_id: 'external_id',
+  paykey: 'paykey',
+  payment_date: '2019-12-27',
+});
 
-  console.log(chargeV1.data);
-}
-
-main();
+console.log(chargeV1.data);
 ```
 
 ### Request & Response types
@@ -56,25 +52,21 @@ import Straddle from '@straddleio/straddle';
 
 const client = new Straddle({
   apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
-  environment: 'sandbox', // defaults to 'production'
+  environment: 'production', // defaults to 'sandbox'
 });
 
-async function main() {
-  const params: Straddle.ChargeCreateParams = {
-    amount: 0,
-    config: { balance_check: 'required' },
-    consent_type: 'internet',
-    currency: 'currency',
-    description: 'Monthly subscription fee',
-    device: { ip_address: '192.168.1.1' },
-    external_id: 'external_id',
-    paykey: 'paykey',
-    payment_date: '2019-12-27',
-  };
-  const chargeV1: Straddle.ChargeV1 = await client.charges.create(params);
-}
-
-main();
+const params: Straddle.ChargeCreateParams = {
+  amount: 10000,
+  config: { balance_check: 'required' },
+  consent_type: 'internet',
+  currency: 'currency',
+  description: 'Monthly subscription fee',
+  device: { ip_address: '192.168.1.1' },
+  external_id: 'external_id',
+  paykey: 'paykey',
+  payment_date: '2019-12-27',
+};
+const chargeV1: Straddle.ChargeV1 = await client.charges.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -87,34 +79,30 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const chargeV1 = await client.charges
-    .create({
-      amount: 0,
-      config: { balance_check: 'required' },
-      consent_type: 'internet',
-      currency: 'currency',
-      description: 'Monthly subscription fee',
-      device: { ip_address: '192.168.1.1' },
-      external_id: 'external_id',
-      paykey: 'paykey',
-      payment_date: '2019-12-27',
-    })
-    .catch(async (err) => {
-      if (err instanceof Straddle.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    });
-}
-
-main();
+const chargeV1 = await client.charges
+  .create({
+    amount: 10000,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
+    device: { ip_address: '192.168.1.1' },
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
+  })
+  .catch(async (err) => {
+    if (err instanceof Straddle.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
-Error codes are as followed:
+Error codes are as follows:
 
 | Status Code | Error Type                 |
 | ----------- | -------------------------- |
@@ -143,7 +131,7 @@ const client = new Straddle({
 });
 
 // Or, configure per-request:
-await client.charges.create({ amount: 0, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
+await client.charges.create({ amount: 10000, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
   maxRetries: 5,
 });
 ```
@@ -160,7 +148,7 @@ const client = new Straddle({
 });
 
 // Override per-request:
-await client.charges.create({ amount: 0, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
+await client.charges.create({ amount: 10000, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -214,7 +202,7 @@ const client = new Straddle();
 
 const response = await client.charges
   .create({
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',
@@ -230,7 +218,7 @@ console.log(response.statusText); // access the underlying Response object
 
 const { data: chargeV1, response: raw } = await client.charges
   .create({
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',
@@ -348,7 +336,7 @@ const client = new Straddle({
 // Override per-request:
 await client.charges.create(
   {
-    amount: 0,
+    amount: 10000,
     config: { balance_check: 'required' },
     consent_type: 'internet',
     currency: 'currency',

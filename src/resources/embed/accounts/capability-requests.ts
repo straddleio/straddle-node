@@ -10,6 +10,14 @@ export class CapabilityRequests extends APIResource {
   /**
    * Submits a request to enable a specific capability for an account. Use this
    * endpoint to request additional features or services for an account.
+   *
+   * @example
+   * ```ts
+   * const capabilityRequestPagedV1 =
+   *   await client.embed.accounts.capabilityRequests.create(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   create(
     accountId: string,
@@ -41,6 +49,16 @@ export class CapabilityRequests extends APIResource {
    * Retrieves a list of capability requests associated with an account. The requests
    * are returned sorted by creation date, with the most recent requests appearing
    * first. This endpoint supports advanced sorting and filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const capabilityRequest of client.embed.accounts.capabilityRequests.list(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * )) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     accountId: string,
@@ -141,7 +159,7 @@ export namespace CapabilityRequestPagedV1 {
     /**
      * Any specific settings or configurations related to the requested capability.
      */
-    settings?: Record<string, unknown> | null;
+    settings?: { [key: string]: unknown } | null;
   }
 }
 

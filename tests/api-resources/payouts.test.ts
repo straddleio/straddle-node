@@ -11,7 +11,7 @@ const client = new Straddle({
 describe('resource payouts', () => {
   test('create: only required params', async () => {
     const responsePromise = client.payouts.create({
-      amount: 0,
+      amount: 10000,
       currency: 'currency',
       description: 'Vendor invoice payment',
       device: { ip_address: '192.168.1.1' },
@@ -30,14 +30,14 @@ describe('resource payouts', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.payouts.create({
-      amount: 0,
+      amount: 10000,
       currency: 'currency',
       description: 'Vendor invoice payment',
       device: { ip_address: '192.168.1.1' },
       external_id: 'external_id',
       paykey: 'paykey',
       payment_date: '2019-12-27',
-      config: {},
+      config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Request-Id': 'Request-Id',
@@ -47,7 +47,7 @@ describe('resource payouts', () => {
 
   test('update: only required params', async () => {
     const responsePromise = client.payouts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      amount: 0,
+      amount: 10000,
       description: 'description',
       payment_date: '2019-12-27',
     });
@@ -62,7 +62,7 @@ describe('resource payouts', () => {
 
   test('update: required and optional params', async () => {
     const response = await client.payouts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      amount: 0,
+      amount: 10000,
       description: 'description',
       payment_date: '2019-12-27',
       metadata: { foo: 'string' },
@@ -167,5 +167,38 @@ describe('resource payouts', () => {
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
+  });
+
+  test('unmask', async () => {
+    const responsePromise = client.payouts.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('unmask: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.payouts.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('unmask: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.payouts.unmask(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 });

@@ -100,9 +100,16 @@ Methods:
 
 ## Link
 
+Types:
+
+- <code><a href="./src/resources/bridge/link.ts">LinkCreatePaykeyResponse</a></code>
+- <code><a href="./src/resources/bridge/link.ts">LinkCreateTanResponse</a></code>
+
 Methods:
 
 - <code title="post /v1/bridge/bank_account">client.bridge.link.<a href="./src/resources/bridge/link.ts">bankAccount</a>({ ...params }) -> PaykeyV1</code>
+- <code title="post /v1/bridge/quiltt">client.bridge.link.<a href="./src/resources/bridge/link.ts">createPaykey</a>({ ...params }) -> LinkCreatePaykeyResponse</code>
+- <code title="post /v1/bridge/tan">client.bridge.link.<a href="./src/resources/bridge/link.ts">createTan</a>({ ...params }) -> LinkCreateTanResponse</code>
 - <code title="post /v1/bridge/plaid">client.bridge.link.<a href="./src/resources/bridge/link.ts">plaid</a>({ ...params }) -> PaykeyV1</code>
 
 # Customers
@@ -122,6 +129,7 @@ Methods:
 - <code title="get /v1/customers">client.customers.<a href="./src/resources/customers/customers.ts">list</a>({ ...params }) -> CustomerSummaryPagedV1DataPageNumberSchema</code>
 - <code title="delete /v1/customers/{id}">client.customers.<a href="./src/resources/customers/customers.ts">delete</a>(id, { ...params }) -> CustomerV1</code>
 - <code title="get /v1/customers/{id}">client.customers.<a href="./src/resources/customers/customers.ts">get</a>(id, { ...params }) -> CustomerV1</code>
+- <code title="put /v1/customers/{id}/refresh_review">client.customers.<a href="./src/resources/customers/customers.ts">refreshReview</a>(id, { ...params }) -> CustomerV1</code>
 - <code title="get /v1/customers/{id}/unmasked">client.customers.<a href="./src/resources/customers/customers.ts">unmasked</a>(id, { ...params }) -> CustomerUnmaskedV1</code>
 
 ## Review
@@ -148,6 +156,7 @@ Types:
 Methods:
 
 - <code title="get /v1/paykeys">client.paykeys.<a href="./src/resources/paykeys.ts">list</a>({ ...params }) -> PaykeySummaryPagedV1DataPageNumberSchema</code>
+- <code title="put /v1/paykeys/{id}/cancel">client.paykeys.<a href="./src/resources/paykeys.ts">cancel</a>(id, { ...params }) -> PaykeyV1</code>
 - <code title="get /v1/paykeys/{id}">client.paykeys.<a href="./src/resources/paykeys.ts">get</a>(id, { ...params }) -> PaykeyV1</code>
 - <code title="get /v1/paykeys/{id}/reveal">client.paykeys.<a href="./src/resources/paykeys.ts">reveal</a>(id, { ...params }) -> PaykeyRevealResponse</code>
 - <code title="get /v1/paykeys/{id}/unmasked">client.paykeys.<a href="./src/resources/paykeys.ts">unmasked</a>(id, { ...params }) -> PaykeyUnmaskedV1</code>
@@ -157,6 +166,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/charges.ts">ChargeV1</a></code>
+- <code><a href="./src/resources/charges.ts">ChargeUnmaskResponse</a></code>
 
 Methods:
 
@@ -166,6 +176,7 @@ Methods:
 - <code title="get /v1/charges/{id}">client.charges.<a href="./src/resources/charges.ts">get</a>(id, { ...params }) -> ChargeV1</code>
 - <code title="put /v1/charges/{id}/hold">client.charges.<a href="./src/resources/charges.ts">hold</a>(id, { ...params }) -> ChargeV1</code>
 - <code title="put /v1/charges/{id}/release">client.charges.<a href="./src/resources/charges.ts">release</a>(id, { ...params }) -> ChargeV1</code>
+- <code title="get /v1/charges/{id}/unmask">client.charges.<a href="./src/resources/charges.ts">unmask</a>(id, { ...params }) -> ChargeUnmaskResponse</code>
 
 # FundingEvents
 
@@ -194,6 +205,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/payouts.ts">PayoutV1</a></code>
+- <code><a href="./src/resources/payouts.ts">PayoutUnmaskResponse</a></code>
 
 Methods:
 
@@ -203,3 +215,14 @@ Methods:
 - <code title="get /v1/payouts/{id}">client.payouts.<a href="./src/resources/payouts.ts">get</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="put /v1/payouts/{id}/hold">client.payouts.<a href="./src/resources/payouts.ts">hold</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="put /v1/payouts/{id}/release">client.payouts.<a href="./src/resources/payouts.ts">release</a>(id, { ...params }) -> PayoutV1</code>
+- <code title="get /v1/payouts/{id}/unmask">client.payouts.<a href="./src/resources/payouts.ts">unmask</a>(id, { ...params }) -> PayoutUnmaskResponse</code>
+
+# Reports
+
+Types:
+
+- <code><a href="./src/resources/reports.ts">ReportCreateTotalCustomersByStatusResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/reports/total_customers_by_status">client.reports.<a href="./src/resources/reports.ts">createTotalCustomersByStatus</a>({ ...params }) -> ReportCreateTotalCustomersByStatusResponse</code>

@@ -11,6 +11,12 @@ export class Organizations extends APIResource {
    * Creates a new organization related to your Straddle integration. Organizations
    * can be used to group related accounts and manage permissions across multiple
    * users.
+   *
+   * @example
+   * ```ts
+   * const organizationV1 =
+   *   await client.embed.organizations.create({ name: 'name' });
+   * ```
    */
   create(params: OrganizationCreateParams, options?: Core.RequestOptions): Core.APIPromise<OrganizationV1> {
     const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
@@ -30,6 +36,14 @@ export class Organizations extends APIResource {
    * organizations are returned sorted by creation date, with the most recently
    * created organizations appearing first. This endpoint supports advanced sorting
    * and filtering options to help you find specific organizations.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const organization of client.embed.organizations.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     params?: OrganizationListParams,
@@ -61,6 +75,13 @@ export class Organizations extends APIResource {
    * Retrieves the details of an Organization that has previously been created.
    * Supply the unique organization ID that was returned from your previous request,
    * and Straddle will return the corresponding organization information.
+   *
+   * @example
+   * ```ts
+   * const organizationV1 = await client.embed.organizations.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(
     organizationId: string,
@@ -143,7 +164,7 @@ export namespace OrganizationPagedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the organization in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
   }
 }
 
@@ -199,7 +220,7 @@ export namespace OrganizationV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the organization in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
   }
 }
 
@@ -219,7 +240,7 @@ export interface OrganizationCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the organization in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series

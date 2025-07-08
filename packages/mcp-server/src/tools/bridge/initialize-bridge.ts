@@ -1,0 +1,57 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import { asTextContentResult } from '@straddleio/straddle-mcp/tools/types';
+
+import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import type { Metadata } from '../';
+import Straddle from '@straddleio/straddle';
+
+export const metadata: Metadata = {
+  resource: 'bridge',
+  operation: 'write',
+  tags: [],
+  httpMethod: 'post',
+  httpPath: '/v1/bridge/initialize',
+  operationId: 'CreateBridgeToken',
+};
+
+export const tool: Tool = {
+  name: 'initialize_bridge',
+  description: 'Use this endpoint to generate a session token for use in the Bridge widget.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      customer_id: {
+        type: 'string',
+        description:
+          'The Straddle generated unique identifier of the `customer` to create a bridge token for.',
+      },
+      config: {
+        type: 'object',
+        properties: {
+          sandbox_outcome: {
+            type: 'string',
+            enum: ['standard', 'active', 'rejected'],
+          },
+        },
+        required: [],
+      },
+      'Correlation-Id': {
+        type: 'string',
+      },
+      'Request-Id': {
+        type: 'string',
+      },
+      'Straddle-Account-Id': {
+        type: 'string',
+      },
+    },
+  },
+};
+
+export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {
+  const body = args as any;
+  return asTextContentResult(await client.bridge.initialize(body));
+};
+
+export default { metadata, tool, handler };

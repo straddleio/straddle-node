@@ -97,6 +97,11 @@ export namespace PaymentSummaryPagedV1 {
     external_id: string;
 
     /**
+     * Funding ids.
+     */
+    funding_ids: Array<string>;
+
+    /**
      * Value of the `paykey` used for the `charge` or `payout`.
      */
     paykey: string;
@@ -309,6 +314,37 @@ export interface PaymentListParams extends PageNumberSchemaParams {
    * Query param:
    */
   sort_order?: 'asc' | 'desc';
+
+  /**
+   * Query param: Reason for latest payment status change.
+   */
+  status_reason?: Array<
+    | 'insufficient_funds'
+    | 'closed_bank_account'
+    | 'invalid_bank_account'
+    | 'invalid_routing'
+    | 'disputed'
+    | 'payment_stopped'
+    | 'owner_deceased'
+    | 'frozen_bank_account'
+    | 'risk_review'
+    | 'fraudulent'
+    | 'duplicate_entry'
+    | 'invalid_paykey'
+    | 'payment_blocked'
+    | 'amount_too_large'
+    | 'too_many_attempts'
+    | 'internal_system_error'
+    | 'user_request'
+    | 'ok'
+    | 'other_network_return'
+    | 'payout_refused'
+  >;
+
+  /**
+   * Query param: Source of latest payment status change.
+   */
+  status_source?: Array<'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
