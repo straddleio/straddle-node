@@ -24,7 +24,7 @@ import Straddle from '@straddleio/straddle';
 
 const client = new Straddle({
   apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
-  environment: 'sandbox', // defaults to 'production'
+  environment: 'production', // defaults to 'sandbox'
 });
 
 const chargeV1 = await client.charges.create({
@@ -52,7 +52,7 @@ import Straddle from '@straddleio/straddle';
 
 const client = new Straddle({
   apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
-  environment: 'sandbox', // defaults to 'production'
+  environment: 'production', // defaults to 'sandbox'
 });
 
 const params: Straddle.ChargeCreateParams = {

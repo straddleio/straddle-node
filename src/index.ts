@@ -84,8 +84,8 @@ import {
 import { Embed } from './resources/embed/embed';
 
 const environments = {
-  production: 'https://production.straddle.io',
   sandbox: 'https://sandbox.straddle.io',
+  production: 'https://production.straddle.io',
 };
 type Environment = keyof typeof environments;
 
@@ -99,8 +99,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `production` corresponds to `https://production.straddle.io`
    * - `sandbox` corresponds to `https://sandbox.straddle.io`
+   * - `production` corresponds to `https://production.straddle.io`
    */
   environment?: Environment | undefined;
 
@@ -175,8 +175,8 @@ export class Straddle extends Core.APIClient {
    * API Client for interfacing with the Straddle API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
-   * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://production.straddle.io] - Override the default base URL for the API.
+   * @param {Environment} [opts.environment=sandbox] - Specifies the environment URL to use for the API.
+   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://sandbox.straddle.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
    * @param {Core.Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -199,7 +199,7 @@ export class Straddle extends Core.APIClient {
       apiKey,
       ...opts,
       baseURL,
-      environment: opts.environment ?? 'production',
+      environment: opts.environment ?? 'sandbox',
     };
 
     if (baseURL && opts.environment) {
@@ -209,8 +209,8 @@ export class Straddle extends Core.APIClient {
     }
 
     super({
-      baseURL: options.baseURL || environments[options.environment || 'production'],
-      baseURLOverridden: baseURL ? baseURL !== environments[options.environment || 'production'] : false,
+      baseURL: options.baseURL || environments[options.environment || 'sandbox'],
+      baseURLOverridden: baseURL ? baseURL !== environments[options.environment || 'sandbox'] : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -236,7 +236,7 @@ export class Straddle extends Core.APIClient {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== environments[this._options.environment || 'production'];
+    return this.baseURL !== environments[this._options.environment || 'sandbox'];
   }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
