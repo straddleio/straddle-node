@@ -239,6 +239,8 @@ export namespace CustomerReviewV1 {
       }
 
       export interface Config {
+        processing_method?: 'inline' | 'background' | 'skip';
+
         sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
       }
 

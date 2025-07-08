@@ -583,6 +583,8 @@ export namespace CustomerUnmaskedV1 {
     }
 
     export interface Config {
+      processing_method?: 'inline' | 'background' | 'skip';
+
       sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
     }
   }
@@ -727,6 +729,8 @@ export namespace CustomerV1 {
     }
 
     export interface Config {
+      processing_method?: 'inline' | 'background' | 'skip';
+
       sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
     }
 
@@ -883,6 +887,8 @@ export namespace CustomerCreateParams {
   }
 
   export interface Config {
+    processing_method?: 'inline' | 'background' | 'skip';
+
     sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
   }
 }

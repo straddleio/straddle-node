@@ -115,6 +115,10 @@ export const tool: Tool = {
       config: {
         type: 'object',
         properties: {
+          processing_method: {
+            type: 'string',
+            enum: ['inline', 'background', 'skip'],
+          },
           sandbox_outcome: {
             type: 'string',
             enum: ['standard', 'verified', 'rejected', 'review'],
