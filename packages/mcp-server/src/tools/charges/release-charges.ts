@@ -17,7 +17,8 @@ export const metadata: Metadata = {
 
 export const tool: Tool = {
   name: 'release_charges',
-  description: 'Release a charge from an `on_hold` status to allow it to be rescheduled for processing.',
+  description:
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nRelease a charge from an `on_hold` status to allow it to be rescheduled for processing.",
   inputSchema: {
     type: 'object',
     properties: {

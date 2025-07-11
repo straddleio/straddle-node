@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'hold_charges',
   description:
-    'Place a charge on hold to prevent it from being originated for processing. The status of the charge must be `created` or `scheduled`.',
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nPlace a charge on hold to prevent it from being originated for processing. The status of the charge must be `created` or `scheduled`.",
   inputSchema: {
     type: 'object',
     properties: {

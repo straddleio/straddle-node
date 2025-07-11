@@ -17,7 +17,8 @@ export const metadata: Metadata = {
 
 export const tool: Tool = {
   name: 'unmask_payouts',
-  description: 'Get a payout by id.',
+  description:
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nGet a payout by id.",
   inputSchema: {
     type: 'object',
     properties: {

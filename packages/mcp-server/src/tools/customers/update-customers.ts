@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'update_customers',
   description:
-    "Updates an existing customer's information. This endpoint allows you to modify the customer's contact details, PII, and metadata.",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nUpdates an existing customer's information. This endpoint allows you to modify the customer's contact details, PII, and metadata.",
   inputSchema: {
     type: 'object',
     properties: {
