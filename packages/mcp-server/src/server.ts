@@ -28,11 +28,7 @@ export const server = new McpServer(
     name: 'straddleio_straddle_api',
     version: '0.1.1',
   },
-  {
-    capabilities: {
-      tools: {},
-    },
-  },
+  { capabilities: { tools: {} } },
 );
 
 /**
