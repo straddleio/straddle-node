@@ -133,6 +133,7 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['id', 'device', 'email', 'name', 'phone', 'status'],
     $defs: {
       device_unmasked_v1: {
         type: 'object',

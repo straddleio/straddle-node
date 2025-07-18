@@ -32,6 +32,7 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['account_id'],
   },
 };
 

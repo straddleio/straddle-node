@@ -100,6 +100,17 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: [
+      'amount',
+      'config',
+      'consent_type',
+      'currency',
+      'description',
+      'device',
+      'external_id',
+      'paykey',
+      'payment_date',
+    ],
     $defs: {
       device_info_v1: {
         type: 'object',

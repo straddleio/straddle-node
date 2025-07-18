@@ -123,7 +123,6 @@ export const tool: Tool = {
             enum: ['standard', 'verified', 'rejected', 'review'],
           },
         },
-        required: [],
       },
       external_id: {
         type: 'string',
@@ -145,6 +144,7 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['device', 'email', 'name', 'phone', 'type'],
     $defs: {
       device_unmasked_v1: {
         type: 'object',

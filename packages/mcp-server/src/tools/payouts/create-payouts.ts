@@ -72,7 +72,6 @@ export const tool: Tool = {
             ],
           },
         },
-        required: [],
       },
       metadata: {
         type: 'object',
@@ -89,6 +88,7 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['amount', 'currency', 'description', 'device', 'external_id', 'paykey', 'payment_date'],
     $defs: {
       device_info_v1: {
         type: 'object',

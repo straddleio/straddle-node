@@ -53,6 +53,7 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['id', 'amount', 'description', 'payment_date'],
   },
 };
 

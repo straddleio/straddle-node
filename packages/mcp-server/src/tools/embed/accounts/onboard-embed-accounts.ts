@@ -34,6 +34,7 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['account_id', 'terms_of_service'],
     $defs: {
       terms_of_service_v1: {
         type: 'object',

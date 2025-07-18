@@ -56,6 +56,7 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['access_level', 'account_type', 'business_profile', 'organization_id'],
     $defs: {
       business_profile_v1: {
         type: 'object',
@@ -159,7 +160,6 @@ export const tool: Tool = {
             description: 'The specific sector within the industry category. Required if not providing MCC.',
           },
         },
-        required: [],
       },
       support_channels_v1: {
         type: 'object',
@@ -177,7 +177,6 @@ export const tool: Tool = {
             description: "The URL of the business's customer support page or contact form.",
           },
         },
-        required: [],
       },
     },
   },
