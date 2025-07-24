@@ -39,6 +39,9 @@ export const tool: Tool = {
     },
     required: ['representative_id'],
   },
+  annotations: {
+    readOnlyHint: true,
+  },
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

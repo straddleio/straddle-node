@@ -62,6 +62,7 @@ export const tool: Tool = {
     },
     required: ['customer_id', 'plaid_token'],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

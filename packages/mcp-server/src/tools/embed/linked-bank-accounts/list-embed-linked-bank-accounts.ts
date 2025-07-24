@@ -61,6 +61,9 @@ export const tool: Tool = {
     },
     required: [],
   },
+  annotations: {
+    readOnlyHint: true,
+  },
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

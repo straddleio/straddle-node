@@ -102,6 +102,7 @@ export const tool: Tool = {
       'ssn_last4',
     ],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

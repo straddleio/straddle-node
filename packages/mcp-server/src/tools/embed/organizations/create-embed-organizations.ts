@@ -51,6 +51,7 @@ export const tool: Tool = {
     },
     required: ['name'],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

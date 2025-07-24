@@ -42,6 +42,9 @@ export const tool: Tool = {
     },
     required: ['id'],
   },
+  annotations: {
+    idempotentHint: true,
+  },
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

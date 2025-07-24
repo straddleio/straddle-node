@@ -70,6 +70,7 @@ export const tool: Tool = {
     },
     required: ['account_number', 'account_type', 'customer_id', 'routing_number'],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

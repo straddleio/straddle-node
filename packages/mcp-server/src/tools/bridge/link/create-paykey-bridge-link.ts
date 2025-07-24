@@ -61,6 +61,7 @@ export const tool: Tool = {
     },
     required: ['customer_id', 'quiltt_token'],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

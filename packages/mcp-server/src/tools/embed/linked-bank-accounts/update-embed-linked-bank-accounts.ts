@@ -64,6 +64,9 @@ export const tool: Tool = {
     },
     required: ['linked_bank_account_id', 'bank_account'],
   },
+  annotations: {
+    idempotentHint: true,
+  },
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

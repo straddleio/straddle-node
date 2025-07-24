@@ -69,6 +69,7 @@ export const tool: Tool = {
     },
     required: ['account_type', 'customer_id', 'routing_number', 'tan'],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {

@@ -55,6 +55,9 @@ export const tool: Tool = {
     },
     required: ['id', 'amount', 'description', 'payment_date'],
   },
+  annotations: {
+    idempotentHint: true,
+  },
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {
