@@ -246,9 +246,14 @@ export namespace LinkedBankAccountPagedV1 {
     created_at: string;
 
     /**
+     * The purposes for the linked bank account.
+     */
+    purposes: Array<'charges' | 'payouts' | 'billing'>;
+
+    /**
      * The current status of the linked bank account.
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled';
 
     status_detail: Data.StatusDetail;
 
@@ -256,6 +261,11 @@ export namespace LinkedBankAccountPagedV1 {
      * Timestamp of the most recent update to the linked bank account.
      */
     updated_at: string;
+
+    /**
+     * Optional description for the bank account.
+     */
+    description?: string | null;
 
     /**
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
@@ -360,7 +370,7 @@ export namespace LinkedBankAccountUnmaskV1 {
     /**
      * The current status of the linked bank account.
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled';
 
     /**
      * Additional details about the current status of the linked bank account.
@@ -467,9 +477,14 @@ export namespace LinkedBankAccountV1 {
     created_at: string;
 
     /**
+     * The purposes for the linked bank account.
+     */
+    purposes: Array<'charges' | 'payouts' | 'billing'>;
+
+    /**
      * The current status of the linked bank account.
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled';
 
     status_detail: Data.StatusDetail;
 
@@ -477,6 +492,11 @@ export namespace LinkedBankAccountV1 {
      * Timestamp of the most recent update to the linked bank account.
      */
     updated_at: string;
+
+    /**
+     * Optional description for the bank account.
+     */
+    description?: string | null;
 
     /**
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
@@ -541,7 +561,7 @@ export interface LinkedBankAccountCreateParams {
    * Body param: The unique identifier of the Straddle account to associate this bank
    * account with.
    */
-  account_id: string;
+  account_id: string | null;
 
   /**
    * Body param:
@@ -549,10 +569,26 @@ export interface LinkedBankAccountCreateParams {
   bank_account: LinkedBankAccountCreateParams.BankAccount;
 
   /**
+   * Body param: Optional description for the bank account.
+   */
+  description?: string | null;
+
+  /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the linked bank account in a structured format.
    */
   metadata?: { [key: string]: string | null } | null;
+
+  /**
+   * Body param: The unique identifier of the Straddle Platform to associate this
+   * bank account with.
+   */
+  platform_id?: string | null;
+
+  /**
+   * Body param: The purposes for the linked bank account.
+   */
+  purposes?: Array<'charges' | 'payouts' | 'billing'> | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
