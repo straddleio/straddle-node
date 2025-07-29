@@ -121,6 +121,44 @@ export class LinkedBankAccounts extends APIResource {
   }
 
   /**
+   * Cancels an existing linked bank account. This can be used to cancel a linked
+   * bank account before it has been reviewed. The linked bank account must be in
+   * 'created' status.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.cancel(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  cancel(
+    linkedBankAccountId: string,
+    params?: LinkedBankAccountCancelParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<LinkedBankAccountV1>;
+  cancel(linkedBankAccountId: string, options?: Core.RequestOptions): Core.APIPromise<LinkedBankAccountV1>;
+  cancel(
+    linkedBankAccountId: string,
+    params: LinkedBankAccountCancelParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<LinkedBankAccountV1> {
+    if (isRequestOptions(params)) {
+      return this.cancel(linkedBankAccountId, {}, params);
+    }
+    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    return this._client.patch(`/v1/linked_bank_accounts/${linkedBankAccountId}/cancel`, {
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(requestId != null ? { 'request-id': requestId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
    * Retrieves the details of a linked bank account that has previously been created.
    * Supply the unique linked bank account `id`, and Straddle will return the
    * corresponding information. The response includes masked account details for
@@ -699,6 +737,18 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
+export interface LinkedBankAccountCancelParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
 export interface LinkedBankAccountGetParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -735,6 +785,7 @@ export declare namespace LinkedBankAccounts {
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
+    type LinkedBankAccountCancelParams as LinkedBankAccountCancelParams,
     type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
     type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
   };

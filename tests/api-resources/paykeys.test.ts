@@ -148,6 +148,28 @@ describe('resource paykeys', () => {
     ).rejects.toThrow(Straddle.NotFoundError);
   });
 
+  test('review: only required params', async () => {
+    const responsePromise = client.paykeys.review('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      status: 'active',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('review: required and optional params', async () => {
+    const response = await client.paykeys.review('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      status: 'active',
+      'Correlation-Id': 'Correlation-Id',
+      'Request-Id': 'Request-Id',
+      'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
   test('unmasked', async () => {
     const responsePromise = client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();

@@ -50,6 +50,7 @@ export {
   type PaykeyCancelParams,
   type PaykeyGetParams,
   type PaykeyRevealParams,
+  type PaykeyReviewParams,
   type PaykeyUnmaskedParams,
 } from './paykeys';
 export {

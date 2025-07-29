@@ -57,6 +57,7 @@ Methods:
 - <code title="post /v1/linked_bank_accounts">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">create</a>({ ...params }) -> LinkedBankAccountV1</code>
 - <code title="put /v1/linked_bank_accounts/{linked_bank_account_id}">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">update</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccountV1</code>
 - <code title="get /v1/linked_bank_accounts">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">list</a>({ ...params }) -> LinkedBankAccountPagedV1DataPageNumberSchema</code>
+- <code title="patch /v1/linked_bank_accounts/{linked_bank_account_id}/cancel">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">cancel</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccountV1</code>
 - <code title="get /v1/linked_bank_accounts/{linked_bank_account_id}">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">get</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccountV1</code>
 - <code title="get /v1/linked_bank_accounts/{linked_bank_account_id}/unmask">client.embed.linkedBankAccounts.<a href="./src/resources/embed/linked-bank-accounts.ts">unmask</a>(linkedBankAccountId, { ...params }) -> LinkedBankAccountUnmaskV1</code>
 
@@ -159,6 +160,7 @@ Methods:
 - <code title="put /v1/paykeys/{id}/cancel">client.paykeys.<a href="./src/resources/paykeys.ts">cancel</a>(id, { ...params }) -> PaykeyV1</code>
 - <code title="get /v1/paykeys/{id}">client.paykeys.<a href="./src/resources/paykeys.ts">get</a>(id, { ...params }) -> PaykeyV1</code>
 - <code title="get /v1/paykeys/{id}/reveal">client.paykeys.<a href="./src/resources/paykeys.ts">reveal</a>(id, { ...params }) -> PaykeyRevealResponse</code>
+- <code title="patch /v1/paykeys/{id}/review">client.paykeys.<a href="./src/resources/paykeys.ts">review</a>(id, { ...params }) -> PaykeyV1</code>
 - <code title="get /v1/paykeys/{id}/unmasked">client.paykeys.<a href="./src/resources/paykeys.ts">unmasked</a>(id, { ...params }) -> PaykeyUnmaskedV1</code>
 
 # Charges

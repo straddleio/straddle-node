@@ -139,6 +139,28 @@ export class Paykeys extends APIResource {
   }
 
   /**
+   * Update the status of a paykey when in review status
+   */
+  review(id: string, params: PaykeyReviewParams, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1> {
+    const {
+      'Correlation-Id': correlationId,
+      'Request-Id': requestId,
+      'Straddle-Account-Id': straddleAccountId,
+      ...body
+    } = params;
+    return this._client.patch(`/v1/paykeys/${id}/review`, {
+      body,
+      ...options,
+      headers: {
+        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
+        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
+        ...options?.headers,
+      },
+    });
+  }
+
+  /**
    * Retrieves the unmasked details of an existing paykey. Supply the unique paykey
    * `id` and Straddle will return the corresponding paykey record, including the
    * unmasked bank account details. This endpoint needs to be enabled by Straddle for
@@ -932,6 +954,30 @@ export interface PaykeyRevealParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface PaykeyReviewParams {
+  /**
+   * Body param:
+   */
+  status: 'active' | 'rejected';
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface PaykeyUnmaskedParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -962,6 +1008,7 @@ export declare namespace Paykeys {
     type PaykeyCancelParams as PaykeyCancelParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
+    type PaykeyReviewParams as PaykeyReviewParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
   };
 }

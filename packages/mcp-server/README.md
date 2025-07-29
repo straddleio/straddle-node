@@ -186,6 +186,7 @@ The following tools are available in this MCP server.
 - `create_embed_linked_bank_accounts` (`write`): Creates a new linked bank account associated with a Straddle account. This endpoint allows you to associate external bank accounts with a Straddle account for various payment operations such as payment deposits, payout withdrawals, and more.
 - `update_embed_linked_bank_accounts` (`write`): Updates an existing linked bank account's information. This can be used to update account details during onboarding or to update metadata associated with the linked account. The linked bank account must be in 'created' or 'onboarding' status.
 - `list_embed_linked_bank_accounts` (`read`): Returns a list of bank accounts associated with a specific Straddle account. The linked bank accounts are returned sorted by creation date, with the most recently created appearing first. This endpoint supports pagination to handle accounts with multiple linked bank accounts.
+- `cancel_embed_linked_bank_accounts` (`write`): Cancels an existing linked bank account. This can be used to cancel a linked bank account before it has been reviewed. The linked bank account must be in 'created' status.
 - `get_embed_linked_bank_accounts` (`read`): Retrieves the details of a linked bank account that has previously been created. Supply the unique linked bank account `id`, and Straddle will return the corresponding information. The response includes masked account details for security purposes.
 - `unmask_embed_linked_bank_accounts` (`read`): Retrieves the unmasked details of a linked bank account that has previously been created. Supply the unique linked bank account `id`, and Straddle will return the corresponding information, including sensitive details. This endpoint needs to be enabled by Straddle for your account and should only be used when absolutely necessary.
 
@@ -240,6 +241,7 @@ The following tools are available in this MCP server.
 - `cancel_paykeys` (`write`):
 - `get_paykeys` (`read`): Retrieves the details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record , including the `paykey` token value and masked bank account details.
 - `reveal_paykeys` (`read`): Retrieves the details of a paykey that has previously been created, including unmasked bank account fields. Supply the unique paykey ID that was returned from your previous request, and Straddle will return the corresponding paykey information.
+- `review_paykeys` (`write`): Update the status of a paykey when in review status
 - `unmasked_paykeys` (`read`): Retrieves the unmasked details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record, including the unmasked bank account details. This endpoint needs to be enabled by Straddle for your account and should only be used when absolutely necessary.
 
 ### Resource `charges`:

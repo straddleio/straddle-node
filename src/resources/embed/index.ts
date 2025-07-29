@@ -28,6 +28,7 @@ export {
   type LinkedBankAccountCreateParams,
   type LinkedBankAccountUpdateParams,
   type LinkedBankAccountListParams,
+  type LinkedBankAccountCancelParams,
   type LinkedBankAccountGetParams,
   type LinkedBankAccountUnmaskParams,
 } from './linked-bank-accounts';

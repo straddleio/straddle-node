@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import * as LinkedBankAccountsAPI from './linked-bank-accounts';
 import {
+  LinkedBankAccountCancelParams,
   LinkedBankAccountCreateParams,
   LinkedBankAccountGetParams,
   LinkedBankAccountListParams,
@@ -103,6 +104,7 @@ export declare namespace Embed {
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
+    type LinkedBankAccountCancelParams as LinkedBankAccountCancelParams,
     type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
     type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
   };
