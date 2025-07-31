@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'simulate_embed_accounts',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nSimulate the status transitions for sandbox accounts. This endpoint can only be used for sandbox accounts.",
+    'Simulate the status transitions for sandbox accounts. This endpoint can only be used for sandbox accounts.',
   inputSchema: {
     type: 'object',
     properties: {

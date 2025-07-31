@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'update_embed_representatives',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nUpdates an existing representative's information. This can be used to update personal details, contact information, or the relationship to the account or organization.",
+    "Updates an existing representative's information. This can be used to update personal details, contact information, or the relationship to the account or organization.",
   inputSchema: {
     type: 'object',
     properties: {

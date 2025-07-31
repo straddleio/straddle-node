@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'update_payouts',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nUpdate the details of a payout prior to processing. The status of the payout must be `created`, `scheduled`, or `on_hold`.",
+    'Update the details of a payout prior to processing. The status of the payout must be `created`, `scheduled`, or `on_hold`.',
   inputSchema: {
     type: 'object',
     properties: {

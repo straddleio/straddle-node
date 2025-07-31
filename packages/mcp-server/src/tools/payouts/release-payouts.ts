@@ -16,8 +16,7 @@ export const metadata: Metadata = {
 
 export const tool: Tool = {
   name: 'release_payouts',
-  description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nRelease a payout from a `hold` status to allow it to be rescheduled for processing.",
+  description: 'Release a payout from a `hold` status to allow it to be rescheduled for processing.',
   inputSchema: {
     type: 'object',
     properties: {

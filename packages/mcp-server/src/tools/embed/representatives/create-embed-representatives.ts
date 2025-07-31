@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'create_embed_representatives',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nCreates a new representative associated with an account. Representatives are individuals who have legal authority or significant responsibility within the business.",
+    'Creates a new representative associated with an account. Representatives are individuals who have legal authority or significant responsibility within the business.',
   inputSchema: {
     type: 'object',
     properties: {

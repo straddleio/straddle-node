@@ -16,8 +16,7 @@ export const metadata: Metadata = {
 
 export const tool: Tool = {
   name: 'unmask_charges',
-  description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nGet a charge by id.",
+  description: 'Get a charge by id.',
   inputSchema: {
     type: 'object',
     properties: {

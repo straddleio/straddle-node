@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'update_embed_accounts',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nUpdates an existing account's information. This endpoint allows you to update various account details during onboarding or after the account has been created.",
+    "Updates an existing account's information. This endpoint allows you to update various account details during onboarding or after the account has been created.",
   inputSchema: {
     type: 'object',
     properties: {
