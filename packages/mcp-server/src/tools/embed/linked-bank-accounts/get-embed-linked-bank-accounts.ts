@@ -46,9 +46,9 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {
-  const { linked_bank_account_id, ...body } = args as any;
+  const { linked_bank_account_id, jq_filter, ...body } = args as any;
   return asTextContentResult(
-    await maybeFilter(args, await client.embed.linkedBankAccounts.get(linked_bank_account_id, body)),
+    await maybeFilter(jq_filter, await client.embed.linkedBankAccounts.get(linked_bank_account_id, body)),
   );
 };
 

@@ -46,9 +46,9 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Straddle, args: Record<string, unknown> | undefined) => {
-  const { organization_id, ...body } = args as any;
+  const { organization_id, jq_filter, ...body } = args as any;
   return asTextContentResult(
-    await maybeFilter(args, await client.embed.organizations.get(organization_id, body)),
+    await maybeFilter(jq_filter, await client.embed.organizations.get(organization_id, body)),
   );
 };
 
