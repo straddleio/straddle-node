@@ -122,6 +122,7 @@ export const tool: Tool = {
         type: 'object',
         description:
           'Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the customer in a structured format.',
+        additionalProperties: true,
       },
       'Correlation-Id': {
         type: 'string',
