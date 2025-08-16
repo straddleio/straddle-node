@@ -293,6 +293,7 @@ Straddle.Payments = Payments;
 Straddle.PaymentSummaryPagedV1DataPageNumberSchema = PaymentSummaryPagedV1DataPageNumberSchema;
 Straddle.Payouts = Payouts;
 Straddle.Reports = Reports;
+
 export declare namespace Straddle {
   export type RequestOptions = Core.RequestOptions;
 
