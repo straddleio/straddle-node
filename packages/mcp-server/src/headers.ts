@@ -17,7 +17,7 @@ export const parseAuthHeaders = (req: IncomingMessage): Partial<ClientOptions> =
   }
 
   const apiKey =
-    req.headers['x-straddle-api-key'] instanceof Array ?
+    Array.isArray(req.headers['x-straddle-api-key']) ?
       req.headers['x-straddle-api-key'][0]
     : req.headers['x-straddle-api-key'];
   return { apiKey };
