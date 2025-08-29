@@ -33,12 +33,18 @@ export class CapabilityRequests extends APIResource {
     if (isRequestOptions(params)) {
       return this.create(accountId, {}, params);
     }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+    const {
+      'correlation-id': correlationId,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestId,
+      ...body
+    } = params;
     return this._client.post(`/v1/accounts/${accountId}/capability_requests`, {
       body,
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'request-id': requestId } : undefined),
         ...options?.headers,
       },
@@ -201,6 +207,11 @@ export interface CapabilityRequestCreateParams {
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.

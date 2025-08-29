@@ -40,6 +40,7 @@ describe('resource payouts', () => {
       config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -67,6 +68,7 @@ describe('resource payouts', () => {
       payment_date: '2019-12-27',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -89,6 +91,7 @@ describe('resource payouts', () => {
     const response = await client.payouts.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       reason: 'reason',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -142,6 +145,7 @@ describe('resource payouts', () => {
     const response = await client.payouts.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       reason: 'reason',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -164,6 +168,7 @@ describe('resource payouts', () => {
     const response = await client.payouts.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       reason: 'reason',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });

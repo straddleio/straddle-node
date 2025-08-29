@@ -44,6 +44,7 @@ describe('resource capabilityRequests', () => {
           payouts: { daily_amount: 0, enable: true, max_amount: 0, monthly_amount: 0, monthly_count: 0 },
           signed_agreement: { enable: true },
           'correlation-id': 'correlation-id',
+          'idempotency-key': 'xxxxxxxxxx',
           'request-id': 'request-id',
         },
         { path: '/_stainless_unknown_path' },

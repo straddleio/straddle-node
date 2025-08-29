@@ -32,12 +32,18 @@ export class Representatives extends APIResource {
    * ```
    */
   create(params: RepresentativeCreateParams, options?: Core.RequestOptions): Core.APIPromise<Representative> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+    const {
+      'correlation-id': correlationId,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestId,
+      ...body
+    } = params;
     return this._client.post('/v1/representatives', {
       body,
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'request-id': requestId } : undefined),
         ...options?.headers,
       },
@@ -75,12 +81,18 @@ export class Representatives extends APIResource {
     params: RepresentativeUpdateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<Representative> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+    const {
+      'correlation-id': correlationId,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestId,
+      ...body
+    } = params;
     return this._client.put(`/v1/representatives/${representativeId}`, {
       body,
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'request-id': requestId } : undefined),
         ...options?.headers,
       },
@@ -296,6 +308,12 @@ export namespace Representative {
      */
     external_id?: string | null;
 
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the represetative in a structured format.
+     */
+    metadata?: { [key: string]: string } | null;
+
     phone?: string | null;
 
     /**
@@ -466,6 +484,12 @@ export namespace RepresentativePaged {
      */
     external_id?: string | null;
 
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the represetative in a structured format.
+     */
+    metadata?: { [key: string]: string } | null;
+
     phone?: string | null;
 
     /**
@@ -596,10 +620,21 @@ export interface RepresentativeCreateParams {
   external_id?: string | null;
 
   /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the represetative in a structured format.
+   */
+  metadata?: { [key: string]: string } | null;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -688,10 +723,21 @@ export interface RepresentativeUpdateParams {
   external_id?: string | null;
 
   /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the represetative in a structured format.
+   */
+  metadata?: { [key: string]: string } | null;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.

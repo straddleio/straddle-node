@@ -84,7 +84,16 @@ export const tool: Tool = {
         description:
           'Unique identifier for the representative in your database, used for cross-referencing between Straddle and your systems.',
       },
+      metadata: {
+        type: 'object',
+        description:
+          'Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the represetative in a structured format.',
+        additionalProperties: true,
+      },
       'correlation-id': {
+        type: 'string',
+      },
+      'idempotency-key': {
         type: 'string',
       },
       'request-id': {

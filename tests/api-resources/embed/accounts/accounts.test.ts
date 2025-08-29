@@ -55,6 +55,7 @@ describe('resource accounts', () => {
       external_id: 'external_id',
       metadata: { foo: 'string' },
       'correlation-id': 'correlation-id',
+      'idempotency-key': 'xxxxxxxxxx',
       'request-id': 'request-id',
     });
   });
@@ -99,6 +100,7 @@ describe('resource accounts', () => {
       external_id: 'external_id',
       metadata: { foo: 'string' },
       'correlation-id': 'correlation-id',
+      'idempotency-key': 'xxxxxxxxxx',
       'request-id': 'request-id',
     });
   });
@@ -197,6 +199,7 @@ describe('resource accounts', () => {
         accepted_user_agent: 'accepted_user_agent',
       },
       'correlation-id': 'correlation-id',
+      'idempotency-key': 'xxxxxxxxxx',
       'request-id': 'request-id',
     });
   });
@@ -226,7 +229,12 @@ describe('resource accounts', () => {
     await expect(
       client.embed.accounts.simulate(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        { final_status: 'onboarding', 'correlation-id': 'correlation-id', 'request-id': 'request-id' },
+        {
+          final_status: 'onboarding',
+          'correlation-id': 'correlation-id',
+          'idempotency-key': 'xxxxxxxxxx',
+          'request-id': 'request-id',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Straddle.NotFoundError);

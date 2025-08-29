@@ -19,12 +19,18 @@ export class Organizations extends APIResource {
    * ```
    */
   create(params: OrganizationCreateParams, options?: Core.RequestOptions): Core.APIPromise<OrganizationV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+    const {
+      'correlation-id': correlationId,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestId,
+      ...body
+    } = params;
     return this._client.post('/v1/organizations', {
       body,
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'request-id': requestId } : undefined),
         ...options?.headers,
       },
@@ -247,6 +253,11 @@ export interface OrganizationCreateParams {
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.

@@ -40,7 +40,9 @@ describe('resource representatives', () => {
       relationship: { control: true, owner: true, primary: true, percent_ownership: 0, title: 'title' },
       ssn_last4: '1234',
       external_id: 'external_id',
+      metadata: { foo: 'string' },
       'correlation-id': 'correlation-id',
+      'idempotency-key': 'xxxxxxxxxx',
       'request-id': 'request-id',
     });
   });
@@ -74,7 +76,9 @@ describe('resource representatives', () => {
       relationship: { control: true, owner: true, primary: true, percent_ownership: 0, title: 'title' },
       ssn_last4: '1234',
       external_id: 'external_id',
+      metadata: { foo: 'string' },
       'correlation-id': 'correlation-id',
+      'idempotency-key': 'xxxxxxxxxx',
       'request-id': 'request-id',
     });
   });

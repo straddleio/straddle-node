@@ -25,6 +25,7 @@ export class Payouts extends APIResource {
   create(params: PayoutCreateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -34,6 +35,7 @@ export class Payouts extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -60,6 +62,7 @@ export class Payouts extends APIResource {
   update(id: string, params: PayoutUpdateParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -69,6 +72,7 @@ export class Payouts extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -91,6 +95,7 @@ export class Payouts extends APIResource {
   cancel(id: string, params: PayoutCancelParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -100,6 +105,7 @@ export class Payouts extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -159,6 +165,7 @@ export class Payouts extends APIResource {
   hold(id: string, params: PayoutHoldParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -168,6 +175,7 @@ export class Payouts extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -190,6 +198,7 @@ export class Payouts extends APIResource {
   release(id: string, params: PayoutReleaseParams, options?: Core.RequestOptions): Core.APIPromise<PayoutV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -199,6 +208,7 @@ export class Payouts extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -713,6 +723,11 @@ export interface PayoutCreateParams {
   'Correlation-Id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -774,6 +789,11 @@ export interface PayoutUpdateParams {
   'Correlation-Id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -796,6 +816,11 @@ export interface PayoutCancelParams {
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -839,6 +864,11 @@ export interface PayoutHoldParams {
   'Correlation-Id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -861,6 +891,11 @@ export interface PayoutReleaseParams {
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.

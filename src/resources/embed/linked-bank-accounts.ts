@@ -30,12 +30,18 @@ export class LinkedBankAccounts extends APIResource {
     params: LinkedBankAccountCreateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<LinkedBankAccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+    const {
+      'correlation-id': correlationId,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestId,
+      ...body
+    } = params;
     return this._client.post('/v1/linked_bank_accounts', {
       body,
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'request-id': requestId } : undefined),
         ...options?.headers,
       },
@@ -68,12 +74,18 @@ export class LinkedBankAccounts extends APIResource {
     params: LinkedBankAccountUpdateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<LinkedBankAccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+    const {
+      'correlation-id': correlationId,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestId,
+      ...body
+    } = params;
     return this._client.put(`/v1/linked_bank_accounts/${linkedBankAccountId}`, {
       body,
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'request-id': requestId } : undefined),
         ...options?.headers,
       },
@@ -147,11 +159,16 @@ export class LinkedBankAccounts extends APIResource {
     if (isRequestOptions(params)) {
       return this.cancel(linkedBankAccountId, {}, params);
     }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
+    const {
+      'correlation-id': correlationId,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestId,
+    } = params;
     return this._client.patch(`/v1/linked_bank_accounts/${linkedBankAccountId}/cancel`, {
       ...options,
       headers: {
         ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'request-id': requestId } : undefined),
         ...options?.headers,
       },
@@ -635,6 +652,11 @@ export interface LinkedBankAccountCreateParams {
   'correlation-id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
@@ -677,6 +699,11 @@ export interface LinkedBankAccountUpdateParams {
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -742,6 +769,11 @@ export interface LinkedBankAccountCancelParams {
    * Optional client generated identifier to trace and debug a series of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Optional client generated identifier to trace and debug a request.

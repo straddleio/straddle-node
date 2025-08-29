@@ -26,6 +26,7 @@ describe('resource organizations', () => {
       external_id: 'external_id',
       metadata: { foo: 'string' },
       'correlation-id': 'correlation-id',
+      'idempotency-key': 'xxxxxxxxxx',
       'request-id': 'request-id',
     });
   });
