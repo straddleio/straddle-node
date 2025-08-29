@@ -55,6 +55,7 @@ export class Paykeys extends APIResource {
     }
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -64,6 +65,7 @@ export class Paykeys extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -144,6 +146,7 @@ export class Paykeys extends APIResource {
   review(id: string, params: PaykeyReviewParams, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -153,6 +156,7 @@ export class Paykeys extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -909,6 +913,11 @@ export interface PaykeyCancelParams {
   'Correlation-Id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -965,6 +974,11 @@ export interface PaykeyReviewParams {
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.

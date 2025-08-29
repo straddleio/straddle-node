@@ -74,6 +74,7 @@ describe('resource paykeys', () => {
         {
           reason: 'reason',
           'Correlation-Id': 'Correlation-Id',
+          'Idempotency-Key': 'xxxxxxxxxx',
           'Request-Id': 'Request-Id',
           'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
@@ -165,6 +166,7 @@ describe('resource paykeys', () => {
     const response = await client.paykeys.review('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       status: 'active',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });

@@ -30,6 +30,9 @@ export const tool: Tool = {
       'Correlation-Id': {
         type: 'string',
       },
+      'Idempotency-Key': {
+        type: 'string',
+      },
       'Request-Id': {
         type: 'string',
       },

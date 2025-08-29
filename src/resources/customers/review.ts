@@ -29,6 +29,7 @@ export class Review extends APIResource {
   ): Core.APIPromise<CustomersAPI.CustomerV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -38,6 +39,7 @@ export class Review extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -529,6 +531,11 @@ export interface ReviewDecisionParams {
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.

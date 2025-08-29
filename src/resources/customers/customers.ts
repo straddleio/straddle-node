@@ -37,6 +37,7 @@ export class Customers extends APIResource {
   create(params: CustomerCreateParams, options?: Core.RequestOptions): Core.APIPromise<CustomerV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -46,6 +47,7 @@ export class Customers extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -78,6 +80,7 @@ export class Customers extends APIResource {
   ): Core.APIPromise<CustomerV1> {
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
       ...body
@@ -87,6 +90,7 @@ export class Customers extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -168,6 +172,7 @@ export class Customers extends APIResource {
     }
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
     } = params;
@@ -175,6 +180,7 @@ export class Customers extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -248,6 +254,7 @@ export class Customers extends APIResource {
     }
     const {
       'Correlation-Id': correlationId,
+      'Idempotency-Key': idempotencyKey,
       'Request-Id': requestId,
       'Straddle-Account-Id': straddleAccountId,
     } = params;
@@ -255,6 +262,7 @@ export class Customers extends APIResource {
       ...options,
       headers: {
         ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
+        ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
         ...(requestId != null ? { 'Request-Id': requestId } : undefined),
         ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
         ...options?.headers,
@@ -819,6 +827,11 @@ export interface CustomerCreateParams {
   'Correlation-Id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -951,6 +964,11 @@ export interface CustomerUpdateParams {
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -1097,6 +1115,11 @@ export interface CustomerDeleteParams {
   'Correlation-Id'?: string;
 
   /**
+   * Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -1129,6 +1152,11 @@ export interface CustomerRefreshReviewParams {
    * Optional client generated identifier to trace and debug a series of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Optional client generated identifier to trace and debug a request.
