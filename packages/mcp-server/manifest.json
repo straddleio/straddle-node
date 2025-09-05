@@ -1,0 +1,46 @@
+{
+  "dxt_version": "0.1",
+  "name": "@straddleio/straddle-mcp",
+  "version": "0.1.1",
+  "description": "The official MCP Server for the Straddle API",
+  "author": {
+    "name": "Straddle",
+    "email": "help@straddle.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/straddleio/straddle-node.git"
+  },
+  "homepage": "https://github.com/straddleio/straddle-node/tree/main/packages/mcp-server#readme",
+  "documentation": "https://docs.straddle.io",
+  "server": {
+    "type": "node",
+    "entry_point": "${"templates/TypeScriptSDK/mcp"}/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${"templates/TypeScriptSDK/mcp"}/index.js"
+      ],
+      "env": {
+        "STRADDLE_API_KEY": "${user_config.STRADDLE_API_KEY}"
+      }
+    }
+  },
+  "user_config": {
+    "STRADDLE_API_KEY": {
+      "title": "api_key",
+      "description": "Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "tools_generated": true,
+  "compatibility": {
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "keywords": [
+    "api"
+  ]
+}
