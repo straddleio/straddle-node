@@ -743,6 +743,12 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
   level?: 'account' | 'platform';
 
   /**
+   * Query param: The purpose of the linked bank accounts to return. Possible values:
+   * 'charges', 'payouts', 'billing'.
+   */
+  purpose?: 'charges' | 'payouts' | 'billing';
+
+  /**
    * Query param: Sort By.
    */
   sort_by?: string;
@@ -751,6 +757,12 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
    * Query param: Sort Order.
    */
   sort_order?: 'asc' | 'desc';
+
+  /**
+   * Query param: The status of the linked bank accounts to return. Possible values:
+   * 'created', 'onboarding', 'active', 'inactive', 'rejected'.
+   */
+  status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled';
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
