@@ -306,10 +306,6 @@ export namespace PaykeySummaryPagedV1 {
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'insufficient_funds'
         | 'closed_bank_account'
@@ -332,10 +328,6 @@ export namespace PaykeySummaryPagedV1 {
         | 'other_network_return'
         | 'payout_refused';
 
-      /**
-       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
-       * This helps in tracking the cause of status updates.
-       */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
@@ -513,10 +505,6 @@ export namespace PaykeyUnmaskedV1 {
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'insufficient_funds'
         | 'closed_bank_account'
@@ -539,10 +527,6 @@ export namespace PaykeyUnmaskedV1 {
         | 'other_network_return'
         | 'payout_refused';
 
-      /**
-       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
-       * This helps in tracking the cause of status updates.
-       */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
@@ -680,10 +664,6 @@ export namespace PaykeyV1 {
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'insufficient_funds'
         | 'closed_bank_account'
@@ -706,10 +686,6 @@ export namespace PaykeyV1 {
         | 'other_network_return'
         | 'payout_refused';
 
-      /**
-       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
-       * This helps in tracking the cause of status updates.
-       */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
@@ -848,10 +824,6 @@ export namespace PaykeyRevealResponse {
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
       reason:
         | 'insufficient_funds'
         | 'closed_bank_account'
@@ -874,10 +846,6 @@ export namespace PaykeyRevealResponse {
         | 'other_network_return'
         | 'payout_refused';
 
-      /**
-       * Identifies the origin of the status change (e.g., 'bank_decline', 'watchtower').
-       * This helps in tracking the cause of status updates.
-       */
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**

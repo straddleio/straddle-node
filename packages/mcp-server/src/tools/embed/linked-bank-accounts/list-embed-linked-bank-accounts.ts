@@ -37,12 +37,6 @@ export const tool: Tool = {
         type: 'integer',
         description: 'Page size. Max value: 1000',
       },
-      purpose: {
-        type: 'string',
-        description:
-          "The purpose of the linked bank accounts to return. Possible values: 'charges', 'payouts', 'billing'.",
-        enum: ['charges', 'payouts', 'billing'],
-      },
       sort_by: {
         type: 'string',
         description: 'Sort By.',
@@ -51,12 +45,6 @@ export const tool: Tool = {
         type: 'string',
         description: 'Sort Order.',
         enum: ['asc', 'desc'],
-      },
-      status: {
-        type: 'string',
-        description:
-          "The status of the linked bank accounts to return. Possible values: 'created', 'onboarding', 'active', 'inactive', 'rejected'.",
-        enum: ['created', 'onboarding', 'active', 'rejected', 'inactive', 'canceled'],
       },
       'correlation-id': {
         type: 'string',
