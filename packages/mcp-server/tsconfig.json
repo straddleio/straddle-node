@@ -7,10 +7,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "baseUrl": "./",
     "paths": {
-      "@straddleio/straddle-mcp/*": ["src/*"],
-      "@straddleio/straddle-mcp": ["src/index.ts"]
+      "@straddleio/straddle-mcp/*": ["./src/*"],
+      "@straddleio/straddle-mcp": ["./src/index.ts"]
     },
     "noEmit": true,
 
