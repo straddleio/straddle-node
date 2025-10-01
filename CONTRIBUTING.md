@@ -42,25 +42,25 @@ If you’d like to use the repository from source, you can either install from g
 To install via git:
 
 ```sh
-$ npm install git+ssh://git@github.com:stainless-sdks/straddle-typescript.git
+$ npm install git+ssh://git@github.com:straddleio/straddle-node.git
 ```
 
 Alternatively, to link a local copy of the repo:
 
 ```sh
 # Clone
-$ git clone https://www.github.com/stainless-sdks/straddle-typescript
-$ cd straddle-typescript
+$ git clone https://www.github.com/straddleio/straddle-node
+$ cd straddle-node
 
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link @straddleio/straddle
+$ yarn link @straddlecom/straddle
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @straddleio/straddle
+$ pnpm link -—global @straddlecom/straddle
 ```
 
 ## Running tests

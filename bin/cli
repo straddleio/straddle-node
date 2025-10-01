@@ -4,7 +4,7 @@ const { spawnSync } = require('child_process');
 
 const commands = {
   migrate: {
-    description: 'Run migrations to update your code using @straddleio/straddle@1 to be compatible with @straddleio/straddle@2',
+    description: 'Run migrations to update your code using @straddlecom/straddle@1 to be compatible with @straddlecom/straddle@2',
     fn: () => {
       const result = spawnSync(
         'npx',
@@ -19,7 +19,7 @@ const commands = {
 }
 
 function exitWithHelp() {
-  console.log(`Usage: straddleio-straddle <subcommand>`);
+  console.log(`Usage: straddlecom-straddle <subcommand>`);
   console.log();
   console.log('Subcommands:');
 

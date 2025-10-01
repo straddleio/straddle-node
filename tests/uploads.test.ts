@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from '@straddleio/straddle/internal/to-file';
-import { toFile } from '@straddleio/straddle/core/uploads';
+import type { ResponseLike } from '@straddlecom/straddle/internal/to-file';
+import { toFile } from '@straddlecom/straddle/core/uploads';
 import { File } from 'node:buffer';
 
 class MyClass {
@@ -97,7 +97,7 @@ describe('missing File error message', () => {
   });
 
   test('is thrown', async () => {
-    const uploads = await import('@straddleio/straddle/core/uploads');
+    const uploads = await import('@straddlecom/straddle/core/uploads');
     await expect(
       uploads.toFile(mockResponse({ url: 'https://example.com/my/audio.mp3' })),
     ).rejects.toMatchInlineSnapshot(

@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "@straddleio/straddle/*": ["./src/*"],
-      "@straddleio/straddle": ["./src/index.ts"]
+      "@straddlecom/straddle/*": ["./src/*"],
+      "@straddlecom/straddle": ["./src/index.ts"]
     },
     "noEmit": true,
 

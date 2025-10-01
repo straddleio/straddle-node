@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from '@straddleio/straddle/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from '@straddlecom/straddle/internal/utils/path';
 import { inspect } from 'node:util';
 import { runInNewContext } from 'node:vm';
 
