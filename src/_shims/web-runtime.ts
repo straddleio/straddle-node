@@ -9,9 +9,9 @@ export function getRuntime({ manuallyImported }: { manuallyImported?: boolean } 
   const recommendation =
     manuallyImported ?
       `You may need to use polyfills`
-    : `Add one of these imports before your first \`import … from '@straddlecom/straddle'\`:
-- \`import '@straddlecom/straddle/shims/node'\` (if you're running on Node)
-- \`import '@straddlecom/straddle/shims/web'\` (otherwise)
+    : `Add one of these imports before your first \`import … from '@straddleio/straddle'\`:
+- \`import '@straddleio/straddle/shims/node'\` (if you're running on Node)
+- \`import '@straddleio/straddle/shims/web'\` (otherwise)
 `;
 
   let _fetch, _Request, _Response, _Headers;

@@ -1,5 +1,5 @@
 {
-  "name": "@straddlecom/straddle",
+  "name": "@straddleio/straddle",
   "version": "0.1.1",
   "description": "The official TypeScript library for the Straddle API",
   "author": "Straddle <help@straddle.io>",

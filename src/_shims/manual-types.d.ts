@@ -4,8 +4,8 @@
 /**
  * Types will get added to this namespace when you import one of the following:
  *
- *   import '@straddlecom/straddle/shims/node'
- *   import '@straddlecom/straddle/shims/web'
+ *   import '@straddleio/straddle/shims/node'
+ *   import '@straddleio/straddle/shims/web'
  *
  * Importing more than one will cause type and runtime errors.
  */

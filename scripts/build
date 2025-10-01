@@ -8,7 +8,7 @@ node scripts/utils/check-version.cjs
 
 # Build into dist and will publish the package from there,
 # so that src/resources/foo.ts becomes <package root>/resources/foo.js
-# This way importing from `"@straddlecom/straddle/resources/foo"` works
+# This way importing from `"@straddleio/straddle/resources/foo"` works
 # even with `"moduleResolution": "node"`
 
 rm -rf dist; mkdir dist
@@ -47,8 +47,8 @@ node scripts/utils/postprocess-files.cjs
 
 # make sure that nothing crashes when we require the output CJS or
 # import the output ESM
-(cd dist && node -e 'require("@straddlecom/straddle")')
-(cd dist && node -e 'import("@straddlecom/straddle")' --input-type=module)
+(cd dist && node -e 'require("@straddleio/straddle")')
+(cd dist && node -e 'import("@straddleio/straddle")' --input-type=module)
 
 if [ -e ./scripts/build-deno ]
 then

@@ -1,4 +1,4 @@
-import Straddle from '@straddlecom/straddle';
+import Straddle from '@straddleio/straddle';
 import { Endpoint, asTextContentResult, ToolCallResult } from './tools/types';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';

@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { toFile, type ResponseLike } from '@straddlecom/straddle/uploads';
-import { File } from '@straddlecom/straddle/_shims/index';
+import { toFile, type ResponseLike } from '@straddleio/straddle/uploads';
+import { File } from '@straddleio/straddle/_shims/index';
 
 class MyClass {
   name: string = 'foo';

@@ -1,6 +1,6 @@
 # Straddle Node API Library
 
-[![NPM version](https://img.shields.io/npm/v/@straddlecom/straddle.svg)](https://npmjs.org/package/@straddlecom/straddle) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@straddlecom/straddle)
+[![NPM version](https://img.shields.io/npm/v/@straddleio/straddle.svg)](https://npmjs.org/package/@straddleio/straddle) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@straddleio/straddle)
 
 This library provides convenient access to the Straddle REST API from server-side TypeScript or JavaScript.
 
@@ -11,7 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 ## Installation
 
 ```sh
-npm install @straddlecom/straddle
+npm install @straddleio/straddle
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Straddle from '@straddlecom/straddle';
+import Straddle from '@straddleio/straddle';
 
 const client = new Straddle({
   apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
@@ -48,7 +48,7 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import Straddle from '@straddlecom/straddle';
+import Straddle from '@straddleio/straddle';
 
 const client = new Straddle({
   apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted
@@ -288,11 +288,11 @@ add the following import before your first import `from "Straddle"`:
 ```ts
 // Tell TypeScript and the package to use the global web fetch instead of node-fetch.
 // Note, despite the name, this does not add any polyfills, but expects them to be provided if needed.
-import '@straddlecom/straddle/shims/web';
-import Straddle from '@straddlecom/straddle';
+import '@straddleio/straddle/shims/web';
+import Straddle from '@straddleio/straddle';
 ```
 
-To do the inverse, add `import "@straddlecom/straddle/shims/node"` (which does import polyfills).
+To do the inverse, add `import "@straddleio/straddle/shims/node"` (which does import polyfills).
 This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/straddleio/straddle-node/tree/main/src/_shims#readme)).
 
 ### Logging and middleware
@@ -302,7 +302,7 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import Straddle from '@straddlecom/straddle';
+import Straddle from '@straddleio/straddle';
 
 const client = new Straddle({
   fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {

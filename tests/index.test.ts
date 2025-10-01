@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Straddle from '@straddlecom/straddle';
-import { APIUserAbortError } from '@straddlecom/straddle';
-import { Headers } from '@straddlecom/straddle/core';
+import Straddle from '@straddleio/straddle';
+import { APIUserAbortError } from '@straddleio/straddle';
+import { Headers } from '@straddleio/straddle/core';
 import defaultFetch, { Response, type RequestInit, type RequestInfo } from 'node-fetch';
 
 describe('instantiate client', () => {

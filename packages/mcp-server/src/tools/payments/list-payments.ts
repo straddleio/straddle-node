@@ -3,7 +3,7 @@
 import { Metadata, asTextContentResult } from '@straddleio/straddle-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import Straddle from '@straddlecom/straddle';
+import Straddle from '@straddleio/straddle';
 
 export const metadata: Metadata = {
   resource: 'payments',

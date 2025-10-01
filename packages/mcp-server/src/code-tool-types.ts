@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { ClientOptions } from '@straddlecom/straddle';
+import { ClientOptions } from '@straddleio/straddle';
 
 export type WorkerInput = {
   opts: ClientOptions;

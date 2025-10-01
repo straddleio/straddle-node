@@ -7,9 +7,9 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^@straddlecom/straddle$': '<rootDir>/src/index.ts',
-    '^@straddlecom/straddle/_shims/auto/(.*)$': '<rootDir>/src/_shims/auto/$1-node',
-    '^@straddlecom/straddle/(.*)$': '<rootDir>/src/$1',
+    '^@straddleio/straddle$': '<rootDir>/src/index.ts',
+    '^@straddleio/straddle/_shims/auto/(.*)$': '<rootDir>/src/_shims/auto/$1-node',
+    '^@straddleio/straddle/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',
