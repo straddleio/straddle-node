@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  CustomerSummaryPagedV1DataPageNumberSchema,
   Customers,
   type CustomerAddressV1,
   type CustomerSummaryPagedV1,
@@ -15,6 +14,7 @@ export {
   type CustomerGetParams,
   type CustomerRefreshReviewParams,
   type CustomerUnmaskedParams,
+  type CustomerSummaryPagedV1DataPageNumberSchema,
 } from './customers';
 export {
   Review,

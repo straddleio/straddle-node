@@ -1,38 +1,31 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIResource } from '../core/resource';
 import * as Shared from './shared';
+import { APIPromise } from '../core/api-promise';
+import { buildHeaders } from '../internal/headers';
+import { RequestOptions } from '../internal/request-options';
 
 export class Reports extends APIResource {
   createTotalCustomersByStatus(
-    params?: ReportCreateTotalCustomersByStatusParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<ReportCreateTotalCustomersByStatusResponse>;
-  createTotalCustomersByStatus(
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<ReportCreateTotalCustomersByStatusResponse>;
-  createTotalCustomersByStatus(
-    params: ReportCreateTotalCustomersByStatusParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<ReportCreateTotalCustomersByStatusResponse> {
-    if (isRequestOptions(params)) {
-      return this.createTotalCustomersByStatus({}, params);
-    }
+    params: ReportCreateTotalCustomersByStatusParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ReportCreateTotalCustomersByStatusResponse> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
     return this._client.post('/v1/reports/total_customers_by_status', {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }

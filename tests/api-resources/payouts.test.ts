@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import Straddle from '@straddleio/straddle';
-import { Response } from 'node-fetch';
 
 const client = new Straddle({
   apiKey: 'My API Key',
@@ -40,6 +39,7 @@ describe('resource payouts', () => {
       config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -67,6 +67,7 @@ describe('resource payouts', () => {
       payment_date: '2019-12-27',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -89,6 +90,7 @@ describe('resource payouts', () => {
     const response = await client.payouts.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       reason: 'reason',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -103,13 +105,6 @@ describe('resource payouts', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('get: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.payouts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('get: request options and params are passed correctly', async () => {
@@ -142,6 +137,7 @@ describe('resource payouts', () => {
     const response = await client.payouts.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       reason: 'reason',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -164,6 +160,7 @@ describe('resource payouts', () => {
     const response = await client.payouts.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       reason: 'reason',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -178,13 +175,6 @@ describe('resource payouts', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('unmask: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.payouts.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('unmask: request options and params are passed correctly', async () => {
