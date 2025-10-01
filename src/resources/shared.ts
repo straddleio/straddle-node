@@ -73,9 +73,6 @@ export interface PagedResponseMetadata {
    */
   sort_by: string;
 
-  /**
-   * The order that the results were sorted by.
-   */
   sort_order: 'asc' | 'desc';
 
   /**

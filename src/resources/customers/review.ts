@@ -1,11 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../core/resource';
 import * as ReviewAPI from './review';
 import * as Shared from '../shared';
 import * as CustomersAPI from './customers';
+import { APIPromise } from '../../core/api-promise';
+import { buildHeaders } from '../../internal/headers';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
 
 export class Review extends APIResource {
   /**
@@ -13,27 +15,39 @@ export class Review extends APIResource {
    * to modify the outcome of a customer risk screening and is useful for correcting
    * or updating the status of a customer's verification. Note that this endpoint is
    * only available for customers with a current status of `review`.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.review.decision(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { status: 'verified' },
+   * );
+   * ```
    */
   decision(
     id: string,
     params: ReviewDecisionParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomersAPI.CustomerV1> {
+    options?: RequestOptions,
+  ): APIPromise<CustomersAPI.CustomerV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params;
-    return this._client.patch(`/v1/customers/${id}/review`, {
+    return this._client.patch(path`/v1/customers/${id}/review`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -47,30 +61,34 @@ export class Review extends APIResource {
    * - Results of watchlist screening
    * - Any network alerts detected Use this endpoint to gain insights into the
    *   verification process and make informed decisions about customer onboarding.
+   *
+   * @example
+   * ```ts
+   * const customerReviewV1 = await client.customers.review.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
-  get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
   get(
     id: string,
-    params: ReviewGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerReviewV1> {
-    if (isRequestOptions(params)) {
-      return this.get(id, {}, params);
-    }
+    params: ReviewGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerReviewV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/customers/${id}/review`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/customers/${id}/review`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
@@ -152,6 +170,8 @@ export namespace CustomerReviewV1 {
         | CustomerDetails.BusinessComplianceProfile
         | null;
 
+      config?: CustomerDetails.Config;
+
       device?: CustomerDetails.Device;
 
       /**
@@ -164,7 +184,7 @@ export namespace CustomerReviewV1 {
        * Up to 20 additional user-defined key-value pairs. Useful for storing additional
        * information about the customer in a structured format.
        */
-      metadata?: Record<string, string> | null;
+      metadata?: { [key: string]: string } | null;
     }
 
     export namespace CustomerDetails {
@@ -200,9 +220,31 @@ export namespace CustomerReviewV1 {
         legal_business_name: string | null;
 
         /**
+         * A list of people related to the company. Only valid where customer type is
+         * 'business'.
+         */
+        representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+        /**
          * Official business website URL. Optional but recommended for enhanced KYB.
          */
         website?: string | null;
+      }
+
+      export namespace BusinessComplianceProfile {
+        export interface Representative {
+          name: string;
+
+          email?: string | null;
+
+          phone?: string | null;
+        }
+      }
+
+      export interface Config {
+        processing_method?: 'inline' | 'background' | 'skip';
+
+        sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
       }
 
       export interface Device {
@@ -243,9 +285,11 @@ export namespace CustomerReviewV1 {
       /**
        * Dictionary of all messages from the customer verification process.
        */
-      messages?: Record<string, string> | null;
+      messages?: { [key: string]: string } | null;
 
       network_alerts?: IdentityDetails.NetworkAlerts;
+
+      reputation?: IdentityDetails.Reputation;
 
       watch_list?: IdentityDetails.WatchList;
     }
@@ -257,6 +301,12 @@ export namespace CustomerReviewV1 {
        */
       export interface Breakdown {
         address?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_evaluation?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_identification?: ReviewAPI.IdentityVerificationBreakdownV1;
+
+        business_validation?: ReviewAPI.IdentityVerificationBreakdownV1;
 
         email?: ReviewAPI.IdentityVerificationBreakdownV1;
 
@@ -322,6 +372,89 @@ export namespace CustomerReviewV1 {
         decision?: 'accept' | 'reject' | 'review';
       }
 
+      export interface Reputation {
+        /**
+         * Specific codes related to the Straddle reputation screening results.
+         */
+        codes?: Array<string> | null;
+
+        decision?: 'accept' | 'reject' | 'review';
+
+        insights?: Reputation.Insights;
+
+        risk_score?: number | null;
+      }
+
+      export namespace Reputation {
+        export interface Insights {
+          accounts_active_count?: number | null;
+
+          accounts_closed_count?: number | null;
+
+          accounts_closed_dates?: Array<string> | null;
+
+          accounts_count?: number | null;
+
+          accounts_fraud_count?: number | null;
+
+          accounts_fraud_labeled_dates?: Array<string> | null;
+
+          accounts_fraud_loss_total_amount?: number | null;
+
+          ach_fraud_transactions_count?: number | null;
+
+          ach_fraud_transactions_dates?: Array<string> | null;
+
+          ach_fraud_transactions_total_amount?: number | null;
+
+          ach_returned_transactions_count?: number | null;
+
+          ach_returned_transactions_dates?: Array<string> | null;
+
+          ach_returned_transactions_total_amount?: number | null;
+
+          applications_approved_count?: number | null;
+
+          applications_count?: number | null;
+
+          applications_dates?: Array<string> | null;
+
+          applications_declined_count?: number | null;
+
+          applications_fraud_count?: number | null;
+
+          card_disputed_transactions_count?: number | null;
+
+          card_disputed_transactions_dates?: Array<string> | null;
+
+          card_disputed_transactions_total_amount?: number | null;
+
+          card_fraud_transactions_count?: number | null;
+
+          card_fraud_transactions_dates?: Array<string> | null;
+
+          card_fraud_transactions_total_amount?: number | null;
+
+          card_stopped_transactions_count?: number | null;
+
+          card_stopped_transactions_dates?: Array<string> | null;
+
+          user_active_profile_count?: number | null;
+
+          user_address_count?: number | null;
+
+          user_closed_profile_count?: number | null;
+
+          user_dob_count?: number | null;
+
+          user_email_count?: number | null;
+
+          user_institution_count?: number | null;
+
+          user_mobile_count?: number | null;
+        }
+      }
+
       export interface WatchList {
         /**
          * Specific codes related to the Straddle watchlist screening results.
@@ -371,6 +504,8 @@ export interface IdentityVerificationBreakdownV1 {
    */
   codes?: Array<string> | null;
 
+  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
+
   /**
    * Represents the strength of the correlation between provided and known
    * information. A higher score indicates a stronger correlation.
@@ -397,6 +532,11 @@ export interface ReviewDecisionParams {
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.

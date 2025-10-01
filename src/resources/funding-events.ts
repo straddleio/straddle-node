@@ -1,10 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIResource } from '../core/resource';
 import * as Shared from './shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
+import { APIPromise } from '../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../core/pagination';
+import { buildHeaders } from '../internal/headers';
+import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class FundingEvents extends APIResource {
   /**
@@ -12,34 +14,26 @@ export class FundingEvents extends APIResource {
    * advanced sorting and filtering options.
    */
   list(
-    params?: FundingEventListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data>;
-  list(
-    params: FundingEventListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
+    params: FundingEventListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...query
-    } = params;
-    return this._client.getAPIList('/v1/funding_events', FundingEventSummaryPagedV1DataPageNumberSchema, {
+    } = params ?? {};
+    return this._client.getAPIList('/v1/funding_events', PageNumberSchema<FundingEventSummaryPagedV1.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -50,36 +44,30 @@ export class FundingEvents extends APIResource {
    */
   get(
     id: string,
-    params?: FundingEventGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryItemV1>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<FundingEventSummaryItemV1>;
-  get(
-    id: string,
-    params: FundingEventGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<FundingEventSummaryItemV1> {
-    if (isRequestOptions(params)) {
-      return this.get(id, {}, params);
-    }
+    params: FundingEventGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<FundingEventSummaryItemV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/funding_events/${id}`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/funding_events/${id}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class FundingEventSummaryPagedV1DataPageNumberSchema extends PageNumberSchema<FundingEventSummaryPagedV1.Data> {}
+export type FundingEventSummaryPagedV1DataPageNumberSchema =
+  PageNumberSchema<FundingEventSummaryPagedV1.Data>;
 
 export interface FundingEventSummaryItemV1 {
   data: FundingEventSummaryItemV1.Data;
@@ -330,13 +318,11 @@ export interface FundingEventGetParams {
   'Straddle-Account-Id'?: string;
 }
 
-FundingEvents.FundingEventSummaryPagedV1DataPageNumberSchema = FundingEventSummaryPagedV1DataPageNumberSchema;
-
 export declare namespace FundingEvents {
   export {
     type FundingEventSummaryItemV1 as FundingEventSummaryItemV1,
     type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
-    FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
+    type FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
     type FundingEventListParams as FundingEventListParams,
     type FundingEventGetParams as FundingEventGetParams,
   };

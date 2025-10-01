@@ -1,27 +1,56 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
+import { APIPromise } from '../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
+import { buildHeaders } from '../../internal/headers';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
 
 export class Representatives extends APIResource {
   /**
    * Creates a new representative associated with an account. Representatives are
    * individuals who have legal authority or significant responsibility within the
    * business.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.create({
+   *     account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     dob: '1980-01-01',
+   *     email: 'ron.swanson@pawnee.com',
+   *     first_name: 'first_name',
+   *     last_name: 'last_name',
+   *     mobile_number: '+12128675309',
+   *     relationship: {
+   *       control: true,
+   *       owner: true,
+   *       primary: true,
+   *     },
+   *     ssn_last4: '1234',
+   *   });
+   * ```
    */
-  create(params: RepresentativeCreateParams, options?: Core.RequestOptions): Core.APIPromise<Representative> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+  create(params: RepresentativeCreateParams, options?: RequestOptions): APIPromise<Representative> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
     return this._client.post('/v1/representatives', {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -29,21 +58,50 @@ export class Representatives extends APIResource {
    * Updates an existing representative's information. This can be used to update
    * personal details, contact information, or the relationship to the account or
    * organization.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     {
+   *       dob: '1980-01-01',
+   *       email: 'ron.swanson@pawnee.com',
+   *       first_name: 'Ron',
+   *       last_name: 'Swanson',
+   *       mobile_number: '+12128675309',
+   *       relationship: {
+   *         control: true,
+   *         owner: true,
+   *         primary: true,
+   *       },
+   *       ssn_last4: '1234',
+   *     },
+   *   );
+   * ```
    */
   update(
-    representativeId: string,
+    representativeID: string,
     params: RepresentativeUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.put(`/v1/representatives/${representativeId}`, {
+    options?: RequestOptions,
+  ): APIPromise<Representative> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/representatives/${representativeID}`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -52,30 +110,30 @@ export class Representatives extends APIResource {
    * organization. The representatives are returned sorted by creation date, with the
    * most recently created representatives appearing first. This endpoint supports
    * advanced sorting and filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const representative of client.embed.representatives.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
-    params?: RepresentativeListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
-  list(
-    params: RepresentativeListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/representatives', RepresentativePagedDataPageNumberSchema, {
+    params: RepresentativeListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
+    return this._client.getAPIList('/v1/representatives', PageNumberSchema<RepresentativePaged.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -83,29 +141,30 @@ export class Representatives extends APIResource {
    * Retrieves the details of an existing representative. Supply the unique
    * representative ID, and Straddle will return the corresponding representative
    * information.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.get(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   get(
-    representativeId: string,
-    params?: RepresentativeGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative>;
-  get(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
-  get(
-    representativeId: string,
-    params: RepresentativeGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
-    if (isRequestOptions(params)) {
-      return this.get(representativeId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/representatives/${representativeId}`, {
+    representativeID: string,
+    params: RepresentativeGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Representative> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/representatives/${representativeID}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -114,34 +173,35 @@ export class Representatives extends APIResource {
    * created. Supply the unique representative ID, and Straddle will return the
    * corresponding representative information, including sensitive details. This
    * endpoint requires additional authentication and should be used with caution.
+   *
+   * @example
+   * ```ts
+   * const representative =
+   *   await client.embed.representatives.unmask(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   unmask(
-    representativeId: string,
-    params?: RepresentativeUnmaskParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative>;
-  unmask(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
-  unmask(
-    representativeId: string,
-    params: RepresentativeUnmaskParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
-    if (isRequestOptions(params)) {
-      return this.unmask(representativeId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/representatives/${representativeId}/unmask`, {
+    representativeID: string,
+    params: RepresentativeUnmaskParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Representative> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/representatives/${representativeID}/unmask`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class RepresentativePagedDataPageNumberSchema extends PageNumberSchema<RepresentativePaged.Data> {}
+export type RepresentativePagedDataPageNumberSchema = PageNumberSchema<RepresentativePaged.Data>;
 
 export interface Representative {
   data: Representative.Data;
@@ -188,7 +248,7 @@ export namespace Representative {
     /**
      * The email address of the representative.
      */
-    email: string;
+    email: string | null;
 
     /**
      * The first name of the representative.
@@ -204,6 +264,8 @@ export namespace Representative {
      * The mobile phone number of the representative.
      */
     mobile_number: string;
+
+    name: string;
 
     relationship: Data.Relationship;
 
@@ -229,6 +291,14 @@ export namespace Representative {
      * cross-referencing between Straddle and your systems.
      */
     external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the represetative in a structured format.
+     */
+    metadata?: { [key: string]: string } | null;
+
+    phone?: string | null;
 
     /**
      * The unique identifier of the user account associated with this representative,
@@ -354,7 +424,7 @@ export namespace RepresentativePaged {
     /**
      * The email address of the representative.
      */
-    email: string;
+    email: string | null;
 
     /**
      * The first name of the representative.
@@ -370,6 +440,8 @@ export namespace RepresentativePaged {
      * The mobile phone number of the representative.
      */
     mobile_number: string;
+
+    name: string;
 
     relationship: Data.Relationship;
 
@@ -395,6 +467,14 @@ export namespace RepresentativePaged {
      * cross-referencing between Straddle and your systems.
      */
     external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the represetative in a structured format.
+     */
+    metadata?: { [key: string]: string } | null;
+
+    phone?: string | null;
 
     /**
      * The unique identifier of the user account associated with this representative,
@@ -524,10 +604,21 @@ export interface RepresentativeCreateParams {
   external_id?: string | null;
 
   /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the represetative in a structured format.
+   */
+  metadata?: { [key: string]: string } | null;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -616,10 +707,21 @@ export interface RepresentativeUpdateParams {
   external_id?: string | null;
 
   /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the represetative in a structured format.
+   */
+  metadata?: { [key: string]: string } | null;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -669,6 +771,11 @@ export interface RepresentativeListParams extends PageNumberSchemaParams {
    * Query param: The unique identifier of the account to list representatives for.
    */
   account_id?: string;
+
+  /**
+   * Query param:
+   */
+  level?: 'account' | 'platform';
 
   /**
    * Query param:
@@ -726,13 +833,11 @@ export interface RepresentativeUnmaskParams {
   'request-id'?: string;
 }
 
-Representatives.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
-
 export declare namespace Representatives {
   export {
     type Representative as Representative,
     type RepresentativePaged as RepresentativePaged,
-    RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
+    type RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,

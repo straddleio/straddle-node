@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Straddle from '@straddleio/straddle';
-import { Response } from 'node-fetch';
+import Straddle from '@straddlecom/straddle';
 
 const client = new Straddle({
   apiKey: 'My API Key',
@@ -20,13 +19,6 @@ describe('resource paykeys', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.paykeys.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Straddle.NotFoundError,
-    );
-  });
-
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -37,8 +29,37 @@ describe('resource paykeys', () => {
           page_size: 0,
           sort_by: 'institution_name',
           sort_order: 'asc',
+          source: ['bank_account'],
           status: ['pending'],
           'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('cancel', async () => {
+    const responsePromise = client.paykeys.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('cancel: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.paykeys.cancel(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          reason: 'reason',
+          'Correlation-Id': 'Correlation-Id',
+          'Idempotency-Key': 'xxxxxxxxxx',
           'Request-Id': 'Request-Id',
           'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
@@ -56,13 +77,6 @@ describe('resource paykeys', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('get: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.paykeys.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('get: request options and params are passed correctly', async () => {
@@ -91,13 +105,6 @@ describe('resource paykeys', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('reveal: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.paykeys.reveal('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
-  });
-
   test('reveal: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -113,8 +120,10 @@ describe('resource paykeys', () => {
     ).rejects.toThrow(Straddle.NotFoundError);
   });
 
-  test('unmasked', async () => {
-    const responsePromise = client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+  test('review: only required params', async () => {
+    const responsePromise = client.paykeys.review('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      status: 'active',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -124,11 +133,25 @@ describe('resource paykeys', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('unmasked: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
+  test('review: required and optional params', async () => {
+    const response = await client.paykeys.review('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      status: 'active',
+      'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
+      'Request-Id': 'Request-Id',
+      'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
+  test('unmasked', async () => {
+    const responsePromise = client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 
   test('unmasked: request options and params are passed correctly', async () => {

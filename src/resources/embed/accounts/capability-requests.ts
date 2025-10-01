@@ -1,39 +1,48 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../resource';
-import { isRequestOptions } from '../../../core';
-import * as Core from '../../../core';
+import { APIResource } from '../../../core/resource';
 import * as Shared from '../../shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
+import { APIPromise } from '../../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../../core/pagination';
+import { buildHeaders } from '../../../internal/headers';
+import { RequestOptions } from '../../../internal/request-options';
+import { path } from '../../../internal/utils/path';
 
 export class CapabilityRequests extends APIResource {
   /**
    * Submits a request to enable a specific capability for an account. Use this
    * endpoint to request additional features or services for an account.
+   *
+   * @example
+   * ```ts
+   * const capabilityRequestPagedV1 =
+   *   await client.embed.accounts.capabilityRequests.create(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   create(
-    accountId: string,
-    params?: CapabilityRequestCreateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CapabilityRequestPagedV1>;
-  create(accountId: string, options?: Core.RequestOptions): Core.APIPromise<CapabilityRequestPagedV1>;
-  create(
-    accountId: string,
-    params: CapabilityRequestCreateParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CapabilityRequestPagedV1> {
-    if (isRequestOptions(params)) {
-      return this.create(accountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.post(`/v1/accounts/${accountId}/capability_requests`, {
+    accountID: string,
+    params: CapabilityRequestCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CapabilityRequestPagedV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params ?? {};
+    return this._client.post(path`/v1/accounts/${accountID}/capability_requests`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -41,42 +50,42 @@ export class CapabilityRequests extends APIResource {
    * Retrieves a list of capability requests associated with an account. The requests
    * are returned sorted by creation date, with the most recent requests appearing
    * first. This endpoint supports advanced sorting and filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const capabilityRequest of client.embed.accounts.capabilityRequests.list(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * )) {
+   *   // ...
+   * }
+   * ```
    */
   list(
-    accountId: string,
-    params?: CapabilityRequestListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data>;
-  list(
-    accountId: string,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data>;
-  list(
-    accountId: string,
-    params: CapabilityRequestListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list(accountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
+    accountID: string,
+    params: CapabilityRequestListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
     return this._client.getAPIList(
-      `/v1/accounts/${accountId}/capability_requests`,
-      CapabilityRequestPagedV1DataPageNumberSchema,
+      path`/v1/accounts/${accountID}/capability_requests`,
+      PageNumberSchema<CapabilityRequestPagedV1.Data>,
       {
         query,
         ...options,
-        headers: {
-          ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-          ...(requestId != null ? { 'request-id': requestId } : undefined),
-          ...options?.headers,
-        },
+        headers: buildHeaders([
+          {
+            ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+            ...(requestID != null ? { 'request-id': requestID } : undefined),
+          },
+          options?.headers,
+        ]),
       },
     );
   }
 }
 
-export class CapabilityRequestPagedV1DataPageNumberSchema extends PageNumberSchema<CapabilityRequestPagedV1.Data> {}
+export type CapabilityRequestPagedV1DataPageNumberSchema = PageNumberSchema<CapabilityRequestPagedV1.Data>;
 
 export interface CapabilityRequestPagedV1 {
   data: Array<CapabilityRequestPagedV1.Data>;
@@ -141,7 +150,7 @@ export namespace CapabilityRequestPagedV1 {
     /**
      * Any specific settings or configurations related to the requested capability.
      */
-    settings?: Record<string, unknown> | null;
+    settings?: { [key: string]: unknown } | null;
   }
 }
 
@@ -183,6 +192,11 @@ export interface CapabilityRequestCreateParams {
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -320,13 +334,10 @@ export interface CapabilityRequestListParams extends PageNumberSchemaParams {
   'request-id'?: string;
 }
 
-CapabilityRequests.CapabilityRequestPagedV1DataPageNumberSchema =
-  CapabilityRequestPagedV1DataPageNumberSchema;
-
 export declare namespace CapabilityRequests {
   export {
     type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
-    CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
+    type CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };

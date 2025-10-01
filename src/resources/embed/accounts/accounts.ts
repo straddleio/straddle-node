@@ -1,8 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../resource';
-import { isRequestOptions } from '../../../core';
-import * as Core from '../../../core';
+import { APIResource } from '../../../core/resource';
 import * as AccountsAPI from './accounts';
 import * as Shared from '../../shared';
 import * as CapabilityRequestsAPI from './capability-requests';
@@ -13,7 +11,11 @@ import {
   CapabilityRequestPagedV1DataPageNumberSchema,
   CapabilityRequests,
 } from './capability-requests';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
+import { APIPromise } from '../../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../../core/pagination';
+import { buildHeaders } from '../../../internal/headers';
+import { RequestOptions } from '../../../internal/request-options';
+import { path } from '../../../internal/utils/path';
 
 export class Accounts extends APIResource {
   capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(
@@ -24,38 +26,76 @@ export class Accounts extends APIResource {
    * Creates a new account associated with your Straddle platform integration. This
    * endpoint allows you to set up an account with specified details, including
    * business information and access levels.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.create({
+   *   access_level: 'standard',
+   *   account_type: 'business',
+   *   business_profile: {
+   *     name: 'name',
+   *     website: 'https://example.com',
+   *   },
+   *   organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * });
+   * ```
    */
-  create(params: AccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<AccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+  create(params: AccountCreateParams, options?: RequestOptions): APIPromise<AccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
     return this._client.post('/v1/accounts', {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
   /**
    * Updates an existing account's information. This endpoint allows you to update
    * various account details during onboarding or after the account has been created.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     business_profile: {
+   *       name: 'name',
+   *       website: 'https://example.com',
+   *     },
+   *   },
+   * );
+   * ```
    */
-  update(
-    accountId: string,
-    params: AccountUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.put(`/v1/accounts/${accountId}`, {
+  update(accountID: string, params: AccountUpdateParams, options?: RequestOptions): APIPromise<AccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/accounts/${accountID}`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -64,30 +104,30 @@ export class Accounts extends APIResource {
    * The accounts are returned sorted by creation date, with the most recently
    * created accounts appearing first. This endpoint supports advanced sorting and
    * filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const account of client.embed.accounts.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
-    params?: AccountListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
-  list(
-    params: AccountListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/accounts', AccountPagedV1DataPageNumberSchema, {
+    params: AccountListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
+    return this._client.getAPIList('/v1/accounts', PageNumberSchema<AccountPagedV1.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -95,29 +135,29 @@ export class Accounts extends APIResource {
    * Retrieves the details of an account that has previously been created. Supply the
    * unique account ID that was returned from your previous request, and Straddle
    * will return the corresponding account information.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(
-    accountId: string,
-    params?: AccountGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1>;
-  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
-  get(
-    accountId: string,
-    params: AccountGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    if (isRequestOptions(params)) {
-      return this.get(accountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/accounts/${accountId}`, {
+    accountID: string,
+    params: AccountGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<AccountV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/accounts/${accountID}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -125,56 +165,80 @@ export class Accounts extends APIResource {
    * Initiates the onboarding process for a new account. This endpoint can only be
    * used for accounts where at least one representative and one bank account have
    * already been created.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.onboard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     terms_of_service: {
+   *       accepted_date: '2019-12-27T18:11:19.117Z',
+   *       agreement_type: 'embedded',
+   *       agreement_url: 'agreement_url',
+   *     },
+   *   },
+   * );
+   * ```
    */
-  onboard(
-    accountId: string,
-    params: AccountOnboardParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.post(`/v1/accounts/${accountId}/onboard`, {
+  onboard(accountID: string, params: AccountOnboardParams, options?: RequestOptions): APIPromise<AccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
+    return this._client.post(path`/v1/accounts/${accountID}/onboard`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
   /**
    * Simulate the status transitions for sandbox accounts. This endpoint can only be
    * used for sandbox accounts.
+   *
+   * @example
+   * ```ts
+   * const accountV1 = await client.embed.accounts.simulate(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   simulate(
-    accountId: string,
-    params?: AccountSimulateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1>;
-  simulate(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
-  simulate(
-    accountId: string,
-    params: AccountSimulateParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    if (isRequestOptions(params)) {
-      return this.simulate(accountId, {}, params);
-    }
-    const { final_status, 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.post(`/v1/accounts/${accountId}/simulate`, {
+    accountID: string,
+    params: AccountSimulateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<AccountV1> {
+    const {
+      final_status,
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+    } = params ?? {};
+    return this._client.post(path`/v1/accounts/${accountID}/simulate`, {
       query: { final_status },
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class AccountPagedV1DataPageNumberSchema extends PageNumberSchema<AccountPagedV1.Data> {}
+export type AccountPagedV1DataPageNumberSchema = PageNumberSchema<AccountPagedV1.Data>;
 
 export interface AccountPagedV1 {
   data: Array<AccountPagedV1.Data>;
@@ -246,7 +310,7 @@ export namespace AccountPagedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     settings?: Data.Settings;
 
@@ -475,7 +539,7 @@ export namespace AccountV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
 
     settings?: Data.Settings;
 
@@ -640,9 +704,29 @@ export namespace AccountV1 {
  */
 export interface AddressV1 {
   /**
+   * Primary address line (e.g., street, PO Box).
+   */
+  address1: string;
+
+  /**
    * City, district, suburb, town, or village.
    */
-  city?: string | null;
+  city: string | null;
+
+  /**
+   * Two-letter state code.
+   */
+  state: string | null;
+
+  /**
+   * Zip or postal code.
+   */
+  zip: string;
+
+  /**
+   * Secondary address line (e.g., apartment, suite, unit, or building).
+   */
+  address2?: string | null;
 
   /**
    * The country of the address, in ISO 3166-1 alpha-2 format.
@@ -663,11 +747,6 @@ export interface AddressV1 {
    * Postal or ZIP code.
    */
   postal_code?: string | null;
-
-  /**
-   * Two-letter state code.
-   */
-  state?: string | null;
 }
 
 export interface BusinessProfileV1 {
@@ -815,13 +894,18 @@ export interface AccountCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -845,13 +929,18 @@ export interface AccountUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -874,6 +963,16 @@ export interface AccountListParams extends PageNumberSchemaParams {
    * Query param: Sort Order. Default value: 'asc'.
    */
   sort_order?: 'asc' | 'desc';
+
+  /**
+   * Query param:
+   */
+  status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+
+  /**
+   * Query param:
+   */
+  type?: 'business';
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -912,6 +1011,11 @@ export interface AccountOnboardParams {
   'correlation-id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
@@ -930,14 +1034,17 @@ export interface AccountSimulateParams {
   'correlation-id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
 }
 
-Accounts.AccountPagedV1DataPageNumberSchema = AccountPagedV1DataPageNumberSchema;
 Accounts.CapabilityRequests = CapabilityRequests;
-Accounts.CapabilityRequestPagedV1DataPageNumberSchema = CapabilityRequestPagedV1DataPageNumberSchema;
 
 export declare namespace Accounts {
   export {
@@ -949,7 +1056,7 @@ export declare namespace Accounts {
     type IndustryV1 as IndustryV1,
     type SupportChannelsV1 as SupportChannelsV1,
     type TermsOfServiceV1 as TermsOfServiceV1,
-    AccountPagedV1DataPageNumberSchema as AccountPagedV1DataPageNumberSchema,
+    type AccountPagedV1DataPageNumberSchema as AccountPagedV1DataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
     type AccountUpdateParams as AccountUpdateParams,
     type AccountListParams as AccountListParams,
@@ -961,7 +1068,7 @@ export declare namespace Accounts {
   export {
     CapabilityRequests as CapabilityRequests,
     type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
-    CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
+    type CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };

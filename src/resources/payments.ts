@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIResource } from '../core/resource';
 import * as Shared from './shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../core/pagination';
+import { buildHeaders } from '../internal/headers';
+import { RequestOptions } from '../internal/request-options';
 
 export class Payments extends APIResource {
   /**
@@ -12,39 +12,31 @@ export class Payments extends APIResource {
    * criteria. This endpoint supports advanced sorting and filtering options.
    */
   list(
-    params?: PaymentListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data>;
-  list(
-    params: PaymentListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
+    params: PaymentListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...query
-    } = params;
-    return this._client.getAPIList('/v1/payments', PaymentSummaryPagedV1DataPageNumberSchema, {
+    } = params ?? {};
+    return this._client.getAPIList('/v1/payments', PageNumberSchema<PaymentSummaryPagedV1.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class PaymentSummaryPagedV1DataPageNumberSchema extends PageNumberSchema<PaymentSummaryPagedV1.Data> {}
+export type PaymentSummaryPagedV1DataPageNumberSchema = PageNumberSchema<PaymentSummaryPagedV1.Data>;
 
 export interface PaymentSummaryPagedV1 {
   data: Array<PaymentSummaryPagedV1.Data>;
@@ -95,6 +87,11 @@ export namespace PaymentSummaryPagedV1 {
      * be unique across all charges or payouts.
      */
     external_id: string;
+
+    /**
+     * Funding ids.
+     */
+    funding_ids: Array<string>;
 
     /**
      * Value of the `paykey` used for the `charge` or `payout`.
@@ -311,6 +308,37 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   sort_order?: 'asc' | 'desc';
 
   /**
+   * Query param: Reason for latest payment status change.
+   */
+  status_reason?: Array<
+    | 'insufficient_funds'
+    | 'closed_bank_account'
+    | 'invalid_bank_account'
+    | 'invalid_routing'
+    | 'disputed'
+    | 'payment_stopped'
+    | 'owner_deceased'
+    | 'frozen_bank_account'
+    | 'risk_review'
+    | 'fraudulent'
+    | 'duplicate_entry'
+    | 'invalid_paykey'
+    | 'payment_blocked'
+    | 'amount_too_large'
+    | 'too_many_attempts'
+    | 'internal_system_error'
+    | 'user_request'
+    | 'ok'
+    | 'other_network_return'
+    | 'payout_refused'
+  >;
+
+  /**
+   * Query param: Source of latest payment status change.
+   */
+  status_source?: Array<'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'>;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
@@ -328,12 +356,10 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   'Straddle-Account-Id'?: string;
 }
 
-Payments.PaymentSummaryPagedV1DataPageNumberSchema = PaymentSummaryPagedV1DataPageNumberSchema;
-
 export declare namespace Payments {
   export {
     type PaymentSummaryPagedV1 as PaymentSummaryPagedV1,
-    PaymentSummaryPagedV1DataPageNumberSchema as PaymentSummaryPagedV1DataPageNumberSchema,
+    type PaymentSummaryPagedV1DataPageNumberSchema as PaymentSummaryPagedV1DataPageNumberSchema,
     type PaymentListParams as PaymentListParams,
   };
 }

@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Straddle from '@straddleio/straddle';
-import { Response } from 'node-fetch';
+import Straddle from '@straddlecom/straddle';
 
 const client = new Straddle({
   apiKey: 'My API Key',
@@ -23,7 +22,9 @@ describe('resource bridge', () => {
   test('initialize: required and optional params', async () => {
     const response = await client.bridge.initialize({
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      config: { sandbox_outcome: 'standard' },
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });

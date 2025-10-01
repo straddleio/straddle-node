@@ -1,10 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
+import { APIPromise } from '../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
+import { buildHeaders } from '../../internal/headers';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
 
 export class LinkedBankAccounts extends APIResource {
   /**
@@ -12,20 +14,38 @@ export class LinkedBankAccounts extends APIResource {
    * endpoint allows you to associate external bank accounts with a Straddle account
    * for various payment operations such as payment deposits, payout withdrawals, and
    * more.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.create({
+   *     account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     bank_account: {
+   *       account_holder: 'account_holder',
+   *       account_number: 'account_number',
+   *       routing_number: 'xxxxxxxxx',
+   *     },
+   *   });
+   * ```
    */
-  create(
-    params: LinkedBankAccountCreateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+  create(params: LinkedBankAccountCreateParams, options?: RequestOptions): APIPromise<LinkedBankAccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
     return this._client.post('/v1/linked_bank_accounts', {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -34,21 +54,44 @@ export class LinkedBankAccounts extends APIResource {
    * update account details during onboarding or to update metadata associated with
    * the linked account. The linked bank account must be in 'created' or 'onboarding'
    * status.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     {
+   *       bank_account: {
+   *         account_holder: 'account_holder',
+   *         account_number: 'account_number',
+   *         routing_number: 'xxxxxxxxx',
+   *       },
+   *     },
+   *   );
+   * ```
    */
   update(
-    linkedBankAccountId: string,
+    linkedBankAccountID: string,
     params: LinkedBankAccountUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.put(`/v1/linked_bank_accounts/${linkedBankAccountId}`, {
+    options?: RequestOptions,
+  ): APIPromise<LinkedBankAccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/linked_bank_accounts/${linkedBankAccountID}`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -57,30 +100,70 @@ export class LinkedBankAccounts extends APIResource {
    * linked bank accounts are returned sorted by creation date, with the most
    * recently created appearing first. This endpoint supports pagination to handle
    * accounts with multiple linked bank accounts.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const linkedBankAccount of client.embed.linkedBankAccounts.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
-    params?: LinkedBankAccountListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data>;
-  list(
-    params: LinkedBankAccountListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/linked_bank_accounts', LinkedBankAccountPagedV1DataPageNumberSchema, {
-      query,
-      ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
+    params: LinkedBankAccountListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
+    return this._client.getAPIList(
+      '/v1/linked_bank_accounts',
+      PageNumberSchema<LinkedBankAccountPagedV1.Data>,
+      {
+        query,
+        ...options,
+        headers: buildHeaders([
+          {
+            ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+            ...(requestID != null ? { 'request-id': requestID } : undefined),
+          },
+          options?.headers,
+        ]),
       },
+    );
+  }
+
+  /**
+   * Cancels an existing linked bank account. This can be used to cancel a linked
+   * bank account before it has been reviewed. The linked bank account must be in
+   * 'created' status.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.cancel(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  cancel(
+    linkedBankAccountID: string,
+    params: LinkedBankAccountCancelParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<LinkedBankAccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+    } = params ?? {};
+    return this._client.patch(path`/v1/linked_bank_accounts/${linkedBankAccountID}/cancel`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -89,29 +172,30 @@ export class LinkedBankAccounts extends APIResource {
    * Supply the unique linked bank account `id`, and Straddle will return the
    * corresponding information. The response includes masked account details for
    * security purposes.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountV1 =
+   *   await client.embed.linkedBankAccounts.get(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   get(
-    linkedBankAccountId: string,
-    params?: LinkedBankAccountGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountV1>;
-  get(linkedBankAccountId: string, options?: Core.RequestOptions): Core.APIPromise<LinkedBankAccountV1>;
-  get(
-    linkedBankAccountId: string,
-    params: LinkedBankAccountGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountV1> {
-    if (isRequestOptions(params)) {
-      return this.get(linkedBankAccountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/linked_bank_accounts/${linkedBankAccountId}`, {
+    linkedBankAccountID: string,
+    params: LinkedBankAccountGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<LinkedBankAccountV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/linked_bank_accounts/${linkedBankAccountID}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -121,37 +205,35 @@ export class LinkedBankAccounts extends APIResource {
    * the corresponding information, including sensitive details. This endpoint needs
    * to be enabled by Straddle for your account and should only be used when
    * absolutely necessary.
+   *
+   * @example
+   * ```ts
+   * const linkedBankAccountUnmaskV1 =
+   *   await client.embed.linkedBankAccounts.unmask(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   unmask(
-    linkedBankAccountId: string,
-    params?: LinkedBankAccountUnmaskParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountUnmaskV1>;
-  unmask(
-    linkedBankAccountId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountUnmaskV1>;
-  unmask(
-    linkedBankAccountId: string,
-    params: LinkedBankAccountUnmaskParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<LinkedBankAccountUnmaskV1> {
-    if (isRequestOptions(params)) {
-      return this.unmask(linkedBankAccountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/linked_bank_accounts/${linkedBankAccountId}/unmask`, {
+    linkedBankAccountID: string,
+    params: LinkedBankAccountUnmaskParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<LinkedBankAccountUnmaskV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/linked_bank_accounts/${linkedBankAccountID}/unmask`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class LinkedBankAccountPagedV1DataPageNumberSchema extends PageNumberSchema<LinkedBankAccountPagedV1.Data> {}
+export type LinkedBankAccountPagedV1DataPageNumberSchema = PageNumberSchema<LinkedBankAccountPagedV1.Data>;
 
 export interface LinkedBankAccountPagedV1 {
   data: Array<LinkedBankAccountPagedV1.Data>;
@@ -184,7 +266,7 @@ export namespace LinkedBankAccountPagedV1 {
     /**
      * The unique identifier of the Straddle account related to this bank account.
      */
-    account_id: string;
+    account_id: string | null;
 
     bank_account: Data.BankAccount;
 
@@ -194,9 +276,14 @@ export namespace LinkedBankAccountPagedV1 {
     created_at: string;
 
     /**
+     * The purposes for the linked bank account.
+     */
+    purposes: Array<'charges' | 'payouts' | 'billing'>;
+
+    /**
      * The current status of the linked bank account.
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled';
 
     status_detail: Data.StatusDetail;
 
@@ -206,10 +293,20 @@ export namespace LinkedBankAccountPagedV1 {
     updated_at: string;
 
     /**
+     * Optional description for the bank account.
+     */
+    description?: string | null;
+
+    /**
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the linked bank account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
+
+    /**
+     * The unique identifier of the Straddle Platform relatd to this bank account.
+     */
+    platform_id?: string | null;
   }
 
   export namespace Data {
@@ -303,7 +400,7 @@ export namespace LinkedBankAccountUnmaskV1 {
     /**
      * The current status of the linked bank account.
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled';
 
     /**
      * Additional details about the current status of the linked bank account.
@@ -315,7 +412,7 @@ export namespace LinkedBankAccountUnmaskV1 {
      */
     updated_at: string;
 
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
   }
 
   export namespace Data {
@@ -400,7 +497,7 @@ export namespace LinkedBankAccountV1 {
     /**
      * The unique identifier of the Straddle account related to this bank account.
      */
-    account_id: string;
+    account_id: string | null;
 
     bank_account: Data.BankAccount;
 
@@ -410,9 +507,14 @@ export namespace LinkedBankAccountV1 {
     created_at: string;
 
     /**
+     * The purposes for the linked bank account.
+     */
+    purposes: Array<'charges' | 'payouts' | 'billing'>;
+
+    /**
      * The current status of the linked bank account.
      */
-    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
+    status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled';
 
     status_detail: Data.StatusDetail;
 
@@ -422,10 +524,20 @@ export namespace LinkedBankAccountV1 {
     updated_at: string;
 
     /**
+     * Optional description for the bank account.
+     */
+    description?: string | null;
+
+    /**
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the linked bank account in a structured format.
      */
-    metadata?: Record<string, string | null> | null;
+    metadata?: { [key: string]: string | null } | null;
+
+    /**
+     * The unique identifier of the Straddle Platform relatd to this bank account.
+     */
+    platform_id?: string | null;
   }
 
   export namespace Data {
@@ -479,7 +591,7 @@ export interface LinkedBankAccountCreateParams {
    * Body param: The unique identifier of the Straddle account to associate this bank
    * account with.
    */
-  account_id: string;
+  account_id: string | null;
 
   /**
    * Body param:
@@ -487,16 +599,37 @@ export interface LinkedBankAccountCreateParams {
   bank_account: LinkedBankAccountCreateParams.BankAccount;
 
   /**
+   * Body param: Optional description for the bank account.
+   */
+  description?: string | null;
+
+  /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the linked bank account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
+
+  /**
+   * Body param: The unique identifier of the Straddle Platform to associate this
+   * bank account with.
+   */
+  platform_id?: string | null;
+
+  /**
+   * Body param: The purposes for the linked bank account.
+   */
+  purposes?: Array<'charges' | 'payouts' | 'billing'> | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -534,13 +667,18 @@ export interface LinkedBankAccountUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the linked bank account in a structured format.
    */
-  metadata?: Record<string, string | null> | null;
+  metadata?: { [key: string]: string | null } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -575,6 +713,11 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
   account_id?: string;
 
   /**
+   * Query param:
+   */
+  level?: 'account' | 'platform';
+
+  /**
    * Query param: Sort By.
    */
   sort_by?: string;
@@ -592,6 +735,23 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'request-id'?: string;
+}
+
+export interface LinkedBankAccountCancelParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'correlation-id'?: string;
+
+  /**
+   * Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
 }
@@ -620,18 +780,16 @@ export interface LinkedBankAccountUnmaskParams {
   'request-id'?: string;
 }
 
-LinkedBankAccounts.LinkedBankAccountPagedV1DataPageNumberSchema =
-  LinkedBankAccountPagedV1DataPageNumberSchema;
-
 export declare namespace LinkedBankAccounts {
   export {
     type LinkedBankAccountPagedV1 as LinkedBankAccountPagedV1,
     type LinkedBankAccountUnmaskV1 as LinkedBankAccountUnmaskV1,
     type LinkedBankAccountV1 as LinkedBankAccountV1,
-    LinkedBankAccountPagedV1DataPageNumberSchema as LinkedBankAccountPagedV1DataPageNumberSchema,
+    type LinkedBankAccountPagedV1DataPageNumberSchema as LinkedBankAccountPagedV1DataPageNumberSchema,
     type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
     type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
+    type LinkedBankAccountCancelParams as LinkedBankAccountCancelParams,
     type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
     type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
   };

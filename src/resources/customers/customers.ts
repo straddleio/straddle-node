@@ -1,8 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../core/resource';
 import * as CustomersAPI from './customers';
 import * as Shared from '../shared';
 import * as ReviewAPI from './review';
@@ -13,7 +11,11 @@ import {
   ReviewDecisionParams,
   ReviewGetParams,
 } from './review';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
+import { APIPromise } from '../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
+import { buildHeaders } from '../../internal/headers';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
 
 export class Customers extends APIResource {
   review: ReviewAPI.Review = new ReviewAPI.Review(this._client);
@@ -22,50 +24,79 @@ export class Customers extends APIResource {
    * Creates a new customer record and automatically initiates identity, fraud, and
    * risk assessment scores. This endpoint allows you to create a customer profile
    * and associate it with paykeys and payments.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.create({
+   *   device: { ip_address: '192.168.1.1' },
+   *   email: 'ron.swanson@pawnee.com',
+   *   name: 'Ron Swanson',
+   *   phone: '+12128675309',
+   *   type: 'individual',
+   * });
+   * ```
    */
-  create(params: CustomerCreateParams, options?: Core.RequestOptions): Core.APIPromise<CustomerV1> {
+  create(params: CustomerCreateParams, options?: RequestOptions): APIPromise<CustomerV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params;
     return this._client.post('/v1/customers', {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
   /**
    * Updates an existing customer's information. This endpoint allows you to modify
    * the customer's contact details, PII, and metadata.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     device: { ip_address: '192.168.1.1' },
+   *     email: 'dev@stainless.com',
+   *     name: 'name',
+   *     phone: '+46991022',
+   *     status: 'pending',
+   *   },
+   * );
+   * ```
    */
-  update(
-    id: string,
-    params: CustomerUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerV1> {
+  update(id: string, params: CustomerUpdateParams, options?: RequestOptions): APIPromise<CustomerV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params;
-    return this._client.put(`/v1/customers/${id}`, {
+    return this._client.put(path`/v1/customers/${id}`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -74,36 +105,36 @@ export class Customers extends APIResource {
    * parameters are optional. If none are provided, the response will include all
    * customers connected to your account. This endpoint supports advanced sorting and
    * filtering options.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const customer of client.customers.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
-    params?: CustomerListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<CustomerSummaryPagedV1DataPageNumberSchema, CustomerSummaryPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<CustomerSummaryPagedV1DataPageNumberSchema, CustomerSummaryPagedV1.Data>;
-  list(
-    params: CustomerListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<CustomerSummaryPagedV1DataPageNumberSchema, CustomerSummaryPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
+    params: CustomerListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<CustomerSummaryPagedV1DataPageNumberSchema, CustomerSummaryPagedV1.Data> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...query
-    } = params;
-    return this._client.getAPIList('/v1/customers', CustomerSummaryPagedV1DataPageNumberSchema, {
+    } = params ?? {};
+    return this._client.getAPIList('/v1/customers', PageNumberSchema<CustomerSummaryPagedV1.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -111,34 +142,36 @@ export class Customers extends APIResource {
    * Permanently removes a customer record from Straddle. This action cannot be
    * undone and should only be used to satisfy regulatory requirements or for privacy
    * compliance.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     id: string,
-    params?: CustomerDeleteParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerV1>;
-  delete(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
-  delete(
-    id: string,
-    params: CustomerDeleteParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerV1> {
-    if (isRequestOptions(params)) {
-      return this.delete(id, {}, params);
-    }
+    params: CustomerDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.delete(`/v1/customers/${id}`, {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.delete(path`/v1/customers/${id}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -146,30 +179,34 @@ export class Customers extends APIResource {
    * Retrieves the details of an existing customer. Supply the unique customer ID
    * that was returned from your 'create customer' request, and Straddle will return
    * the corresponding customer information.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
-  get(id: string, params?: CustomerGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
   get(
     id: string,
-    params: CustomerGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerV1> {
-    if (isRequestOptions(params)) {
-      return this.get(id, {}, params);
-    }
+    params: CustomerGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/customers/${id}`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/customers/${id}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -177,34 +214,36 @@ export class Customers extends APIResource {
    * Updates the decision of a customer's identity validation. This endpoint allows
    * you to modify the outcome of a customer decision and is useful for correcting or
    * updating the status of a customer's verification.
+   *
+   * @example
+   * ```ts
+   * const customerV1 = await client.customers.refreshReview(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   refreshReview(
     id: string,
-    params?: CustomerRefreshReviewParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerV1>;
-  refreshReview(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerV1>;
-  refreshReview(
-    id: string,
-    params: CustomerRefreshReviewParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerV1> {
-    if (isRequestOptions(params)) {
-      return this.refreshReview(id, {}, params);
-    }
+    params: CustomerRefreshReviewParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.put(`/v1/customers/${id}/refresh_review`, {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.put(path`/v1/customers/${id}/refresh_review`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -214,39 +253,39 @@ export class Customers extends APIResource {
    * and Straddle will return the corresponding customer information. This endpoint
    * needs to be enabled by Straddle and should only be used when absolutely
    * necessary.
+   *
+   * @example
+   * ```ts
+   * const customerUnmaskedV1 = await client.customers.unmasked(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   unmasked(
     id: string,
-    params?: CustomerUnmaskedParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerUnmaskedV1>;
-  unmasked(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerUnmaskedV1>;
-  unmasked(
-    id: string,
-    params: CustomerUnmaskedParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerUnmaskedV1> {
-    if (isRequestOptions(params)) {
-      return this.unmasked(id, {}, params);
-    }
+    params: CustomerUnmaskedParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerUnmaskedV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/customers/${id}/unmasked`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/customers/${id}/unmasked`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class CustomerSummaryPagedV1DataPageNumberSchema extends PageNumberSchema<CustomerSummaryPagedV1.Data> {}
+export type CustomerSummaryPagedV1DataPageNumberSchema = PageNumberSchema<CustomerSummaryPagedV1.Data>;
 
 /**
  * An object containing the customer's address. This is optional, but if provided,
@@ -448,6 +487,8 @@ export namespace CustomerUnmaskedV1 {
      */
     compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
 
+    config?: Data.Config;
+
     device?: CustomersAPI.DeviceUnmaskedV1;
 
     /**
@@ -460,7 +501,7 @@ export namespace CustomerUnmaskedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the customer in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
   }
 
   export namespace Data {
@@ -498,9 +539,31 @@ export namespace CustomerUnmaskedV1 {
       legal_business_name: string | null;
 
       /**
+       * A list of people related to the company. Only valid where customer type is
+       * 'business'.
+       */
+      representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+      /**
        * Official business website URL. Optional but recommended for enhanced KYB.
        */
       website?: string | null;
+    }
+
+    export namespace BusinessComplianceProfile {
+      export interface Representative {
+        name: string;
+
+        email?: string | null;
+
+        phone?: string | null;
+      }
+    }
+
+    export interface Config {
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
     }
   }
 }
@@ -572,6 +635,8 @@ export namespace CustomerV1 {
      */
     compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
 
+    config?: Data.Config;
+
     device?: Data.Device;
 
     /**
@@ -584,7 +649,7 @@ export namespace CustomerV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the customer in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
   }
 
   export namespace Data {
@@ -620,9 +685,31 @@ export namespace CustomerV1 {
       legal_business_name: string | null;
 
       /**
+       * A list of people related to the company. Only valid where customer type is
+       * 'business'.
+       */
+      representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+      /**
        * Official business website URL. Optional but recommended for enhanced KYB.
        */
       website?: string | null;
+    }
+
+    export namespace BusinessComplianceProfile {
+      export interface Representative {
+        name: string;
+
+        email?: string | null;
+
+        phone?: string | null;
+      }
+    }
+
+    export interface Config {
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
     }
 
     export interface Device {
@@ -687,6 +774,11 @@ export interface CustomerCreateParams {
     | null;
 
   /**
+   * Body param:
+   */
+  config?: CustomerCreateParams.Config;
+
+  /**
    * Body param: Unique identifier for the customer in your database, used for
    * cross-referencing between Straddle and your systems.
    */
@@ -696,13 +788,18 @@ export interface CustomerCreateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the customer in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -751,9 +848,31 @@ export namespace CustomerCreateParams {
     legal_business_name: string | null;
 
     /**
+     * A list of people related to the company. Only valid where customer type is
+     * 'business'.
+     */
+    representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+    /**
      * Official business website URL. Optional but recommended for enhanced KYB.
      */
     website?: string | null;
+  }
+
+  export namespace BusinessComplianceProfile {
+    export interface Representative {
+      name: string;
+
+      email?: string | null;
+
+      phone?: string | null;
+    }
+  }
+
+  export interface Config {
+    processing_method?: 'inline' | 'background' | 'skip';
+
+    sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
   }
 }
 
@@ -808,13 +927,18 @@ export interface CustomerUpdateParams {
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the customer in a structured format.
    */
-  metadata?: Record<string, string> | null;
+  metadata?: { [key: string]: string } | null;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -863,9 +987,25 @@ export namespace CustomerUpdateParams {
     legal_business_name: string | null;
 
     /**
+     * A list of people related to the company. Only valid where customer type is
+     * 'business'.
+     */
+    representatives?: Array<BusinessComplianceProfile.Representative> | null;
+
+    /**
      * Official business website URL. Optional but recommended for enhanced KYB.
      */
     website?: string | null;
+  }
+
+  export namespace BusinessComplianceProfile {
+    export interface Representative {
+      name: string;
+
+      email?: string | null;
+
+      phone?: string | null;
+    }
   }
 }
 
@@ -945,6 +1085,11 @@ export interface CustomerDeleteParams {
   'Correlation-Id'?: string;
 
   /**
+   * Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -979,6 +1124,11 @@ export interface CustomerRefreshReviewParams {
   'Correlation-Id'?: string;
 
   /**
+   * Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
    * Optional client generated identifier to trace and debug a request.
    */
   'Request-Id'?: string;
@@ -1006,7 +1156,6 @@ export interface CustomerUnmaskedParams {
   'Straddle-Account-Id'?: string;
 }
 
-Customers.CustomerSummaryPagedV1DataPageNumberSchema = CustomerSummaryPagedV1DataPageNumberSchema;
 Customers.Review = Review;
 
 export declare namespace Customers {
@@ -1016,7 +1165,7 @@ export declare namespace Customers {
     type CustomerUnmaskedV1 as CustomerUnmaskedV1,
     type CustomerV1 as CustomerV1,
     type DeviceUnmaskedV1 as DeviceUnmaskedV1,
-    CustomerSummaryPagedV1DataPageNumberSchema as CustomerSummaryPagedV1DataPageNumberSchema,
+    type CustomerSummaryPagedV1DataPageNumberSchema as CustomerSummaryPagedV1DataPageNumberSchema,
     type CustomerCreateParams as CustomerCreateParams,
     type CustomerUpdateParams as CustomerUpdateParams,
     type CustomerListParams as CustomerListParams,

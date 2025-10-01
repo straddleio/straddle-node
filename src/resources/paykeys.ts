@@ -1,10 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIResource } from '../core/resource';
 import * as Shared from './shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../pagination';
+import { APIPromise } from '../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../core/pagination';
+import { buildHeaders } from '../internal/headers';
+import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class Paykeys extends APIResource {
   /**
@@ -12,34 +14,53 @@ export class Paykeys extends APIResource {
    * supports advanced sorting and filtering options.
    */
   list(
-    params?: PaykeyListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<PaykeySummaryPagedV1DataPageNumberSchema, PaykeySummaryPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<PaykeySummaryPagedV1DataPageNumberSchema, PaykeySummaryPagedV1.Data>;
-  list(
-    params: PaykeyListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<PaykeySummaryPagedV1DataPageNumberSchema, PaykeySummaryPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
+    params: PaykeyListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<PaykeySummaryPagedV1DataPageNumberSchema, PaykeySummaryPagedV1.Data> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...query
-    } = params;
-    return this._client.getAPIList('/v1/paykeys', PaykeySummaryPagedV1DataPageNumberSchema, {
+    } = params ?? {};
+    return this._client.getAPIList('/v1/paykeys', PageNumberSchema<PaykeySummaryPagedV1.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  cancel(
+    id: string,
+    params: PaykeyCancelParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params ?? {};
+    return this._client.put(path`/v1/paykeys/${id}/cancel`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -48,29 +69,26 @@ export class Paykeys extends APIResource {
    * Straddle will return the corresponding paykey record , including the `paykey`
    * token value and masked bank account details.
    */
-  get(id: string, params?: PaykeyGetParams, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<PaykeyV1>;
   get(
     id: string,
-    params: PaykeyGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeyV1> {
-    if (isRequestOptions(params)) {
-      return this.get(id, {}, params);
-    }
+    params: PaykeyGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/paykeys/${id}`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/paykeys/${id}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -82,31 +100,50 @@ export class Paykeys extends APIResource {
    */
   reveal(
     id: string,
-    params?: PaykeyRevealParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeyRevealResponse>;
-  reveal(id: string, options?: Core.RequestOptions): Core.APIPromise<PaykeyRevealResponse>;
-  reveal(
-    id: string,
-    params: PaykeyRevealParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeyRevealResponse> {
-    if (isRequestOptions(params)) {
-      return this.reveal(id, {}, params);
-    }
+    params: PaykeyRevealParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyRevealResponse> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/paykeys/${id}/reveal`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/paykeys/${id}/reveal`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Update the status of a paykey when in review status
+   */
+  review(id: string, params: PaykeyReviewParams, options?: RequestOptions): APIPromise<PaykeyV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.patch(path`/v1/paykeys/${id}/review`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -118,36 +155,29 @@ export class Paykeys extends APIResource {
    */
   unmasked(
     id: string,
-    params?: PaykeyUnmaskedParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeyUnmaskedV1>;
-  unmasked(id: string, options?: Core.RequestOptions): Core.APIPromise<PaykeyUnmaskedV1>;
-  unmasked(
-    id: string,
-    params: PaykeyUnmaskedParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PaykeyUnmaskedV1> {
-    if (isRequestOptions(params)) {
-      return this.unmasked(id, {}, params);
-    }
+    params: PaykeyUnmaskedParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyUnmaskedV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/paykeys/${id}/unmasked`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/paykeys/${id}/unmasked`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class PaykeySummaryPagedV1DataPageNumberSchema extends PageNumberSchema<PaykeySummaryPagedV1.Data> {}
+export type PaykeySummaryPagedV1DataPageNumberSchema = PageNumberSchema<PaykeySummaryPagedV1.Data>;
 
 export interface PaykeySummaryPagedV1 {
   data: Array<PaykeySummaryPagedV1.Data>;
@@ -173,6 +203,8 @@ export namespace PaykeySummaryPagedV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -190,9 +222,9 @@ export namespace PaykeySummaryPagedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -220,6 +252,10 @@ export namespace PaykeySummaryPagedV1 {
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -237,21 +273,43 @@ export namespace PaykeySummaryPagedV1 {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 
@@ -324,6 +382,8 @@ export namespace PaykeyUnmaskedV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -340,14 +400,16 @@ export namespace PaykeyUnmaskedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -370,12 +432,30 @@ export namespace PaykeyUnmaskedV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * The bank account number
@@ -392,21 +472,43 @@ export namespace PaykeyUnmaskedV1 {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 }
@@ -438,6 +540,8 @@ export namespace PaykeyV1 {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -454,14 +558,16 @@ export namespace PaykeyV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -484,12 +590,30 @@ export namespace PaykeyV1 {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -507,21 +631,43 @@ export namespace PaykeyV1 {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 }
@@ -553,6 +699,8 @@ export namespace PaykeyRevealResponse {
      */
     id: string;
 
+    config: Data.Config;
+
     /**
      * Timestamp of when the paykey was created.
      */
@@ -570,14 +718,16 @@ export namespace PaykeyRevealResponse {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
 
     /**
      * Timestamp of the most recent update to the paykey.
      */
     updated_at: string;
+
+    balance?: Data.Balance;
 
     bank_data?: Data.BankData;
 
@@ -600,12 +750,30 @@ export namespace PaykeyRevealResponse {
      * Up to 20 additional user-defined key-value pairs. Useful for storing additional
      * information about the paykey in a structured format.
      */
-    metadata?: Record<string, string> | null;
+    metadata?: { [key: string]: string } | null;
 
     status_details?: Data.StatusDetails;
   }
 
   export namespace Data {
+    export interface Config {
+      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    }
+
+    export interface Balance {
+      status: 'pending' | 'completed' | 'failed';
+
+      /**
+       * Account Balance when last retrieved
+       */
+      account_balance?: number | null;
+
+      /**
+       * Last time account balance was updated.
+       */
+      updated_at?: string | null;
+    }
+
     export interface BankData {
       /**
        * Bank account number. This value is masked by default for security reasons. Use
@@ -623,21 +791,43 @@ export namespace PaykeyRevealResponse {
 
     export interface StatusDetails {
       /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
        * A human-readable description of the current status.
        */
       message: string;
 
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason: string;
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
+       * The status code if applicable.
        */
-      source: string;
+      code?: string | null;
     }
   }
 }
@@ -659,15 +849,49 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   sort_order?: 'asc' | 'desc';
 
   /**
+   * Query param: Filter paykeys by their source.
+   */
+  source?: Array<'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'>;
+
+  /**
    * Query param: Filter paykeys by their current status.
    */
-  status?: Array<'pending' | 'active' | 'inactive' | 'rejected'>;
+  status?: Array<'pending' | 'active' | 'inactive' | 'rejected' | 'review'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
+export interface PaykeyCancelParams {
+  /**
+   * Body param:
+   */
+  reason?: string | null;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -715,6 +939,35 @@ export interface PaykeyRevealParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface PaykeyReviewParams {
+  /**
+   * Body param:
+   */
+  status: 'active' | 'rejected';
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export interface PaykeyUnmaskedParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -732,18 +985,18 @@ export interface PaykeyUnmaskedParams {
   'Straddle-Account-Id'?: string;
 }
 
-Paykeys.PaykeySummaryPagedV1DataPageNumberSchema = PaykeySummaryPagedV1DataPageNumberSchema;
-
 export declare namespace Paykeys {
   export {
     type PaykeySummaryPagedV1 as PaykeySummaryPagedV1,
     type PaykeyUnmaskedV1 as PaykeyUnmaskedV1,
     type PaykeyV1 as PaykeyV1,
     type PaykeyRevealResponse as PaykeyRevealResponse,
-    PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
+    type PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
     type PaykeyListParams as PaykeyListParams,
+    type PaykeyCancelParams as PaykeyCancelParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
+    type PaykeyReviewParams as PaykeyReviewParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
   };
 }
