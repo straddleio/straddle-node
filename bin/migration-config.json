@@ -1,6 +1,6 @@
 {
-  "pkg": "@straddleio/straddle",
-  "githubRepo": "https://github.com/stainless-sdks/straddle-typescript",
+  "pkg": "@straddlecom/straddle",
+  "githubRepo": "https://github.com/straddleio/straddle-node",
   "clientClass": "Straddle",
   "methods": []
 }

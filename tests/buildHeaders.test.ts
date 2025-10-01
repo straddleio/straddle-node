@@ -1,5 +1,5 @@
 import { inspect } from 'node:util';
-import { buildHeaders, type HeadersLike, type NullableHeaders } from '@straddleio/straddle/internal/headers';
+import { buildHeaders, type HeadersLike, type NullableHeaders } from '@straddlecom/straddle/internal/headers';
 
 function inspectNullableHeaders(headers: NullableHeaders) {
   return `NullableHeaders {${[
