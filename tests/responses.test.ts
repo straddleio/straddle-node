@@ -1,5 +1,5 @@
-import { createResponseHeaders } from '@straddleio/straddle/core';
-import { Headers } from '@straddleio/straddle/_shims/index';
+import { createResponseHeaders } from '@straddlecom/straddle/core';
+import { Headers } from '@straddlecom/straddle/_shims/index';
 
 describe('response parsing', () => {
   // TODO: test unicode characters

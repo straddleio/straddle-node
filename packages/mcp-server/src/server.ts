@@ -9,8 +9,8 @@ import {
   Implementation,
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
-import { ClientOptions } from '@straddleio/straddle';
-import Straddle from '@straddleio/straddle';
+import { ClientOptions } from '@straddlecom/straddle';
+import Straddle from '@straddlecom/straddle';
 import {
   applyCompatibilityTransformations,
   ClientCapabilities,
@@ -26,13 +26,13 @@ import { McpOptions } from './options';
 export { McpOptions } from './options';
 export { ClientType } from './compat';
 export { Filter } from './tools';
-export { ClientOptions } from '@straddleio/straddle';
+export { ClientOptions } from '@straddlecom/straddle';
 export { endpoints } from './tools';
 
 export const newMcpServer = () =>
   new McpServer(
     {
-      name: 'straddleio_straddle_api',
+      name: 'straddlecom_straddle_api',
       version: '0.1.1',
     },
     { capabilities: { tools: {}, logging: {} } },

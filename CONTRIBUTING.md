@@ -55,12 +55,12 @@ $ cd straddle-node
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link @straddleio/straddle
+$ yarn link @straddlecom/straddle
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @straddleio/straddle
+$ pnpm link -—global @straddlecom/straddle
 ```
 
 ## Running tests

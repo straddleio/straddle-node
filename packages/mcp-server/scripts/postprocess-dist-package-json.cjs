@@ -4,7 +4,7 @@ const parentPkgJson = require('../../../package.json');
 
 for (const dep in pkgJson.dependencies) {
   // ensure we point to NPM instead of a local directory
-  if (dep === '@straddleio/straddle') {
+  if (dep === '@straddlecom/straddle') {
     pkgJson.dependencies[dep] = '^' + parentPkgJson.version;
   }
 }

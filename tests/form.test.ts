@@ -1,6 +1,6 @@
-import { multipartFormRequestOptions, createForm } from '@straddleio/straddle/core';
-import { Blob } from '@straddleio/straddle/_shims/index';
-import { toFile } from '@straddleio/straddle';
+import { multipartFormRequestOptions, createForm } from '@straddlecom/straddle/core';
+import { Blob } from '@straddlecom/straddle/_shims/index';
+import { toFile } from '@straddlecom/straddle';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

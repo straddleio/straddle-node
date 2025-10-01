@@ -24,7 +24,7 @@ For clients with a configuration JSON, it might look something like this:
 ```json
 {
   "mcpServers": {
-    "straddleio_straddle_api": {
+    "straddlecom_straddle_api": {
       "command": "npx",
       "args": ["-y", "@straddleio/straddle-mcp", "--client=claude", "--tools=dynamic"],
       "env": {
@@ -144,7 +144,7 @@ A configuration JSON for this server might look like this, assuming the server i
 ```json
 {
   "mcpServers": {
-    "straddleio_straddle_api": {
+    "straddlecom_straddle_api": {
       "url": "http://localhost:3000",
       "headers": {
         "Authorization": "Bearer <auth value>"
