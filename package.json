@@ -1,5 +1,5 @@
 {
-  "name": "@straddlecom/straddle",
+  "name": "@straddleio/straddle",
   "version": "0.1.0",
   "description": "The official TypeScript library for the Straddle API",
   "author": "Straddle <help@straddle.io>",
@@ -51,7 +51,7 @@
     "typescript-eslint": "8.31.1"
   },
   "bin": {
-    "straddlecom-straddle": "bin/cli"
+    "straddleio-straddle": "bin/cli"
   },
   "exports": {
     ".": {

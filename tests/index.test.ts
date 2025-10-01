@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from '@straddlecom/straddle/core/api-promise';
+import { APIPromise } from '@straddleio/straddle/core/api-promise';
 
 import util from 'node:util';
-import Straddle from '@straddlecom/straddle';
-import { APIUserAbortError } from '@straddlecom/straddle';
+import Straddle from '@straddleio/straddle';
+import { APIUserAbortError } from '@straddleio/straddle';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {

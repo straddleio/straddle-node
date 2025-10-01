@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { Straddle } from '@straddlecom/straddle';
+import { Straddle } from '@straddleio/straddle';
 
 const { stringifyQuery } = Straddle.prototype as any;
 

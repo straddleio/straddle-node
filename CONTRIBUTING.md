@@ -55,12 +55,12 @@ $ cd straddle-typescript
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link @straddlecom/straddle
+$ yarn link @straddleio/straddle
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @straddlecom/straddle
+$ pnpm link -—global @straddleio/straddle
 ```
 
 ## Running tests

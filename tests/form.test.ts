@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from '@straddlecom/straddle/internal/uploads';
-import { toFile } from '@straddlecom/straddle/core/uploads';
+import { multipartFormRequestOptions, createForm } from '@straddleio/straddle/internal/uploads';
+import { toFile } from '@straddleio/straddle/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {
