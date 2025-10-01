@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import Straddle from '@straddleio/straddle';
-import { Response } from 'node-fetch';
 
 const client = new Straddle({
   apiKey: 'My API Key',
@@ -26,6 +25,7 @@ describe('resource review', () => {
     const response = await client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       status: 'verified',
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -40,15 +40,6 @@ describe('resource review', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('get: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.customers.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('get: request options and params are passed correctly', async () => {

@@ -1,10 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
+import { APIPromise } from '../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
+import { buildHeaders } from '../../internal/headers';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
 
 export class Organizations extends APIResource {
   /**
@@ -18,16 +20,24 @@ export class Organizations extends APIResource {
    *   await client.embed.organizations.create({ name: 'name' });
    * ```
    */
-  create(params: OrganizationCreateParams, options?: Core.RequestOptions): Core.APIPromise<OrganizationV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+  create(params: OrganizationCreateParams, options?: RequestOptions): APIPromise<OrganizationV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
     return this._client.post('/v1/organizations', {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -46,28 +56,20 @@ export class Organizations extends APIResource {
    * ```
    */
   list(
-    params?: OrganizationListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data>;
-  list(
-    params: OrganizationListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/organizations', OrganizationPagedV1DataPageNumberSchema, {
+    params: OrganizationListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
+    return this._client.getAPIList('/v1/organizations', PageNumberSchema<OrganizationPagedV1.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -84,32 +86,25 @@ export class Organizations extends APIResource {
    * ```
    */
   get(
-    organizationId: string,
-    params?: OrganizationGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<OrganizationV1>;
-  get(organizationId: string, options?: Core.RequestOptions): Core.APIPromise<OrganizationV1>;
-  get(
-    organizationId: string,
-    params: OrganizationGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<OrganizationV1> {
-    if (isRequestOptions(params)) {
-      return this.get(organizationId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/organizations/${organizationId}`, {
+    organizationID: string,
+    params: OrganizationGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<OrganizationV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/organizations/${organizationID}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class OrganizationPagedV1DataPageNumberSchema extends PageNumberSchema<OrganizationPagedV1.Data> {}
+export type OrganizationPagedV1DataPageNumberSchema = PageNumberSchema<OrganizationPagedV1.Data>;
 
 export interface OrganizationPagedV1 {
   data: Array<OrganizationPagedV1.Data>;
@@ -249,6 +244,11 @@ export interface OrganizationCreateParams {
   'correlation-id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
@@ -299,13 +299,11 @@ export interface OrganizationGetParams {
   'request-id'?: string;
 }
 
-Organizations.OrganizationPagedV1DataPageNumberSchema = OrganizationPagedV1DataPageNumberSchema;
-
 export declare namespace Organizations {
   export {
     type OrganizationPagedV1 as OrganizationPagedV1,
     type OrganizationV1 as OrganizationV1,
-    OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
+    type OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
     type OrganizationGetParams as OrganizationGetParams,

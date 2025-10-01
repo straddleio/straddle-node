@@ -1,10 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../pagination';
+import { APIPromise } from '../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
+import { buildHeaders } from '../../internal/headers';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
 
 export class Representatives extends APIResource {
   /**
@@ -31,16 +33,24 @@ export class Representatives extends APIResource {
    *   });
    * ```
    */
-  create(params: RepresentativeCreateParams, options?: Core.RequestOptions): Core.APIPromise<Representative> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+  create(params: RepresentativeCreateParams, options?: RequestOptions): APIPromise<Representative> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
     return this._client.post('/v1/representatives', {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -71,19 +81,27 @@ export class Representatives extends APIResource {
    * ```
    */
   update(
-    representativeId: string,
+    representativeID: string,
     params: RepresentativeUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.put(`/v1/representatives/${representativeId}`, {
+    options?: RequestOptions,
+  ): APIPromise<Representative> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/representatives/${representativeID}`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -102,28 +120,20 @@ export class Representatives extends APIResource {
    * ```
    */
   list(
-    params?: RepresentativeListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data>;
-  list(
-    params: RepresentativeListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/representatives', RepresentativePagedDataPageNumberSchema, {
+    params: RepresentativeListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
+    return this._client.getAPIList('/v1/representatives', PageNumberSchema<RepresentativePaged.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -141,27 +151,20 @@ export class Representatives extends APIResource {
    * ```
    */
   get(
-    representativeId: string,
-    params?: RepresentativeGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative>;
-  get(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
-  get(
-    representativeId: string,
-    params: RepresentativeGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
-    if (isRequestOptions(params)) {
-      return this.get(representativeId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/representatives/${representativeId}`, {
+    representativeID: string,
+    params: RepresentativeGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Representative> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/representatives/${representativeID}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -180,32 +183,25 @@ export class Representatives extends APIResource {
    * ```
    */
   unmask(
-    representativeId: string,
-    params?: RepresentativeUnmaskParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative>;
-  unmask(representativeId: string, options?: Core.RequestOptions): Core.APIPromise<Representative>;
-  unmask(
-    representativeId: string,
-    params: RepresentativeUnmaskParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<Representative> {
-    if (isRequestOptions(params)) {
-      return this.unmask(representativeId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/representatives/${representativeId}/unmask`, {
+    representativeID: string,
+    params: RepresentativeUnmaskParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Representative> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/representatives/${representativeID}/unmask`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class RepresentativePagedDataPageNumberSchema extends PageNumberSchema<RepresentativePaged.Data> {}
+export type RepresentativePagedDataPageNumberSchema = PageNumberSchema<RepresentativePaged.Data>;
 
 export interface Representative {
   data: Representative.Data;
@@ -295,6 +291,12 @@ export namespace Representative {
      * cross-referencing between Straddle and your systems.
      */
     external_id?: string | null;
+
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the represetative in a structured format.
+     */
+    metadata?: { [key: string]: string } | null;
 
     phone?: string | null;
 
@@ -466,6 +468,12 @@ export namespace RepresentativePaged {
      */
     external_id?: string | null;
 
+    /**
+     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
+     * information about the represetative in a structured format.
+     */
+    metadata?: { [key: string]: string } | null;
+
     phone?: string | null;
 
     /**
@@ -596,10 +604,21 @@ export interface RepresentativeCreateParams {
   external_id?: string | null;
 
   /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the represetative in a structured format.
+   */
+  metadata?: { [key: string]: string } | null;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -688,10 +707,21 @@ export interface RepresentativeUpdateParams {
   external_id?: string | null;
 
   /**
+   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
+   * additional information about the represetative in a structured format.
+   */
+  metadata?: { [key: string]: string } | null;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -803,13 +833,11 @@ export interface RepresentativeUnmaskParams {
   'request-id'?: string;
 }
 
-Representatives.RepresentativePagedDataPageNumberSchema = RepresentativePagedDataPageNumberSchema;
-
 export declare namespace Representatives {
   export {
     type Representative as Representative,
     type RepresentativePaged as RepresentativePaged,
-    RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
+    type RepresentativePagedDataPageNumberSchema as RepresentativePagedDataPageNumberSchema,
     type RepresentativeCreateParams as RepresentativeCreateParams,
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,

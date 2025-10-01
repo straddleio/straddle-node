@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import Straddle from '@straddleio/straddle';
-import { Response } from 'node-fetch';
 
 const client = new Straddle({
   apiKey: 'My API Key',
@@ -39,6 +38,7 @@ describe('resource customers', () => {
       external_id: 'customer_123',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -73,6 +73,7 @@ describe('resource customers', () => {
       external_id: 'external_id',
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
+      'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
       'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -87,13 +88,6 @@ describe('resource customers', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('list: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.customers.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Straddle.NotFoundError,
-    );
   });
 
   test('list: request options and params are passed correctly', async () => {
@@ -133,13 +127,6 @@ describe('resource customers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('delete: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.customers.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
-  });
-
   test('delete: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -147,6 +134,7 @@ describe('resource customers', () => {
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           'Correlation-Id': 'Correlation-Id',
+          'Idempotency-Key': 'xxxxxxxxxx',
           'Request-Id': 'Request-Id',
           'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
@@ -164,13 +152,6 @@ describe('resource customers', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('get: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.customers.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('get: request options and params are passed correctly', async () => {
@@ -199,15 +180,6 @@ describe('resource customers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('refreshReview: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.customers.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(Straddle.NotFoundError);
-  });
-
   test('refreshReview: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -215,6 +187,7 @@ describe('resource customers', () => {
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           'Correlation-Id': 'Correlation-Id',
+          'Idempotency-Key': 'xxxxxxxxxx',
           'Request-Id': 'Request-Id',
           'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
@@ -232,13 +205,6 @@ describe('resource customers', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('unmasked: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.customers.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('unmasked: request options and params are passed correctly', async () => {

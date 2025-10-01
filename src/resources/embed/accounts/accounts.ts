@@ -1,8 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../resource';
-import { isRequestOptions } from '../../../core';
-import * as Core from '../../../core';
+import { APIResource } from '../../../core/resource';
 import * as AccountsAPI from './accounts';
 import * as Shared from '../../shared';
 import * as CapabilityRequestsAPI from './capability-requests';
@@ -13,7 +11,11 @@ import {
   CapabilityRequestPagedV1DataPageNumberSchema,
   CapabilityRequests,
 } from './capability-requests';
-import { PageNumberSchema, type PageNumberSchemaParams } from '../../../pagination';
+import { APIPromise } from '../../../core/api-promise';
+import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../../core/pagination';
+import { buildHeaders } from '../../../internal/headers';
+import { RequestOptions } from '../../../internal/request-options';
+import { path } from '../../../internal/utils/path';
 
 export class Accounts extends APIResource {
   capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(
@@ -38,16 +40,24 @@ export class Accounts extends APIResource {
    * });
    * ```
    */
-  create(params: AccountCreateParams, options?: Core.RequestOptions): Core.APIPromise<AccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
+  create(params: AccountCreateParams, options?: RequestOptions): APIPromise<AccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
     return this._client.post('/v1/accounts', {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -68,20 +78,24 @@ export class Accounts extends APIResource {
    * );
    * ```
    */
-  update(
-    accountId: string,
-    params: AccountUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.put(`/v1/accounts/${accountId}`, {
+  update(accountID: string, params: AccountUpdateParams, options?: RequestOptions): APIPromise<AccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/accounts/${accountID}`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -100,28 +114,20 @@ export class Accounts extends APIResource {
    * ```
    */
   list(
-    params?: AccountListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data>;
-  list(
-    params: AccountListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
-    if (isRequestOptions(params)) {
-      return this.list({}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...query } = params;
-    return this._client.getAPIList('/v1/accounts', AccountPagedV1DataPageNumberSchema, {
+    params: AccountListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
+    return this._client.getAPIList('/v1/accounts', PageNumberSchema<AccountPagedV1.Data>, {
       query,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -138,27 +144,20 @@ export class Accounts extends APIResource {
    * ```
    */
   get(
-    accountId: string,
-    params?: AccountGetParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1>;
-  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
-  get(
-    accountId: string,
-    params: AccountGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    if (isRequestOptions(params)) {
-      return this.get(accountId, {}, params);
-    }
-    const { 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.get(`/v1/accounts/${accountId}`, {
+    accountID: string,
+    params: AccountGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<AccountV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
+    return this._client.get(path`/v1/accounts/${accountID}`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -181,20 +180,24 @@ export class Accounts extends APIResource {
    * );
    * ```
    */
-  onboard(
-    accountId: string,
-    params: AccountOnboardParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    const { 'correlation-id': correlationId, 'request-id': requestId, ...body } = params;
-    return this._client.post(`/v1/accounts/${accountId}/onboard`, {
+  onboard(accountID: string, params: AccountOnboardParams, options?: RequestOptions): APIPromise<AccountV1> {
+    const {
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+      ...body
+    } = params;
+    return this._client.post(path`/v1/accounts/${accountID}/onboard`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -210,33 +213,32 @@ export class Accounts extends APIResource {
    * ```
    */
   simulate(
-    accountId: string,
-    params?: AccountSimulateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1>;
-  simulate(accountId: string, options?: Core.RequestOptions): Core.APIPromise<AccountV1>;
-  simulate(
-    accountId: string,
-    params: AccountSimulateParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountV1> {
-    if (isRequestOptions(params)) {
-      return this.simulate(accountId, {}, params);
-    }
-    const { final_status, 'correlation-id': correlationId, 'request-id': requestId } = params;
-    return this._client.post(`/v1/accounts/${accountId}/simulate`, {
+    accountID: string,
+    params: AccountSimulateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<AccountV1> {
+    const {
+      final_status,
+      'correlation-id': correlationID,
+      'idempotency-key': idempotencyKey,
+      'request-id': requestID,
+    } = params ?? {};
+    return this._client.post(path`/v1/accounts/${accountID}/simulate`, {
       query: { final_status },
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'correlation-id': correlationId } : undefined),
-        ...(requestId != null ? { 'request-id': requestId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'request-id': requestID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
 
-export class AccountPagedV1DataPageNumberSchema extends PageNumberSchema<AccountPagedV1.Data> {}
+export type AccountPagedV1DataPageNumberSchema = PageNumberSchema<AccountPagedV1.Data>;
 
 export interface AccountPagedV1 {
   data: Array<AccountPagedV1.Data>;
@@ -901,6 +903,11 @@ export interface AccountCreateParams {
   'correlation-id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
@@ -929,6 +936,11 @@ export interface AccountUpdateParams {
    * of requests.
    */
   'correlation-id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
@@ -999,6 +1011,11 @@ export interface AccountOnboardParams {
   'correlation-id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
@@ -1017,14 +1034,17 @@ export interface AccountSimulateParams {
   'correlation-id'?: string;
 
   /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'idempotency-key'?: string;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a request.
    */
   'request-id'?: string;
 }
 
-Accounts.AccountPagedV1DataPageNumberSchema = AccountPagedV1DataPageNumberSchema;
 Accounts.CapabilityRequests = CapabilityRequests;
-Accounts.CapabilityRequestPagedV1DataPageNumberSchema = CapabilityRequestPagedV1DataPageNumberSchema;
 
 export declare namespace Accounts {
   export {
@@ -1036,7 +1056,7 @@ export declare namespace Accounts {
     type IndustryV1 as IndustryV1,
     type SupportChannelsV1 as SupportChannelsV1,
     type TermsOfServiceV1 as TermsOfServiceV1,
-    AccountPagedV1DataPageNumberSchema as AccountPagedV1DataPageNumberSchema,
+    type AccountPagedV1DataPageNumberSchema as AccountPagedV1DataPageNumberSchema,
     type AccountCreateParams as AccountCreateParams,
     type AccountUpdateParams as AccountUpdateParams,
     type AccountListParams as AccountListParams,
@@ -1048,7 +1068,7 @@ export declare namespace Accounts {
   export {
     CapabilityRequests as CapabilityRequests,
     type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
-    CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
+    type CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
     type CapabilityRequestListParams as CapabilityRequestListParams,
   };

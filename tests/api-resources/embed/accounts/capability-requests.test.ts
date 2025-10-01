@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import Straddle from '@straddleio/straddle';
-import { Response } from 'node-fetch';
 
 const client = new Straddle({
   apiKey: 'My API Key',
@@ -22,15 +21,6 @@ describe('resource capabilityRequests', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('create: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.embed.accounts.capabilityRequests.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(Straddle.NotFoundError);
-  });
-
   test('create: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -44,6 +34,7 @@ describe('resource capabilityRequests', () => {
           payouts: { daily_amount: 0, enable: true, max_amount: 0, monthly_amount: 0, monthly_count: 0 },
           signed_agreement: { enable: true },
           'correlation-id': 'correlation-id',
+          'idempotency-key': 'xxxxxxxxxx',
           'request-id': 'request-id',
         },
         { path: '/_stainless_unknown_path' },
@@ -62,15 +53,6 @@ describe('resource capabilityRequests', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('list: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.embed.accounts.capabilityRequests.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('list: request options and params are passed correctly', async () => {

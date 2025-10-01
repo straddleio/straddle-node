@@ -1,11 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../core/resource';
 import * as ReviewAPI from './review';
 import * as Shared from '../shared';
 import * as CustomersAPI from './customers';
+import { APIPromise } from '../../core/api-promise';
+import { buildHeaders } from '../../internal/headers';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
 
 export class Review extends APIResource {
   /**
@@ -25,23 +27,27 @@ export class Review extends APIResource {
   decision(
     id: string,
     params: ReviewDecisionParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomersAPI.CustomerV1> {
+    options?: RequestOptions,
+  ): APIPromise<CustomersAPI.CustomerV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params;
-    return this._client.patch(`/v1/customers/${id}/review`, {
+    return this._client.patch(path`/v1/customers/${id}/review`, {
       body,
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 
@@ -63,29 +69,26 @@ export class Review extends APIResource {
    * );
    * ```
    */
-  get(id: string, params?: ReviewGetParams, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
-  get(id: string, options?: Core.RequestOptions): Core.APIPromise<CustomerReviewV1>;
   get(
     id: string,
-    params: ReviewGetParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CustomerReviewV1> {
-    if (isRequestOptions(params)) {
-      return this.get(id, {}, params);
-    }
+    params: ReviewGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerReviewV1> {
     const {
-      'Correlation-Id': correlationId,
-      'Request-Id': requestId,
-      'Straddle-Account-Id': straddleAccountId,
-    } = params;
-    return this._client.get(`/v1/customers/${id}/review`, {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/customers/${id}/review`, {
       ...options,
-      headers: {
-        ...(correlationId != null ? { 'Correlation-Id': correlationId } : undefined),
-        ...(requestId != null ? { 'Request-Id': requestId } : undefined),
-        ...(straddleAccountId != null ? { 'Straddle-Account-Id': straddleAccountId } : undefined),
-        ...options?.headers,
-      },
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
     });
   }
 }
@@ -529,6 +532,11 @@ export interface ReviewDecisionParams {
    * of requests.
    */
   'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a request.
