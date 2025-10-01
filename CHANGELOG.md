@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0 (2025-10-01)
+
+Full Changelog: [v0.1.0...v2.0.0](https://github.com/straddleio/straddle-node/compare/v0.1.0...v2.0.0)
+
+### Features
+
+* Update to Typescript SDK ([814d49b](https://github.com/straddleio/straddle-node/commit/814d49bdf9d57549eb96aef763850e727085bd82))
+
+
+### Chores
+
+* sync repo ([45d783d](https://github.com/straddleio/straddle-node/commit/45d783d7f0500e1f29447ae157764e20107bad71))
+* update SDK settings ([d7d4587](https://github.com/straddleio/straddle-node/commit/d7d458719b708dbd86f95684f98bbbc8dee56789))
+
 ## 0.1.0 (2025-01-29)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0](https://github.com/straddleio/straddle-node/compare/v0.1.0-alpha.3...v0.1.0)
