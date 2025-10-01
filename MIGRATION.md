@@ -7,7 +7,7 @@ The main changes are that the SDK now relies on the [builtin Web fetch API](http
 ## Migration CLI
 
 Most programs will only need minimal changes, but to assist there is a migration tool that will automatically update your code for the new version.
-To use it, upgrade the `@straddleio/straddle` package, then run `./node_modules/.bin/straddleio-straddle migrate ./your/src/folders` to update your code.
+To use it, upgrade the `@straddlecom/straddle` package, then run `./node_modules/.bin/straddlecom-straddle migrate ./your/src/folders` to update your code.
 To preview the changes without writing them to disk, run the tool with `--dry`.
 
 ## Environment requirements
@@ -110,15 +110,15 @@ client.example.list(undefined, { headers: { ... } });
 
 ### Removed `httpAgent` in favor of `fetchOptions`
 
-The `httpAgent` client option has been removed in favor of a [platform-specific `fetchOptions` property](https://github.com/stainless-sdks/straddle-typescript#fetch-options).
+The `httpAgent` client option has been removed in favor of a [platform-specific `fetchOptions` property](https://github.com/straddleio/straddle-node#fetch-options).
 This change was made as `httpAgent` relied on `node:http` agents which are not supported by any runtime's builtin fetch implementation.
 
-If you were using `httpAgent` for proxy support, check out the [new proxy documentation](https://github.com/stainless-sdks/straddle-typescript#configuring-proxies).
+If you were using `httpAgent` for proxy support, check out the [new proxy documentation](https://github.com/straddleio/straddle-node#configuring-proxies).
 
 Before:
 
 ```ts
-import Straddle from '@straddleio/straddle';
+import Straddle from '@straddlecom/straddle';
 import http from 'http';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 
@@ -131,7 +131,7 @@ const client = new Straddle({
 After:
 
 ```ts
-import Straddle from '@straddleio/straddle';
+import Straddle from '@straddlecom/straddle';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent(process.env.PROXY_URL);
@@ -144,27 +144,27 @@ const client = new Straddle({
 
 ### Changed exports
 
-#### Refactor of `@straddleio/straddle/core`, `error`, `pagination`, `resource` and `uploads`
+#### Refactor of `@straddlecom/straddle/core`, `error`, `pagination`, `resource` and `uploads`
 
-Much of the `@straddleio/straddle/core` file was intended to be internal-only but it was publicly accessible, as such it has been refactored and split up into internal and public files, with public-facing code moved to a new `core` folder and internal code moving to the private `internal` folder.
+Much of the `@straddlecom/straddle/core` file was intended to be internal-only but it was publicly accessible, as such it has been refactored and split up into internal and public files, with public-facing code moved to a new `core` folder and internal code moving to the private `internal` folder.
 
 At the same time, we moved some public-facing files which were previously at the top level into `core` to make the file structure cleaner and more clear:
 
 ```typescript
 // Before
-import '@straddleio/straddle/error';
-import '@straddleio/straddle/pagination';
-import '@straddleio/straddle/resource';
-import '@straddleio/straddle/uploads';
+import '@straddlecom/straddle/error';
+import '@straddlecom/straddle/pagination';
+import '@straddlecom/straddle/resource';
+import '@straddlecom/straddle/uploads';
 
 // After
-import '@straddleio/straddle/core/error';
-import '@straddleio/straddle/core/pagination';
-import '@straddleio/straddle/core/resource';
-import '@straddleio/straddle/core/uploads';
+import '@straddlecom/straddle/core/error';
+import '@straddlecom/straddle/core/pagination';
+import '@straddlecom/straddle/core/resource';
+import '@straddlecom/straddle/core/uploads';
 ```
 
-If you were relying on anything that was only exported from `@straddleio/straddle/core` and is also not accessible anywhere else, please open an issue and we'll consider adding it to the public API.
+If you were relying on anything that was only exported from `@straddlecom/straddle/core` and is also not accessible anywhere else, please open an issue and we'll consider adding it to the public API.
 
 #### Resource classes
 
@@ -173,16 +173,16 @@ Now you must always either reference them as static class properties or import t
 
 ```typescript
 // Before
-const { Embed } = require('@straddleio/straddle');
+const { Embed } = require('@straddlecom/straddle');
 
 // After
-const { Straddle } = require('@straddleio/straddle');
-Straddle.Embed; // or import directly from @straddleio/straddle/resources/embed/embed
+const { Straddle } = require('@straddlecom/straddle');
+Straddle.Embed; // or import directly from @straddlecom/straddle/resources/embed/embed
 ```
 
 #### Cleaned up `uploads` exports
 
-As part of the `core` refactor, `@straddleio/straddle/uploads` was moved to `@straddleio/straddle/core/uploads`
+As part of the `core` refactor, `@straddlecom/straddle/uploads` was moved to `@straddlecom/straddle/core/uploads`
 and the following exports were removed, as they were not intended to be a part of the public API:
 
 - `fileFromPath`
@@ -202,7 +202,7 @@ and the following exports were removed, as they were not intended to be a part o
 Note that `Uploadable` & `toFile` **are** still exported:
 
 ```typescript
-import { type Uploadable, toFile } from '@straddleio/straddle/core/uploads';
+import { type Uploadable, toFile } from '@straddlecom/straddle/core/uploads';
 ```
 
 #### `APIClient`
@@ -211,10 +211,10 @@ The `APIClient` base client class has been removed as it is no longer needed. If
 
 ```typescript
 // Before
-import { APIClient } from '@straddleio/straddle/core';
+import { APIClient } from '@straddlecom/straddle/core';
 
 // After
-import { Straddle } from '@straddleio/straddle';
+import { Straddle } from '@straddlecom/straddle';
 ```
 
 ### File handling
@@ -238,11 +238,11 @@ Previously you could configure the types that the SDK used like this:
 
 ```ts
 // Tell TypeScript and the package to use the global Web fetch instead of node-fetch.
-import '@straddleio/straddle/shims/web';
-import Straddle from '@straddleio/straddle';
+import '@straddlecom/straddle/shims/web';
+import Straddle from '@straddlecom/straddle';
 ```
 
-The `@straddleio/straddle/shims` imports have been removed. Your global types must now be [correctly configured](#minimum-types-requirements).
+The `@straddlecom/straddle/shims` imports have been removed. Your global types must now be [correctly configured](#minimum-types-requirements).
 
 ### Pagination changes
 
@@ -281,19 +281,19 @@ export type PaymentSummaryPagedV1DataPageNumberSchema = PageNumberSchema<Data>;
 
 If you were importing these classes at runtime, you'll need to switch to importing the base class or only import them at the type-level.
 
-### `@straddleio/straddle/src` directory removed
+### `@straddlecom/straddle/src` directory removed
 
-Previously IDEs may have auto-completed imports from the `@straddleio/straddle/src` directory, however this
+Previously IDEs may have auto-completed imports from the `@straddlecom/straddle/src` directory, however this
 directory was only included for an improved go-to-definition experience and should not have been used at runtime.
 
-If you have any `@straddleio/straddle/src/*` imports, you will need to replace them with `@straddleio/straddle/*`.
+If you have any `@straddlecom/straddle/src/*` imports, you will need to replace them with `@straddlecom/straddle/*`.
 
 ```ts
 // Before
-import Straddle from '@straddleio/straddle/src';
+import Straddle from '@straddlecom/straddle/src';
 
 // After
-import Straddle from '@straddleio/straddle';
+import Straddle from '@straddlecom/straddle';
 ```
 
 ## TypeScript troubleshooting
