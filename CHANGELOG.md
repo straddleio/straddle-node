@@ -1,5 +1,100 @@
 # Changelog
 
+## 0.2.0 (2025-10-01)
+
+Full Changelog: [v0.1.1...v0.2.0](https://github.com/straddleio/straddle-node/compare/v0.1.1...v0.2.0)
+
+### Features
+
+* **api:** manual updates ([9c596c9](https://github.com/straddleio/straddle-node/commit/9c596c9bceaeeb9a2876c8ab2a913479849136f9))
+* **api:** manual updates ([b479bbd](https://github.com/straddleio/straddle-node/commit/b479bbdbd0171aeadcc3389ac3fde698cd6b42ee))
+* **docs:** Preliminary update to SDK Spec ([466cbe8](https://github.com/straddleio/straddle-node/commit/466cbe8db32608c9dc9816d8326684cd8384f2a5))
+* **docs:** Preliminary update to SDK Spec ([ca35ac4](https://github.com/straddleio/straddle-node/commit/ca35ac44904568bf1e0069e40a144d23c4204f9f))
+* **docs:** Preliminary update to SDK Spec ([685f3b6](https://github.com/straddleio/straddle-node/commit/685f3b641658abaadf17fa34080d9bd0166c3c36))
+* **docs:** Preliminary update to SDK Spec ([6a9bb69](https://github.com/straddleio/straddle-node/commit/6a9bb69478b8cc2aaa9245665098bb883433061f))
+* **docs:** Preliminary update to SDK Spec ([aa79469](https://github.com/straddleio/straddle-node/commit/aa794690555d39e64004a387dc21d623dbe2a07e))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([bd23e3e](https://github.com/straddleio/straddle-node/commit/bd23e3e5bcf1dc6f67afbf2bc4301913dbf21e6a))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([8292806](https://github.com/straddleio/straddle-node/commit/82928064eb00bce957cae2f168fe97e30f444c85))
+* **mcp:** add code execution tool ([0931d36](https://github.com/straddleio/straddle-node/commit/0931d36d760ed6049d7c165bee99ed1c0f3db64f))
+* **mcp:** add docs search tool ([7006e20](https://github.com/straddleio/straddle-node/commit/7006e202ddb70b688ad492974867f68c8a8c9f7c))
+* **mcp:** add logging when environment variable is set ([70705e1](https://github.com/straddleio/straddle-node/commit/70705e1a9b22675f4865a0f7aeb6919f5f25532d))
+* **mcp:** add option for including docs tools ([9ebc0d7](https://github.com/straddleio/straddle-node/commit/9ebc0d76612b6e70d32990187f0e6ef5a336e1e4))
+* **mcp:** add option to infer mcp client ([9ee446b](https://github.com/straddleio/straddle-node/commit/9ee446b4ec33c67ac6fa9690b0ed55d98e3bc789))
+* **mcp:** add unix socket option for remote MCP ([dae8154](https://github.com/straddleio/straddle-node/commit/dae8154c98805d1f63b2e6732387b8b2bf1685c8))
+* **mcp:** allow setting logging level ([91827f4](https://github.com/straddleio/straddle-node/commit/91827f4d2c6b8543ea4be2e6d88ae4dbc6c68df5))
+* **mcp:** enable experimental docs search tool ([81e73b7](https://github.com/straddleio/straddle-node/commit/81e73b72ed2ae04b6f9baeacca3fbe2f3a8989c6))
+* **mcp:** expose client options in `streamableHTTPApp` ([16fca4e](https://github.com/straddleio/straddle-node/commit/16fca4ec4d7b6e4fa756cb7f0c0eb95b44a73350))
+* **mcp:** parse query string as mcp client options in mcp server ([1dee96b](https://github.com/straddleio/straddle-node/commit/1dee96bfcfc5d6c1e58b2e8b9adda710aa58df9d))
+* **mcp:** remote server with passthru auth ([7ce1f29](https://github.com/straddleio/straddle-node/commit/7ce1f294c8991e10bbe5dc466a8b19b572bce4ff))
+* **mcp:** support filtering tool results by a jq expression ([1da7b9b](https://github.com/straddleio/straddle-node/commit/1da7b9bd1fc2f2be9792d5d829d3224553041851))
+
+
+### Bug Fixes
+
+* coerce nullable values to undefined ([5325138](https://github.com/straddleio/straddle-node/commit/5325138ec8a5040be729e477ce6da0956e303201))
+* **mcp:** avoid sending `jq_filter` to base API ([8d8062a](https://github.com/straddleio/straddle-node/commit/8d8062aca0e0d11aa69f896f74244674ef01ab24))
+* **mcp:** fix bug in header handling ([c146a91](https://github.com/straddleio/straddle-node/commit/c146a91a59073d734e6ab58385053bfdd5a29d9f))
+* **mcp:** fix cli argument parsing logic ([2335e4d](https://github.com/straddleio/straddle-node/commit/2335e4d5352a8ac69defa0cb33536345b9c81b4b))
+* **mcp:** fix query options parsing ([f3ae728](https://github.com/straddleio/straddle-node/commit/f3ae72893d2de25240d2953f6be5deb953d371c9))
+* **mcp:** fix tool description of jq_filter ([e39ef1d](https://github.com/straddleio/straddle-node/commit/e39ef1d100787c0e44383dc84e591109a83d82e6))
+* **mcp:** fix uploading dxt release assets ([58179c4](https://github.com/straddleio/straddle-node/commit/58179c493a401eb5914e5375d754a0d264a8a0cf))
+* **mcp:** generate additionalProperties=true for map schemas to avoid validation issues ([4ee440a](https://github.com/straddleio/straddle-node/commit/4ee440a245b3a85f02d13f777eee7622daf398e9))
+* **mcp:** include required section for top-level properties and support naming transformations ([c046986](https://github.com/straddleio/straddle-node/commit/c0469863dccaa016434aeb8e4ca8c9b6ec66b22a))
+* **mcp:** relax input type for asTextContextResult ([0126578](https://github.com/straddleio/straddle-node/commit/0126578c64932c2a76c3cfcdf1687523c3bdaadb))
+* **mcp:** resolve a linting issue in server code ([69c3081](https://github.com/straddleio/straddle-node/commit/69c30819fe276b6c4d4d5614f2b1a248dd414427))
+* **mcp:** reverse validJson capability option and limit scope ([75ccaa0](https://github.com/straddleio/straddle-node/commit/75ccaa07082dbc740d9ce9b6d9554f2f8042ea6a))
+* **mcp:** support jq filtering on cloudflare workers ([8a0d797](https://github.com/straddleio/straddle-node/commit/8a0d7979cac441926faf9189e4555a1d958d8c82))
+
+
+### Performance Improvements
+
+* faster formatting ([4095c99](https://github.com/straddleio/straddle-node/commit/4095c99ec2778468543ae52498149d0cd9094f3e))
+
+
+### Chores
+
+* ci build action ([107d8e6](https://github.com/straddleio/straddle-node/commit/107d8e695a8fa6df00009c361eab5b93542069fd))
+* **codegen:** internal codegen update ([83cd200](https://github.com/straddleio/straddle-node/commit/83cd20078c11d496dd0a871db7353ff26c1eafde))
+* **deps:** update dependency node-fetch to v2.6.13 ([06da056](https://github.com/straddleio/straddle-node/commit/06da0566450ff9f928bf74d997d5547fc75a5f36))
+* do not install brew dependencies in ./scripts/bootstrap by default ([ce14ce9](https://github.com/straddleio/straddle-node/commit/ce14ce9d578a82af1bf00ffd6b5c4aa18b35c13d))
+* **internal:** codegen related update ([4b9eae8](https://github.com/straddleio/straddle-node/commit/4b9eae8f7d99d2aad5eea9ab6534fb9f87989c08))
+* **internal:** codegen related update ([e5444be](https://github.com/straddleio/straddle-node/commit/e5444bee16879c5901c3e7a001aa70a2276743b0))
+* **internal:** codegen related update ([0b21925](https://github.com/straddleio/straddle-node/commit/0b219259044ef8a4d043380a3cefbb3128037958))
+* **internal:** codegen related update ([3709e2c](https://github.com/straddleio/straddle-node/commit/3709e2c168b31397a18154bbf720ecdd12980d9e))
+* **internal:** codegen related update ([665f1f3](https://github.com/straddleio/straddle-node/commit/665f1f33102b634bcbe63c016ef222feb12d34a5))
+* **internal:** codegen related update ([b0fd542](https://github.com/straddleio/straddle-node/commit/b0fd5426246338bdd1c7e9cdb6da65ec74e831a0))
+* **internal:** codegen related update ([ad336b1](https://github.com/straddleio/straddle-node/commit/ad336b148696b23277e5b8dfd5c6a924b19cb8e4))
+* **internal:** codegen related update ([79f94a6](https://github.com/straddleio/straddle-node/commit/79f94a66e79c537a21ac9f781fbe1fee2654ce5d))
+* **internal:** fix incremental formatting in some cases ([1681303](https://github.com/straddleio/straddle-node/commit/1681303e2adb00d95a0967dfe030d02c565403c1))
+* **internal:** formatting change ([33e3bca](https://github.com/straddleio/straddle-node/commit/33e3bca734f549da6d338de0998a9ca51bb365fe))
+* **internal:** gitignore .mcpb files ([52b074a](https://github.com/straddleio/straddle-node/commit/52b074aa54077773de32b3d698b36ccfc390e186))
+* **internal:** ignore .eslintcache ([6f48ec4](https://github.com/straddleio/straddle-node/commit/6f48ec448e7c7c6e35521b84bb6a95981b387c81))
+* **internal:** make mcp-server publishing public by defaut ([55b3bd5](https://github.com/straddleio/straddle-node/commit/55b3bd5d7ab6466a98ee9b50dfd0a85260a6b2b0))
+* **internal:** move publish config ([8adf0e0](https://github.com/straddleio/straddle-node/commit/8adf0e08c9077e6d27effea840bead522ea7744c))
+* **internal:** refactor array check ([66d89e8](https://github.com/straddleio/straddle-node/commit/66d89e8df481af6d551d6791a1181c8e8af8f4b3))
+* **internal:** remove .eslintcache ([2453462](https://github.com/straddleio/straddle-node/commit/2453462f18635543028cd5540d90546789823893))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([40513b4](https://github.com/straddleio/straddle-node/commit/40513b4e1dc357fad9664c366baa0dfc49d0cf4d))
+* **internal:** remove redundant imports config ([01c146c](https://github.com/straddleio/straddle-node/commit/01c146c357d5feb4c5294687edc2b3a869abaaf4))
+* **internal:** update comment in script ([15687d9](https://github.com/straddleio/straddle-node/commit/15687d9f6846454f32e294d004b003fb13c6aff0))
+* make some internal functions async ([4392f60](https://github.com/straddleio/straddle-node/commit/4392f607f82ce6418d82bbf8ec85da9c54ba515b))
+* **mcp:** add cors to oauth metadata route ([84e2c63](https://github.com/straddleio/straddle-node/commit/84e2c63be8722e93c7d2f347776942dd25d68107))
+* **mcp:** allow pointing `docs_search` tool at other URLs ([a7fd709](https://github.com/straddleio/straddle-node/commit/a7fd709403823d350c9b78a9b81aa1b3d884e941))
+* **mcp:** document remote server in README.md ([35ac24c](https://github.com/straddleio/straddle-node/commit/35ac24c4c05f8458f2e217bfe995235ffb4b2c6a))
+* **mcp:** formatting ([b1ee221](https://github.com/straddleio/straddle-node/commit/b1ee221ef6e63940d9498e5da0270a569e369672))
+* **mcp:** minor cleanup of types and package.json ([347c003](https://github.com/straddleio/straddle-node/commit/347c00324ecdfc21ff99f35c9376332fdb4d2e58))
+* **mcp:** refactor streamable http transport ([e0f5727](https://github.com/straddleio/straddle-node/commit/e0f5727d091a11a9a88a90517767df4dda0578dc))
+* **mcp:** rename dxt to mcpb ([f1106da](https://github.com/straddleio/straddle-node/commit/f1106da09034c284388b9e32a224d8b7f6dfeb0d))
+* **mcp:** rework imports in tools ([9404f76](https://github.com/straddleio/straddle-node/commit/9404f76691ea09aec80d8698ebcd4503716d1769))
+* **mcp:** update package.json ([486321c](https://github.com/straddleio/straddle-node/commit/486321caa68abd6a4c44934086f2e452ba8ee0b2))
+* **mcp:** update README ([0c13b7e](https://github.com/straddleio/straddle-node/commit/0c13b7e1eee90ed9a1b7b143bbc6807210faa672))
+* **mcp:** update types ([413f438](https://github.com/straddleio/straddle-node/commit/413f4388d7bad4c3e94ec3454dc26d3564f5b77e))
+* **mcp:** upload dxt as release asset ([2fa1a22](https://github.com/straddleio/straddle-node/commit/2fa1a229af74269738992eb6ddbd302bf363a373))
+* update @stainless-api/prism-cli to v5.15.0 ([33ebdaf](https://github.com/straddleio/straddle-node/commit/33ebdafa733216ce56663723355feff5df1bbbc1))
+* update CI script ([305d4cc](https://github.com/straddleio/straddle-node/commit/305d4cc5ef61c6f5de34eac053fc75806ac472ec))
+* update lockfile ([24537a4](https://github.com/straddleio/straddle-node/commit/24537a47f59741f2208f9f90fad09f4000360b3b))
+* update SDK settings ([e5f6624](https://github.com/straddleio/straddle-node/commit/e5f66241a22c522509400e28eaff7e970fb102ab))
+* update SDK settings ([4c3e188](https://github.com/straddleio/straddle-node/commit/4c3e18820cb5d827c1532aecc4d14dbe072c5a28))
+
 ## 0.1.1 (2025-07-08)
 
 Full Changelog: [v0.1.0...v0.1.1](https://github.com/straddleio/straddle-node/compare/v0.1.0...v0.1.1)
