@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 (2025-10-04)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/straddleio/straddle-node/compare/v0.2.0...v0.2.1)
+
+### Chores
+
+* **jsdoc:** fix [@link](https://github.com/link) annotations to refer only to parts of the package‘s public interface ([7b8c95f](https://github.com/straddleio/straddle-node/commit/7b8c95fa5ff3ee84c95c6fbcd19fefa47cdbf688))
+
 ## 0.2.0 (2025-10-01)
 
 Full Changelog: [v2.0.0...v0.2.0](https://github.com/straddleio/straddle-node/compare/v2.0.0...v0.2.0)
