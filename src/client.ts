@@ -108,8 +108,8 @@ import {
 import { isEmptyObj } from './internal/utils/values';
 
 const environments = {
-  sandbox: 'https://sandbox.straddle.io',
-  production: 'https://production.straddle.io',
+  sandbox: 'https://sandbox.straddle.com',
+  production: 'https://production.straddle.com',
 };
 type Environment = keyof typeof environments;
 
@@ -123,8 +123,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `sandbox` corresponds to `https://sandbox.straddle.io`
-   * - `production` corresponds to `https://production.straddle.io`
+   * - `sandbox` corresponds to `https://sandbox.straddle.com`
+   * - `production` corresponds to `https://production.straddle.com`
    */
   environment?: Environment | undefined;
 
@@ -220,7 +220,7 @@ export class Straddle {
    *
    * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
    * @param {Environment} [opts.environment=sandbox] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://sandbox.straddle.io] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://sandbox.straddle.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
