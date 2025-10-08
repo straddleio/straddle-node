@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.1 (2025-10-08)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/straddleio/straddle-node/compare/v0.2.0...v0.2.1)
+
+### Bug Fixes
+
+* **api:** update default API URLs and metadata ([173b3d9](https://github.com/straddleio/straddle-node/commit/173b3d9779a87734e1ebd0b1c30361dd494d6177))
+
+
+### Chores
+
+* **internal:** use npm pack for build uploads ([97d8347](https://github.com/straddleio/straddle-node/commit/97d8347b5b6e32591d46be1ec3305a3602b2b17c))
+* **jsdoc:** fix [@link](https://github.com/link) annotations to refer only to parts of the package‘s public interface ([7b8c95f](https://github.com/straddleio/straddle-node/commit/7b8c95fa5ff3ee84c95c6fbcd19fefa47cdbf688))
+
 ## 0.2.0 (2025-10-01)
 
 Full Changelog: [v2.0.0...v0.2.0](https://github.com/straddleio/straddle-node/compare/v2.0.0...v0.2.0)
