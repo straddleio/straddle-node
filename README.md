@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Straddle REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.straddle.io](https://docs.straddle.io). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.straddle.com](https://docs.straddle.com). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
