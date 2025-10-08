@@ -2,7 +2,7 @@
   "name": "@straddlecom/straddle",
   "version": "0.2.0",
   "description": "The official TypeScript library for the Straddle API",
-  "author": "Straddle <help@straddle.io>",
+  "author": "Straddle <help@straddle.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
