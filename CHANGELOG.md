@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.2 (2025-10-31)
+
+Full Changelog: [v0.2.1...v0.2.2](https://github.com/straddleio/straddle-node/compare/v0.2.1...v0.2.2)
+
+### Bug Fixes
+
+* **mcpb:** pin @anthropic-ai/mcpb version ([62d6cee](https://github.com/straddleio/straddle-node/commit/62d6cee004968941f54eddd3dc0141656a3cca4d))
+
+
+### Chores
+
+* extract some types in mcp docs ([dec7143](https://github.com/straddleio/straddle-node/commit/dec714360c4c6c202187694eb62f69f6f0336ae1))
+
 ## 0.2.1 (2025-10-08)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/straddleio/straddle-node/compare/v0.2.0...v0.2.1)
