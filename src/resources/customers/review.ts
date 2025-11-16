@@ -91,6 +91,44 @@ export class Review extends APIResource {
       ]),
     });
   }
+
+  /**
+   * Updates the decision of a customer's identity validation. This endpoint allows
+   * you to modify the outcome of a customer decision and is useful for correcting or
+   * updating the status of a customer's verification.
+   *
+   * @example
+   * ```ts
+   * const customerV1 =
+   *   await client.customers.review.refreshReview(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  refreshReview(
+    id: string,
+    params: ReviewRefreshReviewParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomersAPI.CustomerV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.put(path`/v1/customers/${id}/refresh_review`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
+  }
 }
 
 export interface CustomerReviewV1 {
@@ -567,11 +605,34 @@ export interface ReviewGetParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface ReviewRefreshReviewParams {
+  /**
+   * Optional client generated identifier to trace and debug a series of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
+   * Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * For use by platforms to specify an account id and set scope of a request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export declare namespace Review {
   export {
     type CustomerReviewV1 as CustomerReviewV1,
     type IdentityVerificationBreakdownV1 as IdentityVerificationBreakdownV1,
     type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
+    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
   };
 }

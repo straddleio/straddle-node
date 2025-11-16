@@ -297,7 +297,6 @@ The following tools are available in this MCP server.
 - `list_customers` (`read`): Lists or searches customers connected to your account. All supported query parameters are optional. If none are provided, the response will include all customers connected to your account. This endpoint supports advanced sorting and filtering options.
 - `delete_customers` (`write`): Permanently removes a customer record from Straddle. This action cannot be undone and should only be used to satisfy regulatory requirements or for privacy compliance.
 - `get_customers` (`read`): Retrieves the details of an existing customer. Supply the unique customer ID that was returned from your 'create customer' request, and Straddle will return the corresponding customer information.
-- `refresh_review_customers` (`write`): Updates the decision of a customer's identity validation. This endpoint allows you to modify the outcome of a customer decision and is useful for correcting or updating the status of a customer's verification.
 - `unmasked_customers` (`read`): Retrieves the unmasked details, including PII, of an existing customer. Supply the unique customer ID that was returned from your 'create customer' request, and Straddle will return the corresponding customer information. This endpoint needs to be enabled by Straddle and should only be used when absolutely necessary.
 
 ### Resource `customers.review`:
@@ -309,6 +308,7 @@ The following tools are available in this MCP server.
   - Results of watchlist screening
   - Any network alerts detected
     Use this endpoint to gain insights into the verification process and make informed decisions about customer onboarding.
+- `refresh_review_customers_review` (`write`): Updates the decision of a customer's identity validation. This endpoint allows you to modify the outcome of a customer decision and is useful for correcting or updating the status of a customer's verification.
 
 ### Resource `paykeys`:
 
@@ -316,8 +316,14 @@ The following tools are available in this MCP server.
 - `cancel_paykeys` (`write`):
 - `get_paykeys` (`read`): Retrieves the details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record , including the `paykey` token value and masked bank account details.
 - `reveal_paykeys` (`read`): Retrieves the details of a paykey that has previously been created, including unmasked bank account fields. Supply the unique paykey ID that was returned from your previous request, and Straddle will return the corresponding paykey information.
-- `review_paykeys` (`write`): Update the status of a paykey when in review status
 - `unmasked_paykeys` (`read`): Retrieves the unmasked details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record, including the unmasked bank account details. This endpoint needs to be enabled by Straddle for your account and should only be used when absolutely necessary.
+- `update_balance_paykeys` (`write`): Updates the balance of a paykey. This endpoint allows you to refresh the balance of a paykey.
+
+### Resource `paykeys.review`:
+
+- `decision_paykeys_review` (`write`): Update the status of a paykey when in review status
+- `get_paykeys_review` (`read`): Get additional details about a paykey.
+- `refresh_review_paykeys_review` (`write`): Updates the decision of a paykey's review validation. This endpoint allows you to refresh the outcome of a paykey's decision and is useful for correcting or updating the status of a paykey's verification.
 
 ### Resource `charges`:
 

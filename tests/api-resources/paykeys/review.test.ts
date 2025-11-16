@@ -9,8 +9,8 @@ const client = new Straddle({
 
 describe('resource review', () => {
   test('decision: only required params', async () => {
-    const responsePromise = client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      status: 'verified',
+    const responsePromise = client.paykeys.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      status: 'active',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -22,8 +22,8 @@ describe('resource review', () => {
   });
 
   test('decision: required and optional params', async () => {
-    const response = await client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      status: 'verified',
+    const response = await client.paykeys.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      status: 'active',
       'Correlation-Id': 'Correlation-Id',
       'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',
@@ -32,7 +32,7 @@ describe('resource review', () => {
   });
 
   test('get', async () => {
-    const responsePromise = client.customers.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.paykeys.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -45,7 +45,7 @@ describe('resource review', () => {
   test('get: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.customers.review.get(
+      client.paykeys.review.get(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           'Correlation-Id': 'Correlation-Id',
@@ -58,7 +58,7 @@ describe('resource review', () => {
   });
 
   test('refreshReview', async () => {
-    const responsePromise = client.customers.review.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.paykeys.review.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -71,7 +71,7 @@ describe('resource review', () => {
   test('refreshReview: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.customers.review.refreshReview(
+      client.paykeys.review.refreshReview(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           'Correlation-Id': 'Correlation-Id',

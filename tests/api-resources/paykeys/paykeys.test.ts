@@ -120,29 +120,6 @@ describe('resource paykeys', () => {
     ).rejects.toThrow(Straddle.NotFoundError);
   });
 
-  test('review: only required params', async () => {
-    const responsePromise = client.paykeys.review('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      status: 'active',
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('review: required and optional params', async () => {
-    const response = await client.paykeys.review('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      status: 'active',
-      'Correlation-Id': 'Correlation-Id',
-      'Idempotency-Key': 'xxxxxxxxxx',
-      'Request-Id': 'Request-Id',
-      'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    });
-  });
-
   test('unmasked', async () => {
     const responsePromise = client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -161,6 +138,33 @@ describe('resource paykeys', () => {
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('updateBalance', async () => {
+    const responsePromise = client.paykeys.updateBalance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('updateBalance: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.paykeys.updateBalance(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Idempotency-Key': 'xxxxxxxxxx',
           'Request-Id': 'Request-Id',
           'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
