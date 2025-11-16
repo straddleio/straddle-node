@@ -88,6 +88,12 @@ export interface BridgeInitializeParams {
   config?: BridgeInitializeParams.Config;
 
   /**
+   * Body param: Unique identifier for the paykey in your database, used for
+   * cross-referencing between Straddle and your systems.
+   */
+  external_id?: string | null;
+
+  /**
    * Header param: Optional client generated identifier to trace and debug a series
    * of requests.
    */
@@ -112,7 +118,9 @@ export interface BridgeInitializeParams {
 
 export namespace BridgeInitializeParams {
   export interface Config {
-    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    processing_method?: 'inline' | 'background' | 'skip';
+
+    sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
   }
 }
 
