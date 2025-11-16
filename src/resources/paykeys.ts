@@ -244,6 +244,12 @@ export namespace PaykeySummaryPagedV1 {
     expires_at?: string | null;
 
     /**
+     * Unique identifier for the paykey in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
      * Name of the financial institution.
      */
     institution_name?: string | null;
@@ -253,7 +259,9 @@ export namespace PaykeySummaryPagedV1 {
 
   export namespace Data {
     export interface Config {
-      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
     }
 
     export interface BankData {
@@ -424,6 +432,12 @@ export namespace PaykeyUnmaskedV1 {
     expires_at?: string | null;
 
     /**
+     * Unique identifier for the paykey in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
      * Name of the financial institution.
      */
     institution_name?: string | null;
@@ -439,7 +453,9 @@ export namespace PaykeyUnmaskedV1 {
 
   export namespace Data {
     export interface Config {
-      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
     }
 
     export interface Balance {
@@ -582,6 +598,12 @@ export namespace PaykeyV1 {
     expires_at?: string | null;
 
     /**
+     * Unique identifier for the paykey in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
      * Name of the financial institution.
      */
     institution_name?: string | null;
@@ -597,7 +619,9 @@ export namespace PaykeyV1 {
 
   export namespace Data {
     export interface Config {
-      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
     }
 
     export interface Balance {
@@ -742,6 +766,12 @@ export namespace PaykeyRevealResponse {
     expires_at?: string | null;
 
     /**
+     * Unique identifier for the paykey in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
      * Name of the financial institution.
      */
     institution_name?: string | null;
@@ -757,7 +787,9 @@ export namespace PaykeyRevealResponse {
 
   export namespace Data {
     export interface Config {
-      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
     }
 
     export interface Balance {

@@ -189,6 +189,12 @@ export namespace LinkCreatePaykeyResponse {
     expires_at?: string | null;
 
     /**
+     * Unique identifier for the paykey in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
      * Name of the financial institution.
      */
     institution_name?: string | null;
@@ -204,7 +210,9 @@ export namespace LinkCreatePaykeyResponse {
 
   export namespace Data {
     export interface Config {
-      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
     }
 
     export interface Balance {
@@ -349,6 +357,12 @@ export namespace LinkCreateTanResponse {
     expires_at?: string | null;
 
     /**
+     * Unique identifier for the paykey in your database, used for cross-referencing
+     * between Straddle and your systems.
+     */
+    external_id?: string | null;
+
+    /**
      * Name of the financial institution.
      */
     institution_name?: string | null;
@@ -364,7 +378,9 @@ export namespace LinkCreateTanResponse {
 
   export namespace Data {
     export interface Config {
-      sandbox_outcome?: 'standard' | 'active' | 'rejected';
+      processing_method?: 'inline' | 'background' | 'skip';
+
+      sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
     }
 
     export interface Balance {
@@ -466,6 +482,12 @@ export interface LinkBankAccountParams {
   config?: LinkBankAccountParams.Config;
 
   /**
+   * Body param: Unique identifier for the paykey in your database, used for
+   * cross-referencing between Straddle and your systems.
+   */
+  external_id?: string | null;
+
+  /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
    * additional information about the paykey in a structured format.
    */
@@ -496,7 +518,9 @@ export interface LinkBankAccountParams {
 
 export namespace LinkBankAccountParams {
   export interface Config {
-    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    processing_method?: 'inline' | 'background' | 'skip';
+
+    sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
   }
 }
 
@@ -516,6 +540,12 @@ export interface LinkCreatePaykeyParams {
    * Body param:
    */
   config?: LinkCreatePaykeyParams.Config;
+
+  /**
+   * Body param: Unique identifier for the paykey in your database, used for
+   * cross-referencing between Straddle and your systems.
+   */
+  external_id?: string | null;
 
   /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
@@ -548,7 +578,9 @@ export interface LinkCreatePaykeyParams {
 
 export namespace LinkCreatePaykeyParams {
   export interface Config {
-    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    processing_method?: 'inline' | 'background' | 'skip';
+
+    sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
   }
 }
 
@@ -577,6 +609,12 @@ export interface LinkCreateTanParams {
    * Body param:
    */
   config?: LinkCreateTanParams.Config;
+
+  /**
+   * Body param: Unique identifier for the paykey in your database, used for
+   * cross-referencing between Straddle and your systems.
+   */
+  external_id?: string | null;
 
   /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
@@ -609,7 +647,9 @@ export interface LinkCreateTanParams {
 
 export namespace LinkCreateTanParams {
   export interface Config {
-    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    processing_method?: 'inline' | 'background' | 'skip';
+
+    sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
   }
 }
 
@@ -629,6 +669,12 @@ export interface LinkPlaidParams {
    * Body param:
    */
   config?: LinkPlaidParams.Config;
+
+  /**
+   * Body param: Unique identifier for the paykey in your database, used for
+   * cross-referencing between Straddle and your systems.
+   */
+  external_id?: string | null;
 
   /**
    * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
@@ -661,7 +707,9 @@ export interface LinkPlaidParams {
 
 export namespace LinkPlaidParams {
   export interface Config {
-    sandbox_outcome?: 'standard' | 'active' | 'rejected';
+    processing_method?: 'inline' | 'background' | 'skip';
+
+    sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review';
   }
 }
 
