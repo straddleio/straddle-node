@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.3.0 (2025-11-16)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/straddleio/straddle-node/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* **api:** manual updates ([28df544](https://github.com/straddleio/straddle-node/commit/28df544e1683eefb8d9e53a3ce64a81afb29e1d4))
+* **docs:** Preliminary update to SDK Spec ([4ecb0e7](https://github.com/straddleio/straddle-node/commit/4ecb0e75d1355a9879076bb4b6f89e4ab72db098))
+* **mcp:** enable optional code execution tool on http mcp servers ([6d1e807](https://github.com/straddleio/straddle-node/commit/6d1e80794305120ed4ed363ce5d263d99d1c89ce))
+
+
+### Bug Fixes
+
+* **mcpb:** pin @anthropic-ai/mcpb version ([62d6cee](https://github.com/straddleio/straddle-node/commit/62d6cee004968941f54eddd3dc0141656a3cca4d))
+* **mcp:** return tool execution error on jq failure ([b770626](https://github.com/straddleio/straddle-node/commit/b770626a61ce50b8edd495e37b5ca0e71d00fd0b))
+
+
+### Chores
+
+* extract some types in mcp docs ([dec7143](https://github.com/straddleio/straddle-node/commit/dec714360c4c6c202187694eb62f69f6f0336ae1))
+* **internal:** codegen related update ([99b147e](https://github.com/straddleio/straddle-node/commit/99b147e5645a85f102afd54b325325bdfa094767))
+* **internal:** codegen related update ([711d733](https://github.com/straddleio/straddle-node/commit/711d73369c5ee7b291dfffa53462bf0cffe2bd15))
+* **internal:** configure MCP Server hosting ([9c6b542](https://github.com/straddleio/straddle-node/commit/9c6b542c366c9d396591ca3b4a2681488ba46a50))
+* **internal:** grammar fix (it's -&gt; its) ([99e71e2](https://github.com/straddleio/straddle-node/commit/99e71e239ff4946f8ed58470172efda955e3fff2))
+* mcp code tool explicit error message when missing a run function ([b0b8e0f](https://github.com/straddleio/straddle-node/commit/b0b8e0fab78b1505b789c7eb66964b0d3dea3ac6))
+* **mcp:** add friendlier MCP code tool errors on incorrect method invocations ([bce78ee](https://github.com/straddleio/straddle-node/commit/bce78eecfaa21874fe26de4c9388429b7318a0af))
+* **mcp:** add line numbers to code tool errors ([5584b4d](https://github.com/straddleio/straddle-node/commit/5584b4d34da5dde519bd7641690ff9dfa24173a4))
+* **mcp:** clarify http auth error ([d1f31be](https://github.com/straddleio/straddle-node/commit/d1f31be6286799824f01a6a0ea8247fb715b3765))
+* **mcp:** upgrade jq-web ([a7a3dd3](https://github.com/straddleio/straddle-node/commit/a7a3dd3b76920c8cd6de0b9977487ead01a8368e))
+* use structured error when code execution tool errors ([96a31bb](https://github.com/straddleio/straddle-node/commit/96a31bb2067cc8c581ee447d8b75c4cae4add69b))
+
+
+### Documentation
+
+* **mcp:** add a README button for one-click add to Cursor ([430714d](https://github.com/straddleio/straddle-node/commit/430714d39f49ffb317b7e01501d798a6f019a335))
+* **mcp:** add a README link to add server to VS Code or Claude Code ([718176d](https://github.com/straddleio/straddle-node/commit/718176d983930988b9cead14151f2227ae49857b))
+
 ## 0.2.1 (2025-10-08)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/straddleio/straddle-node/compare/v0.2.0...v0.2.1)
