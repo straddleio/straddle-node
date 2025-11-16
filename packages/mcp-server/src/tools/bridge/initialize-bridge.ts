@@ -30,11 +30,20 @@ export const tool: Tool = {
       config: {
         type: 'object',
         properties: {
+          processing_method: {
+            type: 'string',
+            enum: ['inline', 'background', 'skip'],
+          },
           sandbox_outcome: {
             type: 'string',
-            enum: ['standard', 'active', 'rejected'],
+            enum: ['standard', 'active', 'rejected', 'review'],
           },
         },
+      },
+      external_id: {
+        type: 'string',
+        description:
+          'Unique identifier for the paykey in your database, used for cross-referencing between Straddle and your systems.',
       },
       'Correlation-Id': {
         type: 'string',

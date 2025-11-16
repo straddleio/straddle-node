@@ -30,6 +30,7 @@ describe('resource fundingEvents', () => {
           event_type: 'charge_deposit',
           page_number: 0,
           page_size: 0,
+          search_text: 'search_text',
           sort_by: 'transfer_date',
           sort_order: 'asc',
           trace_number: 'trace_number',

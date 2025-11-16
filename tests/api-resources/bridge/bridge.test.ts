@@ -22,7 +22,8 @@ describe('resource bridge', () => {
   test('initialize: required and optional params', async () => {
     const response = await client.bridge.initialize({
       customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      config: { sandbox_outcome: 'standard' },
+      config: { processing_method: 'inline', sandbox_outcome: 'standard' },
+      external_id: 'external_id',
       'Correlation-Id': 'Correlation-Id',
       'Idempotency-Key': 'xxxxxxxxxx',
       'Request-Id': 'Request-Id',

@@ -121,6 +121,11 @@ export namespace PaymentSummaryPagedV1 {
     status_details: Shared.StatusDetailsV1;
 
     /**
+     * Trace ids.
+     */
+    trace_ids: { [key: string]: string };
+
+    /**
      * The time the `charge` or `payout` was last updated.
      */
     updated_at: string;

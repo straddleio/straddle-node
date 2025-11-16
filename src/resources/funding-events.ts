@@ -102,6 +102,11 @@ export namespace FundingEventSummaryItemV1 {
     amount: number;
 
     /**
+     * Created at.
+     */
+    created_at: string;
+
+    /**
      * Describes the direction of the funding event from the perspective of the
      * `linked_bank_account`.
      */
@@ -119,6 +124,11 @@ export namespace FundingEventSummaryItemV1 {
     payment_count: number;
 
     /**
+     * Trace Ids.
+     */
+    trace_ids: { [key: string]: string };
+
+    /**
      * Trace number.
      */
     trace_numbers: Array<string>;
@@ -129,6 +139,11 @@ export namespace FundingEventSummaryItemV1 {
      * `reversals`, this is the date the funds were debited from your bank account.
      */
     transfer_date: string;
+
+    /**
+     * Updated at.
+     */
+    updated_at: string;
 
     /**
      * The trace number of the funding event.
@@ -167,6 +182,11 @@ export namespace FundingEventSummaryPagedV1 {
     amount: number;
 
     /**
+     * Created at.
+     */
+    created_at: string;
+
+    /**
      * Describes the direction of the funding event from the perspective of the
      * `linked_bank_account`.
      */
@@ -184,6 +204,11 @@ export namespace FundingEventSummaryPagedV1 {
     payment_count: number;
 
     /**
+     * Trace Ids.
+     */
+    trace_ids: { [key: string]: string };
+
+    /**
      * Trace number.
      */
     trace_numbers: Array<string>;
@@ -194,6 +219,11 @@ export namespace FundingEventSummaryPagedV1 {
      * `reversals`, this is the date the funds were debited from your bank account.
      */
     transfer_date: string;
+
+    /**
+     * Updated at.
+     */
+    updated_at: string;
 
     /**
      * The trace number of the funding event.
@@ -267,6 +297,11 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
    * funding event.
    */
   event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
+
+  /**
+   * Query param: Search text.
+   */
+  search_text?: string | null;
 
   /**
    * Query param: The field to sort the results by.
