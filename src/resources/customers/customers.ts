@@ -10,6 +10,7 @@ import {
   Review,
   ReviewDecisionParams,
   ReviewGetParams,
+  ReviewRefreshReviewParams,
 } from './review';
 import { APIPromise } from '../../core/api-promise';
 import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
@@ -202,43 +203,6 @@ export class Customers extends APIResource {
       headers: buildHeaders([
         {
           ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Updates the decision of a customer's identity validation. This endpoint allows
-   * you to modify the outcome of a customer decision and is useful for correcting or
-   * updating the status of a customer's verification.
-   *
-   * @example
-   * ```ts
-   * const customerV1 = await client.customers.refreshReview(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  refreshReview(
-    id: string,
-    params: CustomerRefreshReviewParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomerV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.put(path`/v1/customers/${id}/refresh_review`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
           ...(requestID != null ? { 'Request-Id': requestID } : undefined),
           ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
         },
@@ -1117,28 +1081,6 @@ export interface CustomerGetParams {
   'Straddle-Account-Id'?: string;
 }
 
-export interface CustomerRefreshReviewParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export interface CustomerUnmaskedParams {
   /**
    * Optional client generated identifier to trace and debug a series of requests.
@@ -1171,7 +1113,6 @@ export declare namespace Customers {
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
     type CustomerGetParams as CustomerGetParams,
-    type CustomerRefreshReviewParams as CustomerRefreshReviewParams,
     type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 
@@ -1181,5 +1122,6 @@ export declare namespace Customers {
     type IdentityVerificationBreakdownV1 as IdentityVerificationBreakdownV1,
     type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
+    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
   };
 }

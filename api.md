@@ -130,7 +130,6 @@ Methods:
 - <code title="get /v1/customers">client.customers.<a href="./src/resources/customers/customers.ts">list</a>({ ...params }) -> CustomerSummaryPagedV1DataPageNumberSchema</code>
 - <code title="delete /v1/customers/{id}">client.customers.<a href="./src/resources/customers/customers.ts">delete</a>(id, { ...params }) -> CustomerV1</code>
 - <code title="get /v1/customers/{id}">client.customers.<a href="./src/resources/customers/customers.ts">get</a>(id, { ...params }) -> CustomerV1</code>
-- <code title="put /v1/customers/{id}/refresh_review">client.customers.<a href="./src/resources/customers/customers.ts">refreshReview</a>(id, { ...params }) -> CustomerV1</code>
 - <code title="get /v1/customers/{id}/unmasked">client.customers.<a href="./src/resources/customers/customers.ts">unmasked</a>(id, { ...params }) -> CustomerUnmaskedV1</code>
 
 ## Review
@@ -144,24 +143,37 @@ Methods:
 
 - <code title="patch /v1/customers/{id}/review">client.customers.review.<a href="./src/resources/customers/review.ts">decision</a>(id, { ...params }) -> CustomerV1</code>
 - <code title="get /v1/customers/{id}/review">client.customers.review.<a href="./src/resources/customers/review.ts">get</a>(id, { ...params }) -> CustomerReviewV1</code>
+- <code title="put /v1/customers/{id}/refresh_review">client.customers.review.<a href="./src/resources/customers/review.ts">refreshReview</a>(id, { ...params }) -> CustomerV1</code>
 
 # Paykeys
 
 Types:
 
-- <code><a href="./src/resources/paykeys.ts">PaykeySummaryPagedV1</a></code>
-- <code><a href="./src/resources/paykeys.ts">PaykeyUnmaskedV1</a></code>
-- <code><a href="./src/resources/paykeys.ts">PaykeyV1</a></code>
-- <code><a href="./src/resources/paykeys.ts">PaykeyRevealResponse</a></code>
+- <code><a href="./src/resources/paykeys/paykeys.ts">PaykeySummaryPagedV1</a></code>
+- <code><a href="./src/resources/paykeys/paykeys.ts">PaykeyUnmaskedV1</a></code>
+- <code><a href="./src/resources/paykeys/paykeys.ts">PaykeyV1</a></code>
+- <code><a href="./src/resources/paykeys/paykeys.ts">PaykeyRevealResponse</a></code>
 
 Methods:
 
-- <code title="get /v1/paykeys">client.paykeys.<a href="./src/resources/paykeys.ts">list</a>({ ...params }) -> PaykeySummaryPagedV1DataPageNumberSchema</code>
-- <code title="put /v1/paykeys/{id}/cancel">client.paykeys.<a href="./src/resources/paykeys.ts">cancel</a>(id, { ...params }) -> PaykeyV1</code>
-- <code title="get /v1/paykeys/{id}">client.paykeys.<a href="./src/resources/paykeys.ts">get</a>(id, { ...params }) -> PaykeyV1</code>
-- <code title="get /v1/paykeys/{id}/reveal">client.paykeys.<a href="./src/resources/paykeys.ts">reveal</a>(id, { ...params }) -> PaykeyRevealResponse</code>
-- <code title="patch /v1/paykeys/{id}/review">client.paykeys.<a href="./src/resources/paykeys.ts">review</a>(id, { ...params }) -> PaykeyV1</code>
-- <code title="get /v1/paykeys/{id}/unmasked">client.paykeys.<a href="./src/resources/paykeys.ts">unmasked</a>(id, { ...params }) -> PaykeyUnmaskedV1</code>
+- <code title="get /v1/paykeys">client.paykeys.<a href="./src/resources/paykeys/paykeys.ts">list</a>({ ...params }) -> PaykeySummaryPagedV1DataPageNumberSchema</code>
+- <code title="put /v1/paykeys/{id}/cancel">client.paykeys.<a href="./src/resources/paykeys/paykeys.ts">cancel</a>(id, { ...params }) -> PaykeyV1</code>
+- <code title="get /v1/paykeys/{id}">client.paykeys.<a href="./src/resources/paykeys/paykeys.ts">get</a>(id, { ...params }) -> PaykeyV1</code>
+- <code title="get /v1/paykeys/{id}/reveal">client.paykeys.<a href="./src/resources/paykeys/paykeys.ts">reveal</a>(id, { ...params }) -> PaykeyRevealResponse</code>
+- <code title="get /v1/paykeys/{id}/unmasked">client.paykeys.<a href="./src/resources/paykeys/paykeys.ts">unmasked</a>(id, { ...params }) -> PaykeyUnmaskedV1</code>
+- <code title="put /v1/paykeys/{id}/refresh_balance">client.paykeys.<a href="./src/resources/paykeys/paykeys.ts">updateBalance</a>(id, { ...params }) -> PaykeyV1</code>
+
+## Review
+
+Types:
+
+- <code><a href="./src/resources/paykeys/review.ts">ReviewGetResponse</a></code>
+
+Methods:
+
+- <code title="patch /v1/paykeys/{id}/review">client.paykeys.review.<a href="./src/resources/paykeys/review.ts">decision</a>(id, { ...params }) -> PaykeyV1</code>
+- <code title="get /v1/paykeys/{id}/review">client.paykeys.review.<a href="./src/resources/paykeys/review.ts">get</a>(id, { ...params }) -> ReviewGetResponse</code>
+- <code title="put /v1/paykeys/{id}/refresh_review">client.paykeys.review.<a href="./src/resources/paykeys/review.ts">refreshReview</a>(id, { ...params }) -> PaykeyV1</code>
 
 # Charges
 

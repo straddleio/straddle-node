@@ -26,7 +26,6 @@ export {
   type CustomerListParams,
   type CustomerDeleteParams,
   type CustomerGetParams,
-  type CustomerRefreshReviewParams,
   type CustomerUnmaskedParams,
   type CustomerSummaryPagedV1DataPageNumberSchema,
 } from './customers/customers';
@@ -49,10 +48,10 @@ export {
   type PaykeyCancelParams,
   type PaykeyGetParams,
   type PaykeyRevealParams,
-  type PaykeyReviewParams,
   type PaykeyUnmaskedParams,
+  type PaykeyUpdateBalanceParams,
   type PaykeySummaryPagedV1DataPageNumberSchema,
-} from './paykeys';
+} from './paykeys/paykeys';
 export {
   Payments,
   type PaymentSummaryPagedV1,

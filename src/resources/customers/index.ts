@@ -12,7 +12,6 @@ export {
   type CustomerListParams,
   type CustomerDeleteParams,
   type CustomerGetParams,
-  type CustomerRefreshReviewParams,
   type CustomerUnmaskedParams,
   type CustomerSummaryPagedV1DataPageNumberSchema,
 } from './customers';
@@ -22,4 +21,5 @@ export {
   type IdentityVerificationBreakdownV1,
   type ReviewDecisionParams,
   type ReviewGetParams,
+  type ReviewRefreshReviewParams,
 } from './review';

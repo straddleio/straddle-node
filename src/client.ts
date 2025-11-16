@@ -40,20 +40,6 @@ import {
   FundingEvents,
 } from './resources/funding-events';
 import {
-  PaykeyCancelParams,
-  PaykeyGetParams,
-  PaykeyListParams,
-  PaykeyRevealParams,
-  PaykeyRevealResponse,
-  PaykeyReviewParams,
-  PaykeySummaryPagedV1,
-  PaykeySummaryPagedV1DataPageNumberSchema,
-  PaykeyUnmaskedParams,
-  PaykeyUnmaskedV1,
-  PaykeyV1,
-  Paykeys,
-} from './resources/paykeys';
-import {
   PaymentListParams,
   PaymentSummaryPagedV1,
   PaymentSummaryPagedV1DataPageNumberSchema,
@@ -83,7 +69,6 @@ import {
   CustomerDeleteParams,
   CustomerGetParams,
   CustomerListParams,
-  CustomerRefreshReviewParams,
   CustomerSummaryPagedV1,
   CustomerSummaryPagedV1DataPageNumberSchema,
   CustomerUnmaskedParams,
@@ -94,6 +79,20 @@ import {
   DeviceUnmaskedV1,
 } from './resources/customers/customers';
 import { Embed } from './resources/embed/embed';
+import {
+  PaykeyCancelParams,
+  PaykeyGetParams,
+  PaykeyListParams,
+  PaykeyRevealParams,
+  PaykeyRevealResponse,
+  PaykeySummaryPagedV1,
+  PaykeySummaryPagedV1DataPageNumberSchema,
+  PaykeyUnmaskedParams,
+  PaykeyUnmaskedV1,
+  PaykeyUpdateBalanceParams,
+  PaykeyV1,
+  Paykeys,
+} from './resources/paykeys/paykeys';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -869,7 +868,6 @@ export declare namespace Straddle {
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
     type CustomerGetParams as CustomerGetParams,
-    type CustomerRefreshReviewParams as CustomerRefreshReviewParams,
     type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 
@@ -884,8 +882,8 @@ export declare namespace Straddle {
     type PaykeyCancelParams as PaykeyCancelParams,
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
-    type PaykeyReviewParams as PaykeyReviewParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
+    type PaykeyUpdateBalanceParams as PaykeyUpdateBalanceParams,
   };
 
   export {
