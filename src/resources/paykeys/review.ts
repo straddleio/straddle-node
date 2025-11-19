@@ -282,7 +282,7 @@ export namespace ReviewGetResponse {
        */
       created_at: string;
 
-      decision: 'unknown' | 'accept' | 'reject' | 'review';
+      decision: 'accept' | 'reject' | 'review';
 
       /**
        * Dictionary of all messages from the paykey verification process.
@@ -306,7 +306,7 @@ export namespace ReviewGetResponse {
         export interface AccountValidation {
           codes: Array<string>;
 
-          decision: 'unknown' | 'accept' | 'reject' | 'review';
+          decision: 'accept' | 'reject' | 'review';
 
           reason?: string | null;
         }
@@ -314,7 +314,7 @@ export namespace ReviewGetResponse {
         export interface NameMatch {
           codes: Array<string>;
 
-          decision: 'unknown' | 'accept' | 'reject' | 'review';
+          decision: 'accept' | 'reject' | 'review';
 
           correlation_score?: number | null;
 
