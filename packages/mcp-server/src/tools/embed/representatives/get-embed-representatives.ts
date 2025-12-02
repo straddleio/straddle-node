@@ -52,7 +52,7 @@ export const handler = async (client: Straddle, args: Record<string, unknown> | 
       await maybeFilter(jq_filter, await client.embed.representatives.get(representative_id, body)),
     );
   } catch (error) {
-    if (isJqError(error)) {
+    if (error instanceof Straddle.APIError || isJqError(error)) {
       return asErrorResult(error.message);
     }
     throw error;

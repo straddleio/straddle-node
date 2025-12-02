@@ -49,7 +49,7 @@ export const handler = async (client: Straddle, args: Record<string, unknown> | 
       await maybeFilter(jq_filter, await client.reports.createTotalCustomersByStatus(body)),
     );
   } catch (error) {
-    if (isJqError(error)) {
+    if (error instanceof Straddle.APIError || isJqError(error)) {
       return asErrorResult(error.message);
     }
     throw error;
