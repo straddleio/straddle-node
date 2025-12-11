@@ -39,6 +39,7 @@ export async function codeTool() {
       },
       body: JSON.stringify({
         project_name: 'straddle',
+        client_opts: { environment: (readEnv('STRADDLE_ENVIRONMENT') || undefined) as any },
         code,
       }),
     });
