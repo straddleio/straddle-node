@@ -35,7 +35,10 @@ export async function codeTool() {
       headers: {
         ...(stainlessAPIKey && { Authorization: stainlessAPIKey }),
         'Content-Type': 'application/json',
-        client_envs: JSON.stringify({ STRADDLE_API_KEY: readEnv('STRADDLE_API_KEY') }),
+        client_envs: JSON.stringify({
+          STRADDLE_API_KEY: readEnv('STRADDLE_API_KEY'),
+          STRADDLE_BASE_URL: readEnv('STRADDLE_BASE_URL'),
+        }),
       },
       body: JSON.stringify({
         project_name: 'straddle',
