@@ -16,7 +16,11 @@ describe('resource representatives', () => {
       first_name: 'first_name',
       last_name: 'last_name',
       mobile_number: '+12128675309',
-      relationship: { control: true, owner: true, primary: true },
+      relationship: {
+        control: true,
+        owner: true,
+        primary: true,
+      },
       ssn_last4: '1234',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -36,7 +40,13 @@ describe('resource representatives', () => {
       first_name: 'first_name',
       last_name: 'last_name',
       mobile_number: '+12128675309',
-      relationship: { control: true, owner: true, primary: true, percent_ownership: 0, title: 'title' },
+      relationship: {
+        control: true,
+        owner: true,
+        primary: true,
+        percent_ownership: 0,
+        title: 'title',
+      },
       ssn_last4: '1234',
       external_id: 'external_id',
       metadata: { foo: 'string' },
@@ -53,7 +63,11 @@ describe('resource representatives', () => {
       first_name: 'Ron',
       last_name: 'Swanson',
       mobile_number: '+12128675309',
-      relationship: { control: true, owner: true, primary: true },
+      relationship: {
+        control: true,
+        owner: true,
+        primary: true,
+      },
       ssn_last4: '1234',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -72,7 +86,13 @@ describe('resource representatives', () => {
       first_name: 'Ron',
       last_name: 'Swanson',
       mobile_number: '+12128675309',
-      relationship: { control: true, owner: true, primary: true, percent_ownership: 0, title: 'title' },
+      relationship: {
+        control: true,
+        owner: true,
+        primary: true,
+        percent_ownership: 0,
+        title: 'title',
+      },
       ssn_last4: '1234',
       external_id: 'external_id',
       metadata: { foo: 'string' },

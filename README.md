@@ -140,7 +140,17 @@ const client = new Straddle({
 });
 
 // Or, configure per-request:
-await client.charges.create({ amount: 10000, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
+await client.charges.create({
+  amount: 10000,
+  config: { balance_check: 'required' },
+  consent_type: 'internet',
+  currency: 'currency',
+  description: 'Monthly subscription fee',
+  device: { ip_address: '192.168.1.1' },
+  external_id: 'external_id',
+  paykey: 'paykey',
+  payment_date: '2019-12-27',
+}, {
   maxRetries: 5,
 });
 ```
@@ -157,7 +167,17 @@ const client = new Straddle({
 });
 
 // Override per-request:
-await client.charges.create({ amount: 10000, config: { balance_check: 'required' }, consent_type: 'internet', currency: 'currency', description: 'Monthly subscription fee', device: { ip_address: '192.168.1.1' }, external_id: 'external_id', paykey: 'paykey', payment_date: '2019-12-27' }, {
+await client.charges.create({
+  amount: 10000,
+  config: { balance_check: 'required' },
+  consent_type: 'internet',
+  currency: 'currency',
+  description: 'Monthly subscription fee',
+  device: { ip_address: '192.168.1.1' },
+  external_id: 'external_id',
+  paykey: 'paykey',
+  payment_date: '2019-12-27',
+}, {
   timeout: 5 * 1000,
 });
 ```
