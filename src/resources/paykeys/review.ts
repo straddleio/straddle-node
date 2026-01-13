@@ -113,7 +113,7 @@ export interface ReviewGetResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
 }
 
 export namespace ReviewGetResponse {
@@ -150,7 +150,7 @@ export namespace ReviewGetResponse {
 
       source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-      status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+      status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
       /**
        * Timestamp of the most recent update to the paykey.
@@ -258,9 +258,44 @@ export namespace ReviewGetResponse {
           | 'user_request'
           | 'ok'
           | 'other_network_return'
-          | 'payout_refused';
+          | 'payout_refused'
+          | 'cancel_request'
+          | 'failed_verification'
+          | 'require_review'
+          | 'blocked_by_system'
+          | 'watchtower_review'
+          | 'InsufficientFunds'
+          | 'ClosedBankAccount'
+          | 'InvalidBankAccount'
+          | 'InvalidRouting'
+          | 'Disputed'
+          | 'PaymentStopped'
+          | 'OwnerDeceased'
+          | 'FrozenBankAccount'
+          | 'RiskReview'
+          | 'Fraudulent'
+          | 'DuplicateEntry'
+          | 'InvalidPaykey'
+          | 'PaymentBlocked'
+          | 'AmountTooLarge'
+          | 'TooManyAttempts'
+          | 'InternalSystemError'
+          | 'UserRequest'
+          | 'Ok'
+          | 'OtherNetworkReturn'
+          | 'PayoutRefused';
 
-        source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+        source:
+          | 'watchtower'
+          | 'bank_decline'
+          | 'customer_dispute'
+          | 'user_action'
+          | 'system'
+          | 'Watchtower'
+          | 'BankDecline'
+          | 'CustomerDispute'
+          | 'UserAction'
+          | 'System';
 
         /**
          * The status code if applicable.
