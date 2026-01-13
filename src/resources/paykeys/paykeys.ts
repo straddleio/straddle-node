@@ -206,7 +206,7 @@ export interface PaykeySummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeySummaryPagedV1 {
@@ -328,39 +328,9 @@ export namespace PaykeySummaryPagedV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The status code if applicable.
@@ -400,7 +370,7 @@ export namespace PaykeySummaryPagedV1 {
      */
     sort_by: string;
 
-    sort_order: 'asc' | 'desc' | 'Asc' | 'Desc';
+    sort_order: 'asc' | 'desc';
 
     total_items: number;
 
@@ -428,7 +398,7 @@ export interface PaykeyUnmaskedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeyUnmaskedV1 {
@@ -570,39 +540,9 @@ export namespace PaykeyUnmaskedV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The status code if applicable.
@@ -629,7 +569,7 @@ export interface PaykeyV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeyV1 {
@@ -660,13 +600,6 @@ export namespace PaykeyV1 {
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
-
-    /**
-     * Indicates whether this paykey is eligible for client-initiated unblocking. Only
-     * true for paykeys blocked due to R29 returns that have not been previously
-     * unblocked.
-     */
-    unblock_eligible: boolean;
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -779,39 +712,9 @@ export namespace PaykeyV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The status code if applicable.
@@ -838,7 +741,7 @@ export interface PaykeyRevealResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaykeyRevealResponse {
@@ -982,39 +885,9 @@ export namespace PaykeyRevealResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The status code if applicable.
@@ -1038,7 +911,7 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param:
    */
-  sort_order?: 'asc' | 'desc' | 'Asc' | 'Desc';
+  sort_order?: 'asc' | 'desc';
 
   /**
    * Query param: Filter paykeys by their source.

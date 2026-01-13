@@ -52,7 +52,7 @@ export interface PaymentSummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PaymentSummaryPagedV1 {
@@ -108,28 +108,12 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * The type of payment. Valid values are `charge` or `payout`.
      */
-    payment_type: 'charge' | 'payout' | 'Charge' | 'Payout';
+    payment_type: 'charge' | 'payout';
 
     /**
      * The current status of the `charge` or `payout`.
      */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'Created'
-      | 'Scheduled'
-      | 'Failed'
-      | 'Cancelled'
-      | 'OnHold'
-      | 'Pending'
-      | 'Paid'
-      | 'Reversed';
+    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     /**
      * Details about the current status of the `charge` or `payout`.
@@ -201,7 +185,7 @@ export namespace PaymentSummaryPagedV1 {
      */
     sort_by: string;
 
-    sort_order: 'asc' | 'desc' | 'Asc' | 'Desc';
+    sort_order: 'asc' | 'desc';
 
     total_items: number;
 
@@ -226,22 +210,12 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  default_sort?:
-    | 'created_at'
-    | 'payment_date'
-    | 'effective_at'
-    | 'id'
-    | 'amount'
-    | 'CreatedAt'
-    | 'PaymentDate'
-    | 'EffectiveAt'
-    | 'Id'
-    | 'Amount';
+  default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
   /**
    * Query param:
    */
-  default_sort_order?: 'asc' | 'desc' | 'Asc' | 'Desc';
+  default_sort_order?: 'asc' | 'desc';
 
   /**
    * Query param: Search using the `external_id` of a `charge` or `payout`.
@@ -315,28 +289,13 @@ export interface PaymentListParams extends PageNumberSchemaParams {
    * Query param: Search by the status of a `charge` or `payout`.
    */
   payment_status?: Array<
-    | 'created'
-    | 'scheduled'
-    | 'failed'
-    | 'cancelled'
-    | 'on_hold'
-    | 'pending'
-    | 'paid'
-    | 'reversed'
-    | 'Created'
-    | 'Scheduled'
-    | 'Failed'
-    | 'Cancelled'
-    | 'OnHold'
-    | 'Pending'
-    | 'Paid'
-    | 'Reversed'
+    'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
   >;
 
   /**
    * Query param: Search by the type of a `charge` or `payout`.
    */
-  payment_type?: Array<'charge' | 'payout' | 'Charge' | 'Payout'>;
+  payment_type?: Array<'charge' | 'payout'>;
 
   /**
    * Query param: Search using a text string associated with a `charge` or `payout`.
@@ -346,22 +305,12 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  sort_by?:
-    | 'created_at'
-    | 'payment_date'
-    | 'effective_at'
-    | 'id'
-    | 'amount'
-    | 'CreatedAt'
-    | 'PaymentDate'
-    | 'EffectiveAt'
-    | 'Id'
-    | 'Amount';
+  sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
   /**
    * Query param:
    */
-  sort_order?: 'asc' | 'desc' | 'Asc' | 'Desc';
+  sort_order?: 'asc' | 'desc';
 
   /**
    * Query param: Reason for latest payment status change.
@@ -392,43 +341,12 @@ export interface PaymentListParams extends PageNumberSchemaParams {
     | 'require_review'
     | 'blocked_by_system'
     | 'watchtower_review'
-    | 'InsufficientFunds'
-    | 'ClosedBankAccount'
-    | 'InvalidBankAccount'
-    | 'InvalidRouting'
-    | 'Disputed'
-    | 'PaymentStopped'
-    | 'OwnerDeceased'
-    | 'FrozenBankAccount'
-    | 'RiskReview'
-    | 'Fraudulent'
-    | 'DuplicateEntry'
-    | 'InvalidPaykey'
-    | 'PaymentBlocked'
-    | 'AmountTooLarge'
-    | 'TooManyAttempts'
-    | 'InternalSystemError'
-    | 'UserRequest'
-    | 'Ok'
-    | 'OtherNetworkReturn'
-    | 'PayoutRefused'
   >;
 
   /**
    * Query param: Source of latest payment status change.
    */
-  status_source?: Array<
-    | 'watchtower'
-    | 'bank_decline'
-    | 'customer_dispute'
-    | 'user_action'
-    | 'system'
-    | 'Watchtower'
-    | 'BankDecline'
-    | 'CustomerDispute'
-    | 'UserAction'
-    | 'System'
-  >;
+  status_source?: Array<'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
