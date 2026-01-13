@@ -525,28 +525,6 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
     | 'PayoutWithdrawal';
 
   /**
-   * Query param: Payment status.
-   */
-  payment_status?: Array<
-    | 'created'
-    | 'scheduled'
-    | 'failed'
-    | 'cancelled'
-    | 'on_hold'
-    | 'pending'
-    | 'paid'
-    | 'reversed'
-    | 'Created'
-    | 'Scheduled'
-    | 'Failed'
-    | 'Cancelled'
-    | 'OnHold'
-    | 'Pending'
-    | 'Paid'
-    | 'Reversed'
-  > | null;
-
-  /**
    * Query param: Search text.
    */
   search_text?: string | null;
