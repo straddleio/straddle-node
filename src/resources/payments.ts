@@ -52,7 +52,7 @@ export interface PaymentSummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
 }
 
 export namespace PaymentSummaryPagedV1 {
@@ -80,7 +80,7 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * An arbitrary description for the `charge` or `payout`.
      */
-    description: string;
+    description: string | null;
 
     /**
      * Unique identifier for the `charge` or `payout` in your database. This value must
@@ -108,12 +108,28 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * The type of payment. Valid values are `charge` or `payout`.
      */
-    payment_type: 'charge' | 'payout';
+    payment_type: 'charge' | 'payout' | 'Charge' | 'Payout';
 
     /**
      * The current status of the `charge` or `payout`.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'Created'
+      | 'Scheduled'
+      | 'Failed'
+      | 'Cancelled'
+      | 'OnHold'
+      | 'Pending'
+      | 'Paid'
+      | 'Reversed';
 
     /**
      * Details about the current status of the `charge` or `payout`.
@@ -185,7 +201,7 @@ export namespace PaymentSummaryPagedV1 {
      */
     sort_by: string;
 
-    sort_order: 'asc' | 'desc';
+    sort_order: 'asc' | 'desc' | 'Asc' | 'Desc';
 
     total_items: number;
 
@@ -210,12 +226,22 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
+  default_sort?:
+    | 'created_at'
+    | 'payment_date'
+    | 'effective_at'
+    | 'id'
+    | 'amount'
+    | 'CreatedAt'
+    | 'PaymentDate'
+    | 'EffectiveAt'
+    | 'Id'
+    | 'Amount';
 
   /**
    * Query param:
    */
-  default_sort_order?: 'asc' | 'desc';
+  default_sort_order?: 'asc' | 'desc' | 'Asc' | 'Desc';
 
   /**
    * Query param: Search using the `external_id` of a `charge` or `payout`.
@@ -289,13 +315,28 @@ export interface PaymentListParams extends PageNumberSchemaParams {
    * Query param: Search by the status of a `charge` or `payout`.
    */
   payment_status?: Array<
-    'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
+    | 'created'
+    | 'scheduled'
+    | 'failed'
+    | 'cancelled'
+    | 'on_hold'
+    | 'pending'
+    | 'paid'
+    | 'reversed'
+    | 'Created'
+    | 'Scheduled'
+    | 'Failed'
+    | 'Cancelled'
+    | 'OnHold'
+    | 'Pending'
+    | 'Paid'
+    | 'Reversed'
   >;
 
   /**
    * Query param: Search by the type of a `charge` or `payout`.
    */
-  payment_type?: Array<'charge' | 'payout'>;
+  payment_type?: Array<'charge' | 'payout' | 'Charge' | 'Payout'>;
 
   /**
    * Query param: Search using a text string associated with a `charge` or `payout`.
@@ -305,12 +346,22 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
+  sort_by?:
+    | 'created_at'
+    | 'payment_date'
+    | 'effective_at'
+    | 'id'
+    | 'amount'
+    | 'CreatedAt'
+    | 'PaymentDate'
+    | 'EffectiveAt'
+    | 'Id'
+    | 'Amount';
 
   /**
    * Query param:
    */
-  sort_order?: 'asc' | 'desc';
+  sort_order?: 'asc' | 'desc' | 'Asc' | 'Desc';
 
   /**
    * Query param: Reason for latest payment status change.
@@ -336,12 +387,48 @@ export interface PaymentListParams extends PageNumberSchemaParams {
     | 'ok'
     | 'other_network_return'
     | 'payout_refused'
+    | 'cancel_request'
+    | 'failed_verification'
+    | 'require_review'
+    | 'blocked_by_system'
+    | 'watchtower_review'
+    | 'InsufficientFunds'
+    | 'ClosedBankAccount'
+    | 'InvalidBankAccount'
+    | 'InvalidRouting'
+    | 'Disputed'
+    | 'PaymentStopped'
+    | 'OwnerDeceased'
+    | 'FrozenBankAccount'
+    | 'RiskReview'
+    | 'Fraudulent'
+    | 'DuplicateEntry'
+    | 'InvalidPaykey'
+    | 'PaymentBlocked'
+    | 'AmountTooLarge'
+    | 'TooManyAttempts'
+    | 'InternalSystemError'
+    | 'UserRequest'
+    | 'Ok'
+    | 'OtherNetworkReturn'
+    | 'PayoutRefused'
   >;
 
   /**
    * Query param: Source of latest payment status change.
    */
-  status_source?: Array<'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'>;
+  status_source?: Array<
+    | 'watchtower'
+    | 'bank_decline'
+    | 'customer_dispute'
+    | 'user_action'
+    | 'system'
+    | 'Watchtower'
+    | 'BankDecline'
+    | 'CustomerDispute'
+    | 'UserAction'
+    | 'System'
+  >;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
