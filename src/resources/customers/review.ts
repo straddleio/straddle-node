@@ -148,7 +148,7 @@ export interface CustomerReviewV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
 }
 
 export namespace CustomerReviewV1 {
@@ -187,7 +187,7 @@ export namespace CustomerReviewV1 {
 
       status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-      type: 'individual' | 'business';
+      type: 'individual' | 'business' | 'Individual' | 'Business';
 
       /**
        * Timestamp of the most recent update to the customer record.
