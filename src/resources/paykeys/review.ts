@@ -153,6 +153,13 @@ export namespace ReviewGetResponse {
       status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
       /**
+       * Indicates whether this paykey is eligible for client-initiated unblocking. Only
+       * true for paykeys blocked due to R29 returns that have not been previously
+       * unblocked.
+       */
+      unblock_eligible: boolean;
+
+      /**
        * Timestamp of the most recent update to the paykey.
        */
       updated_at: string;
