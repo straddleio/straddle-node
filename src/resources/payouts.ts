@@ -276,7 +276,7 @@ export interface PayoutV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PayoutV1 {
@@ -336,23 +336,7 @@ export namespace PayoutV1 {
     /**
      * The current status of the payout.
      */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'Created'
-      | 'Scheduled'
-      | 'Failed'
-      | 'Cancelled'
-      | 'OnHold'
-      | 'Pending'
-      | 'Paid'
-      | 'Reversed';
+    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     /**
      * Details about the current status of the payout.
@@ -399,7 +383,7 @@ export namespace PayoutV1 {
     /**
      * The payment rail used for the payout.
      */
-    payment_rail?: 'ach' | 'ACH';
+    payment_rail?: 'ach';
 
     /**
      * The time the payout was processed by Straddle and originated to the payment
@@ -432,18 +416,7 @@ export namespace PayoutV1 {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account'
-        | 'Standard'
-        | 'Paid'
-        | 'OnHoldDailyLimit'
-        | 'CancelledForFraudRisk'
-        | 'CancelledForBalanceCheck'
-        | 'FailedInsufficientFunds'
-        | 'ReversedInsufficientFunds'
-        | 'FailedCustomerDispute'
-        | 'ReversedCustomerDispute'
-        | 'FailedClosedBankAccount'
-        | 'ReversedClosedBankAccount';
+        | 'reversed_closed_bank_account';
     }
 
     export interface StatusHistory {
@@ -486,64 +459,18 @@ export namespace PayoutV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
        * This helps in tracking the cause of status updates.
        */
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The current status of the `charge` or `payout`.
        */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'Created'
-        | 'Scheduled'
-        | 'Failed'
-        | 'Cancelled'
-        | 'OnHold'
-        | 'Pending'
-        | 'Paid'
-        | 'Reversed';
+      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
       /**
        * The status code if applicable.
@@ -570,7 +497,7 @@ export interface PayoutUnmaskResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace PayoutUnmaskResponse {
@@ -622,23 +549,7 @@ export namespace PayoutUnmaskResponse {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'Created'
-      | 'Scheduled'
-      | 'Failed'
-      | 'Cancelled'
-      | 'OnHold'
-      | 'Pending'
-      | 'Paid'
-      | 'Reversed';
+    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     status_details: Shared.StatusDetailsV1;
 
@@ -677,7 +588,7 @@ export namespace PayoutUnmaskResponse {
     /**
      * The payment rail used for the charge or payout.
      */
-    payment_rail?: 'ach' | 'ACH';
+    payment_rail?: 'ach';
 
     /**
      * Processed at.
@@ -706,18 +617,7 @@ export namespace PayoutUnmaskResponse {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account'
-        | 'Standard'
-        | 'Paid'
-        | 'OnHoldDailyLimit'
-        | 'CancelledForFraudRisk'
-        | 'CancelledForBalanceCheck'
-        | 'FailedInsufficientFunds'
-        | 'ReversedInsufficientFunds'
-        | 'FailedCustomerDispute'
-        | 'ReversedCustomerDispute'
-        | 'FailedClosedBankAccount'
-        | 'ReversedClosedBankAccount';
+        | 'reversed_closed_bank_account';
     }
 
     export interface Device {
@@ -767,64 +667,18 @@ export namespace PayoutUnmaskResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
        * This helps in tracking the cause of status updates.
        */
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The current status of the `charge` or `payout`.
        */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'Created'
-        | 'Scheduled'
-        | 'Failed'
-        | 'Cancelled'
-        | 'OnHold'
-        | 'Pending'
-        | 'Paid'
-        | 'Reversed';
+      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
       /**
        * The status code if applicable.
@@ -923,18 +777,7 @@ export namespace PayoutCreateParams {
       | 'failed_customer_dispute'
       | 'reversed_customer_dispute'
       | 'failed_closed_bank_account'
-      | 'reversed_closed_bank_account'
-      | 'Standard'
-      | 'Paid'
-      | 'OnHoldDailyLimit'
-      | 'CancelledForFraudRisk'
-      | 'CancelledForBalanceCheck'
-      | 'FailedInsufficientFunds'
-      | 'ReversedInsufficientFunds'
-      | 'FailedCustomerDispute'
-      | 'ReversedCustomerDispute'
-      | 'FailedClosedBankAccount'
-      | 'ReversedClosedBankAccount';
+      | 'reversed_closed_bank_account';
   }
 }
 
