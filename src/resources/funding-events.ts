@@ -86,7 +86,7 @@ export interface FundingEventSummaryItemV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace FundingEventSummaryItemV1 {
@@ -116,15 +116,7 @@ export namespace FundingEventSummaryItemV1 {
      * The funding event types describes the direction and reason for the funding
      * event.
      */
-    event_type:
-      | 'charge_deposit'
-      | 'charge_reversal'
-      | 'payout_return'
-      | 'payout_withdrawal'
-      | 'ChargeDeposit'
-      | 'ChargeReversal'
-      | 'PayoutReturn'
-      | 'PayoutWithdrawal';
+    event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
 
     /**
      * The number of payments associated with the funding event.
@@ -156,23 +148,7 @@ export namespace FundingEventSummaryItemV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status?:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'Created'
-      | 'Scheduled'
-      | 'Failed'
-      | 'Cancelled'
-      | 'OnHold'
-      | 'Pending'
-      | 'Paid'
-      | 'Reversed';
+    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     status_details?: Data.StatusDetails;
 
@@ -219,39 +195,9 @@ export namespace FundingEventSummaryItemV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The status code if applicable.
@@ -275,7 +221,7 @@ export interface FundingEventSummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace FundingEventSummaryPagedV1 {
@@ -305,15 +251,7 @@ export namespace FundingEventSummaryPagedV1 {
      * The funding event types describes the direction and reason for the funding
      * event.
      */
-    event_type:
-      | 'charge_deposit'
-      | 'charge_reversal'
-      | 'payout_return'
-      | 'payout_withdrawal'
-      | 'ChargeDeposit'
-      | 'ChargeReversal'
-      | 'PayoutReturn'
-      | 'PayoutWithdrawal';
+    event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
 
     /**
      * The number of payments associated with the funding event.
@@ -345,23 +283,7 @@ export namespace FundingEventSummaryPagedV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status?:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'Created'
-      | 'Scheduled'
-      | 'Failed'
-      | 'Cancelled'
-      | 'OnHold'
-      | 'Pending'
-      | 'Paid'
-      | 'Reversed';
+    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     status_details?: Data.StatusDetails;
 
@@ -408,39 +330,9 @@ export namespace FundingEventSummaryPagedV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The status code if applicable.
@@ -480,7 +372,7 @@ export namespace FundingEventSummaryPagedV1 {
      */
     sort_by: string;
 
-    sort_order: 'asc' | 'desc' | 'Asc' | 'Desc';
+    sort_order: 'asc' | 'desc';
 
     total_items: number;
 
@@ -514,37 +406,7 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
    * Query param: The funding event types describes the direction and reason for the
    * funding event.
    */
-  event_type?:
-    | 'charge_deposit'
-    | 'charge_reversal'
-    | 'payout_return'
-    | 'payout_withdrawal'
-    | 'ChargeDeposit'
-    | 'ChargeReversal'
-    | 'PayoutReturn'
-    | 'PayoutWithdrawal';
-
-  /**
-   * Query param: Payment status.
-   */
-  payment_status?: Array<
-    | 'created'
-    | 'scheduled'
-    | 'failed'
-    | 'cancelled'
-    | 'on_hold'
-    | 'pending'
-    | 'paid'
-    | 'reversed'
-    | 'Created'
-    | 'Scheduled'
-    | 'Failed'
-    | 'Cancelled'
-    | 'OnHold'
-    | 'Pending'
-    | 'Paid'
-    | 'Reversed'
-  > | null;
+  event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
 
   /**
    * Query param: Search text.
@@ -554,12 +416,19 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  sort_by?: 'transfer_date' | 'id' | 'amount' | 'TransferDate' | 'Id' | 'Amount';
+  sort_by?: 'transfer_date' | 'id' | 'amount';
 
   /**
    * Query param: The order in which to sort the results.
    */
-  sort_order?: 'asc' | 'desc' | 'Asc' | 'Desc';
+  sort_order?: 'asc' | 'desc';
+
+  /**
+   * Query param: Funding Event status.
+   */
+  status?: Array<
+    'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
+  > | null;
 
   /**
    * Query param: Reason for latest payment status change.
@@ -590,43 +459,12 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
     | 'require_review'
     | 'blocked_by_system'
     | 'watchtower_review'
-    | 'InsufficientFunds'
-    | 'ClosedBankAccount'
-    | 'InvalidBankAccount'
-    | 'InvalidRouting'
-    | 'Disputed'
-    | 'PaymentStopped'
-    | 'OwnerDeceased'
-    | 'FrozenBankAccount'
-    | 'RiskReview'
-    | 'Fraudulent'
-    | 'DuplicateEntry'
-    | 'InvalidPaykey'
-    | 'PaymentBlocked'
-    | 'AmountTooLarge'
-    | 'TooManyAttempts'
-    | 'InternalSystemError'
-    | 'UserRequest'
-    | 'Ok'
-    | 'OtherNetworkReturn'
-    | 'PayoutRefused'
   > | null;
 
   /**
    * Query param: Source of latest payment status change.
    */
-  status_source?: Array<
-    | 'watchtower'
-    | 'bank_decline'
-    | 'customer_dispute'
-    | 'user_action'
-    | 'system'
-    | 'Watchtower'
-    | 'BankDecline'
-    | 'CustomerDispute'
-    | 'UserAction'
-    | 'System'
-  > | null;
+  status_source?: Array<'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'> | null;
 
   /**
    * Query param: Trace Id.
