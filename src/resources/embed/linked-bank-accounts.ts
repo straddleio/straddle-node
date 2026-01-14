@@ -594,7 +594,7 @@ export interface LinkedBankAccountCreateParams {
   account_id: string | null;
 
   /**
-   * Body param:
+   * Body param
    */
   bank_account: LinkedBankAccountCreateParams.BankAccount;
 
@@ -659,7 +659,7 @@ export namespace LinkedBankAccountCreateParams {
 
 export interface LinkedBankAccountUpdateParams {
   /**
-   * Body param:
+   * Body param
    */
   bank_account: LinkedBankAccountUpdateParams.BankAccount;
 
@@ -713,7 +713,7 @@ export interface LinkedBankAccountListParams extends PageNumberSchemaParams {
   account_id?: string;
 
   /**
-   * Query param:
+   * Query param
    */
   level?: 'account' | 'platform';
 

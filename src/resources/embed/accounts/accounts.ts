@@ -875,7 +875,7 @@ export interface AccountCreateParams {
   account_type: 'business';
 
   /**
-   * Body param:
+   * Body param
    */
   business_profile: BusinessProfileV1;
 
@@ -915,7 +915,7 @@ export interface AccountCreateParams {
 
 export interface AccountUpdateParams {
   /**
-   * Body param:
+   * Body param
    */
   business_profile: BusinessProfileV1;
 
@@ -950,7 +950,7 @@ export interface AccountUpdateParams {
 
 export interface AccountListParams extends PageNumberSchemaParams {
   /**
-   * Query param:
+   * Query param
    */
   search_text?: string;
 
@@ -965,12 +965,12 @@ export interface AccountListParams extends PageNumberSchemaParams {
   sort_order?: 'asc' | 'desc';
 
   /**
-   * Query param:
+   * Query param
    */
   status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive';
 
   /**
-   * Query param:
+   * Query param
    */
   type?: 'business';
 
@@ -1000,7 +1000,7 @@ export interface AccountGetParams {
 
 export interface AccountOnboardParams {
   /**
-   * Body param:
+   * Body param
    */
   terms_of_service: TermsOfServiceV1;
 
@@ -1023,7 +1023,7 @@ export interface AccountOnboardParams {
 
 export interface AccountSimulateParams {
   /**
-   * Query param:
+   * Query param
    */
   final_status?: 'onboarding' | 'active';
 

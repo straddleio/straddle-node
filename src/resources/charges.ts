@@ -735,7 +735,7 @@ export interface ChargeCreateParams {
   amount: number;
 
   /**
-   * Body param:
+   * Body param
    */
   config: ChargeCreateParams.Config;
 
@@ -758,7 +758,7 @@ export interface ChargeCreateParams {
   description: string | null;
 
   /**
-   * Body param:
+   * Body param
    */
   device: Shared.DeviceInfoV1;
 

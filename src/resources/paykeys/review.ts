@@ -338,7 +338,7 @@ export namespace ReviewGetResponse {
 
 export interface ReviewDecisionParams {
   /**
-   * Body param:
+   * Body param
    */
   status: 'active' | 'rejected';
 

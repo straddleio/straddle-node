@@ -83,7 +83,7 @@ export interface BridgeInitializeParams {
   customer_id: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: BridgeInitializeParams.Config;
 
