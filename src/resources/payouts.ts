@@ -728,7 +728,7 @@ export interface PayoutCreateParams {
   payment_date: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: PayoutCreateParams.Config;
 

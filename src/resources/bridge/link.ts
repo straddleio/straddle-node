@@ -472,7 +472,7 @@ export interface LinkBankAccountParams {
   account_number: string;
 
   /**
-   * Body param:
+   * Body param
    */
   account_type: 'checking' | 'savings';
 
@@ -487,7 +487,7 @@ export interface LinkBankAccountParams {
   routing_number: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkBankAccountParams.Config;
 
@@ -547,7 +547,7 @@ export interface LinkCreatePaykeyParams {
   quiltt_token: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkCreatePaykeyParams.Config;
 
@@ -596,7 +596,7 @@ export namespace LinkCreatePaykeyParams {
 
 export interface LinkCreateTanParams {
   /**
-   * Body param:
+   * Body param
    */
   account_type: 'checking' | 'savings';
 
@@ -616,7 +616,7 @@ export interface LinkCreateTanParams {
   tan: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkCreateTanParams.Config;
 
@@ -676,7 +676,7 @@ export interface LinkPlaidParams {
   plaid_token: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkPlaidParams.Config;
 

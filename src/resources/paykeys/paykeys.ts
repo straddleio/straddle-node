@@ -904,12 +904,12 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   customer_id?: string;
 
   /**
-   * Query param:
+   * Query param
    */
   sort_by?: 'institution_name' | 'expires_at' | 'created_at';
 
   /**
-   * Query param:
+   * Query param
    */
   sort_order?: 'asc' | 'desc';
 
@@ -943,7 +943,7 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
 
 export interface PaykeyCancelParams {
   /**
-   * Body param:
+   * Body param
    */
   reason?: string | null;
 

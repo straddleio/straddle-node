@@ -696,7 +696,7 @@ export interface DeviceUnmaskedV1 {
 
 export interface CustomerCreateParams {
   /**
-   * Body param:
+   * Body param
    */
   device: DeviceUnmaskedV1;
 
@@ -717,7 +717,7 @@ export interface CustomerCreateParams {
   phone: string;
 
   /**
-   * Body param:
+   * Body param
    */
   type: 'individual' | 'business';
 
@@ -738,7 +738,7 @@ export interface CustomerCreateParams {
     | null;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: CustomerCreateParams.Config;
 
@@ -842,7 +842,7 @@ export namespace CustomerCreateParams {
 
 export interface CustomerUpdateParams {
   /**
-   * Body param:
+   * Body param
    */
   device: DeviceUnmaskedV1;
 
@@ -862,7 +862,7 @@ export interface CustomerUpdateParams {
   phone: string;
 
   /**
-   * Body param:
+   * Body param
    */
   status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
@@ -1005,12 +1005,12 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   search_text?: string;
 
   /**
-   * Query param:
+   * Query param
    */
   sort_by?: 'name' | 'created_at';
 
   /**
-   * Query param:
+   * Query param
    */
   sort_order?: 'asc' | 'desc';
 
