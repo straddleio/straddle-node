@@ -6,6 +6,9 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import cors from 'cors';
 import express from 'express';
 import { fromError } from 'zod-validation-error/v3';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { version } = require('../package.json');
 import { McpOptions, parseQueryOptions } from './options';
 import { ClientOptions, initMcpServer, newMcpServer } from './server';
 import { parseAuthHeaders } from './headers';
@@ -78,7 +81,7 @@ export function streamableHTTPApp({
   app.get('/', handleMethodNotAllowed);
   app.post('/', createPostHandler(clientOptions, mcpOptions));
   app.delete('/', handleMethodNotAllowed);
-  app.get('/health', (_req, res) => res.json({ status: 'ok', version: '0.3.0' }));
+  app.get('/health', (_req, res) => res.json({ status: 'ok', version }));
 
   return app;
 }
