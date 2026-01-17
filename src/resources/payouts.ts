@@ -304,7 +304,7 @@ export namespace PayoutV1 {
     /**
      * An arbitrary description for the payout.
      */
-    description: string;
+    description: string | null;
 
     /**
      * Information about the device used when the customer authorized the payout.
@@ -347,6 +347,11 @@ export namespace PayoutV1 {
      * History of the status changes for the payout.
      */
     status_history: Array<Data.StatusHistory>;
+
+    /**
+     * Trace Ids.
+     */
+    trace_ids: { [key: string]: string };
 
     /**
      * The time the payout was created.
@@ -449,7 +454,12 @@ export namespace PayoutV1 {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -512,7 +522,7 @@ export namespace PayoutUnmaskResponse {
     /**
      * Description.
      */
-    description: string;
+    description: string | null;
 
     device: Data.Device;
 
@@ -547,6 +557,11 @@ export namespace PayoutUnmaskResponse {
      * Status history.
      */
     status_history: Array<Data.StatusHistory>;
+
+    /**
+     * Trace Ids.
+     */
+    trace_ids: { [key: string]: string };
 
     /**
      * Created at.
@@ -647,7 +662,12 @@ export namespace PayoutUnmaskResponse {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -682,7 +702,7 @@ export interface PayoutCreateParams {
   /**
    * Body param: An arbitrary description for the payout.
    */
-  description: string;
+  description: string | null;
 
   /**
    * Body param: Information about the device used when the customer authorized the
@@ -708,7 +728,7 @@ export interface PayoutCreateParams {
   payment_date: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: PayoutCreateParams.Config;
 
@@ -770,7 +790,7 @@ export interface PayoutUpdateParams {
   /**
    * Body param: An arbitrary description for the payout.
    */
-  description: string;
+  description: string | null;
 
   /**
    * Body param: The desired date on which the payment should be occur. For payouts,

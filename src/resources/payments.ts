@@ -80,7 +80,7 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * An arbitrary description for the `charge` or `payout`.
      */
-    description: string;
+    description: string | null;
 
     /**
      * Unique identifier for the `charge` or `payout` in your database. This value must
@@ -203,7 +203,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   customer_id?: string;
 
   /**
-   * Query param:
+   * Query param
    */
   default_page_size?: number;
 
@@ -213,7 +213,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
   /**
-   * Query param:
+   * Query param
    */
   default_sort_order?: 'asc' | 'desc';
 
@@ -308,7 +308,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
   /**
-   * Query param:
+   * Query param
    */
   sort_order?: 'asc' | 'desc';
 
@@ -336,6 +336,11 @@ export interface PaymentListParams extends PageNumberSchemaParams {
     | 'ok'
     | 'other_network_return'
     | 'payout_refused'
+    | 'cancel_request'
+    | 'failed_verification'
+    | 'require_review'
+    | 'blocked_by_system'
+    | 'watchtower_review'
   >;
 
   /**

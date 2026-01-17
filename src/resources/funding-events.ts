@@ -146,9 +146,64 @@ export namespace FundingEventSummaryItemV1 {
     updated_at: string;
 
     /**
+     * The current status of the `charge` or `payout`.
+     */
+    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+
+    status_details?: Data.StatusDetails;
+
+    /**
      * The trace number of the funding event.
      */
     trace_number?: string | null;
+  }
+
+  export namespace Data {
+    export interface StatusDetails {
+      /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+
+      /**
+       * The status code if applicable.
+       */
+      code?: string | null;
+    }
   }
 }
 
@@ -226,9 +281,64 @@ export namespace FundingEventSummaryPagedV1 {
     updated_at: string;
 
     /**
+     * The current status of the `charge` or `payout`.
+     */
+    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+
+    status_details?: Data.StatusDetails;
+
+    /**
      * The trace number of the funding event.
      */
     trace_number?: string | null;
+  }
+
+  export namespace Data {
+    export interface StatusDetails {
+      /**
+       * The time the status change occurred.
+       */
+      changed_at: string;
+
+      /**
+       * A human-readable description of the current status.
+       */
+      message: string;
+
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
+
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+
+      /**
+       * The status code if applicable.
+       */
+      code?: string | null;
+    }
   }
 
   export interface Meta {
@@ -312,6 +422,54 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
    * Query param: The order in which to sort the results.
    */
   sort_order?: 'asc' | 'desc';
+
+  /**
+   * Query param: Funding Event status.
+   */
+  status?: Array<
+    'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
+  > | null;
+
+  /**
+   * Query param: Reason for latest payment status change.
+   */
+  status_reason?: Array<
+    | 'insufficient_funds'
+    | 'closed_bank_account'
+    | 'invalid_bank_account'
+    | 'invalid_routing'
+    | 'disputed'
+    | 'payment_stopped'
+    | 'owner_deceased'
+    | 'frozen_bank_account'
+    | 'risk_review'
+    | 'fraudulent'
+    | 'duplicate_entry'
+    | 'invalid_paykey'
+    | 'payment_blocked'
+    | 'amount_too_large'
+    | 'too_many_attempts'
+    | 'internal_system_error'
+    | 'user_request'
+    | 'ok'
+    | 'other_network_return'
+    | 'payout_refused'
+    | 'cancel_request'
+    | 'failed_verification'
+    | 'require_review'
+    | 'blocked_by_system'
+    | 'watchtower_review'
+  > | null;
+
+  /**
+   * Query param: Source of latest payment status change.
+   */
+  status_source?: Array<'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'> | null;
+
+  /**
+   * Query param: Trace Id.
+   */
+  trace_id?: string | null;
 
   /**
    * Query param: Trace number.

@@ -123,7 +123,11 @@ describe('resource linkedBankAccounts', () => {
     await expect(
       client.embed.linkedBankAccounts.cancel(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        { 'correlation-id': 'correlation-id', 'idempotency-key': 'xxxxxxxxxx', 'request-id': 'request-id' },
+        {
+          'correlation-id': 'correlation-id',
+          'idempotency-key': 'xxxxxxxxxx',
+          'request-id': 'request-id',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Straddle.NotFoundError);

@@ -588,7 +588,7 @@ export interface RepresentativeCreateParams {
   mobile_number: string;
 
   /**
-   * Body param:
+   * Body param
    */
   relationship: RepresentativeCreateParams.Relationship;
 
@@ -691,7 +691,7 @@ export interface RepresentativeUpdateParams {
   mobile_number: string;
 
   /**
-   * Body param:
+   * Body param
    */
   relationship: RepresentativeUpdateParams.Relationship;
 
@@ -773,17 +773,17 @@ export interface RepresentativeListParams extends PageNumberSchemaParams {
   account_id?: string;
 
   /**
-   * Query param:
+   * Query param
    */
   level?: 'account' | 'platform';
 
   /**
-   * Query param:
+   * Query param
    */
   organization_id?: string;
 
   /**
-   * Query param:
+   * Query param
    */
   platform_id?: string;
 

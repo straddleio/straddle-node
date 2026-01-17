@@ -328,7 +328,7 @@ export namespace ChargeV1 {
     /**
      * An arbitrary description for the charge.
      */
-    description: string;
+    description: string | null;
 
     /**
      * Information about the device used when the customer authorized the payment.
@@ -371,6 +371,11 @@ export namespace ChargeV1 {
      * Status history.
      */
     status_history: Array<Data.StatusHistory>;
+
+    /**
+     * Trace Ids.
+     */
+    trace_ids: { [key: string]: string };
 
     /**
      * Timestamp of when the charge was last updated.
@@ -476,7 +481,12 @@ export namespace ChargeV1 {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -552,7 +562,7 @@ export namespace ChargeUnmaskResponse {
     /**
      * Description.
      */
-    description: string;
+    description: string | null;
 
     device: Data.Device;
 
@@ -587,6 +597,11 @@ export namespace ChargeUnmaskResponse {
      * Status history.
      */
     status_history: Array<Data.StatusHistory>;
+
+    /**
+     * Trace Ids.
+     */
+    trace_ids: { [key: string]: string };
 
     /**
      * Updated at.
@@ -687,7 +702,12 @@ export namespace ChargeUnmaskResponse {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -715,7 +735,7 @@ export interface ChargeCreateParams {
   amount: number;
 
   /**
-   * Body param:
+   * Body param
    */
   config: ChargeCreateParams.Config;
 
@@ -735,10 +755,10 @@ export interface ChargeCreateParams {
   /**
    * Body param: An arbitrary description for the charge.
    */
-  description: string;
+  description: string | null;
 
   /**
-   * Body param:
+   * Body param
    */
   device: Shared.DeviceInfoV1;
 
@@ -822,7 +842,7 @@ export interface ChargeUpdateParams {
   /**
    * Body param: An arbitrary description for the charge.
    */
-  description: string;
+  description: string | null;
 
   /**
    * Body param: The desired date on which the payment should be occur. For charges,

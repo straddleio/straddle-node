@@ -167,7 +167,7 @@ export namespace LinkCreatePaykeyResponse {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -275,7 +275,12 @@ export namespace LinkCreatePaykeyResponse {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -335,7 +340,7 @@ export namespace LinkCreateTanResponse {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -443,7 +448,12 @@ export namespace LinkCreateTanResponse {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -462,7 +472,7 @@ export interface LinkBankAccountParams {
   account_number: string;
 
   /**
-   * Body param:
+   * Body param
    */
   account_type: 'checking' | 'savings';
 
@@ -477,7 +487,7 @@ export interface LinkBankAccountParams {
   routing_number: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkBankAccountParams.Config;
 
@@ -537,7 +547,7 @@ export interface LinkCreatePaykeyParams {
   quiltt_token: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkCreatePaykeyParams.Config;
 
@@ -586,7 +596,7 @@ export namespace LinkCreatePaykeyParams {
 
 export interface LinkCreateTanParams {
   /**
-   * Body param:
+   * Body param
    */
   account_type: 'checking' | 'savings';
 
@@ -606,7 +616,7 @@ export interface LinkCreateTanParams {
   tan: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkCreateTanParams.Config;
 
@@ -666,7 +676,7 @@ export interface LinkPlaidParams {
   plaid_token: string;
 
   /**
-   * Body param:
+   * Body param
    */
   config?: LinkPlaidParams.Config;
 

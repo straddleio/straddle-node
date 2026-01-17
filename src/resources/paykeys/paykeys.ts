@@ -237,7 +237,7 @@ export namespace PaykeySummaryPagedV1 {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -323,7 +323,12 @@ export namespace PaykeySummaryPagedV1 {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -423,7 +428,7 @@ export namespace PaykeyUnmaskedV1 {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -530,7 +535,12 @@ export namespace PaykeyUnmaskedV1 {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -589,7 +599,7 @@ export namespace PaykeyV1 {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -697,7 +707,12 @@ export namespace PaykeyV1 {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -757,7 +772,7 @@ export namespace PaykeyRevealResponse {
 
     source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+    status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
     /**
      * Timestamp of the most recent update to the paykey.
@@ -865,7 +880,12 @@ export namespace PaykeyRevealResponse {
         | 'user_request'
         | 'ok'
         | 'other_network_return'
-        | 'payout_refused';
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -884,12 +904,12 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   customer_id?: string;
 
   /**
-   * Query param:
+   * Query param
    */
   sort_by?: 'institution_name' | 'expires_at' | 'created_at';
 
   /**
-   * Query param:
+   * Query param
    */
   sort_order?: 'asc' | 'desc';
 
@@ -901,7 +921,7 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter paykeys by their current status.
    */
-  status?: Array<'pending' | 'active' | 'inactive' | 'rejected' | 'review'>;
+  status?: Array<'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
@@ -923,7 +943,7 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
 
 export interface PaykeyCancelParams {
   /**
-   * Body param:
+   * Body param
    */
   reason?: string | null;
 

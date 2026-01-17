@@ -160,7 +160,12 @@ export interface StatusDetailsV1 {
     | 'user_request'
     | 'ok'
     | 'other_network_return'
-    | 'payout_refused';
+    | 'payout_refused'
+    | 'cancel_request'
+    | 'failed_verification'
+    | 'require_review'
+    | 'blocked_by_system'
+    | 'watchtower_review';
 
   /**
    * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).

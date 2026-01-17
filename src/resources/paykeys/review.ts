@@ -150,7 +150,7 @@ export namespace ReviewGetResponse {
 
       source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
 
-      status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review';
+      status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
       /**
        * Timestamp of the most recent update to the paykey.
@@ -258,7 +258,12 @@ export namespace ReviewGetResponse {
           | 'user_request'
           | 'ok'
           | 'other_network_return'
-          | 'payout_refused';
+          | 'payout_refused'
+          | 'cancel_request'
+          | 'failed_verification'
+          | 'require_review'
+          | 'blocked_by_system'
+          | 'watchtower_review';
 
         source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -282,7 +287,7 @@ export namespace ReviewGetResponse {
        */
       created_at: string;
 
-      decision: 'unknown' | 'accept' | 'reject' | 'review';
+      decision: 'accept' | 'reject' | 'review';
 
       /**
        * Dictionary of all messages from the paykey verification process.
@@ -306,7 +311,7 @@ export namespace ReviewGetResponse {
         export interface AccountValidation {
           codes: Array<string>;
 
-          decision: 'unknown' | 'accept' | 'reject' | 'review';
+          decision: 'accept' | 'reject' | 'review';
 
           reason?: string | null;
         }
@@ -314,7 +319,7 @@ export namespace ReviewGetResponse {
         export interface NameMatch {
           codes: Array<string>;
 
-          decision: 'unknown' | 'accept' | 'reject' | 'review';
+          decision: 'accept' | 'reject' | 'review';
 
           correlation_score?: number | null;
 
@@ -333,7 +338,7 @@ export namespace ReviewGetResponse {
 
 export interface ReviewDecisionParams {
   /**
-   * Body param:
+   * Body param
    */
   status: 'active' | 'rejected';
 
