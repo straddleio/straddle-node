@@ -112,3 +112,17 @@ Check your query parameters. Valid options:
 1. Verify your network can reach `https://mcp.straddle.com`
 2. Check if your firewall allows outbound HTTPS connections
 3. Try the health check endpoint to confirm the server is running
+
+---
+
+## Deployment (Internal)
+
+This service is deployed on Render using the `render.yaml` Blueprint at repo root.
+
+**To deploy:**
+
+1. Connect the GitHub repo to Render
+2. Render auto-detects `render.yaml` and creates the service
+3. Set up custom domain `mcp.straddle.com` in Render dashboard
+
+Environment variables are passed via headers from clients, not server config.
