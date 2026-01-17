@@ -1,0 +1,14 @@
+# Render Blueprint for Straddle MCP Server
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: straddle-mcp
+    runtime: docker
+    dockerfilePath: packages/mcp-server/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 3000
+    startCommand: node index.js --transport=http --port=$PORT --client=claude

@@ -1,127 +1,103 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-
+import cors from 'cors';
 import express from 'express';
 import { fromError } from 'zod-validation-error/v3';
-import { McpOptions, parseQueryOptions } from './options';
-import { ClientOptions, initMcpServer, newMcpServer } from './server';
-import { parseAuthHeaders } from './headers';
 
-const newServer = ({
-  clientOptions,
-  mcpOptions: defaultMcpOptions,
-  req,
-  res,
-}: {
-  clientOptions: ClientOptions;
-  mcpOptions: McpOptions;
-  req: express.Request;
-  res: express.Response;
-}): McpServer | null => {
+import { parseAuthHeaders } from './headers.js';
+import { McpOptions, parseQueryOptions } from './options.js';
+import { ClientOptions, initMcpServer, newMcpServer } from './server.js';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { version } = require('./package.json');
+
+function sendJsonRpcError(res: express.Response, status: number, message: string): void {
+  res.status(status).json({
+    jsonrpc: '2.0',
+    error: { code: -32000, message },
+  });
+}
+
+function createServer(
+  clientOptions: ClientOptions,
+  defaultMcpOptions: McpOptions,
+  req: express.Request,
+  res: express.Response,
+): McpServer | null {
   const server = newMcpServer();
 
   let mcpOptions: McpOptions;
   try {
     mcpOptions = parseQueryOptions(defaultMcpOptions, req.query);
   } catch (error) {
-    res.status(400).json({
-      jsonrpc: '2.0',
-      error: {
-        code: -32000,
-        message: `Invalid request: ${fromError(error)}`,
-      },
-    });
+    sendJsonRpcError(res, 400, `Invalid request: ${fromError(error)}`);
     return null;
   }
 
   try {
     const authOptions = parseAuthHeaders(req);
     initMcpServer({
-      server: server,
-      clientOptions: {
-        ...clientOptions,
-        ...authOptions,
-      },
+      server,
+      clientOptions: { ...clientOptions, ...authOptions },
       mcpOptions,
     });
   } catch (error) {
-    res.status(401).json({
-      jsonrpc: '2.0',
-      error: {
-        code: -32000,
-        message: `Unauthorized: ${error instanceof Error ? error.message : error}`,
-      },
-    });
+    sendJsonRpcError(res, 401, `Unauthorized: ${error instanceof Error ? error.message : error}`);
     return null;
   }
 
   return server;
-};
+}
 
-const post =
-  (options: { clientOptions: ClientOptions; mcpOptions: McpOptions }) =>
-  async (req: express.Request, res: express.Response) => {
-    const server = newServer({ ...options, req, res });
-    // If we return null, we already set the authorization error.
+function createPostHandler(clientOptions: ClientOptions, mcpOptions: McpOptions) {
+  return async function handlePost(req: express.Request, res: express.Response): Promise<void> {
+    const server = createServer(clientOptions, mcpOptions, req, res);
     if (server === null) return;
-    const transport = new StreamableHTTPServerTransport({
-      // Stateless server
-      sessionIdGenerator: undefined,
-    });
+
+    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
     await server.connect(transport);
     await transport.handleRequest(req, res, req.body);
   };
+}
 
-const get = async (req: express.Request, res: express.Response) => {
-  res.status(405).json({
-    jsonrpc: '2.0',
-    error: {
-      code: -32000,
-      message: 'Method not supported',
-    },
-  });
-};
+function handleMethodNotAllowed(_req: express.Request, res: express.Response): void {
+  sendJsonRpcError(res, 405, 'Method not supported');
+}
 
-const del = async (req: express.Request, res: express.Response) => {
-  res.status(405).json({
-    jsonrpc: '2.0',
-    error: {
-      code: -32000,
-      message: 'Method not supported',
-    },
-  });
-};
-
-export const streamableHTTPApp = ({
+export function streamableHTTPApp({
   clientOptions = {},
   mcpOptions = {},
 }: {
   clientOptions?: ClientOptions;
   mcpOptions?: McpOptions;
-}): express.Express => {
+}): express.Express {
   const app = express();
   app.set('query parser', 'extended');
+  app.use(cors());
   app.use(express.json());
 
-  app.get('/', get);
-  app.post('/', post({ clientOptions, mcpOptions }));
-  app.delete('/', del);
+  app.get('/', handleMethodNotAllowed);
+  app.post('/', createPostHandler(clientOptions, mcpOptions));
+  app.delete('/', handleMethodNotAllowed);
+  app.get('/health', (_req, res) => res.json({ status: 'ok', version }));
 
   return app;
-};
+}
 
-export const launchStreamableHTTPServer = async (options: McpOptions, port: number | string | undefined) => {
+export async function launchStreamableHTTPServer(
+  options: McpOptions,
+  port: number | string | undefined,
+): Promise<void> {
   const app = streamableHTTPApp({ mcpOptions: options });
   const server = app.listen(port);
   const address = server.address();
 
-  if (typeof address === 'string') {
-    console.error(`MCP Server running on streamable HTTP at ${address}`);
-  } else if (address !== null) {
-    console.error(`MCP Server running on streamable HTTP on port ${address.port}`);
-  } else {
-    console.error(`MCP Server running on streamable HTTP on port ${port}`);
-  }
-};
+  const location =
+    typeof address === 'string' ? address
+    : address !== null ? `port ${address.port}`
+    : `port ${port}`;
+
+  console.error(`MCP Server running on streamable HTTP at ${location}`);
+}
