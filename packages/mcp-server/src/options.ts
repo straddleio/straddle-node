@@ -311,11 +311,17 @@ export function parseQueryOptions(defaultOptions: McpOptions, query: unknown): M
 
   const filters: Filter[] = [...(defaultOptions.filters ?? [])];
 
+  // Check if operation filters are locked (set via CLI)
+  const operationLocked = defaultOptions.filters?.some((f) => f.type === 'operation');
+
   for (const resource of queryOptions.resource || []) {
     filters.push({ type: 'resource', op: 'include', value: resource });
   }
-  for (const operation of queryOptions.operation || []) {
-    filters.push({ type: 'operation', op: 'include', value: operation });
+  // Only allow operation filters from query params if not locked via CLI
+  if (!operationLocked) {
+    for (const operation of queryOptions.operation || []) {
+      filters.push({ type: 'operation', op: 'include', value: operation });
+    }
   }
   for (const tag of queryOptions.tag || []) {
     filters.push({ type: 'tag', op: 'include', value: tag });
@@ -326,8 +332,11 @@ export function parseQueryOptions(defaultOptions: McpOptions, query: unknown): M
   for (const resource of queryOptions.no_resource || []) {
     filters.push({ type: 'resource', op: 'exclude', value: resource });
   }
-  for (const operation of queryOptions.no_operation || []) {
-    filters.push({ type: 'operation', op: 'exclude', value: operation });
+  // Only allow operation filters from query params if not locked via CLI
+  if (!operationLocked) {
+    for (const operation of queryOptions.no_operation || []) {
+      filters.push({ type: 'operation', op: 'exclude', value: operation });
+    }
   }
   for (const tag of queryOptions.no_tag || []) {
     filters.push({ type: 'tag', op: 'exclude', value: tag });

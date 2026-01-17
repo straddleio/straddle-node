@@ -161,8 +161,10 @@ export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
     return included;
   });
 
-  // Check if any filters didn't match
-  const unmatched = Array.from(unmatchedFilters).filter((f) => f.type === 'tool' || f.type === 'resource');
+  // Check if any include filters didn't match (excludes may legitimately match nothing)
+  const unmatched = Array.from(unmatchedFilters).filter(
+    (f) => (f.type === 'tool' || f.type === 'resource') && f.op === 'include',
+  );
   if (unmatched.length > 0) {
     throw new Error(
       `The following filters did not match any endpoints: ${unmatched
@@ -174,19 +176,45 @@ export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
   return filtered;
 }
 
+// Escape regex special characters except * which we handle specially
+function escapeRegexExceptWildcard(str: string): string {
+  return str.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function match({ type, value }: Filter, endpoint: Endpoint): boolean {
   switch (type) {
     case 'resource': {
-      const regexStr = '^' + normalizeResource(value).replace(/\*/g, '.*') + '$';
-      const regex = new RegExp(regexStr);
-      return regex.test(normalizeResource(endpoint.metadata.resource));
+      try {
+        const escaped = escapeRegexExceptWildcard(normalizeResource(value));
+        const regexStr = '^' + escaped.replace(/\*/g, '.*') + '$';
+        const regex = new RegExp(regexStr);
+        return regex.test(normalizeResource(endpoint.metadata.resource));
+      } catch {
+        // SECURITY: Fail CLOSED - if regex fails, don't match (exclude endpoint)
+        console.error(`Security: Invalid filter regex for resource '${value}'`);
+        return false;
+      }
     }
     case 'operation':
       return endpoint.metadata.operation === value;
     case 'tag':
       return endpoint.metadata.tags.includes(value);
-    case 'tool':
+    case 'tool': {
+      // Support wildcard matching for tool names (e.g., "unmask_*")
+      if (value.includes('*')) {
+        try {
+          const escaped = escapeRegexExceptWildcard(value);
+          const regexStr = '^' + escaped.replace(/\*/g, '.*') + '$';
+          const regex = new RegExp(regexStr);
+          return regex.test(endpoint.tool.name);
+        } catch {
+          // SECURITY: Fail CLOSED - if regex fails, don't match (exclude endpoint)
+          console.error(`Security: Invalid filter regex for tool '${value}'`);
+          return false;
+        }
+      }
       return endpoint.tool.name === value;
+    }
   }
 }
 
