@@ -3,8 +3,8 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
-import cors from 'cors';
 import express from 'express';
+import helmet from 'helmet';
 import { fromError } from 'zod-validation-error/v3';
 
 import { parseAuthHeaders } from './headers.js';
@@ -77,7 +77,21 @@ export function streamableHTTPApp({
 }): express.Express {
   const app = express();
   app.set('query parser', 'extended');
-  app.use(cors());
+  // SECURITY: HTTP security headers (HSTS, X-Content-Type-Options, etc.)
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'none'"],
+          frameAncestors: ["'none'"],
+        },
+      },
+      hsts: {
+        maxAge: 31536000, // 1 year
+        includeSubDomains: true,
+      },
+    }),
+  );
   app.use(express.json());
 
   app.get('/', handleMethodNotAllowed);
