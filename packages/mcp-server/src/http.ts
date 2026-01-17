@@ -1,17 +1,17 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-
 import cors from 'cors';
 import express from 'express';
 import { fromError } from 'zod-validation-error/v3';
 
+import { parseAuthHeaders } from './headers.js';
+import { McpOptions, parseQueryOptions } from './options.js';
+import { ClientOptions, initMcpServer, newMcpServer } from './server.js';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version } = require('./package.json');
-import { McpOptions, parseQueryOptions } from './options';
-import { ClientOptions, initMcpServer, newMcpServer } from './server';
-import { parseAuthHeaders } from './headers';
 
 function sendJsonRpcError(res: express.Response, status: number, message: string): void {
   res.status(status).json({
@@ -94,11 +94,10 @@ export async function launchStreamableHTTPServer(
   const server = app.listen(port);
   const address = server.address();
 
-  if (typeof address === 'string') {
-    console.error(`MCP Server running on streamable HTTP at ${address}`);
-  } else if (address !== null) {
-    console.error(`MCP Server running on streamable HTTP on port ${address.port}`);
-  } else {
-    console.error(`MCP Server running on streamable HTTP on port ${port}`);
-  }
+  const location =
+    typeof address === 'string' ? address
+    : address !== null ? `port ${address.port}`
+    : `port ${port}`;
+
+  console.error(`MCP Server running on streamable HTTP at ${location}`);
 }
