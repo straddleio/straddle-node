@@ -8,7 +8,7 @@ import express from 'express';
 import { fromError } from 'zod-validation-error/v3';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { version } = require('../package.json');
+const { version } = require('./package.json');
 import { McpOptions, parseQueryOptions } from './options';
 import { ClientOptions, initMcpServer, newMcpServer } from './server';
 import { parseAuthHeaders } from './headers';

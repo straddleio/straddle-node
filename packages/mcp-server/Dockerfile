@@ -48,7 +48,7 @@
     # Set working directory
     WORKDIR /app
 
-# Copy the built mcp-server dist directory
+# Copy the built mcp-server dist directory (includes package.json for version info)
 COPY --from=builder /build/packages/mcp-server/dist ./
 
 # Copy node_modules from mcp-server (includes all production deps)
