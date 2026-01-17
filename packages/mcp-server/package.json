@@ -38,7 +38,7 @@
     "express": "^5.1.0",
     "fuse.js": "^7.1.0",
     "jq-web": "https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz",
-    "qs": "^6.14.0",
+    "qs": "^6.14.1",
     "typescript": "5.8.3",
     "yargs": "^17.7.2",
     "zod": "^3.25.20",
