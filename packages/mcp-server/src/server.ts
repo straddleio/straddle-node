@@ -20,7 +20,6 @@ import {
   parseEmbeddedJSON,
 } from './compat';
 import { dynamicTools } from './dynamic-tools';
-import { codeTool } from './code-tool';
 import docsSearchTool from './docs-search-tool';
 import { McpOptions } from './options';
 
