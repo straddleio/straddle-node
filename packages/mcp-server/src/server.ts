@@ -163,26 +163,29 @@ export async function selectTools(endpoints: Endpoint[], options?: McpOptions): 
 
   // Apply user filters to the already-secured endpoints (if any user filters exist)
   const userFilters = options?.filters ?? [];
-  const hasUserIncludeFilters = userFilters.some((f) => f.op === 'include');
   let filteredEndpoints = userFilters.length > 0 ? query(userFilters, secureEndpoints) : secureEndpoints;
 
   let includedTools = filteredEndpoints.slice();
 
   if (includedTools.length > 0) {
     if (options?.includeDynamicTools) {
-      includedTools = dynamicTools(includedTools);
+      // SECURITY: Filter dynamicTools output to only include read operations
+      // invoke_api_endpoint has operation: 'write' and must be excluded
+      includedTools = dynamicTools(includedTools).filter((e) => e.metadata.operation === 'read');
     }
-  } else if (hasUserIncludeFilters) {
-    // SECURITY: User explicitly requested specific tools but got nothing - fail closed
+  } else if (userFilters.length > 0) {
+    // SECURITY: User explicitly filtered (include OR exclude) but got nothing - fail closed
     // Don't fall back to full set, return empty (plus docs if enabled)
+    // Example: ?no_operation=read should return empty, not all secure tools
     includedTools = [];
   } else {
-    // No user include filters, safe to use fallbacks within secure set
+    // No user filters, safe to use fallbacks within secure set
     // SECURITY: All fallbacks use secureEndpoints, NEVER the raw endpoints
     if (options?.includeAllTools) {
       includedTools = secureEndpoints.slice();
     } else if (options?.includeDynamicTools) {
-      includedTools = dynamicTools(secureEndpoints);
+      // SECURITY: Filter dynamicTools output to only include read operations
+      includedTools = dynamicTools(secureEndpoints).filter((e) => e.metadata.operation === 'read');
     } else if (options?.includeCodeTools) {
       // SECURITY: Code tool allows arbitrary execution - BLOCKED in read-only mode
       // codeTool has operation: 'write', so it's not allowed
