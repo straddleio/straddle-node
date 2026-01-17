@@ -181,7 +181,12 @@ function escapeRegexExceptWildcard(str: string): string {
   return str.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function match({ type, value }: Filter, endpoint: Endpoint): boolean {
+function match({ type, op, value }: Filter, endpoint: Endpoint): boolean {
+  // SECURITY: On error, return the safe value based on operation type:
+  // - For include: return false (don't include = safe)
+  // - For exclude: return true (do exclude = safe)
+  const failSafeValue = op === 'exclude';
+
   switch (type) {
     case 'resource': {
       try {
@@ -190,9 +195,8 @@ function match({ type, value }: Filter, endpoint: Endpoint): boolean {
         const regex = new RegExp(regexStr);
         return regex.test(normalizeResource(endpoint.metadata.resource));
       } catch {
-        // SECURITY: Fail CLOSED - if regex fails, don't match (exclude endpoint)
-        console.error(`Security: Invalid filter regex for resource '${value}'`);
-        return false;
+        console.error(`Security: Invalid filter regex for resource '${value}', failing safe`);
+        return failSafeValue;
       }
     }
     case 'operation':
@@ -208,9 +212,8 @@ function match({ type, value }: Filter, endpoint: Endpoint): boolean {
           const regex = new RegExp(regexStr);
           return regex.test(endpoint.tool.name);
         } catch {
-          // SECURITY: Fail CLOSED - if regex fails, don't match (exclude endpoint)
-          console.error(`Security: Invalid filter regex for tool '${value}'`);
-          return false;
+          console.error(`Security: Invalid filter regex for tool '${value}', failing safe`);
+          return failSafeValue;
         }
       }
       return endpoint.tool.name === value;
