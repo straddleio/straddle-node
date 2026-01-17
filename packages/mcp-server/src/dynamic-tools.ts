@@ -1,8 +1,9 @@
 import Straddle from '@straddlecom/straddle';
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
 import { Endpoint, asTextContentResult, ToolCallResult } from './tools/types';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
-import { Cabidela } from '@cloudflare/cabidela';
 
 function zodToInputSchema(schema: z.ZodSchema) {
   return {
@@ -137,12 +138,13 @@ export function dynamicTools(endpoints: Endpoint[]): Endpoint[] {
         );
       }
 
-      try {
-        // Try to validate the arguments for a better error message
-        const cabidela = new Cabidela(endpoint.tool.inputSchema, { fullErrors: true });
-        cabidela.validate(endpointArgs);
-      } catch (error) {
-        throw new Error(`Invalid arguments for endpoint ${endpoint_name}:\n${error}`);
+      // Validate arguments against endpoint schema for better error messages
+      const ajv = new Ajv({ allErrors: true, strict: false });
+      addFormats(ajv);
+      const validate = ajv.compile(endpoint.tool.inputSchema);
+      if (!validate(endpointArgs)) {
+        const errors = validate.errors?.map((e) => `${e.instancePath} ${e.message}`).join('; ');
+        throw new Error(`Invalid arguments for endpoint ${endpoint_name}: ${errors}`);
       }
 
       return await endpoint.handler(client, endpointArgs);

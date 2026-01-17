@@ -173,11 +173,13 @@ function makeEndpoint(
       name,
       description: `Test endpoint for ${name}`,
       inputSchema: {
+        $schema: 'http://json-schema.org/draft-07/schema#',
         type: 'object',
         properties: {
           testParam: { type: 'string' },
         },
         required: ['testParam'],
+        additionalProperties: false,
       },
     },
     handler: jest.fn().mockResolvedValue({ success: true }),

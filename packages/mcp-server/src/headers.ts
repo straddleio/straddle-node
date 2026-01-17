@@ -6,10 +6,15 @@ import { ClientOptions } from '@straddlecom/straddle';
 export const parseAuthHeaders = (req: IncomingMessage): Partial<ClientOptions> => {
   if (req.headers.authorization) {
     const scheme = req.headers.authorization.split(' ')[0]!;
-    const value = req.headers.authorization.slice(scheme.length + 1);
     switch (scheme) {
-      case 'Bearer':
-        return { apiKey: req.headers.authorization.slice('Bearer '.length) };
+      case 'Bearer': {
+        const apiKey = req.headers.authorization.slice('Bearer '.length);
+        // SECURITY: Validate bearer token is not empty
+        if (!apiKey || apiKey.trim() === '') {
+          throw new Error('Bearer token is empty');
+        }
+        return { apiKey };
+      }
       default:
         throw new Error(
           'Unsupported authorization scheme. Expected the "Authorization" header to be a supported scheme (Bearer).',
@@ -21,5 +26,13 @@ export const parseAuthHeaders = (req: IncomingMessage): Partial<ClientOptions> =
     Array.isArray(req.headers['x-straddle-api-key']) ?
       req.headers['x-straddle-api-key'][0]
     : req.headers['x-straddle-api-key'];
+
+  // SECURITY: Require API key for all requests - fail fast with clear error
+  if (!apiKey || apiKey.trim() === '') {
+    throw new Error(
+      'API key required. Provide via "Authorization: Bearer <key>" or "X-Straddle-API-Key" header.',
+    );
+  }
+
   return { apiKey };
 };
