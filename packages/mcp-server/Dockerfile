@@ -74,5 +74,5 @@ COPY --from=builder /build/packages/mcp-server/node_modules ./node_modules
     ENTRYPOINT ["node", "index.js"]
 
     # Default to HTTP transport for hosted deployments
-    # Uses PORT env var (set by Render/other platforms) or defaults to 3000
+    # Listens on port 3000 - ensure hosting platform routes to this port
     CMD ["--transport=http", "--port", "3000", "--client=claude"]

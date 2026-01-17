@@ -8,3 +8,6 @@ services:
     dockerfilePath: packages/mcp-server/Dockerfile
     dockerContext: .
     healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: "3000"
