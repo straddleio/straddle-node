@@ -89,7 +89,7 @@ Verify the server is running:
 
 ```bash
 curl https://mcp.straddle.com/health
-# Returns: {"status":"ok","version":"0.3.0"}
+# Returns: {"status":"ok","version":"<current-version>"}
 ```
 
 ## Troubleshooting
