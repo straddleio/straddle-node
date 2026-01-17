@@ -20,6 +20,7 @@ import {
   parseEmbeddedJSON,
 } from './compat';
 import { dynamicTools } from './dynamic-tools';
+import { codeTool } from './code-tool';
 import docsSearchTool from './docs-search-tool';
 import { McpOptions } from './options';
 
@@ -186,10 +187,8 @@ export async function selectTools(endpoints: Endpoint[], options?: McpOptions): 
       // SECURITY: Filter dynamicTools output to only include read operations
       includedTools = dynamicTools(secureEndpoints).filter((e) => e.metadata.operation === 'read');
     } else if (options?.includeCodeTools) {
-      // SECURITY: Code tool allows arbitrary execution - BLOCKED in read-only mode
-      // codeTool has operation: 'write', so it's not allowed
-      console.error('Security: codeTool blocked - arbitrary code execution not allowed in read-only mode');
-      includedTools = secureEndpoints.slice();
+      // codeTool has operation: 'write', so will be filtered out by read-only filter
+      includedTools = [await codeTool()].filter((e) => e.metadata.operation === 'read');
     } else {
       includedTools = secureEndpoints.slice();
     }
