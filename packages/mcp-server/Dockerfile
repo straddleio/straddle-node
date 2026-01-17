@@ -73,5 +73,6 @@ COPY --from=builder /build/packages/mcp-server/node_modules ./node_modules
     # Set the entrypoint to the MCP server
     ENTRYPOINT ["node", "index.js"]
 
-    # Allow passing arguments to the MCP server
-    CMD []
+    # Default to HTTP transport for hosted deployments
+    # Uses PORT env var (set by Render/other platforms) or defaults to 3000
+    CMD ["--transport=http", "--port", "3000", "--client=claude"]

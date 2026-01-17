@@ -8,7 +8,3 @@ services:
     dockerfilePath: packages/mcp-server/Dockerfile
     dockerContext: .
     healthCheckPath: /health
-    envVars:
-      - key: PORT
-        value: 3000
-    startCommand: node index.js --transport=http --port=$PORT --client=claude
