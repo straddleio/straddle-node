@@ -2,6 +2,7 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
 import cors from 'cors';
 import express from 'express';
 import { fromError } from 'zod-validation-error/v3';
@@ -55,8 +56,10 @@ function createPostHandler(clientOptions: ClientOptions, mcpOptions: McpOptions)
     const server = createServer(clientOptions, mcpOptions, req, res);
     if (server === null) return;
 
-    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
-    await server.connect(transport);
+    // Stateless mode: no session management, each request is independent
+    const transport = new StreamableHTTPServerTransport({});
+    // Type assertion needed due to exactOptionalPropertyTypes strictness in SDK 1.25+
+    await server.connect(transport as Transport);
     await transport.handleRequest(req, res, req.body);
   };
 }
