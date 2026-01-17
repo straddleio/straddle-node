@@ -4,7 +4,7 @@ Connect Claude, Cursor, or any MCP client to Straddle's API.
 
 ## Endpoint
 
-```
+```text
 https://mcp.straddle.com
 ```
 
@@ -12,19 +12,20 @@ https://mcp.straddle.com
 
 Pass your Straddle API key via the `Authorization` header:
 
-```
+```text
 Authorization: Bearer sk_live_xxxxx
 ```
 
 Or use the custom header:
 
-```
+```text
 X-Straddle-API-Key: sk_live_xxxxx
 ```
 
 ## Claude Desktop Setup
 
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+Add to your Claude Desktop config (on macOS:
+`~/Library/Application Support/Claude/claude_desktop_config.json`):
 
 ```json
 {
@@ -62,11 +63,11 @@ The MCP server exposes all Straddle API endpoints as tools:
 
 Add query parameters to reduce context size:
 
-| Parameter | Example | Description |
-|-----------|---------|-------------|
-| `resource` | `?resource=charges` | Only charge-related tools |
-| `operation` | `?operation=read` | Only read operations |
-| `client` | `?client=claude` | Optimize schemas for Claude |
+| Parameter   | Example              | Description                  |
+| ----------- | -------------------- | ---------------------------- |
+| `resource`  | `?resource=charges`  | Only charge-related tools    |
+| `operation` | `?operation=read`    | Only read operations         |
+| `client`    | `?client=claude`     | Optimize schemas for Claude  |
 
 Example with filters:
 
@@ -96,11 +97,12 @@ curl https://mcp.straddle.com/health
 
 ### 401 Unauthorized
 
-Your API key is missing or invalid. Ensure the `Authorization` header is set correctly.
+Your API key is missing or invalid. Ensure the `Authorization` header is set.
 
 ### 400 Invalid Request
 
 Check your query parameters. Valid options:
+
 - `resource`: matches API resource names (charges, payouts, customers, etc.)
 - `operation`: `read` or `write`
 - `client`: `claude`, `cursor`, or omit for default
