@@ -147,23 +147,50 @@ export function initMcpServer(params: {
  * Selects the tools to include in the MCP Server based on the provided options.
  */
 export async function selectTools(endpoints: Endpoint[], options?: McpOptions): Promise<Endpoint[]> {
-  const filteredEndpoints = query(options?.filters ?? [], endpoints);
+  // SECURITY: Enforce read-only mode and block sensitive data exposure tools
+  // These filters are applied FIRST and create a secure base that cannot be bypassed
+  const securityFilters: import('./tools').Filter[] = [
+    { type: 'operation', op: 'include', value: 'read' },
+    // Block tools that expose unmasked/sensitive data
+    { type: 'tool', op: 'exclude', value: 'unmask_*' },
+    { type: 'tool', op: 'exclude', value: 'unmasked_*' },
+    { type: 'tool', op: 'exclude', value: 'reveal_*' },
+  ];
+
+  // SECURITY: Apply security filters first to create a secure base set
+  // This set is the MAXIMUM that can ever be exposed - fallbacks cannot exceed it
+  const secureEndpoints = query(securityFilters, endpoints);
+
+  // Apply user filters to the already-secured endpoints (if any user filters exist)
+  const userFilters = options?.filters ?? [];
+  let filteredEndpoints = userFilters.length > 0 ? query(userFilters, secureEndpoints) : secureEndpoints;
 
   let includedTools = filteredEndpoints.slice();
 
   if (includedTools.length > 0) {
     if (options?.includeDynamicTools) {
-      includedTools = dynamicTools(includedTools);
+      // SECURITY: Filter dynamicTools output to only include read operations
+      // invoke_api_endpoint has operation: 'write' and must be excluded
+      includedTools = dynamicTools(includedTools).filter((e) => e.metadata.operation === 'read');
     }
+  } else if (userFilters.length > 0) {
+    // SECURITY: User explicitly filtered (include OR exclude) but got nothing - fail closed
+    // Don't fall back to full set, return empty (plus docs if enabled)
+    // Example: ?no_operation=read should return empty, not all secure tools
+    includedTools = [];
   } else {
+    // No user filters, safe to use fallbacks within secure set
+    // SECURITY: All fallbacks use secureEndpoints, NEVER the raw endpoints
     if (options?.includeAllTools) {
-      includedTools = endpoints.slice();
+      includedTools = secureEndpoints.slice();
     } else if (options?.includeDynamicTools) {
-      includedTools = dynamicTools(endpoints);
+      // SECURITY: Filter dynamicTools output to only include read operations
+      includedTools = dynamicTools(secureEndpoints).filter((e) => e.metadata.operation === 'read');
     } else if (options?.includeCodeTools) {
-      includedTools = [await codeTool()];
+      // codeTool has operation: 'write', so will be filtered out by read-only filter
+      includedTools = [await codeTool()].filter((e) => e.metadata.operation === 'read');
     } else {
-      includedTools = endpoints.slice();
+      includedTools = secureEndpoints.slice();
     }
   }
   if (options?.includeDocsTools ?? true) {

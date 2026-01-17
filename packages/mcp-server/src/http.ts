@@ -10,7 +10,6 @@ import { parseAuthHeaders } from './headers.js';
 import { McpOptions, parseQueryOptions } from './options.js';
 import { ClientOptions, initMcpServer, newMcpServer } from './server.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version } = require('./package.json');
 
 function sendJsonRpcError(res: express.Response, status: number, message: string): void {

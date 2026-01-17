@@ -161,8 +161,10 @@ export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
     return included;
   });
 
-  // Check if any filters didn't match
-  const unmatched = Array.from(unmatchedFilters).filter((f) => f.type === 'tool' || f.type === 'resource');
+  // Check if any include filters didn't match (excludes may legitimately match nothing)
+  const unmatched = Array.from(unmatchedFilters).filter(
+    (f) => (f.type === 'tool' || f.type === 'resource') && f.op === 'include',
+  );
   if (unmatched.length > 0) {
     throw new Error(
       `The following filters did not match any endpoints: ${unmatched
@@ -174,19 +176,48 @@ export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
   return filtered;
 }
 
-function match({ type, value }: Filter, endpoint: Endpoint): boolean {
+// Escape regex special characters except * which we handle specially
+function escapeRegexExceptWildcard(str: string): string {
+  return str.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function match({ type, op, value }: Filter, endpoint: Endpoint): boolean {
+  // SECURITY: On error, return the safe value based on operation type:
+  // - For include: return false (don't include = safe)
+  // - For exclude: return true (do exclude = safe)
+  const failSafeValue = op === 'exclude';
+
   switch (type) {
     case 'resource': {
-      const regexStr = '^' + normalizeResource(value).replace(/\*/g, '.*') + '$';
-      const regex = new RegExp(regexStr);
-      return regex.test(normalizeResource(endpoint.metadata.resource));
+      try {
+        const escaped = escapeRegexExceptWildcard(normalizeResource(value));
+        const regexStr = '^' + escaped.replace(/\*/g, '.*') + '$';
+        const regex = new RegExp(regexStr);
+        return regex.test(normalizeResource(endpoint.metadata.resource));
+      } catch {
+        console.error(`Security: Invalid filter regex for resource '${value}', failing safe`);
+        return failSafeValue;
+      }
     }
     case 'operation':
       return endpoint.metadata.operation === value;
     case 'tag':
       return endpoint.metadata.tags.includes(value);
-    case 'tool':
+    case 'tool': {
+      // Support wildcard matching for tool names (e.g., "unmask_*")
+      if (value.includes('*')) {
+        try {
+          const escaped = escapeRegexExceptWildcard(value);
+          const regexStr = '^' + escaped.replace(/\*/g, '.*') + '$';
+          const regex = new RegExp(regexStr);
+          return regex.test(endpoint.tool.name);
+        } catch {
+          console.error(`Security: Invalid filter regex for tool '${value}', failing safe`);
+          return failSafeValue;
+        }
+      }
       return endpoint.tool.name === value;
+    }
   }
 }
 
