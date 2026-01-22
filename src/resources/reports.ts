@@ -47,7 +47,7 @@ export interface ReportCreateTotalCustomersByStatusResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace ReportCreateTotalCustomersByStatusResponse {

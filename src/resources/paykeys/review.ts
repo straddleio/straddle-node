@@ -113,7 +113,7 @@ export interface ReviewGetResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace ReviewGetResponse {
@@ -270,39 +270,9 @@ export namespace ReviewGetResponse {
           | 'failed_verification'
           | 'require_review'
           | 'blocked_by_system'
-          | 'watchtower_review'
-          | 'InsufficientFunds'
-          | 'ClosedBankAccount'
-          | 'InvalidBankAccount'
-          | 'InvalidRouting'
-          | 'Disputed'
-          | 'PaymentStopped'
-          | 'OwnerDeceased'
-          | 'FrozenBankAccount'
-          | 'RiskReview'
-          | 'Fraudulent'
-          | 'DuplicateEntry'
-          | 'InvalidPaykey'
-          | 'PaymentBlocked'
-          | 'AmountTooLarge'
-          | 'TooManyAttempts'
-          | 'InternalSystemError'
-          | 'UserRequest'
-          | 'Ok'
-          | 'OtherNetworkReturn'
-          | 'PayoutRefused';
+          | 'watchtower_review';
 
-        source:
-          | 'watchtower'
-          | 'bank_decline'
-          | 'customer_dispute'
-          | 'user_action'
-          | 'system'
-          | 'Watchtower'
-          | 'BankDecline'
-          | 'CustomerDispute'
-          | 'UserAction'
-          | 'System';
+        source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
         /**
          * The status code if applicable.
