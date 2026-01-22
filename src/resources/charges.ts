@@ -287,7 +287,7 @@ export interface ChargeV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace ChargeV1 {
@@ -313,7 +313,7 @@ export namespace ChargeV1 {
      * signed agreements where there is a consent form or contract. Use `signed` for
      * PDF signatures.
      */
-    consent_type: 'internet' | 'signed' | 'Internet' | 'Signed';
+    consent_type: 'internet' | 'signed';
 
     /**
      * Timestamp of when the charge was created.
@@ -360,23 +360,7 @@ export namespace ChargeV1 {
     /**
      * The current status of the charge.
      */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'Created'
-      | 'Scheduled'
-      | 'Failed'
-      | 'Cancelled'
-      | 'OnHold'
-      | 'Pending'
-      | 'Paid'
-      | 'Reversed';
+    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     /**
      * Additional details about the current status of the charge.
@@ -423,7 +407,7 @@ export namespace ChargeV1 {
     /**
      * The payment rail that the charge will be processed through.
      */
-    payment_rail?: 'ach' | 'ACH';
+    payment_rail?: 'ach';
 
     /**
      * Timestamp of when the charge was processed by Straddle and originated to the
@@ -440,7 +424,7 @@ export namespace ChargeV1 {
       /**
        * Defines whether to check the customer's balance before processing the charge.
        */
-      balance_check: 'required' | 'enabled' | 'disabled' | 'Required' | 'Enabled' | 'Disabled';
+      balance_check: 'required' | 'enabled' | 'disabled';
 
       /**
        * Payment will simulate processing if not Standard.
@@ -456,18 +440,7 @@ export namespace ChargeV1 {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account'
-        | 'Standard'
-        | 'Paid'
-        | 'OnHoldDailyLimit'
-        | 'CancelledForFraudRisk'
-        | 'CancelledForBalanceCheck'
-        | 'FailedInsufficientFunds'
-        | 'ReversedInsufficientFunds'
-        | 'FailedCustomerDispute'
-        | 'ReversedCustomerDispute'
-        | 'FailedClosedBankAccount'
-        | 'ReversedClosedBankAccount';
+        | 'reversed_closed_bank_account';
     }
 
     /**
@@ -513,64 +486,18 @@ export namespace ChargeV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
        * This helps in tracking the cause of status updates.
        */
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The current status of the `charge` or `payout`.
        */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'Created'
-        | 'Scheduled'
-        | 'Failed'
-        | 'Cancelled'
-        | 'OnHold'
-        | 'Pending'
-        | 'Paid'
-        | 'Reversed';
+      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
       /**
        * The status code if applicable.
@@ -597,7 +524,7 @@ export interface ChargeUnmaskResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
+  response_type: 'object' | 'array' | 'error' | 'none';
 }
 
 export namespace ChargeUnmaskResponse {
@@ -620,7 +547,7 @@ export namespace ChargeUnmaskResponse {
      * signed agreements where there is a consent form or contract. Use `signed` for
      * PDF signatures.
      */
-    consent_type: 'internet' | 'signed' | 'Internet' | 'Signed';
+    consent_type: 'internet' | 'signed';
 
     /**
      * Created at.
@@ -662,23 +589,7 @@ export namespace ChargeUnmaskResponse {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'Created'
-      | 'Scheduled'
-      | 'Failed'
-      | 'Cancelled'
-      | 'OnHold'
-      | 'Pending'
-      | 'Paid'
-      | 'Reversed';
+    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     status_details: Shared.StatusDetailsV1;
 
@@ -717,7 +628,7 @@ export namespace ChargeUnmaskResponse {
     /**
      * The payment rail used for the charge or payout.
      */
-    payment_rail?: 'ach' | 'ACH';
+    payment_rail?: 'ach';
 
     /**
      * Processed at.
@@ -730,7 +641,7 @@ export namespace ChargeUnmaskResponse {
       /**
        * Defines whether to check the customer's balance before processing the charge.
        */
-      balance_check: 'required' | 'enabled' | 'disabled' | 'Required' | 'Enabled' | 'Disabled';
+      balance_check: 'required' | 'enabled' | 'disabled';
 
       /**
        * Payment will simulate processing if not Standard.
@@ -746,18 +657,7 @@ export namespace ChargeUnmaskResponse {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account'
-        | 'Standard'
-        | 'Paid'
-        | 'OnHoldDailyLimit'
-        | 'CancelledForFraudRisk'
-        | 'CancelledForBalanceCheck'
-        | 'FailedInsufficientFunds'
-        | 'ReversedInsufficientFunds'
-        | 'FailedCustomerDispute'
-        | 'ReversedCustomerDispute'
-        | 'FailedClosedBankAccount'
-        | 'ReversedClosedBankAccount';
+        | 'reversed_closed_bank_account';
     }
 
     export interface Device {
@@ -807,64 +707,18 @@ export namespace ChargeUnmaskResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'InsufficientFunds'
-        | 'ClosedBankAccount'
-        | 'InvalidBankAccount'
-        | 'InvalidRouting'
-        | 'Disputed'
-        | 'PaymentStopped'
-        | 'OwnerDeceased'
-        | 'FrozenBankAccount'
-        | 'RiskReview'
-        | 'Fraudulent'
-        | 'DuplicateEntry'
-        | 'InvalidPaykey'
-        | 'PaymentBlocked'
-        | 'AmountTooLarge'
-        | 'TooManyAttempts'
-        | 'InternalSystemError'
-        | 'UserRequest'
-        | 'Ok'
-        | 'OtherNetworkReturn'
-        | 'PayoutRefused';
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
        * This helps in tracking the cause of status updates.
        */
-      source:
-        | 'watchtower'
-        | 'bank_decline'
-        | 'customer_dispute'
-        | 'user_action'
-        | 'system'
-        | 'Watchtower'
-        | 'BankDecline'
-        | 'CustomerDispute'
-        | 'UserAction'
-        | 'System';
+      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
       /**
        * The current status of the `charge` or `payout`.
        */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'Created'
-        | 'Scheduled'
-        | 'Failed'
-        | 'Cancelled'
-        | 'OnHold'
-        | 'Pending'
-        | 'Paid'
-        | 'Reversed';
+      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
       /**
        * The status code if applicable.
@@ -891,7 +745,7 @@ export interface ChargeCreateParams {
    * signed agreements where there is a consent form or contract. Use `signed` for
    * PDF signatures.
    */
-  consent_type: 'internet' | 'signed' | 'Internet' | 'Signed';
+  consent_type: 'internet' | 'signed';
 
   /**
    * Body param: The currency of the charge. Only USD is supported.
@@ -959,7 +813,7 @@ export namespace ChargeCreateParams {
     /**
      * Defines whether to check the customer's balance before processing the charge.
      */
-    balance_check: 'required' | 'enabled' | 'disabled' | 'Required' | 'Enabled' | 'Disabled';
+    balance_check: 'required' | 'enabled' | 'disabled';
 
     /**
      * Payment will simulate processing if not Standard.
@@ -975,18 +829,7 @@ export namespace ChargeCreateParams {
       | 'failed_customer_dispute'
       | 'reversed_customer_dispute'
       | 'failed_closed_bank_account'
-      | 'reversed_closed_bank_account'
-      | 'Standard'
-      | 'Paid'
-      | 'OnHoldDailyLimit'
-      | 'CancelledForFraudRisk'
-      | 'CancelledForBalanceCheck'
-      | 'FailedInsufficientFunds'
-      | 'ReversedInsufficientFunds'
-      | 'FailedCustomerDispute'
-      | 'ReversedCustomerDispute'
-      | 'FailedClosedBankAccount'
-      | 'ReversedClosedBankAccount';
+      | 'reversed_closed_bank_account';
   }
 }
 
