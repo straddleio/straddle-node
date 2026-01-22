@@ -31,6 +31,7 @@ describe('resource paykeys', () => {
           sort_order: 'asc',
           source: ['bank_account'],
           status: ['pending'],
+          unblock_eligible: true,
           'Correlation-Id': 'Correlation-Id',
           'Request-Id': 'Request-Id',
           'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',

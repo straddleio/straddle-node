@@ -296,7 +296,7 @@ export interface CustomerSummaryPagedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
 }
 
 export namespace CustomerSummaryPagedV1 {
@@ -328,7 +328,7 @@ export namespace CustomerSummaryPagedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'Individual' | 'Business';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -373,7 +373,7 @@ export namespace CustomerSummaryPagedV1 {
      */
     sort_by: string;
 
-    sort_order: 'asc' | 'desc';
+    sort_order: 'asc' | 'desc' | 'Asc' | 'Desc';
 
     total_items: number;
 
@@ -401,7 +401,7 @@ export interface CustomerUnmaskedV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
 }
 
 export namespace CustomerUnmaskedV1 {
@@ -433,7 +433,7 @@ export namespace CustomerUnmaskedV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'Individual' | 'Business';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -549,7 +549,7 @@ export interface CustomerV1 {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
 }
 
 export namespace CustomerV1 {
@@ -581,7 +581,7 @@ export namespace CustomerV1 {
 
     status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
-    type: 'individual' | 'business';
+    type: 'individual' | 'business' | 'Individual' | 'Business';
 
     /**
      * Timestamp of the most recent update to the customer record.
@@ -719,7 +719,7 @@ export interface CustomerCreateParams {
   /**
    * Body param
    */
-  type: 'individual' | 'business';
+  type: 'individual' | 'business' | 'Individual' | 'Business';
 
   /**
    * Body param: An object containing the customer's address. **This is optional.**
@@ -1012,7 +1012,7 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   /**
    * Query param
    */
-  sort_order?: 'asc' | 'desc';
+  sort_order?: 'asc' | 'desc' | 'Asc' | 'Desc';
 
   /**
    * Query param: Filter customers by their current `status`.
@@ -1022,7 +1022,7 @@ export interface CustomerListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter by customer type `individual` or `business`.
    */
-  types?: Array<'individual' | 'business'>;
+  types?: Array<'individual' | 'business' | 'Individual' | 'Business'>;
 
   /**
    * Header param: Optional client generated identifier to trace and debug a series
