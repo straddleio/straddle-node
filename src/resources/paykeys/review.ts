@@ -113,7 +113,7 @@ export interface ReviewGetResponse {
    *   issue.
    * - "none" means no data is returned.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: 'object' | 'array' | 'error' | 'none' | 'Object' | 'Array' | 'Error' | 'None';
 }
 
 export namespace ReviewGetResponse {
@@ -189,6 +189,13 @@ export namespace ReviewGetResponse {
       metadata?: { [key: string]: string } | null;
 
       status_details?: PaykeyDetails.StatusDetails;
+
+      /**
+       * Indicates whether this paykey is eligible for client-initiated unblocking. Only
+       * present for blocked paykeys. True when blocked due to R29 returns and not
+       * previously unblocked, false otherwise. Null when paykey is not blocked.
+       */
+      unblock_eligible?: boolean | null;
     }
 
     export namespace PaykeyDetails {
@@ -263,9 +270,39 @@ export namespace ReviewGetResponse {
           | 'failed_verification'
           | 'require_review'
           | 'blocked_by_system'
-          | 'watchtower_review';
+          | 'watchtower_review'
+          | 'InsufficientFunds'
+          | 'ClosedBankAccount'
+          | 'InvalidBankAccount'
+          | 'InvalidRouting'
+          | 'Disputed'
+          | 'PaymentStopped'
+          | 'OwnerDeceased'
+          | 'FrozenBankAccount'
+          | 'RiskReview'
+          | 'Fraudulent'
+          | 'DuplicateEntry'
+          | 'InvalidPaykey'
+          | 'PaymentBlocked'
+          | 'AmountTooLarge'
+          | 'TooManyAttempts'
+          | 'InternalSystemError'
+          | 'UserRequest'
+          | 'Ok'
+          | 'OtherNetworkReturn'
+          | 'PayoutRefused';
 
-        source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
+        source:
+          | 'watchtower'
+          | 'bank_decline'
+          | 'customer_dispute'
+          | 'user_action'
+          | 'system'
+          | 'Watchtower'
+          | 'BankDecline'
+          | 'CustomerDispute'
+          | 'UserAction'
+          | 'System';
 
         /**
          * The status code if applicable.
