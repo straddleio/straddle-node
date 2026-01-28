@@ -4,6 +4,7 @@ import { McpTool, Metadata, ToolCallResult, asErrorResult, asTextContentResult }
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { readEnv, readEnvOrError } from './server';
 import { WorkerInput, WorkerOutput } from './code-tool-types';
+import { Straddle } from '@straddlecom/straddle';
 
 const prompt = `Runs JavaScript code to interact with the Straddle API.
 
@@ -64,7 +65,7 @@ export function codeTool(): McpTool {
       required: ['code'],
     },
   };
-  const handler = async (_: unknown, args: any): Promise<ToolCallResult> => {
+  const handler = async (client: Straddle, args: any): Promise<ToolCallResult> => {
     const code = args.code as string;
     const intent = args.intent as string | undefined;
 
@@ -80,8 +81,8 @@ export function codeTool(): McpTool {
         ...(stainlessAPIKey && { Authorization: stainlessAPIKey }),
         'Content-Type': 'application/json',
         client_envs: JSON.stringify({
-          STRADDLE_API_KEY: readEnvOrError('STRADDLE_API_KEY'),
-          STRADDLE_BASE_URL: readEnv('STRADDLE_BASE_URL'),
+          STRADDLE_API_KEY: readEnvOrError('STRADDLE_API_KEY') ?? client.apiKey ?? undefined,
+          STRADDLE_BASE_URL: readEnv('STRADDLE_BASE_URL') ?? client.baseURL ?? undefined,
         }),
       },
       body: JSON.stringify({
