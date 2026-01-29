@@ -1,5 +1,77 @@
 # Changelog
 
+## 0.4.0 (2026-01-29)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/straddleio/straddle-node/compare/v0.3.0...v0.4.0)
+
+### ⚠ BREAKING CHANGES
+
+* **mcp:** remove deprecated tool schemes
+* **mcp:** **Migration:** To migrate, simply modify the command used to invoke the MCP server. Currently, the only supported tool scheme is code mode. Now, starting the server with just `node /path/to/mcp/server` or `npx package-name` will invoke code tools: changing your command to one of these is likely all you will need to do.
+
+### Features
+
+* **docs:** Preliminary update to SDK Spec ([58fe004](https://github.com/straddleio/straddle-node/commit/58fe004ee568023e96a9282d09e5ed4fcaf3e2a9))
+* **docs:** Preliminary update to SDK Spec ([2ea8487](https://github.com/straddleio/straddle-node/commit/2ea8487fb27d5ba3b41f2699e5ac80561877287c))
+* **docs:** Preliminary update to SDK Spec ([8134f6d](https://github.com/straddleio/straddle-node/commit/8134f6dd0ad3cfedbe14e9dea3723dc70b0bb9ce))
+* **docs:** Preliminary update to SDK Spec ([2c1efff](https://github.com/straddleio/straddle-node/commit/2c1efffc8a15e5ebbdfb15ea80d78873871f35ed))
+* **docs:** Preliminary update to SDK Spec ([5da69c0](https://github.com/straddleio/straddle-node/commit/5da69c0711ebaffc518bed1a6efabab7a5c89be5))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([f437bd3](https://github.com/straddleio/straddle-node/commit/f437bd33169a1592ebb4f1578632a56ef2c8118a))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([cd18d9d](https://github.com/straddleio/straddle-node/commit/cd18d9dbb5bfa0c1e29550e9eb585e26eecac363))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([57812f0](https://github.com/straddleio/straddle-node/commit/57812f008ec4eaa1d1c107f871c7e5cd3a7487b2))
+* **mcp:** add detail field to docs search tool ([9cabac9](https://github.com/straddleio/straddle-node/commit/9cabac93a458fbf1778479b3781d7acb2090d4ba))
+* **mcp:** add typescript check to code execution tool ([0904fb3](https://github.com/straddleio/straddle-node/commit/0904fb3c473e8bbd7b9788ca338cc9c67d46ccb0))
+* **mcp:** handle code mode calls in the Stainless API ([53f28da](https://github.com/straddleio/straddle-node/commit/53f28da2fbc43620202f71c4b7e71c17e9f482dd))
+* **mcp:** return logs on code tool errors ([cd3508c](https://github.com/straddleio/straddle-node/commit/cd3508c9e80c72c0f6933039dbbfb411900c5d2f))
+
+
+### Bug Fixes
+
+* **docs:** fix mcp installation instructions for remote servers ([66a1f91](https://github.com/straddleio/straddle-node/commit/66a1f91167d4af972e9d2605da593f9e4d1ba0e7))
+* **mcp:** add client instantiation options to code tool ([3440d15](https://github.com/straddleio/straddle-node/commit/3440d1572c34b5cefc035cd14ce3ad0c5f375711))
+* **mcp:** allow falling back for required env variables ([a8a865f](https://github.com/straddleio/straddle-node/commit/a8a865ff6da2846d86e6d61e0e3ea747b53a1318))
+* **mcp:** correct code tool API endpoint ([d5e0dbb](https://github.com/straddleio/straddle-node/commit/d5e0dbb6bc29ca2df3f0316f4c3f38084922d081))
+* **mcp:** correct code tool api output types ([5d1711e](https://github.com/straddleio/straddle-node/commit/5d1711ee6116e86a0a0218c6b5cce7d32a9d5f50))
+* **mcp:** fix env parsing ([a9d5d7b](https://github.com/straddleio/straddle-node/commit/a9d5d7b3adcb7289a618a2f5215d19cda78742c0))
+* **mcp:** fix options parsing ([6baf498](https://github.com/straddleio/straddle-node/commit/6baf498c73a64574f118e3e513313e7decbf44d4))
+* **mcp:** pass base url to code tool ([7a1a0b4](https://github.com/straddleio/straddle-node/commit/7a1a0b485bf73e03d50069b5e23907f93d6c816f))
+* **mcp:** return correct lines on typescript errors ([aabd609](https://github.com/straddleio/straddle-node/commit/aabd609da5d351d48f182de862e3d99e3f9aa187))
+* **mcp:** return tool execution error on api error ([74eddf1](https://github.com/straddleio/straddle-node/commit/74eddf1d4ca6887c0538e28bdb0ea14ecf3a6908))
+* **mcp:** update code tool prompt ([9b8fe26](https://github.com/straddleio/straddle-node/commit/9b8fe2654bc6210ce2cc79ba05b32b077bfba597))
+
+
+### Chores
+
+* break long lines in snippets into multiline ([ccc1a7d](https://github.com/straddleio/straddle-node/commit/ccc1a7d82f2f61b2c881a2b5ae34b4f7a64eac12))
+* **ci:** upgrade `actions/github-script` ([1cd6e86](https://github.com/straddleio/straddle-node/commit/1cd6e861ee5f4e79e620511e0f1bde5a7f848029))
+* **client:** fix logger property type ([7e26210](https://github.com/straddleio/straddle-node/commit/7e262100d073d505a65e50aa494857373a68540f))
+* fix typo in descriptions ([214a177](https://github.com/straddleio/straddle-node/commit/214a177e14e10648c45fff5cbdedbb06a9365faf))
+* **internal:** codegen related update ([b037ac4](https://github.com/straddleio/straddle-node/commit/b037ac45e10c77126a8e942907ed8605cc7800e8))
+* **internal:** codegen related update ([fdc1ee9](https://github.com/straddleio/straddle-node/commit/fdc1ee9c7a21f2891b18449d5a991f84763cc1bb))
+* **internal:** codegen related update ([971013d](https://github.com/straddleio/straddle-node/commit/971013d6d79d41ca10347e3353aaec88df745ab8))
+* **internal:** codegen related update ([f917000](https://github.com/straddleio/straddle-node/commit/f917000be475d560e7580c4347e87537cf044d61))
+* **internal:** codegen related update ([160df86](https://github.com/straddleio/straddle-node/commit/160df86c6533a92644e847b848a69a8b822fde17))
+* **internal:** codegen related update ([0cf7563](https://github.com/straddleio/straddle-node/commit/0cf7563b14f3acc66b97350e6517ef04f6d34b0e))
+* **internal:** codegen related update ([d16669a](https://github.com/straddleio/straddle-node/commit/d16669aa3fba3b2a283bc29d39d9226b1645832a))
+* **internal:** codegen related update ([3829a28](https://github.com/straddleio/straddle-node/commit/3829a28b37361ab6b52a3e939c8bfc6ccec168d8))
+* **internal:** fix dockerfile ([7a9a8db](https://github.com/straddleio/straddle-node/commit/7a9a8db752b8dec40d29f0a3f4b5b3727405ba47))
+* **internal:** update `actions/checkout` version ([f87a27e](https://github.com/straddleio/straddle-node/commit/f87a27e416d3c6ccd6c7f82a86a33613626e1722))
+* **internal:** update lock file ([6803a4f](https://github.com/straddleio/straddle-node/commit/6803a4ffcb6322c0d0a78f4a133e9701455fdea2))
+* **internal:** upgrade babel, qs, js-yaml ([f8f8911](https://github.com/straddleio/straddle-node/commit/f8f891190a209f38068c4f98a2424b0dd06a6beb))
+* **internal:** upgrade eslint ([33b7232](https://github.com/straddleio/straddle-node/commit/33b7232650d856fa8b411eeff99bca8215f84a36))
+* **mcp:** add intent param to execute tool ([0015aa4](https://github.com/straddleio/straddle-node/commit/0015aa4141c83fc682be7604d625682be1d88378))
+* **mcp:** pass intent param to execute handler ([4e9c7a3](https://github.com/straddleio/straddle-node/commit/4e9c7a354ee3368c3805c2bfc279efa2ed764102))
+* **mcp:** remove deprecated tool schemes ([87d9491](https://github.com/straddleio/straddle-node/commit/87d949188c5daadbd0ca6b86e9bb138d2ff284f8))
+* **mcp:** up tsconfig lib version to es2022 ([b10750c](https://github.com/straddleio/straddle-node/commit/b10750cc8aa3c3098794cc7db6becdd6f509f8d7))
+* **mcp:** update lockfile ([467a239](https://github.com/straddleio/straddle-node/commit/467a239ae416a6b098b3f0de5300bdd41cca2d56))
+* **mcp:** upgrade dependencies ([59a24a2](https://github.com/straddleio/straddle-node/commit/59a24a252ef9bf13201dfd556bccd11836d3be72))
+* use latest @modelcontextprotocol/sdk ([9ec34cd](https://github.com/straddleio/straddle-node/commit/9ec34cd96b2196a80d26f7280612b820a9aaca1d))
+
+
+### Documentation
+
+* prominently feature MCP server setup in root SDK readmes ([9f80ce8](https://github.com/straddleio/straddle-node/commit/9f80ce877c060b786f8c0b4005e04b5d2bb26c28))
+
 ## 0.3.0 (2025-11-16)
 
 Full Changelog: [v0.2.1...v0.3.0](https://github.com/straddleio/straddle-node/compare/v0.2.1...v0.3.0)
