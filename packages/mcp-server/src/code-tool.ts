@@ -85,7 +85,10 @@ export function codeTool(): McpTool {
             readEnv('STRADDLE_API_KEY') ?? client.apiKey,
             'set STRADDLE_API_KEY environment variable or provide apiKey client option',
           ),
-          STRADDLE_BASE_URL: readEnv('STRADDLE_BASE_URL') ?? client.baseURL ?? undefined,
+          STRADDLE_BASE_URL:
+            readEnv('STRADDLE_BASE_URL') ?? readEnv('STRADDLE_ENVIRONMENT') ?
+              undefined
+            : client.baseURL ?? undefined,
         }),
       },
       body: JSON.stringify({
