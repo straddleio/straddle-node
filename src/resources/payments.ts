@@ -149,6 +149,11 @@ export namespace PaymentSummaryPagedV1 {
     funding_id?: string | null;
 
     /**
+     * Metadata for payment - only included if requested.
+     */
+    metadata?: { [key: string]: string } | null;
+
+    /**
      * Information about the paykey used for the `charge` or `payout`.
      */
     paykey_details?: Shared.PaykeyDetailsV1;
@@ -226,6 +231,11 @@ export interface PaymentListParams extends PageNumberSchemaParams {
    * Query param: Search using the `funding_id` of a `charge` or `payout`.
    */
   funding_id?: string;
+
+  /**
+   * Query param: Include the metadata for payments in the returned data.
+   */
+  include_metadata?: boolean;
 
   /**
    * Query param: Search using a maximum `amount` of a `charge` or `payout`.
