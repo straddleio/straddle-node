@@ -704,14 +704,19 @@ export namespace AccountV1 {
  */
 export interface AddressV1 {
   /**
-   * Primary address line (e.g., street, PO Box).
-   */
-  address1: string;
-
-  /**
    * City, district, suburb, town, or village.
    */
   city: string | null;
+
+  /**
+   * Primary address line (e.g., street, PO Box).
+   */
+  line1: string | null;
+
+  /**
+   * Postal or ZIP code.
+   */
+  postal_code: string | null;
 
   /**
    * Two-letter state code.
@@ -719,34 +724,14 @@ export interface AddressV1 {
   state: string | null;
 
   /**
-   * Zip or postal code.
-   */
-  zip: string;
-
-  /**
-   * Secondary address line (e.g., apartment, suite, unit, or building).
-   */
-  address2?: string | null;
-
-  /**
    * The country of the address, in ISO 3166-1 alpha-2 format.
    */
   country?: string | null;
 
   /**
-   * Primary address line (e.g., street, PO Box).
-   */
-  line1?: string | null;
-
-  /**
    * Secondary address line (e.g., apartment, suite, unit, or building).
    */
   line2?: string | null;
-
-  /**
-   * Postal or ZIP code.
-   */
-  postal_code?: string | null;
 }
 
 export interface BusinessProfileV1 {
