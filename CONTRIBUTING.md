@@ -60,7 +60,7 @@ $ yarn link @straddlecom/straddle
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @straddlecom/straddle
+$ pnpm link --global @straddlecom/straddle
 ```
 
 ## Running tests
