@@ -410,7 +410,14 @@ export namespace AccountPagedV1 {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time:
+          | 'immediate'
+          | 'next_day'
+          | 'one_day'
+          | 'two_day'
+          | 'three_day'
+          | 'four_day'
+          | 'five_day';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -444,7 +451,14 @@ export namespace AccountPagedV1 {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time:
+          | 'immediate'
+          | 'next_day'
+          | 'one_day'
+          | 'two_day'
+          | 'three_day'
+          | 'four_day'
+          | 'five_day';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -639,7 +653,14 @@ export namespace AccountV1 {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time:
+          | 'immediate'
+          | 'next_day'
+          | 'one_day'
+          | 'two_day'
+          | 'three_day'
+          | 'four_day'
+          | 'five_day';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -673,7 +694,14 @@ export namespace AccountV1 {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day';
+        funding_time:
+          | 'immediate'
+          | 'next_day'
+          | 'one_day'
+          | 'two_day'
+          | 'three_day'
+          | 'four_day'
+          | 'five_day';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -704,6 +732,11 @@ export namespace AccountV1 {
  */
 export interface AddressV1 {
   /**
+   * Primary address line (e.g., street, PO Box).
+   */
+  address1: string;
+
+  /**
    * City, district, suburb, town, or village.
    */
   city: string | null;
@@ -722,6 +755,16 @@ export interface AddressV1 {
    * Two-letter state code.
    */
   state: string | null;
+
+  /**
+   * Zip or postal code.
+   */
+  zip: string;
+
+  /**
+   * Secondary address line (e.g., apartment, suite, unit, or building).
+   */
+  address2?: string | null;
 
   /**
    * The country of the address, in ISO 3166-1 alpha-2 format.

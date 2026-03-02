@@ -917,6 +917,11 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   customer_id?: string;
 
   /**
+   * Query param: General search term to filter paykeys.
+   */
+  search_text?: string;
+
+  /**
    * Query param
    */
   sort_by?: 'institution_name' | 'expires_at' | 'created_at';
