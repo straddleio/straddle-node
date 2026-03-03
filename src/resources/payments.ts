@@ -6,6 +6,9 @@ import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../c
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Payments provide endpoints to filter both Charges and Payouts with multiple different parameters.
+ */
 export class Payments extends APIResource {
   /**
    * Search for payments, including `charges` and `payouts`, using a variety of

@@ -8,6 +8,9 @@ import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
 import { path } from '../../../internal/utils/path';
 
+/**
+ * Capabilities enable specific features and services for an Account. Use capability requests to unlock higher processing limits, new payment types, or additional platform features as your users' businesses grow. Track approval status and manage documentation requirements through a single interface.
+ */
 export class CapabilityRequests extends APIResource {
   /**
    * Submits a request to enable a specific capability for an account. Use this

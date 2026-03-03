@@ -17,6 +17,9 @@ import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
 import { path } from '../../../internal/utils/path';
 
+/**
+ * Accounts represent businesses using Straddle through your platform. Each account must complete automated verification before processing payments. Use accounts to manage your users' payment capabilities, track verification status, and control access to features. Accounts can be instantly created in sandbox and require additional verification for production access.
+ */
 export class Accounts extends APIResource {
   capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(
     this._client,

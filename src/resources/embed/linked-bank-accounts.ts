@@ -8,6 +8,9 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Linked bank accounts connect your platform users' external bank accounts to Straddle for settlements and payment funding. Each linked account undergoes automated verification and continuous monitoring. Use linked accounts to manage where clients receive deposits, fund payouts, and track settlement preferences.
+ */
 export class LinkedBankAccounts extends APIResource {
   /**
    * Creates a new linked bank account associated with a Straddle account. This

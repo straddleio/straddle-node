@@ -838,12 +838,33 @@ export class Straddle {
   static toFile = Uploads.toFile;
 
   embed: API.Embed = new API.Embed(this);
+  /**
+   * Bridge provides a comprehensive suite of tools for connecting customer bank accounts. Use it to generate secure widget sessions for instant account verification, accept tokens from major providers like Plaid and Finicity, or verify accounts directly via our API. Bridge handles all sensitive banking credentials and ensures secure, compliant connections with support for 90% of US bank accounts.
+   */
   bridge: API.Bridge = new API.Bridge(this);
+  /**
+   * Customers represent the end users who send or receive payments through your integration. Each customer undergoes automatic identity verification and fraud screening upon creation. Use customers to track payment history, manage bank account connections, and maintain a secure record of all transactions associated with a user. Customers can be either individuals or businesses with appropriate compliance checks for each type.
+   */
   customers: API.Customers = new API.Customers(this);
+  /**
+   * Paykeys are secure tokens that link verified customer identities to their bank accounts. Each Paykey includes built-in balance checking, fraud detection through LSTM machine learning models, and can be reused for subscriptions and recurring payments without storing sensitive data. Paykeys eliminate fraud by ensuring the person initiating payment owns the funding account.
+   */
   paykeys: API.Paykeys = new API.Paykeys(this);
+  /**
+   * Charges represent attempts to debit money from a customer's bank account using a Paykey. Each charge includes automatic balance verification, real-time fraud screening, and multi-rail optimization and detailed status tracking throughout the payment lifecycle. Use charges to accept bank payments with confidence knowing every transaction is protected.
+   */
   charges: API.Charges = new API.Charges(this);
+  /**
+   * Funding events represent all money movement between Straddle and an Account's external bank accounts. They are automatically generated when charges settle or payouts are initiated. Each event provides detailed tracking of settlement status, fee breakdowns, and reconciliation data across both incoming and outgoing transfers. Use funding events to monitor your platform's entire money movement lifecycle.
+   */
   fundingEvents: API.FundingEvents = new API.FundingEvents(this);
+  /**
+   * Payments provide endpoints to filter both Charges and Payouts with multiple different parameters.
+   */
   payments: API.Payments = new API.Payments(this);
+  /**
+   * Payouts represent transfers from Straddle to customer bank accounts. Create payouts to handle disbursements, process refunds, or manage marketplace settlements. Use payouts to send money quickly and securely with the most cost-effective rail automatically selected.
+   */
   payouts: API.Payouts = new API.Payouts(this);
   reports: API.Reports = new API.Reports(this);
 }

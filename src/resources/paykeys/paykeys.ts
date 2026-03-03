@@ -16,6 +16,9 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Paykeys are secure tokens that link verified customer identities to their bank accounts. Each Paykey includes built-in balance checking, fraud detection through LSTM machine learning models, and can be reused for subscriptions and recurring payments without storing sensitive data. Paykeys eliminate fraud by ensuring the person initiating payment owns the funding account.
+ */
 export class Paykeys extends APIResource {
   review: ReviewAPI.Review = new ReviewAPI.Review(this._client);
 
