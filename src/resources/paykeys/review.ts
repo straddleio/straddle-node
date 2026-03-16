@@ -273,7 +273,8 @@ export namespace ReviewGetResponse {
           | 'failed_verification'
           | 'require_review'
           | 'blocked_by_system'
-          | 'watchtower_review';
+          | 'watchtower_review'
+          | 'validating';
 
         source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 

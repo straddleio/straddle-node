@@ -151,7 +151,16 @@ export namespace FundingEventSummaryItemV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status?:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     status_details?: Data.StatusDetails;
 
@@ -198,7 +207,8 @@ export namespace FundingEventSummaryItemV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -286,7 +296,16 @@ export namespace FundingEventSummaryPagedV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status?:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     status_details?: Data.StatusDetails;
 
@@ -333,7 +352,8 @@ export namespace FundingEventSummaryPagedV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -430,7 +450,15 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
    * Query param: Funding Event status.
    */
   status?: Array<
-    'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
+    | 'created'
+    | 'scheduled'
+    | 'failed'
+    | 'cancelled'
+    | 'on_hold'
+    | 'pending'
+    | 'paid'
+    | 'reversed'
+    | 'validating'
   > | null;
 
   /**
@@ -462,6 +490,7 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
     | 'require_review'
     | 'blocked_by_system'
     | 'watchtower_review'
+    | 'validating'
   > | null;
 
   /**

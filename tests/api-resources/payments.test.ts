@@ -30,6 +30,7 @@ describe('resource payments', () => {
           default_sort_order: 'asc',
           external_id: 'external_id',
           funding_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          include_metadata: true,
           max_amount: 0,
           max_created_at: '2019-12-27T18:11:19.117Z',
           max_effective_at: '2019-12-27T18:11:19.117Z',

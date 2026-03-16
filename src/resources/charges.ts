@@ -363,7 +363,16 @@ export namespace ChargeV1 {
     /**
      * The current status of the charge.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     /**
      * Additional details about the current status of the charge.
@@ -417,6 +426,11 @@ export namespace ChargeV1 {
      * payment rail.
      */
     processed_at?: string | null;
+
+    /**
+     * Related payments.
+     */
+    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
   }
 
   export namespace Data {
@@ -489,7 +503,8 @@ export namespace ChargeV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -500,7 +515,16 @@ export namespace ChargeV1 {
       /**
        * The current status of the `charge` or `payout`.
        */
-      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+      status:
+        | 'created'
+        | 'scheduled'
+        | 'failed'
+        | 'cancelled'
+        | 'on_hold'
+        | 'pending'
+        | 'paid'
+        | 'reversed'
+        | 'validating';
 
       /**
        * The status code if applicable.
@@ -592,7 +616,16 @@ export namespace ChargeUnmaskResponse {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     status_details: Shared.StatusDetailsV1;
 
@@ -637,6 +670,11 @@ export namespace ChargeUnmaskResponse {
      * Processed at.
      */
     processed_at?: string | null;
+
+    /**
+     * Related payments.
+     */
+    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
   }
 
   export namespace Data {
@@ -710,7 +748,8 @@ export namespace ChargeUnmaskResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -721,7 +760,16 @@ export namespace ChargeUnmaskResponse {
       /**
        * The current status of the `charge` or `payout`.
        */
-      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+      status:
+        | 'created'
+        | 'scheduled'
+        | 'failed'
+        | 'cancelled'
+        | 'on_hold'
+        | 'pending'
+        | 'paid'
+        | 'reversed'
+        | 'validating';
 
       /**
        * The status code if applicable.
