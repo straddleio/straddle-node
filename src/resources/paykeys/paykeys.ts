@@ -337,7 +337,8 @@ export namespace PaykeySummaryPagedV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -549,7 +550,8 @@ export namespace PaykeyUnmaskedV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -728,7 +730,8 @@ export namespace PaykeyV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -901,7 +904,8 @@ export namespace PaykeyRevealResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review';
+        | 'watchtower_review'
+        | 'validating';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -918,6 +922,11 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
    * Query param: Filter paykeys by related customer ID.
    */
   customer_id?: string;
+
+  /**
+   * Query param: General search term to filter paykeys.
+   */
+  search_text?: string;
 
   /**
    * Query param

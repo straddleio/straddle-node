@@ -165,7 +165,8 @@ export interface StatusDetailsV1 {
     | 'failed_verification'
     | 'require_review'
     | 'blocked_by_system'
-    | 'watchtower_review';
+    | 'watchtower_review'
+    | 'validating';
 
   /**
    * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
