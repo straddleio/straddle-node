@@ -27,7 +27,6 @@ describe('resource paykeys', () => {
           customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           page_number: 0,
           page_size: 0,
-          search_text: 'search_text',
           sort_by: 'institution_name',
           sort_order: 'asc',
           source: ['bank_account'],
