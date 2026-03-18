@@ -36,11 +36,7 @@ describe('resource payouts', () => {
       external_id: 'external_id',
       paykey: 'paykey',
       payment_date: '2019-12-27',
-      config: {
-        auto_hold: true,
-        auto_hold_message: 'auto_hold_message',
-        sandbox_outcome: 'standard',
-      },
+      config: { sandbox_outcome: 'standard' },
       metadata: { foo: 'string' },
       'Correlation-Id': 'Correlation-Id',
       'Idempotency-Key': 'xxxxxxxxxx',
