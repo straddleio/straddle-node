@@ -136,11 +136,6 @@ export namespace CapabilityRequestPagedV1 {
     created_at: string;
 
     /**
-     * Whether this capability request is to enable or disable the capability.
-     */
-    enable: boolean;
-
-    /**
      * The current status of the capability request.
      */
     status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing';
