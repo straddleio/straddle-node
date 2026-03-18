@@ -339,16 +339,7 @@ export namespace PayoutV1 {
     /**
      * The current status of the payout.
      */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
+    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     /**
      * Details about the current status of the payout.
@@ -404,11 +395,6 @@ export namespace PayoutV1 {
     processed_at?: string | null;
 
     /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
-
-    /**
      * The time the payout was last updated.
      */
     updated_at?: string | null;
@@ -419,16 +405,6 @@ export namespace PayoutV1 {
      * Configuration for the payout.
      */
     export interface Config {
-      /**
-       * Defines whether to automatically place this charge on hold after being created.
-       */
-      auto_hold?: boolean | null;
-
-      /**
-       * The reason the payout is being automatically held on creation.
-       */
-      auto_hold_message?: string | null;
-
       /**
        * Payment will simulate processing if not Standard.
        */
@@ -486,9 +462,7 @@ export namespace PayoutV1 {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -499,16 +473,7 @@ export namespace PayoutV1 {
       /**
        * The current status of the `charge` or `payout`.
        */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'validating';
+      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
       /**
        * The status code if applicable.
@@ -587,16 +552,7 @@ export namespace PayoutUnmaskResponse {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
+    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
     status_details: Shared.StatusDetailsV1;
 
@@ -643,11 +599,6 @@ export namespace PayoutUnmaskResponse {
     processed_at?: string | null;
 
     /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
-
-    /**
      * Updated at.
      */
     updated_at?: string | null;
@@ -655,16 +606,6 @@ export namespace PayoutUnmaskResponse {
 
   export namespace Data {
     export interface Config {
-      /**
-       * Defines whether to automatically place this charge on hold after being created.
-       */
-      auto_hold?: boolean | null;
-
-      /**
-       * The reason the payout is being automatically held on creation.
-       */
-      auto_hold_message?: string | null;
-
       /**
        * Payment will simulate processing if not Standard.
        */
@@ -729,9 +670,7 @@ export namespace PayoutUnmaskResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
+        | 'watchtower_review';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -742,16 +681,7 @@ export namespace PayoutUnmaskResponse {
       /**
        * The current status of the `charge` or `payout`.
        */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'validating';
+      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
 
       /**
        * The status code if applicable.
@@ -836,16 +766,6 @@ export interface PayoutCreateParams {
 
 export namespace PayoutCreateParams {
   export interface Config {
-    /**
-     * Defines whether to automatically place this charge on hold after being created.
-     */
-    auto_hold?: boolean | null;
-
-    /**
-     * The reason the payout is being automatically held on creation.
-     */
-    auto_hold_message?: string | null;
-
     /**
      * Payment will simulate processing if not Standard.
      */
