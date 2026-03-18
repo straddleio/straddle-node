@@ -283,9 +283,7 @@ export namespace LinkCreatePaykeyResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -458,9 +456,7 @@ export namespace LinkCreateTanResponse {
         | 'failed_verification'
         | 'require_review'
         | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
+        | 'watchtower_review';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
