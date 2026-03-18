@@ -208,7 +208,8 @@ export namespace FundingEventSummaryItemV1 {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -353,7 +354,8 @@ export namespace FundingEventSummaryPagedV1 {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -491,6 +493,7 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
     | 'blocked_by_system'
     | 'watchtower_review'
     | 'validating'
+    | 'auto_hold'
   > | null;
 
   /**

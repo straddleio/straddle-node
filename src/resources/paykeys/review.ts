@@ -274,7 +274,8 @@ export namespace ReviewGetResponse {
           | 'require_review'
           | 'blocked_by_system'
           | 'watchtower_review'
-          | 'validating';
+          | 'validating'
+          | 'auto_hold';
 
         source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 

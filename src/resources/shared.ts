@@ -166,7 +166,8 @@ export interface StatusDetailsV1 {
     | 'require_review'
     | 'blocked_by_system'
     | 'watchtower_review'
-    | 'validating';
+    | 'validating'
+    | 'auto_hold';
 
   /**
    * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
