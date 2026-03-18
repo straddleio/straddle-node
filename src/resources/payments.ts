@@ -116,7 +116,16 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed';
+    status:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     /**
      * Details about the current status of the `charge` or `payout`.
@@ -231,6 +240,11 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   funding_id?: string;
 
   /**
+   * Query param: Include the metadata for payments in the returned data.
+   */
+  include_metadata?: boolean;
+
+  /**
    * Query param: Search using a maximum `amount` of a `charge` or `payout`.
    */
   max_amount?: number;
@@ -292,7 +306,15 @@ export interface PaymentListParams extends PageNumberSchemaParams {
    * Query param: Search by the status of a `charge` or `payout`.
    */
   payment_status?: Array<
-    'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed'
+    | 'created'
+    | 'scheduled'
+    | 'failed'
+    | 'cancelled'
+    | 'on_hold'
+    | 'pending'
+    | 'paid'
+    | 'reversed'
+    | 'validating'
   >;
 
   /**
@@ -344,6 +366,8 @@ export interface PaymentListParams extends PageNumberSchemaParams {
     | 'require_review'
     | 'blocked_by_system'
     | 'watchtower_review'
+    | 'validating'
+    | 'auto_hold'
   >;
 
   /**
