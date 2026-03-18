@@ -444,6 +444,16 @@ export namespace ChargeV1 {
       balance_check: 'required' | 'enabled' | 'disabled';
 
       /**
+       * Defines whether to automatically place this charge on hold after being created.
+       */
+      auto_hold?: boolean | null;
+
+      /**
+       * The reason the charge is being automatically held on creation.
+       */
+      auto_hold_message?: string | null;
+
+      /**
        * Payment will simulate processing if not Standard.
        */
       sandbox_outcome?:
@@ -504,7 +514,8 @@ export namespace ChargeV1 {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -685,6 +696,16 @@ export namespace ChargeUnmaskResponse {
       balance_check: 'required' | 'enabled' | 'disabled';
 
       /**
+       * Defines whether to automatically place this charge on hold after being created.
+       */
+      auto_hold?: boolean | null;
+
+      /**
+       * The reason the charge is being automatically held on creation.
+       */
+      auto_hold_message?: string | null;
+
+      /**
        * Payment will simulate processing if not Standard.
        */
       sandbox_outcome?:
@@ -749,7 +770,8 @@ export namespace ChargeUnmaskResponse {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -865,6 +887,16 @@ export namespace ChargeCreateParams {
      * Defines whether to check the customer's balance before processing the charge.
      */
     balance_check: 'required' | 'enabled' | 'disabled';
+
+    /**
+     * Defines whether to automatically place this charge on hold after being created.
+     */
+    auto_hold?: boolean | null;
+
+    /**
+     * The reason the charge is being automatically held on creation.
+     */
+    auto_hold_message?: string | null;
 
     /**
      * Payment will simulate processing if not Standard.

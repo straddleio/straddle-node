@@ -372,6 +372,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
     | 'blocked_by_system'
     | 'watchtower_review'
     | 'validating'
+    | 'auto_hold'
   >;
 
   /**

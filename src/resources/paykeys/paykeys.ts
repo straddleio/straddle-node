@@ -338,7 +338,8 @@ export namespace PaykeySummaryPagedV1 {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -551,7 +552,8 @@ export namespace PaykeyUnmaskedV1 {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -731,7 +733,8 @@ export namespace PaykeyV1 {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -905,7 +908,8 @@ export namespace PaykeyRevealResponse {
         | 'require_review'
         | 'blocked_by_system'
         | 'watchtower_review'
-        | 'validating';
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
