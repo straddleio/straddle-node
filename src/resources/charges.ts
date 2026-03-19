@@ -430,7 +430,7 @@ export namespace ChargeV1 {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
   }
 
   export namespace Data {
@@ -685,7 +685,7 @@ export namespace ChargeUnmaskResponse {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
   }
 
   export namespace Data {

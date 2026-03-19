@@ -406,7 +406,7 @@ export namespace PayoutV1 {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
 
     /**
      * The time the payout was last updated.
@@ -645,7 +645,7 @@ export namespace PayoutUnmaskResponse {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'unknown' | 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
 
     /**
      * Updated at.
