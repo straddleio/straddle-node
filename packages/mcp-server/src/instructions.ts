@@ -56,5 +56,7 @@ async function fetchLatestInstructions(stainlessApiKey: string | undefined): Pro
 
   instructions ??= ((await response.json()) as { instructions: string }).instructions;
 
+  instructions +=
+    '\nStraddle is a payment infrastructure platform for account-to-account\n(A2A) payments. It is the coordination layer between software platforms\nand payment rails. Charges pull money (debits), payouts push money\n(credits). A Paykey is a secure token linking a verified identity to\na validated bank account -- all payments reference a Paykey. Customers\nmust pass identity verification before transacting. Always use the\nsandbox environment for testing. Search docs before writing code to\nunderstand required fields and validation rules.\n';
   return instructions;
 }
