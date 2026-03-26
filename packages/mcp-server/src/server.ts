@@ -21,7 +21,7 @@ export const newMcpServer = async (stainlessApiKey: string | undefined) =>
   new McpServer(
     {
       name: 'straddlecom_straddle_api',
-      version: '0.4.0',
+      version: '0.5.0',
     },
     {
       instructions: await getInstructions(stainlessApiKey),
