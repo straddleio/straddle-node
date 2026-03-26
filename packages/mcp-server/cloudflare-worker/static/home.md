@@ -1,6 +1,10 @@
-# Straddle Remote MCP Server
+# Straddle MCP Server
 
-This MCP server is available at:
+Connect your AI tools to the Straddle payments API. This MCP server lets agents search SDK documentation and execute TypeScript code against the Straddle API in a sandboxed environment.
+
+For full SDK documentation, visit [sdk.straddle.com](https://sdk.straddle.com).
+
+This server is available at:
 
 ```
 {{cloudflareWorkerUrl}}
@@ -80,7 +84,7 @@ If you encounter issues connecting:
 
 ## Learn More
 
-For more information about MCP:
-
+- [Straddle SDK Documentation](https://sdk.straddle.com)
+- [Straddle API Documentation](https://docs.straddle.com)
 - [MCP Introduction](https://modelcontextprotocol.io/introduction)
 - [mcp-remote package](https://www.npmjs.com/package/mcp-remote)

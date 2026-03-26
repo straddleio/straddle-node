@@ -14,8 +14,8 @@ type MCPProps = {
  */
 const serverConfig: ServerConfig = {
   orgName: 'Straddle',
-  instructionsUrl: undefined, // Set a url for where you show users how to get an API key
-  logoUrl: undefined, // Set a custom logo url to appear during the OAuth flow
+  instructionsUrl: 'https://docs.straddle.com',
+  logoUrl: undefined,
   clientProperties: [
     {
       key: 'apiKey',
