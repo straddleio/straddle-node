@@ -1,0 +1,105 @@
+import { makeOAuthConsent } from './app';
+import { McpAgent } from 'agents/mcp';
+import OAuthProvider from '@cloudflare/workers-oauth-provider';
+import { McpOptions, initMcpServer, server, ClientOptions } from '@straddlecom/straddle-mcp/server';
+import type { ExportedHandler } from '@cloudflare/workers-types';
+
+type MCPProps = {
+  clientProps: ClientOptions;
+  clientConfig: McpOptions;
+};
+
+/**
+ * The information displayed on the OAuth consent screen
+ */
+const serverConfig: ServerConfig = {
+  orgName: 'Straddle',
+  instructionsUrl: 'https://docs.straddle.com',
+  logoUrl: undefined,
+  clientProperties: [
+    {
+      key: 'apiKey',
+      label: 'API Key',
+      description:
+        'Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.',
+      required: true,
+      default: undefined,
+      placeholder: 'My API Key',
+      type: 'password',
+    },
+    {
+      key: 'environment',
+      label: 'Environment',
+      description: 'The environment to use for the client',
+      required: false,
+      default: 'sandbox',
+      placeholder: 'sandbox',
+      type: 'select',
+      options: [
+        { label: 'sandbox', value: 'sandbox' },
+        { label: 'production', value: 'production' },
+      ],
+    },
+  ],
+};
+
+export class MyMCP extends McpAgent<Env, unknown, MCPProps> {
+  server = server;
+
+  async init() {
+    initMcpServer({
+      server: this.server,
+      clientOptions: this.props.clientProps,
+      mcpOptions: this.props.clientConfig,
+    });
+  }
+}
+
+export type ServerConfig = {
+  /**
+   * The name of the company/project
+   */
+  orgName: string;
+
+  /**
+   * An optional company logo image
+   */
+  logoUrl?: string;
+
+  /**
+   * An optional URL with instructions for users to get an API key
+   */
+  instructionsUrl?: string;
+
+  /**
+   * Properties collected to initialize the client
+   */
+  clientProperties: ClientProperty[];
+};
+
+export type ClientProperty = {
+  key: string;
+  label: string;
+  description?: string;
+  required: boolean;
+  default?: unknown;
+  placeholder?: string;
+  type: 'string' | 'number' | 'password' | 'select';
+  options?: { label: string; value: string }[];
+};
+
+// Export the OAuth handler as the default
+export default new OAuthProvider({
+  apiHandlers: {
+    // @ts-expect-error
+    '/sse': MyMCP.serveSSE('/sse'), // legacy SSE
+    // @ts-expect-error
+    '/mcp': MyMCP.serve('/mcp'), // Streaming HTTP
+  },
+  // Type assertion needed due to Headers type mismatch between Hono and @cloudflare/workers-types
+  // At runtime, Hono's fetch handler is fully compatible with ExportedHandler
+  defaultHandler: makeOAuthConsent(serverConfig) as unknown as ExportedHandler,
+  authorizeEndpoint: '/authorize',
+  tokenEndpoint: '/token',
+  clientRegistrationEndpoint: '/register',
+});

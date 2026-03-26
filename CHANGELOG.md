@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.5.0 (2026-03-26)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/straddleio/straddle-node/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **api:** api update ([cb915f1](https://github.com/straddleio/straddle-node/commit/cb915f138dddc920ff03803773e836f7a2e14ebb))
+
+
+### Bug Fixes
+
+* **mcp:** update agents to fix cross-client data leak vulnerability ([fbff18a](https://github.com/straddleio/straddle-node/commit/fbff18ae327c4da47724a482c27d8fe55c3c9a3f))
+
+
+### Chores
+
+* **mcp:** update KV namespace ID for Straddle Cloudflare account ([2def7ce](https://github.com/straddleio/straddle-node/commit/2def7ce188fe1d3d613b98337ee2eabc3f3edb05))
+
+
+### Documentation
+
+* **mcp:** add Straddle branding to Cloudflare Worker consent screen ([27ae386](https://github.com/straddleio/straddle-node/commit/27ae386103845d6f90dc208830714cf1b06a0ab6))
+
 ## 0.4.0 (2026-03-25)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/straddleio/straddle-node/compare/v0.3.0...v0.4.0)
