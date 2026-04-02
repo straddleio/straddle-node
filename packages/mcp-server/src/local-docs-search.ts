@@ -70,6 +70,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:accounts get \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Embed.Accounts.Get',
+        example:
+          'AccountGetParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar accountV1 = await client.Embed.Accounts.Get(parameters);\n\nConsole.WriteLine(accountV1);',
+      },
       go: {
         method: 'client.Embed.Accounts.Get',
         example:
@@ -123,6 +128,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'accounts update',
         example:
           "straddle embed:accounts update \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --business-profile '{name: name, website: https://example.com}'",
+      },
+      csharp: {
+        method: 'Embed.Accounts.Update',
+        example:
+          'AccountUpdateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    BusinessProfile = new()\n    {\n        Name = "name",\n        Website = "https://example.com",\n        Address = new()\n        {\n            City = "city",\n            Line1 = "line1",\n            PostalCode = "21029-1360",\n            State = "SE",\n            Country = "country",\n            Line2 = "line2",\n        },\n        Description = "description",\n        Industry = new()\n        {\n            Category = "category",\n            Mcc = "mcc",\n            Sector = "sector",\n        },\n        LegalName = "legal_name",\n        Phone = "+46991022",\n        SupportChannels = new()\n        {\n            Email = "dev@stainless.com",\n            Phone = "+46991022",\n            Url = "https://example.com",\n        },\n        TaxID = "210297980",\n        UseCase = "use_case",\n    },\n};\n\nvar accountV1 = await client.Embed.Accounts.Update(parameters);\n\nConsole.WriteLine(accountV1);',
       },
       go: {
         method: 'client.Embed.Accounts.Update',
@@ -180,6 +190,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:accounts create \\\n  --api-key 'My API Key' \\\n  --access-level standard \\\n  --account-type business \\\n  --business-profile '{name: name, website: https://example.com}' \\\n  --organization-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Embed.Accounts.Create',
+        example:
+          'AccountCreateParams parameters = new()\n{\n    AccessLevel = AccessLevel.Standard,\n    AccountType = AccountType.Business,\n    BusinessProfile = new()\n    {\n        Name = "name",\n        Website = "https://example.com",\n        Address = new()\n        {\n            City = "city",\n            Line1 = "line1",\n            PostalCode = "21029-1360",\n            State = "SE",\n            Country = "country",\n            Line2 = "line2",\n        },\n        Description = "description",\n        Industry = new()\n        {\n            Category = "category",\n            Mcc = "mcc",\n            Sector = "sector",\n        },\n        LegalName = "legal_name",\n        Phone = "+46991022",\n        SupportChannels = new()\n        {\n            Email = "dev@stainless.com",\n            Phone = "+46991022",\n            Url = "https://example.com",\n        },\n        TaxID = "210297980",\n        UseCase = "use_case",\n    },\n    OrganizationID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n};\n\nvar accountV1 = await client.Embed.Accounts.Create(parameters);\n\nConsole.WriteLine(accountV1);',
+      },
       go: {
         method: 'client.Embed.Accounts.New',
         example:
@@ -235,6 +250,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'accounts list',
         example: "straddle embed:accounts list \\\n  --api-key 'My API Key'",
       },
+      csharp: {
+        method: 'Embed.Accounts.List',
+        example:
+          'AccountListParams parameters = new();\n\nvar page = await client.Embed.Accounts.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.Embed.Accounts.List',
         example:
@@ -287,6 +307,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:accounts onboard \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --terms-of-service \"{accepted_date: '2019-12-27T18:11:19.117Z', agreement_type: embedded, agreement_url: agreement_url}\"",
       },
+      csharp: {
+        method: 'Embed.Accounts.Onboard',
+        example:
+          'AccountOnboardParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    TermsOfService = new()\n    {\n        AcceptedDate = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),\n        AgreementType = AgreementType.Embedded,\n        AgreementUrl = "agreement_url",\n        AcceptedIP = "accepted_ip",\n        AcceptedUserAgent = "accepted_user_agent",\n    },\n};\n\nvar accountV1 = await client.Embed.Accounts.Onboard(parameters);\n\nConsole.WriteLine(accountV1);',
+      },
       go: {
         method: 'client.Embed.Accounts.Onboard',
         example:
@@ -338,6 +363,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'accounts simulate',
         example:
           "straddle embed:accounts simulate \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Embed.Accounts.Simulate',
+        example:
+          'AccountSimulateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar accountV1 = await client.Embed.Accounts.Simulate(parameters);\n\nConsole.WriteLine(accountV1);',
       },
       go: {
         method: 'client.Embed.Accounts.Simulate',
@@ -396,6 +426,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:accounts:capability-requests create \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Embed.Accounts.CapabilityRequests.Create',
+        example:
+          'CapabilityRequestCreateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar capabilityRequestPagedV1 = await client.Embed.Accounts.CapabilityRequests.Create(parameters);\n\nConsole.WriteLine(capabilityRequestPagedV1);',
+      },
       go: {
         method: 'client.Embed.Accounts.CapabilityRequests.New',
         example:
@@ -453,6 +488,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:accounts:capability-requests list \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Embed.Accounts.CapabilityRequests.List',
+        example:
+          'CapabilityRequestListParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar page = await client.Embed.Accounts.CapabilityRequests.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.Embed.Accounts.CapabilityRequests.List',
         example:
@@ -508,6 +548,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'linked_bank_accounts create',
         example:
           "straddle embed:linked-bank-accounts create \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --bank-account '{account_holder: account_holder, account_number: account_number, routing_number: xxxxxxxxx}'",
+      },
+      csharp: {
+        method: 'Embed.LinkedBankAccounts.Create',
+        example:
+          'LinkedBankAccountCreateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    BankAccount = new()\n    {\n        AccountHolder = "account_holder",\n        AccountNumber = "account_number",\n        RoutingNumber = "xxxxxxxxx",\n    },\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Create(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
       },
       go: {
         method: 'client.Embed.LinkedBankAccounts.New',
@@ -565,6 +610,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'linked_bank_accounts list',
         example: "straddle embed:linked-bank-accounts list \\\n  --api-key 'My API Key'",
       },
+      csharp: {
+        method: 'Embed.LinkedBankAccounts.List',
+        example:
+          'LinkedBankAccountListParams parameters = new();\n\nvar page = await client.Embed.LinkedBankAccounts.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.Embed.LinkedBankAccounts.List',
         example:
@@ -618,6 +668,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:linked-bank-accounts update \\\n  --api-key 'My API Key' \\\n  --linked-bank-account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --bank-account '{account_holder: account_holder, account_number: account_number, routing_number: xxxxxxxxx}'",
       },
+      csharp: {
+        method: 'Embed.LinkedBankAccounts.Update',
+        example:
+          'LinkedBankAccountUpdateParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    BankAccount = new()\n    {\n        AccountHolder = "account_holder",\n        AccountNumber = "account_number",\n        RoutingNumber = "xxxxxxxxx",\n    },\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Update(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
+      },
       go: {
         method: 'client.Embed.LinkedBankAccounts.Update',
         example:
@@ -664,6 +719,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:linked-bank-accounts get \\\n  --api-key 'My API Key' \\\n  --linked-bank-account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Embed.LinkedBankAccounts.Get',
+        example:
+          'LinkedBankAccountGetParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Get(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
+      },
       go: {
         method: 'client.Embed.LinkedBankAccounts.Get',
         example:
@@ -709,6 +769,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'linked_bank_accounts unmask',
         example:
           "straddle embed:linked-bank-accounts unmask \\\n  --api-key 'My API Key' \\\n  --linked-bank-account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Embed.LinkedBankAccounts.Unmask',
+        example:
+          'LinkedBankAccountUnmaskParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar linkedBankAccountUnmaskV1 = await client.Embed.LinkedBankAccounts.Unmask(parameters);\n\nConsole.WriteLine(linkedBankAccountUnmaskV1);',
       },
       go: {
         method: 'client.Embed.LinkedBankAccounts.Unmask',
@@ -761,6 +826,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:linked-bank-accounts cancel \\\n  --api-key 'My API Key' \\\n  --linked-bank-account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Embed.LinkedBankAccounts.Cancel',
+        example:
+          'LinkedBankAccountCancelParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Cancel(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
+      },
       go: {
         method: 'client.Embed.LinkedBankAccounts.Cancel',
         example:
@@ -812,6 +882,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       cli: {
         method: 'organizations create',
         example: "straddle embed:organizations create \\\n  --api-key 'My API Key' \\\n  --name name",
+      },
+      csharp: {
+        method: 'Embed.Organizations.Create',
+        example:
+          'OrganizationCreateParams parameters = new() { Name = "name" };\n\nvar organizationV1 = await client.Embed.Organizations.Create(parameters);\n\nConsole.WriteLine(organizationV1);',
       },
       go: {
         method: 'client.Embed.Organizations.New',
@@ -867,6 +942,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'organizations list',
         example: "straddle embed:organizations list \\\n  --api-key 'My API Key'",
       },
+      csharp: {
+        method: 'Embed.Organizations.List',
+        example:
+          'OrganizationListParams parameters = new();\n\nvar page = await client.Embed.Organizations.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.Embed.Organizations.List',
         example:
@@ -912,6 +992,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'organizations get',
         example:
           "straddle embed:organizations get \\\n  --api-key 'My API Key' \\\n  --organization-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Embed.Organizations.Get',
+        example:
+          'OrganizationGetParams parameters = new()\n{\n    OrganizationID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar organizationV1 = await client.Embed.Organizations.Get(parameters);\n\nConsole.WriteLine(organizationV1);',
       },
       go: {
         method: 'client.Embed.Organizations.Get',
@@ -973,6 +1058,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:representatives create \\\n  --api-key 'My API Key' \\\n  --account-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --dob \"'1980-01-01'\" \\\n  --email ron.swanson@pawnee.com \\\n  --first-name first_name \\\n  --last-name last_name \\\n  --mobile-number +12128675309 \\\n  --relationship '{control: true, owner: true, primary: true}' \\\n  --ssn-last4 1234",
       },
+      csharp: {
+        method: 'Embed.Representatives.Create',
+        example:
+          'RepresentativeCreateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Dob = "1980-01-01",\n    Email = "ron.swanson@pawnee.com",\n    FirstName = "first_name",\n    LastName = "last_name",\n    MobileNumber = "+12128675309",\n    Relationship = new()\n    {\n        Control = true,\n        Owner = true,\n        Primary = true,\n        PercentOwnership = 0,\n        Title = "title",\n    },\n    SsnLast4 = "1234",\n};\n\nvar representative = await client.Embed.Representatives.Create(parameters);\n\nConsole.WriteLine(representative);',
+      },
       go: {
         method: 'client.Embed.Representatives.New',
         example:
@@ -1028,6 +1118,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       cli: {
         method: 'representatives list',
         example: "straddle embed:representatives list \\\n  --api-key 'My API Key'",
+      },
+      csharp: {
+        method: 'Embed.Representatives.List',
+        example:
+          'RepresentativeListParams parameters = new();\n\nvar page = await client.Embed.Representatives.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
       go: {
         method: 'client.Embed.Representatives.List',
@@ -1089,6 +1184,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:representatives update \\\n  --api-key 'My API Key' \\\n  --representative-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --dob \"'1980-01-01'\" \\\n  --email ron.swanson@pawnee.com \\\n  --first-name Ron \\\n  --last-name Swanson \\\n  --mobile-number +12128675309 \\\n  --relationship '{control: true, owner: true, primary: true}' \\\n  --ssn-last4 1234",
       },
+      csharp: {
+        method: 'Embed.Representatives.Update',
+        example:
+          'RepresentativeUpdateParams parameters = new()\n{\n    RepresentativeID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Dob = "1980-01-01",\n    Email = "ron.swanson@pawnee.com",\n    FirstName = "Ron",\n    LastName = "Swanson",\n    MobileNumber = "+12128675309",\n    Relationship = new()\n    {\n        Control = true,\n        Owner = true,\n        Primary = true,\n        PercentOwnership = 0,\n        Title = "title",\n    },\n    SsnLast4 = "1234",\n};\n\nvar representative = await client.Embed.Representatives.Update(parameters);\n\nConsole.WriteLine(representative);',
+      },
       go: {
         method: 'client.Embed.Representatives.Update',
         example:
@@ -1135,6 +1235,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle embed:representatives get \\\n  --api-key 'My API Key' \\\n  --representative-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Embed.Representatives.Get',
+        example:
+          'RepresentativeGetParams parameters = new()\n{\n    RepresentativeID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar representative = await client.Embed.Representatives.Get(parameters);\n\nConsole.WriteLine(representative);',
+      },
       go: {
         method: 'client.Embed.Representatives.Get',
         example:
@@ -1180,6 +1285,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'representatives unmask',
         example:
           "straddle embed:representatives unmask \\\n  --api-key 'My API Key' \\\n  --representative-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Embed.Representatives.Unmask',
+        example:
+          'RepresentativeUnmaskParams parameters = new()\n{\n    RepresentativeID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar representative = await client.Embed.Representatives.Unmask(parameters);\n\nConsole.WriteLine(representative);',
       },
       go: {
         method: 'client.Embed.Representatives.Unmask',
@@ -1233,6 +1343,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'bridge initialize',
         example:
           "straddle bridge initialize \\\n  --api-key 'My API Key' \\\n  --customer-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Bridge.Initialize',
+        example:
+          'BridgeInitializeParams parameters = new()\n{\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar bridgeTokenV1 = await client.Bridge.Initialize(parameters);\n\nConsole.WriteLine(bridgeTokenV1);',
       },
       go: {
         method: 'client.Bridge.Initialize',
@@ -1292,6 +1407,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle bridge:link bank-account \\\n  --api-key 'My API Key' \\\n  --account-number account_number \\\n  --account-type checking \\\n  --customer-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --routing-number xxxxxxxxx",
       },
+      csharp: {
+        method: 'Bridge.Link.BankAccount',
+        example:
+          'LinkBankAccountParams parameters = new()\n{\n    AccountNumber = "account_number",\n    AccountType = AccountType.Checking,\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    RoutingNumber = "xxxxxxxxx",\n};\n\nvar paykeyV1 = await client.Bridge.Link.BankAccount(parameters);\n\nConsole.WriteLine(paykeyV1);',
+      },
       go: {
         method: 'client.Bridge.Link.BankAccount',
         example:
@@ -1347,6 +1467,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'link plaid',
         example:
           "straddle bridge:link plaid \\\n  --api-key 'My API Key' \\\n  --customer-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --plaid-token plaid_token",
+      },
+      csharp: {
+        method: 'Bridge.Link.Plaid',
+        example:
+          'LinkPlaidParams parameters = new()\n{\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    PlaidToken = "plaid_token",\n};\n\nvar paykeyV1 = await client.Bridge.Link.Plaid(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
       go: {
         method: 'client.Bridge.Link.Plaid',
@@ -1405,6 +1530,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle bridge:link create-tan \\\n  --api-key 'My API Key' \\\n  --account-type checking \\\n  --customer-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --routing-number routing_number \\\n  --tan tan",
       },
+      csharp: {
+        method: 'Bridge.Link.CreateTan',
+        example:
+          'LinkCreateTanParams parameters = new()\n{\n    AccountType = AccountType.Checking,\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    RoutingNumber = "routing_number",\n    Tan = "tan",\n};\n\nvar response = await client.Bridge.Link.CreateTan(parameters);\n\nConsole.WriteLine(response);',
+      },
       go: {
         method: 'client.Bridge.Link.NewTan',
         example:
@@ -1461,6 +1591,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle bridge:link create-paykey \\\n  --api-key 'My API Key' \\\n  --customer-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --quiltt-token quiltt_token",
       },
+      csharp: {
+        method: 'Bridge.Link.CreatePaykey',
+        example:
+          'LinkCreatePaykeyParams parameters = new()\n{\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    QuilttToken = "quiltt_token",\n};\n\nvar response = await client.Bridge.Link.CreatePaykey(parameters);\n\nConsole.WriteLine(response);',
+      },
       go: {
         method: 'client.Bridge.Link.NewPaykey',
         example:
@@ -1511,6 +1646,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'customers get',
         example:
           "straddle customers get \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Customers.Get',
+        example:
+          'CustomerGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerV1 = await client.Customers.Get(parameters);\n\nConsole.WriteLine(customerV1);',
       },
       go: {
         method: 'client.Customers.Get',
@@ -1573,6 +1713,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle customers update \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --device '{ip_address: 192.168.1.1}' \\\n  --email dev@stainless.com \\\n  --name name \\\n  --phone +46991022 \\\n  --status pending",
       },
+      csharp: {
+        method: 'Customers.Update',
+        example:
+          'CustomerUpdateParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Device = new("192.168.1.1"),\n    Email = "dev@stainless.com",\n    Name = "name",\n    Phone = "+46991022",\n    Status = Status.Pending,\n};\n\nvar customerV1 = await client.Customers.Update(parameters);\n\nConsole.WriteLine(customerV1);',
+      },
       go: {
         method: 'client.Customers.Update',
         example:
@@ -1624,6 +1769,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'customers delete',
         example:
           "straddle customers delete \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Customers.Delete',
+        example:
+          'CustomerDeleteParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerV1 = await client.Customers.Delete(parameters);\n\nConsole.WriteLine(customerV1);',
       },
       go: {
         method: 'client.Customers.Delete',
@@ -1686,6 +1836,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'customers list',
         example: "straddle customers list \\\n  --api-key 'My API Key'",
       },
+      csharp: {
+        method: 'Customers.List',
+        example:
+          'CustomerListParams parameters = new();\n\nvar page = await client.Customers.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.Customers.List',
         example:
@@ -1747,6 +1902,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle customers create \\\n  --api-key 'My API Key' \\\n  --device '{ip_address: 192.168.1.1}' \\\n  --email ron.swanson@pawnee.com \\\n  --name 'Ron Swanson' \\\n  --phone +12128675309 \\\n  --type individual",
       },
+      csharp: {
+        method: 'Customers.Create',
+        example:
+          'CustomerCreateParams parameters = new()\n{\n    Device = new("192.168.1.1"),\n    Email = "ron.swanson@pawnee.com",\n    Name = "Ron Swanson",\n    Phone = "+12128675309",\n    Type = Type.Individual,\n};\n\nvar customerV1 = await client.Customers.Create(parameters);\n\nConsole.WriteLine(customerV1);',
+      },
       go: {
         method: 'client.Customers.New',
         example:
@@ -1798,6 +1958,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle customers unmasked \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Customers.Unmasked',
+        example:
+          'CustomerUnmaskedParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerUnmaskedV1 = await client.Customers.Unmasked(parameters);\n\nConsole.WriteLine(customerUnmaskedV1);',
+      },
       go: {
         method: 'client.Customers.Unmasked',
         example:
@@ -1848,6 +2013,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'review get',
         example:
           "straddle customers:review get \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Customers.Review.Get',
+        example:
+          'ReviewGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerReviewV1 = await client.Customers.Review.Get(parameters);\n\nConsole.WriteLine(customerReviewV1);',
       },
       go: {
         method: 'client.Customers.Review.Get',
@@ -1902,6 +2072,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle customers:review decision \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --status verified",
       },
+      csharp: {
+        method: 'Customers.Review.Decision',
+        example:
+          'ReviewDecisionParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Status = Status.Verified,\n};\n\nvar customerV1 = await client.Customers.Review.Decision(parameters);\n\nConsole.WriteLine(customerV1);',
+      },
       go: {
         method: 'client.Customers.Review.Decision',
         example:
@@ -1954,6 +2129,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle customers:review refresh-review \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Customers.Review.RefreshReview',
+        example:
+          'ReviewRefreshReviewParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerV1 = await client.Customers.Review.RefreshReview(parameters);\n\nConsole.WriteLine(customerV1);',
+      },
       go: {
         method: 'client.Customers.Review.RefreshReview',
         example:
@@ -2005,6 +2185,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle paykeys get \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Paykeys.Get',
+        example:
+          'PaykeyGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.Get(parameters);\n\nConsole.WriteLine(paykeyV1);',
+      },
       go: {
         method: 'client.Paykeys.Get',
         example:
@@ -2055,6 +2240,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'paykeys unmasked',
         example:
           "straddle paykeys unmasked \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Paykeys.Unmasked',
+        example:
+          'PaykeyUnmaskedParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyUnmaskedV1 = await client.Paykeys.Unmasked(parameters);\n\nConsole.WriteLine(paykeyUnmaskedV1);',
       },
       go: {
         method: 'client.Paykeys.Unmasked',
@@ -2114,6 +2304,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'paykeys list',
         example: "straddle paykeys list \\\n  --api-key 'My API Key'",
       },
+      csharp: {
+        method: 'Paykeys.List',
+        example:
+          'PaykeyListParams parameters = new();\n\nvar page = await client.Paykeys.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.Paykeys.List',
         example:
@@ -2164,6 +2359,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'paykeys reveal',
         example:
           "straddle paykeys reveal \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Paykeys.Reveal',
+        example:
+          'PaykeyRevealParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar response = await client.Paykeys.Reveal(parameters);\n\nConsole.WriteLine(response);',
       },
       go: {
         method: 'client.Paykeys.Reveal',
@@ -2217,6 +2417,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle paykeys cancel \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Paykeys.Cancel',
+        example:
+          'PaykeyCancelParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.Cancel(parameters);\n\nConsole.WriteLine(paykeyV1);',
+      },
       go: {
         method: 'client.Paykeys.Cancel',
         example:
@@ -2268,6 +2473,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'paykeys update_balance',
         example:
           "straddle paykeys update-balance \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Paykeys.UpdateBalance',
+        example:
+          'PaykeyUpdateBalanceParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.UpdateBalance(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
       go: {
         method: 'client.Paykeys.UpdateBalance',
@@ -2321,6 +2531,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle paykeys:review decision \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --status active",
       },
+      csharp: {
+        method: 'Paykeys.Review.Decision',
+        example:
+          'ReviewDecisionParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Status = Status.Active,\n};\n\nvar paykeyV1 = await client.Paykeys.Review.Decision(parameters);\n\nConsole.WriteLine(paykeyV1);',
+      },
       go: {
         method: 'client.Paykeys.Review.Decision',
         example:
@@ -2370,6 +2585,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'review get',
         example:
           "straddle paykeys:review get \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Paykeys.Review.Get',
+        example:
+          'ReviewGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar review = await client.Paykeys.Review.Get(parameters);\n\nConsole.WriteLine(review);',
       },
       go: {
         method: 'client.Paykeys.Review.Get',
@@ -2423,6 +2643,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle paykeys:review refresh-review \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Paykeys.Review.RefreshReview',
+        example:
+          'ReviewRefreshReviewParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.Review.RefreshReview(parameters);\n\nConsole.WriteLine(paykeyV1);',
+      },
       go: {
         method: 'client.Paykeys.Review.RefreshReview',
         example:
@@ -2473,6 +2698,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'charges get',
         example:
           "straddle charges get \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Charges.Get',
+        example:
+          'ChargeGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Get(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
       go: {
         method: 'client.Charges.Get',
@@ -2529,6 +2759,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'charges update',
         example:
           "straddle charges update \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --amount 10000 \\\n  --description 'Monthly subscription fee' \\\n  --payment-date \"'2019-12-27'\"",
+      },
+      csharp: {
+        method: 'Charges.Update',
+        example:
+          'ChargeUpdateParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Amount = 10000,\n    Description = "Monthly subscription fee",\n    PaymentDate = "2019-12-27",\n};\n\nvar chargeV1 = await client.Charges.Update(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
       go: {
         method: 'client.Charges.Update',
@@ -2590,6 +2825,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle charges create \\\n  --api-key 'My API Key' \\\n  --amount 10000 \\\n  --config '{balance_check: required}' \\\n  --consent-type internet \\\n  --currency currency \\\n  --description 'Monthly subscription fee' \\\n  --device '{ip_address: 192.168.1.1}' \\\n  --external-id external_id \\\n  --paykey paykey \\\n  --payment-date \"'2019-12-27'\"",
       },
+      csharp: {
+        method: 'Charges.Create',
+        example:
+          'ChargeCreateParams parameters = new()\n{\n    Amount = 10000,\n    Config = new()\n    {\n        BalanceCheck = BalanceCheck.Required,\n        AutoHold = true,\n        AutoHoldMessage = "auto_hold_message",\n        SandboxOutcome = SandboxOutcome.Standard,\n    },\n    ConsentType = ConsentType.Internet,\n    Currency = "currency",\n    Description = "Monthly subscription fee",\n    Device = new("192.168.1.1"),\n    ExternalID = "external_id",\n    Paykey = "paykey",\n    PaymentDate = "2019-12-27",\n};\n\nvar chargeV1 = await client.Charges.Create(parameters);\n\nConsole.WriteLine(chargeV1);',
+      },
       go: {
         method: 'client.Charges.New',
         example:
@@ -2643,6 +2883,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle charges hold \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Charges.Hold',
+        example:
+          'ChargeHoldParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Hold(parameters);\n\nConsole.WriteLine(chargeV1);',
+      },
       go: {
         method: 'client.Charges.Hold',
         example:
@@ -2694,6 +2939,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'charges release',
         example:
           "straddle charges release \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Charges.Release',
+        example:
+          'ChargeReleaseParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Release(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
       go: {
         method: 'client.Charges.Release',
@@ -2748,6 +2998,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle charges cancel \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Charges.Cancel',
+        example:
+          'ChargeCancelParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Cancel(parameters);\n\nConsole.WriteLine(chargeV1);',
+      },
       go: {
         method: 'client.Charges.Cancel',
         example:
@@ -2797,6 +3052,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'charges unmask',
         example:
           "straddle charges unmask \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Charges.Unmask',
+        example:
+          'ChargeUnmaskParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar response = await client.Charges.Unmask(parameters);\n\nConsole.WriteLine(response);',
       },
       go: {
         method: 'client.Charges.Unmask',
@@ -2861,6 +3121,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'funding_events list',
         example: "straddle funding-events list \\\n  --api-key 'My API Key'",
       },
+      csharp: {
+        method: 'FundingEvents.List',
+        example:
+          'FundingEventListParams parameters = new();\n\nvar page = await client.FundingEvents.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.FundingEvents.List',
         example:
@@ -2911,6 +3176,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'funding_events get',
         example:
           "straddle funding-events get \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'FundingEvents.Get',
+        example:
+          'FundingEventGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar fundingEventSummaryItemV1 = await client.FundingEvents.Get(parameters);\n\nConsole.WriteLine(fundingEventSummaryItemV1);',
       },
       go: {
         method: 'client.FundingEvents.Get',
@@ -2988,6 +3258,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'payments list',
         example: "straddle payments list \\\n  --api-key 'My API Key'",
       },
+      csharp: {
+        method: 'Payments.List',
+        example:
+          'PaymentListParams parameters = new();\n\nvar page = await client.Payments.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
+      },
       go: {
         method: 'client.Payments.List',
         example:
@@ -3038,6 +3313,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'payouts get',
         example:
           "straddle payouts get \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      csharp: {
+        method: 'Payouts.Get',
+        example:
+          'PayoutGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar payoutV1 = await client.Payouts.Get(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
       go: {
         method: 'client.Payouts.Get',
@@ -3094,6 +3374,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'payouts update',
         example:
           "straddle payouts update \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --amount 10000 \\\n  --description description \\\n  --payment-date \"'2019-12-27'\"",
+      },
+      csharp: {
+        method: 'Payouts.Update',
+        example:
+          'PayoutUpdateParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Amount = 10000,\n    Description = "description",\n    PaymentDate = "2019-12-27",\n};\n\nvar payoutV1 = await client.Payouts.Update(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
       go: {
         method: 'client.Payouts.Update',
@@ -3154,6 +3439,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle payouts create \\\n  --api-key 'My API Key' \\\n  --amount 10000 \\\n  --currency currency \\\n  --description 'Vendor invoice payment' \\\n  --device '{ip_address: 192.168.1.1}' \\\n  --external-id external_id \\\n  --paykey paykey \\\n  --payment-date \"'2019-12-27'\"",
       },
+      csharp: {
+        method: 'Payouts.Create',
+        example:
+          'PayoutCreateParams parameters = new()\n{\n    Amount = 10000,\n    Currency = "currency",\n    Description = "Vendor invoice payment",\n    Device = new("192.168.1.1"),\n    ExternalID = "external_id",\n    Paykey = "paykey",\n    PaymentDate = "2019-12-27",\n};\n\nvar payoutV1 = await client.Payouts.Create(parameters);\n\nConsole.WriteLine(payoutV1);',
+      },
       go: {
         method: 'client.Payouts.New',
         example:
@@ -3207,6 +3497,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle payouts hold \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --reason reason",
       },
+      csharp: {
+        method: 'Payouts.Hold',
+        example:
+          'PayoutHoldParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Reason = "reason",\n};\n\nvar payoutV1 = await client.Payouts.Hold(parameters);\n\nConsole.WriteLine(payoutV1);',
+      },
       go: {
         method: 'client.Payouts.Hold',
         example:
@@ -3258,6 +3553,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'payouts release',
         example:
           "straddle payouts release \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --reason reason",
+      },
+      csharp: {
+        method: 'Payouts.Release',
+        example:
+          'PayoutReleaseParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Reason = "reason",\n};\n\nvar payoutV1 = await client.Payouts.Release(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
       go: {
         method: 'client.Payouts.Release',
@@ -3312,6 +3612,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle payouts cancel \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --reason reason",
       },
+      csharp: {
+        method: 'Payouts.Cancel',
+        example:
+          'PayoutCancelParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Reason = "reason",\n};\n\nvar payoutV1 = await client.Payouts.Cancel(parameters);\n\nConsole.WriteLine(payoutV1);',
+      },
       go: {
         method: 'client.Payouts.Cancel',
         example:
@@ -3362,6 +3667,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "straddle payouts unmask \\\n  --api-key 'My API Key' \\\n  --id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
       },
+      csharp: {
+        method: 'Payouts.Unmask',
+        example:
+          'PayoutUnmaskParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar response = await client.Payouts.Unmask(parameters);\n\nConsole.WriteLine(response);',
+      },
       go: {
         method: 'client.Payouts.Unmask',
         example:
@@ -3405,6 +3715,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       cli: {
         method: 'reports create_total_customers_by_status',
         example: "straddle reports create-total-customers-by-status \\\n  --api-key 'My API Key'",
+      },
+      csharp: {
+        method: 'Reports.CreateTotalCustomersByStatus',
+        example:
+          'ReportCreateTotalCustomersByStatusParams parameters = new();\n\nvar response = await client.Reports.CreateTotalCustomersByStatus(parameters);\n\nConsole.WriteLine(response);',
       },
       go: {
         method: 'client.Reports.NewTotalCustomersByStatus',
@@ -3454,6 +3769,11 @@ const EMBEDDED_READMES: { language: string; content: string }[] = [
     language: 'ruby',
     content:
       '# Straddle Ruby API library\n\nThe Straddle Ruby library provides convenient access to the Straddle REST API from any Ruby 3.2.0+ application. It ships with comprehensive types & docstrings in Yard, RBS, and RBI – [see below](https://github.com/straddleio/straddle-ruby#Sorbet) for usage with Sorbet. The standard library\'s `net/http` is used as the HTTP transport, with connection pooling via the `connection_pool` gem.\n\n\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Straddle MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40straddlecom%2Fstraddle-mcp&config=eyJuYW1lIjoiQHN0cmFkZGxlY29tL3N0cmFkZGxlLW1jcCIsInRyYW5zcG9ydCI6Imh0dHAiLCJ1cmwiOiJodHRwczovL3N0cmFkZGxlLnN0bG1jcC5jb20iLCJoZWFkZXJzIjp7Ingtc3RyYWRkbGUtYXBpLWtleSI6Ik15IEFQSSBLZXkifX0)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40straddlecom%2Fstraddle-mcp%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fstraddle.stlmcp.com%22%2C%22headers%22%3A%7B%22x-straddle-api-key%22%3A%22My%20API%20Key%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Documentation\n\nDocumentation for releases of this gem can be found [on RubyDoc](https://gemdocs.org/gems/straddle).\n\nThe REST API documentation can be found on [docs.straddle.com](https://docs.straddle.com).\n\n## Installation\n\nTo use this gem, install via Bundler by adding the following to your application\'s `Gemfile`:\n\n<!-- x-release-please-start-version -->\n\n```ruby\ngem "straddle", "~> 0.0.1"\n```\n\n<!-- x-release-please-end -->\n\n## Usage\n\n```ruby\nrequire "bundler/setup"\nrequire "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: ENV["STRADDLE_API_KEY"], # This is the default and can be omitted\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.create(\n  amount: 10000,\n  config: {balance_check: "required"},\n  consent_type: "internet",\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\n\nputs(charge_v1.data)\n```\n\n\n\n### Pagination\n\nList methods in the Straddle API are paginated.\n\nThis library provides auto-paginating iterators with each list response, so you do not have to request successive pages manually:\n\n```ruby\npage = straddle.payments.list\n\n# Fetch single item from page.\npayment = page.data[0]\nputs(payment.id)\n\n# Automatically fetches more pages as needed.\npage.auto_paging_each do |payment|\n  puts(payment.id)\nend\n```\n\nAlternatively, you can use the `#next_page?` and `#next_page` methods for more granular control working with pages.\n\n```ruby\nif page.next_page?\n  new_page = page.next_page\n  puts(new_page.data[0].id)\nend\n```\n\n\n\n### Handling errors\n\nWhen the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `Straddle::Errors::APIError` will be thrown:\n\n```ruby\nbegin\n  charge = straddle.charges.create(\n    amount: 10000,\n    config: {balance_check: "required"},\n    consent_type: "internet",\n    currency: "currency",\n    description: "Monthly subscription fee",\n    device: {ip_address: "192.168.1.1"},\n    external_id: "external_id",\n    paykey: "paykey",\n    payment_date: "2019-12-27"\n  )\nrescue Straddle::Errors::APIConnectionError => e\n  puts("The server could not be reached")\n  puts(e.cause)  # an underlying Exception, likely raised within `net/http`\nrescue Straddle::Errors::RateLimitError => e\n  puts("A 429 status code was received; we should back off a bit.")\nrescue Straddle::Errors::APIStatusError => e\n  puts("Another non-200-range status code was received")\n  puts(e.status)\nend\n```\n\nError codes are as follows:\n\n| Cause            | Error Type                 |\n| ---------------- | -------------------------- |\n| HTTP 400         | `BadRequestError`          |\n| HTTP 401         | `AuthenticationError`      |\n| HTTP 403         | `PermissionDeniedError`    |\n| HTTP 404         | `NotFoundError`            |\n| HTTP 409         | `ConflictError`            |\n| HTTP 422         | `UnprocessableEntityError` |\n| HTTP 429         | `RateLimitError`           |\n| HTTP >= 500      | `InternalServerError`      |\n| Other HTTP error | `APIStatusError`           |\n| Timeout          | `APITimeoutError`          |\n| Network error    | `APIConnectionError`       |\n\n### Retries\n\nCertain errors will be automatically retried 2 times by default, with a short exponential backoff.\n\nConnection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, >=500 Internal errors, and timeouts will all be retried by default.\n\nYou can use the `max_retries` option to configure or disable this:\n\n```ruby\n# Configure the default for all requests:\nstraddle = Straddle::Client.new(\n  max_retries: 0 # default is 2\n)\n\n# Or, configure per-request:\nstraddle.charges.create(\n  amount: 10000,\n  config: {balance_check: "required"},\n  consent_type: "internet",\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27",\n  request_options: {max_retries: 5}\n)\n```\n\n### Timeouts\n\nBy default, requests will time out after 60 seconds. You can use the timeout option to configure or disable this:\n\n```ruby\n# Configure the default for all requests:\nstraddle = Straddle::Client.new(\n  timeout: nil # default is 60\n)\n\n# Or, configure per-request:\nstraddle.charges.create(\n  amount: 10000,\n  config: {balance_check: "required"},\n  consent_type: "internet",\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27",\n  request_options: {timeout: 5}\n)\n```\n\nOn timeout, `Straddle::Errors::APITimeoutError` is raised.\n\nNote that requests that time out are retried by default.\n\n## Advanced concepts\n\n### BaseModel\n\nAll parameter and response objects inherit from `Straddle::Internal::Type::BaseModel`, which provides several conveniences, including:\n\n1. All fields, including unknown ones, are accessible with `obj[:prop]` syntax, and can be destructured with `obj => {prop: prop}` or pattern-matching syntax.\n\n2. Structural equivalence for equality; if two API calls return the same values, comparing the responses with == will return true.\n\n3. Both instances and the classes themselves can be pretty-printed.\n\n4. Helpers such as `#to_h`, `#deep_to_h`, `#to_json`, and `#to_yaml`.\n\n### Making custom or undocumented requests\n\n#### Undocumented properties\n\nYou can send undocumented parameters to any endpoint, and read undocumented response properties, like so:\n\nNote: the `extra_` parameters of the same name overrides the documented parameters.\n\n```ruby\ncharge_v1 =\n  straddle.charges.create(\n    amount: 10000,\n    config: {balance_check: "required"},\n    consent_type: "internet",\n    currency: "currency",\n    description: "Monthly subscription fee",\n    device: {ip_address: "192.168.1.1"},\n    external_id: "external_id",\n    paykey: "paykey",\n    payment_date: "2019-12-27",\n    request_options: {\n      extra_query: {my_query_parameter: value},\n      extra_body: {my_body_parameter: value},\n      extra_headers: {"my-header": value}\n    }\n  )\n\nputs(charge_v1[:my_undocumented_property])\n```\n\n#### Undocumented request params\n\nIf you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` under the `request_options:` parameter when making a request, as seen in the examples above.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints while retaining the benefit of auth, retries, and so on, you can make requests using `client.request`, like so:\n\n```ruby\nresponse = client.request(\n  method: :post,\n  path: \'/undocumented/endpoint\',\n  query: {"dog": "woof"},\n  headers: {"useful-header": "interesting-value"},\n  body: {"hello": "world"}\n)\n```\n\n### Concurrency & connection pooling\n\nThe `Straddle::Client` instances are threadsafe, but are only are fork-safe when there are no in-flight HTTP requests.\n\nEach instance of `Straddle::Client` has its own HTTP connection pool with a default size of 99. As such, we recommend instantiating the client once per application in most settings.\n\nWhen all available connections from the pool are checked out, requests wait for a new connection to become available, with queue time counting towards the request timeout.\n\nUnless otherwise specified, other classes in the SDK do not have locks protecting their underlying data structure.\n\n## Sorbet\n\nThis library provides comprehensive [RBI](https://sorbet.org/docs/rbi) definitions, and has no dependency on sorbet-runtime.\n\nYou can provide typesafe request parameters like so:\n\n```ruby\nstraddle.charges.create(\n  amount: 10000,\n  config: Straddle::ChargeCreateParams::Config.new(balance_check: "required"),\n  consent_type: "internet",\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: Straddle::DeviceInfoV1.new(ip_address: "192.168.1.1"),\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\n```\n\nOr, equivalently:\n\n```ruby\n# Hashes work, but are not typesafe:\nstraddle.charges.create(\n  amount: 10000,\n  config: {balance_check: "required"},\n  consent_type: "internet",\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\n\n# You can also splat a full Params class:\nparams = Straddle::ChargeCreateParams.new(\n  amount: 10000,\n  config: Straddle::ChargeCreateParams::Config.new(balance_check: "required"),\n  consent_type: "internet",\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: Straddle::DeviceInfoV1.new(ip_address: "192.168.1.1"),\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\nstraddle.charges.create(**params)\n```\n\n### Enums\n\nSince this library does not depend on `sorbet-runtime`, it cannot provide [`T::Enum`](https://sorbet.org/docs/tenum) instances. Instead, we provide "tagged symbols" instead, which is always a primitive at runtime:\n\n```ruby\n# :standard\nputs(Straddle::Embed::AccountCreateParams::AccessLevel::STANDARD)\n\n# Revealed type: `T.all(Straddle::Embed::AccountCreateParams::AccessLevel, Symbol)`\nT.reveal_type(Straddle::Embed::AccountCreateParams::AccessLevel::STANDARD)\n```\n\nEnum parameters have a "relaxed" type, so you can either pass in enum constants or their literal value:\n\n```ruby\n# Using the enum constants preserves the tagged type information:\nstraddle.embed.accounts.create(\n  access_level: Straddle::Embed::AccountCreateParams::AccessLevel::STANDARD,\n  # …\n)\n\n# Literal values are also permissible:\nstraddle.embed.accounts.create(\n  access_level: :standard,\n  # …\n)\n```\n\n## Versioning\n\nThis package follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions. As the library is in initial development and has a major version of `0`, APIs may change at any time.\n\nThis package considers improvements to the (non-runtime) `*.rbi` and `*.rbs` type definitions to be non-breaking changes.\n\n## Requirements\n\nRuby 3.2.0 or higher.\n\n## Contributing\n\nSee [the contributing documentation](https://github.com/straddleio/straddle-ruby/tree/main/CONTRIBUTING.md).\n',
+  },
+  {
+    language: 'csharp',
+    content:
+      '# Straddle C# API Library\n\nThe Straddle C# SDK provides convenient access to the [Straddle REST API](https://docs.straddle.com) from applications written in   C#.\n\n## Installation\n\nInstall the package from [NuGet](https://www.nuget.org/packages/Straddle):\n\n```bash\ndotnet add package Straddle\n```\n\n## Requirements\n\nThis library requires .NET Standard 2.0 or later.\n\n## Usage\n\nSee the [`examples`](examples) directory for complete and runnable examples.\n\n```csharp\nStraddleClient client = new();\n\nChargeCreateParams parameters = new()\n{\n    Amount = 10000,\n    Config = new(BalanceCheck.Required),\n    ConsentType = ConsentType.Internet,\n    Currency = "currency",\n    Description = "Monthly subscription fee",\n    Device = new("192.168.1.1"),\n    ExternalID = "external_id",\n    Paykey = "paykey",\n    PaymentDate = "2019-12-27",\n};\n\nvar chargeV1 = await client.Charges.Create(parameters);\n\nConsole.WriteLine(chargeV1);\n```',
   },
   {
     language: 'cli',
