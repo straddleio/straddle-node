@@ -1,7 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { readEnv } from './util';
+import fs from 'fs/promises';
 import { getLogger } from './logger';
+import { readEnv } from './util';
 
 const INSTRUCTIONS_CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
@@ -12,9 +13,15 @@ interface InstructionsCacheEntry {
 
 const instructionsCache = new Map<string, InstructionsCacheEntry>();
 
-export async function getInstructions(stainlessApiKey: string | undefined): Promise<string> {
+export async function getInstructions({
+  stainlessApiKey,
+  customInstructionsPath,
+}: {
+  stainlessApiKey?: string | undefined;
+  customInstructionsPath?: string | undefined;
+}): Promise<string> {
   const now = Date.now();
-  const cacheKey = stainlessApiKey ?? '';
+  const cacheKey = customInstructionsPath ?? stainlessApiKey ?? '';
   const cached = instructionsCache.get(cacheKey);
 
   if (cached && now - cached.fetchedAt <= INSTRUCTIONS_CACHE_TTL_MS) {
@@ -28,12 +35,28 @@ export async function getInstructions(stainlessApiKey: string | undefined): Prom
     }
   }
 
-  const fetchedInstructions = await fetchLatestInstructions(stainlessApiKey);
+  let fetchedInstructions: string;
+
+  if (customInstructionsPath) {
+    fetchedInstructions = await fetchLatestInstructionsFromFile(customInstructionsPath);
+  } else {
+    fetchedInstructions = await fetchLatestInstructionsFromApi(stainlessApiKey);
+  }
+
   instructionsCache.set(cacheKey, { fetchedInstructions, fetchedAt: now });
   return fetchedInstructions;
 }
 
-async function fetchLatestInstructions(stainlessApiKey: string | undefined): Promise<string> {
+async function fetchLatestInstructionsFromFile(path: string): Promise<string> {
+  try {
+    return await fs.readFile(path, 'utf-8');
+  } catch (error) {
+    getLogger().error({ error, path }, 'Error fetching instructions from file');
+    throw error;
+  }
+}
+
+async function fetchLatestInstructionsFromApi(stainlessApiKey: string | undefined): Promise<string> {
   // Setting the stainless API key is optional, but may be required
   // to authenticate requests to the Stainless API.
   const response = await fetch(
@@ -56,5 +79,7 @@ async function fetchLatestInstructions(stainlessApiKey: string | undefined): Pro
 
   instructions ??= ((await response.json()) as { instructions: string }).instructions;
 
+  instructions +=
+    '\nStraddle is a payment infrastructure platform for account-to-account\n(A2A) payments. It is the coordination layer between software platforms\nand payment rails. Charges pull money (debits), payouts push money\n(credits). A Paykey is a secure token linking a verified identity to\na validated bank account -- all payments reference a Paykey. Customers\nmust pass identity verification before transacting. Always use the\nsandbox environment for testing. Search docs before writing code to\nunderstand required fields and validation rules.\n';
   return instructions;
 }

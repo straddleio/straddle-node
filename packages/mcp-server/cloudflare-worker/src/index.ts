@@ -1,8 +1,7 @@
 import { makeOAuthConsent } from './app';
 import { McpAgent } from 'agents/mcp';
 import OAuthProvider from '@cloudflare/workers-oauth-provider';
-import { McpOptions, initMcpServer, server, ClientOptions } from '@straddlecom/straddle-mcp/server';
-import type { ExportedHandler } from '@cloudflare/workers-types';
+import { McpOptions, initMcpServer, newMcpServer, ClientOptions } from '@straddlecom/straddle-mcp/server';
 
 type MCPProps = {
   clientProps: ClientOptions;
@@ -44,13 +43,16 @@ const serverConfig: ServerConfig = {
 };
 
 export class MyMCP extends McpAgent<Env, unknown, MCPProps> {
-  server = server;
+  // Each Durable Object needs its own McpServer instance.
+  // The module-level `server` singleton causes "Already connected to a transport"
+  // when multiple DOs share an isolate or a DO wakes from hibernation.
+  server = newMcpServer();
 
   async init() {
     initMcpServer({
       server: this.server,
-      clientOptions: this.props.clientProps,
-      mcpOptions: this.props.clientConfig,
+      clientOptions: this.props?.clientProps,
+      mcpOptions: this.props?.clientConfig,
     });
   }
 }
@@ -91,14 +93,12 @@ export type ClientProperty = {
 // Export the OAuth handler as the default
 export default new OAuthProvider({
   apiHandlers: {
-    // @ts-expect-error
-    '/sse': MyMCP.serveSSE('/sse'), // legacy SSE
-    // @ts-expect-error
-    '/mcp': MyMCP.serve('/mcp'), // Streaming HTTP
+    '/sse': MyMCP.serveSSE('/sse'),
+    '/mcp': MyMCP.serve('/mcp'),
   },
   // Type assertion needed due to Headers type mismatch between Hono and @cloudflare/workers-types
   // At runtime, Hono's fetch handler is fully compatible with ExportedHandler
-  defaultHandler: makeOAuthConsent(serverConfig) as unknown as ExportedHandler,
+  defaultHandler: makeOAuthConsent(serverConfig) as unknown as ExportedHandler<Env>,
   authorizeEndpoint: '/authorize',
   tokenEndpoint: '/token',
   clientRegistrationEndpoint: '/register',
