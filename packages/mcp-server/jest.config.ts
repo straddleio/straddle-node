@@ -10,7 +10,9 @@ const config: JestConfigWithTsJest = {
     '^@straddlecom/straddle-mcp$': '<rootDir>/src/index.ts',
     '^@straddlecom/straddle-mcp/(.*)$': '<rootDir>/src/$1',
   },
-  modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  modulePathIgnorePatterns: [
+    '<rootDir>/dist/',
+  ],
   testPathIgnorePatterns: ['scripts'],
 };
 

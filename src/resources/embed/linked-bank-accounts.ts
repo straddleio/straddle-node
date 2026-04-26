@@ -32,24 +32,8 @@ export class LinkedBankAccounts extends APIResource {
    * ```
    */
   create(params: LinkedBankAccountCreateParams, options?: RequestOptions): APIPromise<LinkedBankAccountV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.post('/v1/linked_bank_accounts', {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.post('/v1/linked_bank_accounts', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -73,29 +57,9 @@ export class LinkedBankAccounts extends APIResource {
    *   );
    * ```
    */
-  update(
-    linkedBankAccountID: string,
-    params: LinkedBankAccountUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<LinkedBankAccountV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/linked_bank_accounts/${linkedBankAccountID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  update(linkedBankAccountID: string, params: LinkedBankAccountUpdateParams, options?: RequestOptions): APIPromise<LinkedBankAccountV1> {
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.put(path`/v1/linked_bank_accounts/${linkedBankAccountID}`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -112,26 +76,9 @@ export class LinkedBankAccounts extends APIResource {
    * }
    * ```
    */
-  list(
-    params: LinkedBankAccountListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data> {
-    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
-    return this._client.getAPIList(
-      '/v1/linked_bank_accounts',
-      PageNumberSchema<LinkedBankAccountPagedV1.Data>,
-      {
-        query,
-        ...options,
-        headers: buildHeaders([
-          {
-            ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-            ...(requestID != null ? { 'request-id': requestID } : undefined),
-          },
-          options?.headers,
-        ]),
-      },
-    );
+  list(params: LinkedBankAccountListParams | null | undefined = {}, options?: RequestOptions): PagePromise<LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {}
+    return this._client.getAPIList('/v1/linked_bank_accounts', PageNumberSchema<LinkedBankAccountPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -147,27 +94,9 @@ export class LinkedBankAccounts extends APIResource {
    *   );
    * ```
    */
-  cancel(
-    linkedBankAccountID: string,
-    params: LinkedBankAccountCancelParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<LinkedBankAccountV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-    } = params ?? {};
-    return this._client.patch(path`/v1/linked_bank_accounts/${linkedBankAccountID}/cancel`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  cancel(linkedBankAccountID: string, params: LinkedBankAccountCancelParams | null | undefined = {}, options?: RequestOptions): APIPromise<LinkedBankAccountV1> {
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID } = params ?? {}
+    return this._client.patch(path`/v1/linked_bank_accounts/${linkedBankAccountID}/cancel`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -184,22 +113,9 @@ export class LinkedBankAccounts extends APIResource {
    *   );
    * ```
    */
-  get(
-    linkedBankAccountID: string,
-    params: LinkedBankAccountGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<LinkedBankAccountV1> {
-    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
-    return this._client.get(path`/v1/linked_bank_accounts/${linkedBankAccountID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  get(linkedBankAccountID: string, params: LinkedBankAccountGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<LinkedBankAccountV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {}
+    return this._client.get(path`/v1/linked_bank_accounts/${linkedBankAccountID}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -217,26 +133,13 @@ export class LinkedBankAccounts extends APIResource {
    *   );
    * ```
    */
-  unmask(
-    linkedBankAccountID: string,
-    params: LinkedBankAccountUnmaskParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<LinkedBankAccountUnmaskV1> {
-    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
-    return this._client.get(path`/v1/linked_bank_accounts/${linkedBankAccountID}/unmask`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  unmask(linkedBankAccountID: string, params: LinkedBankAccountUnmaskParams | null | undefined = {}, options?: RequestOptions): APIPromise<LinkedBankAccountUnmaskV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {}
+    return this._client.get(path`/v1/linked_bank_accounts/${linkedBankAccountID}/unmask`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 }
 
-export type LinkedBankAccountPagedV1DataPageNumberSchema = PageNumberSchema<LinkedBankAccountPagedV1.Data>;
+export type LinkedBankAccountPagedV1DataPageNumberSchema = PageNumberSchema<LinkedBankAccountPagedV1.Data>
 
 export interface LinkedBankAccountPagedV1 {
   data: Array<LinkedBankAccountPagedV1.Data>;
@@ -339,15 +242,7 @@ export namespace LinkedBankAccountPagedV1 {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'new';
+      reason: 'unverified' | 'in_review' | 'pending' | 'stuck' | 'verified' | 'failed_verification' | 'disabled' | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -451,15 +346,7 @@ export namespace LinkedBankAccountUnmaskV1 {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'new';
+      reason: 'unverified' | 'in_review' | 'pending' | 'stuck' | 'verified' | 'failed_verification' | 'disabled' | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -570,15 +457,7 @@ export namespace LinkedBankAccountV1 {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'new';
+      reason: 'unverified' | 'in_review' | 'pending' | 'stuck' | 'verified' | 'failed_verification' | 'disabled' | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -806,6 +685,6 @@ export declare namespace LinkedBankAccounts {
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
     type LinkedBankAccountCancelParams as LinkedBankAccountCancelParams,
     type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
-    type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
+    type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams
   };
 }

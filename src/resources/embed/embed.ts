@@ -2,66 +2,17 @@
 
 import { APIResource } from '../../core/resource';
 import * as LinkedBankAccountsAPI from './linked-bank-accounts';
-import {
-  LinkedBankAccountCancelParams,
-  LinkedBankAccountCreateParams,
-  LinkedBankAccountGetParams,
-  LinkedBankAccountListParams,
-  LinkedBankAccountPagedV1,
-  LinkedBankAccountPagedV1DataPageNumberSchema,
-  LinkedBankAccountUnmaskParams,
-  LinkedBankAccountUnmaskV1,
-  LinkedBankAccountUpdateParams,
-  LinkedBankAccountV1,
-  LinkedBankAccounts,
-} from './linked-bank-accounts';
+import { LinkedBankAccountCancelParams, LinkedBankAccountCreateParams, LinkedBankAccountGetParams, LinkedBankAccountListParams, LinkedBankAccountPagedV1, LinkedBankAccountPagedV1DataPageNumberSchema, LinkedBankAccountUnmaskParams, LinkedBankAccountUnmaskV1, LinkedBankAccountUpdateParams, LinkedBankAccountV1, LinkedBankAccounts } from './linked-bank-accounts';
 import * as OrganizationsAPI from './organizations';
-import {
-  OrganizationCreateParams,
-  OrganizationGetParams,
-  OrganizationListParams,
-  OrganizationPagedV1,
-  OrganizationPagedV1DataPageNumberSchema,
-  OrganizationV1,
-  Organizations,
-} from './organizations';
+import { OrganizationCreateParams, OrganizationGetParams, OrganizationListParams, OrganizationPagedV1, OrganizationPagedV1DataPageNumberSchema, OrganizationV1, Organizations } from './organizations';
 import * as RepresentativesAPI from './representatives';
-import {
-  Representative,
-  RepresentativeCreateParams,
-  RepresentativeGetParams,
-  RepresentativeListParams,
-  RepresentativePaged,
-  RepresentativePagedDataPageNumberSchema,
-  RepresentativeUnmaskParams,
-  RepresentativeUpdateParams,
-  Representatives,
-} from './representatives';
+import { Representative, RepresentativeCreateParams, RepresentativeGetParams, RepresentativeListParams, RepresentativePaged, RepresentativePagedDataPageNumberSchema, RepresentativeUnmaskParams, RepresentativeUpdateParams, Representatives } from './representatives';
 import * as AccountsAPI from './accounts/accounts';
-import {
-  AccountCreateParams,
-  AccountGetParams,
-  AccountListParams,
-  AccountOnboardParams,
-  AccountPagedV1,
-  AccountPagedV1DataPageNumberSchema,
-  AccountSimulateParams,
-  AccountUpdateParams,
-  AccountV1,
-  Accounts,
-  AddressV1,
-  BusinessProfileV1,
-  CapabilityV1,
-  IndustryV1,
-  SupportChannelsV1,
-  TermsOfServiceV1,
-} from './accounts/accounts';
+import { AccountCreateParams, AccountGetParams, AccountListParams, AccountOnboardParams, AccountPagedV1, AccountPagedV1DataPageNumberSchema, AccountSimulateParams, AccountUpdateParams, AccountV1, Accounts, AddressV1, BusinessProfileV1, CapabilityV1, IndustryV1, SupportChannelsV1, TermsOfServiceV1 } from './accounts/accounts';
 
 export class Embed extends APIResource {
   accounts: AccountsAPI.Accounts = new AccountsAPI.Accounts(this._client);
-  linkedBankAccounts: LinkedBankAccountsAPI.LinkedBankAccounts = new LinkedBankAccountsAPI.LinkedBankAccounts(
-    this._client,
-  );
+  linkedBankAccounts: LinkedBankAccountsAPI.LinkedBankAccounts = new LinkedBankAccountsAPI.LinkedBankAccounts(this._client);
   organizations: OrganizationsAPI.Organizations = new OrganizationsAPI.Organizations(this._client);
   representatives: RepresentativesAPI.Representatives = new RepresentativesAPI.Representatives(this._client);
 }
@@ -88,7 +39,7 @@ export declare namespace Embed {
     type AccountListParams as AccountListParams,
     type AccountGetParams as AccountGetParams,
     type AccountOnboardParams as AccountOnboardParams,
-    type AccountSimulateParams as AccountSimulateParams,
+    type AccountSimulateParams as AccountSimulateParams
   };
 
   export {
@@ -102,7 +53,7 @@ export declare namespace Embed {
     type LinkedBankAccountListParams as LinkedBankAccountListParams,
     type LinkedBankAccountCancelParams as LinkedBankAccountCancelParams,
     type LinkedBankAccountGetParams as LinkedBankAccountGetParams,
-    type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams,
+    type LinkedBankAccountUnmaskParams as LinkedBankAccountUnmaskParams
   };
 
   export {
@@ -112,7 +63,7 @@ export declare namespace Embed {
     type OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
-    type OrganizationGetParams as OrganizationGetParams,
+    type OrganizationGetParams as OrganizationGetParams
   };
 
   export {
@@ -124,6 +75,6 @@ export declare namespace Embed {
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
     type RepresentativeGetParams as RepresentativeGetParams,
-    type RepresentativeUnmaskParams as RepresentativeUnmaskParams,
+    type RepresentativeUnmaskParams as RepresentativeUnmaskParams
   };
 }

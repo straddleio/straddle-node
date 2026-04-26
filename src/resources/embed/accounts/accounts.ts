@@ -4,13 +4,7 @@ import { APIResource } from '../../../core/resource';
 import * as AccountsAPI from './accounts';
 import * as Shared from '../../shared';
 import * as CapabilityRequestsAPI from './capability-requests';
-import {
-  CapabilityRequestCreateParams,
-  CapabilityRequestListParams,
-  CapabilityRequestPagedV1,
-  CapabilityRequestPagedV1DataPageNumberSchema,
-  CapabilityRequests,
-} from './capability-requests';
+import { CapabilityRequestCreateParams, CapabilityRequestListParams, CapabilityRequestPagedV1, CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequests } from './capability-requests';
 import { APIPromise } from '../../../core/api-promise';
 import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../../core/pagination';
 import { buildHeaders } from '../../../internal/headers';
@@ -21,9 +15,7 @@ import { path } from '../../../internal/utils/path';
  * Accounts represent businesses using Straddle through your platform. Each account must complete automated verification before processing payments. Use accounts to manage your users' payment capabilities, track verification status, and control access to features. Accounts can be instantly created in sandbox and require additional verification for production access.
  */
 export class Accounts extends APIResource {
-  capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(
-    this._client,
-  );
+  capabilityRequests: CapabilityRequestsAPI.CapabilityRequests = new CapabilityRequestsAPI.CapabilityRequests(this._client);
 
   /**
    * Creates a new account associated with your Straddle platform integration. This
@@ -44,24 +36,8 @@ export class Accounts extends APIResource {
    * ```
    */
   create(params: AccountCreateParams, options?: RequestOptions): APIPromise<AccountV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.post('/v1/accounts', {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.post('/v1/accounts', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -82,24 +58,8 @@ export class Accounts extends APIResource {
    * ```
    */
   update(accountID: string, params: AccountUpdateParams, options?: RequestOptions): APIPromise<AccountV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/accounts/${accountID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.put(path`/v1/accounts/${accountID}`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -116,22 +76,9 @@ export class Accounts extends APIResource {
    * }
    * ```
    */
-  list(
-    params: AccountListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
-    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
-    return this._client.getAPIList('/v1/accounts', PageNumberSchema<AccountPagedV1.Data>, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  list(params: AccountListParams | null | undefined = {}, options?: RequestOptions): PagePromise<AccountPagedV1DataPageNumberSchema, AccountPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {}
+    return this._client.getAPIList('/v1/accounts', PageNumberSchema<AccountPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -146,22 +93,9 @@ export class Accounts extends APIResource {
    * );
    * ```
    */
-  get(
-    accountID: string,
-    params: AccountGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<AccountV1> {
-    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
-    return this._client.get(path`/v1/accounts/${accountID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  get(accountID: string, params: AccountGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<AccountV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {}
+    return this._client.get(path`/v1/accounts/${accountID}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -184,24 +118,8 @@ export class Accounts extends APIResource {
    * ```
    */
   onboard(accountID: string, params: AccountOnboardParams, options?: RequestOptions): APIPromise<AccountV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.post(path`/v1/accounts/${accountID}/onboard`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.post(path`/v1/accounts/${accountID}/onboard`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -215,33 +133,13 @@ export class Accounts extends APIResource {
    * );
    * ```
    */
-  simulate(
-    accountID: string,
-    params: AccountSimulateParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<AccountV1> {
-    const {
-      final_status,
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-    } = params ?? {};
-    return this._client.post(path`/v1/accounts/${accountID}/simulate`, {
-      query: { final_status },
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  simulate(accountID: string, params: AccountSimulateParams | null | undefined = {}, options?: RequestOptions): APIPromise<AccountV1> {
+    const { final_status, 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID } = params ?? {}
+    return this._client.post(path`/v1/accounts/${accountID}/simulate`, { query: { final_status }, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 }
 
-export type AccountPagedV1DataPageNumberSchema = PageNumberSchema<AccountPagedV1.Data>;
+export type AccountPagedV1DataPageNumberSchema = PageNumberSchema<AccountPagedV1.Data>
 
 export interface AccountPagedV1 {
   data: Array<AccountPagedV1.Data>;
@@ -342,16 +240,7 @@ export namespace AccountPagedV1 {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'terminated'
-        | 'new';
+      reason: 'unverified' | 'in_review' | 'pending' | 'stuck' | 'verified' | 'failed_verification' | 'disabled' | 'terminated' | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -413,14 +302,7 @@ export namespace AccountPagedV1 {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time:
-          | 'immediate'
-          | 'next_day'
-          | 'one_day'
-          | 'two_day'
-          | 'three_day'
-          | 'four_day'
-          | 'five_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -454,14 +336,7 @@ export namespace AccountPagedV1 {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time:
-          | 'immediate'
-          | 'next_day'
-          | 'one_day'
-          | 'two_day'
-          | 'three_day'
-          | 'four_day'
-          | 'five_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -585,16 +460,7 @@ export namespace AccountV1 {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'terminated'
-        | 'new';
+      reason: 'unverified' | 'in_review' | 'pending' | 'stuck' | 'verified' | 'failed_verification' | 'disabled' | 'terminated' | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -656,14 +522,7 @@ export namespace AccountV1 {
          * The amount of time it takes for a charge to be funded. This value is defined by
          * Straddle.
          */
-        funding_time:
-          | 'immediate'
-          | 'next_day'
-          | 'one_day'
-          | 'two_day'
-          | 'three_day'
-          | 'four_day'
-          | 'five_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day';
 
         /**
          * The unique identifier of the linked bank account associated with charges. This
@@ -697,14 +556,7 @@ export namespace AccountV1 {
          * The amount of time it takes for a payout to be funded. This value is defined by
          * Straddle.
          */
-        funding_time:
-          | 'immediate'
-          | 'next_day'
-          | 'one_day'
-          | 'two_day'
-          | 'three_day'
-          | 'four_day'
-          | 'five_day';
+        funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day';
 
         /**
          * The unique identifier of the linked bank account to use for payouts.
@@ -1098,7 +950,7 @@ export declare namespace Accounts {
     type AccountListParams as AccountListParams,
     type AccountGetParams as AccountGetParams,
     type AccountOnboardParams as AccountOnboardParams,
-    type AccountSimulateParams as AccountSimulateParams,
+    type AccountSimulateParams as AccountSimulateParams
   };
 
   export {
@@ -1106,6 +958,6 @@ export declare namespace Accounts {
     type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
     type CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
-    type CapabilityRequestListParams as CapabilityRequestListParams,
+    type CapabilityRequestListParams as CapabilityRequestListParams
   };
 }

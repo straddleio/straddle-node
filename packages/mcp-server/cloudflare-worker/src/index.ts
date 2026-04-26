@@ -16,32 +16,25 @@ const serverConfig: ServerConfig = {
   orgName: 'Straddle',
   instructionsUrl: undefined, // Set a url for where you show users how to get an API key
   logoUrl: undefined, // Set a custom logo url to appear during the OAuth flow
-  clientProperties: [
-    {
-      key: 'apiKey',
-      label: 'API Key',
-      description:
-        'Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.',
-      required: true,
-      default: undefined,
-      placeholder: 'My API Key',
-      type: 'password',
-    },
-    {
-      key: 'environment',
-      label: 'Environment',
-      description: 'The environment to use for the client',
-      required: false,
-      default: 'sandbox',
-      placeholder: 'sandbox',
-      type: 'select',
-      options: [
-        { label: 'sandbox', value: 'sandbox' },
-        { label: 'production', value: 'production' },
-      ],
-    },
-  ],
-};
+  clientProperties: [{
+  key: 'apiKey',
+  label: 'API Key',
+  description: 'Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.',
+  required: true,
+  default: undefined,
+  placeholder: 'My API Key',
+  type: 'password',
+}, {
+  key: 'environment',
+  label: 'Environment',
+  description: 'The environment to use for the client',
+  required: false,
+  default: 'sandbox',
+  placeholder: 'sandbox',
+  type: 'select',
+  options: [{ label: 'sandbox', value: 'sandbox' }, { label: 'production', value: 'production' }],
+}],
+};;
 
 export class MyMCP extends McpAgent<Env, unknown, MCPProps> {
   server = server;

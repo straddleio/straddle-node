@@ -2,24 +2,21 @@
 
 import Straddle from '@straddlecom/straddle';
 
-const client = new Straddle({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Straddle({ apiKey: 'My API Key', baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010' });
 
 describe('resource charges', () => {
   test('create: only required params', async () => {
     const responsePromise = client.charges.create({
-      amount: 10000,
-      config: { balance_check: 'required' },
-      consent_type: 'internet',
-      currency: 'currency',
-      description: 'Monthly subscription fee',
-      device: { ip_address: '192.168.1.1' },
-      external_id: 'external_id',
-      paykey: 'paykey',
-      payment_date: '2019-12-27',
-    });
+    amount: 10000,
+    config: { balance_check: 'required' },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
+    device: { ip_address: '192.168.1.1' },
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
+  });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -31,34 +28,34 @@ describe('resource charges', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.charges.create({
-      amount: 10000,
-      config: {
-        balance_check: 'required',
-        auto_hold: true,
-        auto_hold_message: 'auto_hold_message',
-        sandbox_outcome: 'standard',
-      },
-      consent_type: 'internet',
-      currency: 'currency',
-      description: 'Monthly subscription fee',
-      device: { ip_address: '192.168.1.1' },
-      external_id: 'external_id',
-      paykey: 'paykey',
-      payment_date: '2019-12-27',
-      metadata: { foo: 'string' },
-      'Correlation-Id': 'Correlation-Id',
-      'Idempotency-Key': 'xxxxxxxxxx',
-      'Request-Id': 'Request-Id',
-      'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    });
+    amount: 10000,
+    config: {
+    balance_check: 'required',
+    auto_hold: true,
+    auto_hold_message: 'auto_hold_message',
+    sandbox_outcome: 'standard',
+  },
+    consent_type: 'internet',
+    currency: 'currency',
+    description: 'Monthly subscription fee',
+    device: { ip_address: '192.168.1.1' },
+    external_id: 'external_id',
+    paykey: 'paykey',
+    payment_date: '2019-12-27',
+    metadata: { foo: 'string' },
+    'Correlation-Id': 'Correlation-Id',
+    'Idempotency-Key': 'xxxxxxxxxx',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  });
   });
 
   test('update: only required params', async () => {
     const responsePromise = client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      amount: 10000,
-      description: 'Monthly subscription fee',
-      payment_date: '2019-12-27',
-    });
+    amount: 10000,
+    description: 'Monthly subscription fee',
+    payment_date: '2019-12-27',
+  });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -70,15 +67,15 @@ describe('resource charges', () => {
 
   test('update: required and optional params', async () => {
     const response = await client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      amount: 10000,
-      description: 'Monthly subscription fee',
-      payment_date: '2019-12-27',
-      metadata: { foo: 'string' },
-      'Correlation-Id': 'Correlation-Id',
-      'Idempotency-Key': 'xxxxxxxxxx',
-      'Request-Id': 'Request-Id',
-      'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    });
+    amount: 10000,
+    description: 'Monthly subscription fee',
+    payment_date: '2019-12-27',
+    metadata: { foo: 'string' },
+    'Correlation-Id': 'Correlation-Id',
+    'Idempotency-Key': 'xxxxxxxxxx',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  });
   });
 
   test('cancel', async () => {
@@ -94,19 +91,15 @@ describe('resource charges', () => {
 
   test('cancel: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.charges.cancel(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {
-          reason: 'reason',
-          'Correlation-Id': 'Correlation-Id',
-          'Idempotency-Key': 'xxxxxxxxxx',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+    await expect(client.charges.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    reason: 'reason',
+    'Correlation-Id': 'Correlation-Id',
+    'Idempotency-Key': 'xxxxxxxxxx',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Straddle.NotFoundError);
   });
 
   test('get', async () => {
@@ -122,17 +115,13 @@ describe('resource charges', () => {
 
   test('get: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.charges.get(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {
-          'Correlation-Id': 'Correlation-Id',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+    await expect(client.charges.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    'Correlation-Id': 'Correlation-Id',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Straddle.NotFoundError);
   });
 
   test('hold', async () => {
@@ -148,19 +137,15 @@ describe('resource charges', () => {
 
   test('hold: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.charges.hold(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {
-          reason: 'reason',
-          'Correlation-Id': 'Correlation-Id',
-          'Idempotency-Key': 'xxxxxxxxxx',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+    await expect(client.charges.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    reason: 'reason',
+    'Correlation-Id': 'Correlation-Id',
+    'Idempotency-Key': 'xxxxxxxxxx',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Straddle.NotFoundError);
   });
 
   test('release', async () => {
@@ -176,19 +161,15 @@ describe('resource charges', () => {
 
   test('release: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.charges.release(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {
-          reason: 'reason',
-          'Correlation-Id': 'Correlation-Id',
-          'Idempotency-Key': 'xxxxxxxxxx',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+    await expect(client.charges.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    reason: 'reason',
+    'Correlation-Id': 'Correlation-Id',
+    'Idempotency-Key': 'xxxxxxxxxx',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Straddle.NotFoundError);
   });
 
   test('unmask', async () => {
@@ -204,16 +185,12 @@ describe('resource charges', () => {
 
   test('unmask: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.charges.unmask(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {
-          'Correlation-Id': 'Correlation-Id',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+    await expect(client.charges.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    'Correlation-Id': 'Correlation-Id',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Straddle.NotFoundError);
   });
 });

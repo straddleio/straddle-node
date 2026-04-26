@@ -2,10 +2,7 @@
 
 import Straddle from '@straddlecom/straddle';
 
-const client = new Straddle({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Straddle({ apiKey: 'My API Key', baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010' });
 
 describe('resource fundingEvents', () => {
   test('list', async () => {
@@ -21,30 +18,27 @@ describe('resource fundingEvents', () => {
 
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.fundingEvents.list(
-        {
-          created_from: '2019-12-27',
-          created_to: '2019-12-27',
-          direction: 'deposit',
-          event_type: 'charge_deposit',
-          page_number: 0,
-          page_size: 0,
-          search_text: 'search_text',
-          sort_by: 'transfer_date',
-          sort_order: 'asc',
-          status: ['created'],
-          status_reason: ['insufficient_funds'],
-          status_source: ['watchtower'],
-          trace_id: 'trace_id',
-          trace_number: 'trace_number',
-          'Correlation-Id': 'Correlation-Id',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+    await expect(client.fundingEvents.list({
+    created_from: '2019-12-27',
+    created_to: '2019-12-27',
+    direction: 'deposit',
+    event_type: 'charge_deposit',
+    page_number: 0,
+    page_size: 0,
+    search_text: 'search_text',
+    sort_by: 'transfer_date',
+    sort_order: 'asc',
+    status: ['created'],
+    status_reason: ['insufficient_funds'],
+    status_source: ['watchtower'],
+    trace_id: 'trace_id',
+    trace_number: 'trace_number',
+    'Correlation-Id': 'Correlation-Id',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Straddle.NotFoundError);
   });
 
   test('get', async () => {
@@ -60,16 +54,12 @@ describe('resource fundingEvents', () => {
 
   test('get: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.fundingEvents.get(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {
-          'Correlation-Id': 'Correlation-Id',
-          'Request-Id': 'Request-Id',
-          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Straddle.NotFoundError);
+    await expect(client.fundingEvents.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    'Correlation-Id': 'Correlation-Id',
+    'Request-Id': 'Request-Id',
+    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Straddle.NotFoundError);
   });
 });
