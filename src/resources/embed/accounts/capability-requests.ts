@@ -24,29 +24,9 @@ export class CapabilityRequests extends APIResource {
    *   );
    * ```
    */
-  create(
-    accountID: string,
-    params: CapabilityRequestCreateParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CapabilityRequestPagedV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params ?? {};
-    return this._client.post(path`/v1/accounts/${accountID}/capability_requests`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  create(accountID: string, params: CapabilityRequestCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<CapabilityRequestPagedV1> {
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params ?? {}
+    return this._client.post(path`/v1/accounts/${accountID}/capability_requests`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -64,31 +44,13 @@ export class CapabilityRequests extends APIResource {
    * }
    * ```
    */
-  list(
-    accountID: string,
-    params: CapabilityRequestListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data> {
-    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
-    return this._client.getAPIList(
-      path`/v1/accounts/${accountID}/capability_requests`,
-      PageNumberSchema<CapabilityRequestPagedV1.Data>,
-      {
-        query,
-        ...options,
-        headers: buildHeaders([
-          {
-            ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-            ...(requestID != null ? { 'request-id': requestID } : undefined),
-          },
-          options?.headers,
-        ]),
-      },
-    );
+  list(accountID: string, params: CapabilityRequestListParams | null | undefined = {}, options?: RequestOptions): PagePromise<CapabilityRequestPagedV1DataPageNumberSchema, CapabilityRequestPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {}
+    return this._client.getAPIList(path`/v1/accounts/${accountID}/capability_requests`, PageNumberSchema<CapabilityRequestPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 }
 
-export type CapabilityRequestPagedV1DataPageNumberSchema = PageNumberSchema<CapabilityRequestPagedV1.Data>;
+export type CapabilityRequestPagedV1DataPageNumberSchema = PageNumberSchema<CapabilityRequestPagedV1.Data>
 
 export interface CapabilityRequestPagedV1 {
   data: Array<CapabilityRequestPagedV1.Data>;
@@ -347,6 +309,6 @@ export declare namespace CapabilityRequests {
     type CapabilityRequestPagedV1 as CapabilityRequestPagedV1,
     type CapabilityRequestPagedV1DataPageNumberSchema as CapabilityRequestPagedV1DataPageNumberSchema,
     type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
-    type CapabilityRequestListParams as CapabilityRequestListParams,
+    type CapabilityRequestListParams as CapabilityRequestListParams
   };
 }

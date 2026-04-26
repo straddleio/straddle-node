@@ -87,8 +87,7 @@ export class PagePromise<
     super(
       client,
       request,
-      async (client, props) =>
-        new Page(client, props.response, await defaultParseResponse(client, props), props.options),
+      async (client, props) => new Page(client, props.response, await defaultParseResponse(client, props), props.options)
     );
   }
 
@@ -136,12 +135,7 @@ export class PageNumberSchema<Item> extends AbstractPage<Item> implements PageNu
 
   meta: PageNumberSchemaResponse.Meta;
 
-  constructor(
-    client: Straddle,
-    response: Response,
-    body: PageNumberSchemaResponse<Item>,
-    options: FinalRequestOptions,
-  ) {
+  constructor(client: Straddle, response: Response, body: PageNumberSchemaResponse<Item>, options: FinalRequestOptions) {
     super(client, response, body, options);
 
     this.data = body.data || [];

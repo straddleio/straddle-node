@@ -27,31 +27,9 @@ export class Review extends APIResource {
    * );
    * ```
    */
-  decision(
-    id: string,
-    params: ReviewDecisionParams,
-    options?: RequestOptions,
-  ): APIPromise<CustomersAPI.CustomerV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params;
-    return this._client.patch(path`/v1/customers/${id}/review`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  decision(id: string, params: ReviewDecisionParams, options?: RequestOptions): APIPromise<CustomersAPI.CustomerV1> {
+    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
+    return this._client.patch(path`/v1/customers/${id}/review`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -72,27 +50,9 @@ export class Review extends APIResource {
    * );
    * ```
    */
-  get(
-    id: string,
-    params: ReviewGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomerReviewV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.get(path`/v1/customers/${id}/review`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  get(id: string, params: ReviewGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<CustomerReviewV1> {
+    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
+    return this._client.get(path`/v1/customers/${id}/review`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -108,29 +68,9 @@ export class Review extends APIResource {
    *   );
    * ```
    */
-  refreshReview(
-    id: string,
-    params: ReviewRefreshReviewParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomersAPI.CustomerV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.put(path`/v1/customers/${id}/refresh_review`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  refreshReview(id: string, params: ReviewRefreshReviewParams | null | undefined = {}, options?: RequestOptions): APIPromise<CustomersAPI.CustomerV1> {
+    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
+    return this._client.put(path`/v1/customers/${id}/refresh_review`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
   }
 }
 
@@ -206,10 +146,7 @@ export namespace CustomerReviewV1 {
       /**
        * PII required to trigger Patriot Act compliant KYC verification.
        */
-      compliance_profile?:
-        | CustomerDetails.IndividualComplianceProfile
-        | CustomerDetails.BusinessComplianceProfile
-        | null;
+      compliance_profile?: CustomerDetails.IndividualComplianceProfile | CustomerDetails.BusinessComplianceProfile | null;
 
       config?: CustomerDetails.Config;
 
@@ -636,6 +573,6 @@ export declare namespace Review {
     type IdentityVerificationBreakdownV1 as IdentityVerificationBreakdownV1,
     type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
-    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
+    type ReviewRefreshReviewParams as ReviewRefreshReviewParams
   };
 }

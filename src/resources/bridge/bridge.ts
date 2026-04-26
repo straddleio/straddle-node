@@ -3,15 +3,7 @@
 import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
 import * as LinkAPI from './link';
-import {
-  Link,
-  LinkBankAccountParams,
-  LinkCreatePaykeyParams,
-  LinkCreatePaykeyResponse,
-  LinkCreateTanParams,
-  LinkCreateTanResponse,
-  LinkPlaidParams,
-} from './link';
+import { Link, LinkBankAccountParams, LinkCreatePaykeyParams, LinkCreatePaykeyResponse, LinkCreateTanParams, LinkCreateTanResponse, LinkPlaidParams } from './link';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -26,26 +18,8 @@ export class Bridge extends APIResource {
    * Use this endpoint to generate a session token for use in the Bridge widget.
    */
   initialize(params: BridgeInitializeParams, options?: RequestOptions): APIPromise<BridgeTokenV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params;
-    return this._client.post('/v1/bridge/initialize', {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
+    return this._client.post('/v1/bridge/initialize', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
   }
 }
 
@@ -130,7 +104,10 @@ export namespace BridgeInitializeParams {
 Bridge.Link = Link;
 
 export declare namespace Bridge {
-  export { type BridgeTokenV1 as BridgeTokenV1, type BridgeInitializeParams as BridgeInitializeParams };
+  export {
+    type BridgeTokenV1 as BridgeTokenV1,
+    type BridgeInitializeParams as BridgeInitializeParams
+  };
 
   export {
     Link as Link,
@@ -139,6 +116,6 @@ export declare namespace Bridge {
     type LinkBankAccountParams as LinkBankAccountParams,
     type LinkCreatePaykeyParams as LinkCreatePaykeyParams,
     type LinkCreateTanParams as LinkCreateTanParams,
-    type LinkPlaidParams as LinkPlaidParams,
+    type LinkPlaidParams as LinkPlaidParams
   };
 }

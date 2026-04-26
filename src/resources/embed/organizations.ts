@@ -24,24 +24,8 @@ export class Organizations extends APIResource {
    * ```
    */
   create(params: OrganizationCreateParams, options?: RequestOptions): APIPromise<OrganizationV1> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.post('/v1/organizations', {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.post('/v1/organizations', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -58,22 +42,9 @@ export class Organizations extends APIResource {
    * }
    * ```
    */
-  list(
-    params: OrganizationListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data> {
-    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
-    return this._client.getAPIList('/v1/organizations', PageNumberSchema<OrganizationPagedV1.Data>, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  list(params: OrganizationListParams | null | undefined = {}, options?: RequestOptions): PagePromise<OrganizationPagedV1DataPageNumberSchema, OrganizationPagedV1.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {}
+    return this._client.getAPIList('/v1/organizations', PageNumberSchema<OrganizationPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -88,26 +59,13 @@ export class Organizations extends APIResource {
    * );
    * ```
    */
-  get(
-    organizationID: string,
-    params: OrganizationGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<OrganizationV1> {
-    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
-    return this._client.get(path`/v1/organizations/${organizationID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  get(organizationID: string, params: OrganizationGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<OrganizationV1> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {}
+    return this._client.get(path`/v1/organizations/${organizationID}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 }
 
-export type OrganizationPagedV1DataPageNumberSchema = PageNumberSchema<OrganizationPagedV1.Data>;
+export type OrganizationPagedV1DataPageNumberSchema = PageNumberSchema<OrganizationPagedV1.Data>
 
 export interface OrganizationPagedV1 {
   data: Array<OrganizationPagedV1.Data>;
@@ -309,6 +267,6 @@ export declare namespace Organizations {
     type OrganizationPagedV1DataPageNumberSchema as OrganizationPagedV1DataPageNumberSchema,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationListParams as OrganizationListParams,
-    type OrganizationGetParams as OrganizationGetParams,
+    type OrganizationGetParams as OrganizationGetParams
   };
 }

@@ -37,24 +37,8 @@ export class Representatives extends APIResource {
    * ```
    */
   create(params: RepresentativeCreateParams, options?: RequestOptions): APIPromise<Representative> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.post('/v1/representatives', {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.post('/v1/representatives', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -83,29 +67,9 @@ export class Representatives extends APIResource {
    *   );
    * ```
    */
-  update(
-    representativeID: string,
-    params: RepresentativeUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<Representative> {
-    const {
-      'correlation-id': correlationID,
-      'idempotency-key': idempotencyKey,
-      'request-id': requestID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/representatives/${representativeID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  update(representativeID: string, params: RepresentativeUpdateParams, options?: RequestOptions): APIPromise<Representative> {
+    const { 'correlation-id': correlationID, 'idempotency-key': idempotencyKey, 'request-id': requestID, ...body } = params
+    return this._client.put(path`/v1/representatives/${representativeID}`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(idempotencyKey != null ? { 'idempotency-key': idempotencyKey } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -122,22 +86,9 @@ export class Representatives extends APIResource {
    * }
    * ```
    */
-  list(
-    params: RepresentativeListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
-    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {};
-    return this._client.getAPIList('/v1/representatives', PageNumberSchema<RepresentativePaged.Data>, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  list(params: RepresentativeListParams | null | undefined = {}, options?: RequestOptions): PagePromise<RepresentativePagedDataPageNumberSchema, RepresentativePaged.Data> {
+    const { 'correlation-id': correlationID, 'request-id': requestID, ...query } = params ?? {}
+    return this._client.getAPIList('/v1/representatives', PageNumberSchema<RepresentativePaged.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -153,22 +104,9 @@ export class Representatives extends APIResource {
    *   );
    * ```
    */
-  get(
-    representativeID: string,
-    params: RepresentativeGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<Representative> {
-    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
-    return this._client.get(path`/v1/representatives/${representativeID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  get(representativeID: string, params: RepresentativeGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<Representative> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {}
+    return this._client.get(path`/v1/representatives/${representativeID}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 
   /**
@@ -185,26 +123,13 @@ export class Representatives extends APIResource {
    *   );
    * ```
    */
-  unmask(
-    representativeID: string,
-    params: RepresentativeUnmaskParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<Representative> {
-    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {};
-    return this._client.get(path`/v1/representatives/${representativeID}/unmask`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'correlation-id': correlationID } : undefined),
-          ...(requestID != null ? { 'request-id': requestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  unmask(representativeID: string, params: RepresentativeUnmaskParams | null | undefined = {}, options?: RequestOptions): APIPromise<Representative> {
+    const { 'correlation-id': correlationID, 'request-id': requestID } = params ?? {}
+    return this._client.get(path`/v1/representatives/${representativeID}/unmask`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'correlation-id': correlationID } : undefined), ...(requestID != null ? { 'request-id': requestID } : undefined)}, options?.headers]) });
   }
 }
 
-export type RepresentativePagedDataPageNumberSchema = PageNumberSchema<RepresentativePaged.Data>;
+export type RepresentativePagedDataPageNumberSchema = PageNumberSchema<RepresentativePaged.Data>
 
 export interface Representative {
   data: Representative.Data;
@@ -362,15 +287,7 @@ export namespace Representative {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'new';
+      reason: 'unverified' | 'in_review' | 'pending' | 'stuck' | 'verified' | 'failed_verification' | 'disabled' | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -538,15 +455,7 @@ export namespace RepresentativePaged {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason:
-        | 'unverified'
-        | 'in_review'
-        | 'pending'
-        | 'stuck'
-        | 'verified'
-        | 'failed_verification'
-        | 'disabled'
-        | 'new';
+      reason: 'unverified' | 'in_review' | 'pending' | 'stuck' | 'verified' | 'failed_verification' | 'disabled' | 'new';
 
       /**
        * Identifies the origin of the status change (e.g., `watchtower`). This helps in
@@ -845,6 +754,6 @@ export declare namespace Representatives {
     type RepresentativeUpdateParams as RepresentativeUpdateParams,
     type RepresentativeListParams as RepresentativeListParams,
     type RepresentativeGetParams as RepresentativeGetParams,
-    type RepresentativeUnmaskParams as RepresentativeUnmaskParams,
+    type RepresentativeUnmaskParams as RepresentativeUnmaskParams
   };
 }
