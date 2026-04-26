@@ -65,6 +65,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.embed.accounts.get(account_id: string, correlation-id?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/accounts/{account_id}`\n\nRetrieves the details of an account that has previously been created. Supply the unique account ID that was returned from your previous request, and Straddle will return the corresponding account information.\n\n### Parameters\n\n- `account_id: string`\n  The unique identifier of the account to retrieve.\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: object; capabilities?: { consent_types: object; customer_types: object; payment_types: object; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: object; payouts: object; }; terms_of_service?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: { name: string; website: string; address?: object; description?: string; industry?: object; legal_name?: string; phone?: string; support_channels?: object; tax_id?: string; use_case?: string; }; capabilities?: { consent_types: { internet: object; signed_agreement: object; }; customer_types: { businesses: object; individuals: object; }; payment_types: { charges: object; payouts: object; }; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; payouts: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; }; terms_of_service?: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst accountV1 = await client.embed.accounts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(accountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(accountV1.data);",
+      },
+      python: {
+        method: 'embed.accounts.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.get(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(account_v1)',
+      },
       cli: {
         method: 'accounts get',
         example:
@@ -75,29 +95,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'AccountGetParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar accountV1 = await client.Embed.Accounts.Get(parameters);\n\nConsole.WriteLine(accountV1);',
       },
-      go: {
-        method: 'client.Embed.Accounts.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts/$ACCOUNT_ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.accounts.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.get(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.accounts.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(accountV1.data);",
       },
     },
   },
@@ -124,6 +124,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.embed.accounts.update(account_id: string, business_profile: { name: string; website: string; address?: address_v1; description?: string; industry?: industry_v1; legal_name?: string; phone?: string; support_channels?: support_channels_v1; tax_id?: string; use_case?: string; }, external_id?: string, metadata?: object, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/accounts/{account_id}`\n\nUpdates an existing account's information. This endpoint allows you to update various account details during onboarding or after the account has been created.\n\n### Parameters\n\n- `account_id: string`\n\n- `business_profile: { name: string; website: string; address?: { address1: string; city: string; line1: string; postal_code: string; state: string; zip: string; address2?: string; country?: string; line2?: string; }; description?: string; industry?: { category?: string; mcc?: string; sector?: string; }; legal_name?: string; phone?: string; support_channels?: { email?: string; phone?: string; url?: string; }; tax_id?: string; use_case?: string; }`\n  - `name: string`\n    The operating or trade name of the business.\n  - `website: string`\n    URL of the business's primary marketing website.\n  - `address?: { address1: string; city: string; line1: string; postal_code: string; state: string; zip: string; address2?: string; country?: string; line2?: string; }`\n    The address object is optional. If provided, it must be a valid address.\n  - `description?: string`\n    A brief description of the business and its products or services.\n  - `industry?: { category?: string; mcc?: string; sector?: string; }`\n  - `legal_name?: string`\n    The official registered name of the business.\n  - `phone?: string`\n    The primary contact phone number for the business.\n  - `support_channels?: { email?: string; phone?: string; url?: string; }`\n  - `tax_id?: string`\n    The business's tax identification number (e.g., EIN in the US).\n  - `use_case?: string`\n    A description of how the business intends to use Straddle's services.\n\n- `external_id?: string`\n  Unique identifier for the account in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the account in a structured format.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: object; capabilities?: { consent_types: object; customer_types: object; payment_types: object; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: object; payouts: object; }; terms_of_service?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: { name: string; website: string; address?: object; description?: string; industry?: object; legal_name?: string; phone?: string; support_channels?: object; tax_id?: string; use_case?: string; }; capabilities?: { consent_types: { internet: object; signed_agreement: object; }; customer_types: { businesses: object; individuals: object; }; payment_types: { charges: object; payouts: object; }; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; payouts: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; }; terms_of_service?: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst accountV1 = await client.embed.accounts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { business_profile: { name: 'name', website: 'https://example.com' } });\n\nconsole.log(accountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.update',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  business_profile: { name: 'name', website: 'https://example.com' },\n});\n\nconsole.log(accountV1.data);",
+      },
+      python: {
+        method: 'embed.accounts.update',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.update(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    business_profile={\n        "name": "name",\n        "website": "https://example.com",\n    },\n)\nprint(account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountUpdateParams{\n\t\t\tBusinessProfile: straddle.BusinessProfileV1Param{\n\t\t\t\tName:    "name",\n\t\t\t\tWebsite: "https://example.com",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.update',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  business_profile: {name: "name", website: "https://example.com"}\n)\n\nputs(account_v1)',
+      },
       cli: {
         method: 'accounts update',
         example:
@@ -134,29 +154,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'AccountUpdateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    BusinessProfile = new()\n    {\n        Name = "name",\n        Website = "https://example.com",\n        Address = new()\n        {\n            Address1 = "address1",\n            City = "city",\n            Line1 = "line1",\n            PostalCode = "21029-1360",\n            State = "SE",\n            Zip = "zip",\n            Address2 = "address2",\n            Country = "country",\n            Line2 = "line2",\n        },\n        Description = "description",\n        Industry = new()\n        {\n            Category = "category",\n            Mcc = "mcc",\n            Sector = "sector",\n        },\n        LegalName = "legal_name",\n        Phone = "+46991022",\n        SupportChannels = new()\n        {\n            Email = "dev@stainless.com",\n            Phone = "+46991022",\n            Url = "https://example.com",\n        },\n        TaxID = "210297980",\n        UseCase = "use_case",\n    },\n};\n\nvar accountV1 = await client.Embed.Accounts.Update(parameters);\n\nConsole.WriteLine(accountV1);',
       },
-      go: {
-        method: 'client.Embed.Accounts.Update',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountUpdateParams{\n\t\t\tBusinessProfile: straddle.BusinessProfileV1Param{\n\t\t\t\tName:    "name",\n\t\t\t\tWebsite: "https://example.com",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts/$ACCOUNT_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "business_profile": {\n            "name": "name",\n            "website": "https://example.com"\n          }\n        }\'',
-      },
-      python: {
-        method: 'embed.accounts.update',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.update(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    business_profile={\n        "name": "name",\n        "website": "https://example.com",\n    },\n)\nprint(account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.accounts.update',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  business_profile: {name: "name", website: "https://example.com"}\n)\n\nputs(account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.update',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  business_profile: { name: 'name', website: 'https://example.com' },\n});\n\nconsole.log(accountV1.data);",
       },
     },
   },
@@ -185,6 +185,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.embed.accounts.create(access_level: 'standard' | 'managed', account_type: 'business', business_profile: { name: string; website: string; address?: address_v1; description?: string; industry?: industry_v1; legal_name?: string; phone?: string; support_channels?: support_channels_v1; tax_id?: string; use_case?: string; }, organization_id: string, external_id?: string, metadata?: object, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/accounts`\n\nCreates a new account associated with your Straddle platform integration. This endpoint allows you to set up an account with specified details, including business information and access levels.\n\n### Parameters\n\n- `access_level: 'standard' | 'managed'`\n  The access level granted to the account. This is determined by your platform configuration. Use `standard` unless instructed otherwise by Straddle.\n\n- `account_type: 'business'`\n  The type of account to be created. Currently, only `business` is supported.\n\n- `business_profile: { name: string; website: string; address?: { address1: string; city: string; line1: string; postal_code: string; state: string; zip: string; address2?: string; country?: string; line2?: string; }; description?: string; industry?: { category?: string; mcc?: string; sector?: string; }; legal_name?: string; phone?: string; support_channels?: { email?: string; phone?: string; url?: string; }; tax_id?: string; use_case?: string; }`\n  - `name: string`\n    The operating or trade name of the business.\n  - `website: string`\n    URL of the business's primary marketing website.\n  - `address?: { address1: string; city: string; line1: string; postal_code: string; state: string; zip: string; address2?: string; country?: string; line2?: string; }`\n    The address object is optional. If provided, it must be a valid address.\n  - `description?: string`\n    A brief description of the business and its products or services.\n  - `industry?: { category?: string; mcc?: string; sector?: string; }`\n  - `legal_name?: string`\n    The official registered name of the business.\n  - `phone?: string`\n    The primary contact phone number for the business.\n  - `support_channels?: { email?: string; phone?: string; url?: string; }`\n  - `tax_id?: string`\n    The business's tax identification number (e.g., EIN in the US).\n  - `use_case?: string`\n    A description of how the business intends to use Straddle's services.\n\n- `organization_id: string`\n  The unique identifier of the organization related to this account.\n\n- `external_id?: string`\n  Unique identifier for the account in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the account in a structured format.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: object; capabilities?: { consent_types: object; customer_types: object; payment_types: object; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: object; payouts: object; }; terms_of_service?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: { name: string; website: string; address?: object; description?: string; industry?: object; legal_name?: string; phone?: string; support_channels?: object; tax_id?: string; use_case?: string; }; capabilities?: { consent_types: { internet: object; signed_agreement: object; }; customer_types: { businesses: object; individuals: object; }; payment_types: { charges: object; payouts: object; }; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; payouts: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; }; terms_of_service?: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst accountV1 = await client.embed.accounts.create({\n  access_level: 'standard',\n  account_type: 'business',\n  business_profile: { name: 'name', website: 'https://example.com' },\n  organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(accountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.create({\n  access_level: 'standard',\n  account_type: 'business',\n  business_profile: { name: 'name', website: 'https://example.com' },\n  organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(accountV1.data);",
+      },
+      python: {
+        method: 'embed.accounts.create',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.create(\n    access_level="standard",\n    account_type="business",\n    business_profile={\n        "name": "name",\n        "website": "https://example.com",\n    },\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.New(context.TODO(), straddle.EmbedAccountNewParams{\n\t\tAccessLevel: straddle.EmbedAccountNewParamsAccessLevelStandard,\n\t\tAccountType: straddle.EmbedAccountNewParamsAccountTypeBusiness,\n\t\tBusinessProfile: straddle.BusinessProfileV1Param{\n\t\t\tName:    "name",\n\t\t\tWebsite: "https://example.com",\n\t\t},\n\t\tOrganizationID: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.create(\n  access_level: :standard,\n  account_type: :business,\n  business_profile: {name: "name", website: "https://example.com"},\n  organization_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n)\n\nputs(account_v1)',
+      },
       cli: {
         method: 'accounts create',
         example:
@@ -195,29 +215,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'AccountCreateParams parameters = new()\n{\n    AccessLevel = AccessLevel.Standard,\n    AccountType = AccountType.Business,\n    BusinessProfile = new()\n    {\n        Name = "name",\n        Website = "https://example.com",\n        Address = new()\n        {\n            Address1 = "address1",\n            City = "city",\n            Line1 = "line1",\n            PostalCode = "21029-1360",\n            State = "SE",\n            Zip = "zip",\n            Address2 = "address2",\n            Country = "country",\n            Line2 = "line2",\n        },\n        Description = "description",\n        Industry = new()\n        {\n            Category = "category",\n            Mcc = "mcc",\n            Sector = "sector",\n        },\n        LegalName = "legal_name",\n        Phone = "+46991022",\n        SupportChannels = new()\n        {\n            Email = "dev@stainless.com",\n            Phone = "+46991022",\n            Url = "https://example.com",\n        },\n        TaxID = "210297980",\n        UseCase = "use_case",\n    },\n    OrganizationID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n};\n\nvar accountV1 = await client.Embed.Accounts.Create(parameters);\n\nConsole.WriteLine(accountV1);',
       },
-      go: {
-        method: 'client.Embed.Accounts.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.New(context.TODO(), straddle.EmbedAccountNewParams{\n\t\tAccessLevel: straddle.EmbedAccountNewParamsAccessLevelStandard,\n\t\tAccountType: straddle.EmbedAccountNewParamsAccountTypeBusiness,\n\t\tBusinessProfile: straddle.BusinessProfileV1Param{\n\t\t\tName:    "name",\n\t\t\tWebsite: "https://example.com",\n\t\t},\n\t\tOrganizationID: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "access_level": "standard",\n          "account_type": "business",\n          "business_profile": {\n            "name": "name",\n            "website": "https://example.com"\n          },\n          "organization_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n        }\'',
-      },
-      python: {
-        method: 'embed.accounts.create',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.create(\n    access_level="standard",\n    account_type="business",\n    business_profile={\n        "name": "name",\n        "website": "https://example.com",\n    },\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.accounts.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.create(\n  access_level: :standard,\n  account_type: :business,\n  business_profile: {name: "name", website: "https://example.com"},\n  organization_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n)\n\nputs(account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.create({\n  access_level: 'standard',\n  account_type: 'business',\n  business_profile: { name: 'name', website: 'https://example.com' },\n  organization_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(accountV1.data);",
       },
     },
   },
@@ -247,6 +247,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.embed.accounts.list(external_id?: string, page_number?: number, page_size?: number, search_text?: string, sort_by?: string, sort_order?: 'asc' | 'desc', status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive', type?: 'business', correlation-id?: string, request-id?: string): { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: object; capabilities?: { consent_types: object; customer_types: object; payment_types: object; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: object; payouts: object; }; terms_of_service?: object; updated_at?: string; }`\n\n**get** `/v1/accounts`\n\nReturns a list of accounts associated with your Straddle platform integration. The accounts are returned sorted by creation date, with the most recently created accounts appearing first. This endpoint supports advanced sorting and filtering options.\n\n### Parameters\n\n- `external_id?: string`\n\n- `page_number?: number`\n  Results page number. Starts at page 1. Default value: 1\n\n- `page_size?: number`\n  Page size. Default value: 100. Max value: 1000\n\n- `search_text?: string`\n\n- `sort_by?: string`\n  Sort By. Default value: 'id'.\n\n- `sort_order?: 'asc' | 'desc'`\n  Sort Order. Default value: 'asc'.\n\n- `status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'`\n\n- `type?: 'business'`\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: { name: string; website: string; address?: object; description?: string; industry?: object; legal_name?: string; phone?: string; support_channels?: object; tax_id?: string; use_case?: string; }; capabilities?: { consent_types: { internet: object; signed_agreement: object; }; customer_types: { businesses: object; individuals: object; }; payment_types: { charges: object; payouts: object; }; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; payouts: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; }; terms_of_service?: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }; updated_at?: string; }`\n\n  - `id: string`\n  - `access_level: 'standard' | 'managed'`\n  - `organization_id: string`\n  - `status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'`\n  - `status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }`\n  - `type: 'business'`\n  - `business_profile?: { name: string; website: string; address?: { address1: string; city: string; line1: string; postal_code: string; state: string; zip: string; address2?: string; country?: string; line2?: string; }; description?: string; industry?: { category?: string; mcc?: string; sector?: string; }; legal_name?: string; phone?: string; support_channels?: { email?: string; phone?: string; url?: string; }; tax_id?: string; use_case?: string; }`\n  - `capabilities?: { consent_types: { internet: { capability_status: 'active' | 'inactive'; }; signed_agreement: { capability_status: 'active' | 'inactive'; }; }; customer_types: { businesses: { capability_status: 'active' | 'inactive'; }; individuals: { capability_status: 'active' | 'inactive'; }; }; payment_types: { charges: { capability_status: 'active' | 'inactive'; }; payouts: { capability_status: 'active' | 'inactive'; }; }; }`\n  - `created_at?: string`\n  - `external_id?: string`\n  - `metadata?: object`\n  - `settings?: { charges: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; payouts: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; }`\n  - `terms_of_service?: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const account of client.embed.accounts.list()) {\n  console.log(account);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const account of client.embed.accounts.list()) {\n  console.log(account.id);\n}",
+      },
+      python: {
+        method: 'embed.accounts.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.accounts.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Accounts.List(context.TODO(), straddle.EmbedAccountListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.accounts.list\n\nputs(page)',
+      },
       cli: {
         method: 'accounts list',
         example: "straddle embed:accounts list \\\n  --api-key 'My API Key'",
@@ -256,29 +276,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'AccountListParams parameters = new();\n\nvar page = await client.Embed.Accounts.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Embed.Accounts.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Accounts.List(context.TODO(), straddle.EmbedAccountListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.accounts.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.accounts.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'embed.accounts.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.accounts.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const account of client.embed.accounts.list()) {\n  console.log(account.id);\n}",
       },
     },
   },
@@ -303,6 +303,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## onboard\n\n`client.embed.accounts.onboard(account_id: string, terms_of_service: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/accounts/{account_id}/onboard`\n\nInitiates the onboarding process for a new account. This endpoint can only be used for accounts where at least one representative and one bank account have already been created.\n\n### Parameters\n\n- `account_id: string`\n\n- `terms_of_service: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }`\n  - `accepted_date: string`\n    The datetime of when the terms of service were accepted, in ISO 8601 format.\n  - `agreement_type: 'embedded' | 'direct'`\n    The type or version of the agreement accepted. Use `embedded` unless your platform was specifically enabled for `direct` agreements.\n  - `agreement_url: string`\n    The URL where the full text of the accepted agreement can be found.\n  - `accepted_ip?: string`\n    The IP address from which the terms of service were accepted.\n  - `accepted_user_agent?: string`\n    The user agent string of the browser or application used to accept the terms.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: object; capabilities?: { consent_types: object; customer_types: object; payment_types: object; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: object; payouts: object; }; terms_of_service?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: { name: string; website: string; address?: object; description?: string; industry?: object; legal_name?: string; phone?: string; support_channels?: object; tax_id?: string; use_case?: string; }; capabilities?: { consent_types: { internet: object; signed_agreement: object; }; customer_types: { businesses: object; individuals: object; }; payment_types: { charges: object; payouts: object; }; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; payouts: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; }; terms_of_service?: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst accountV1 = await client.embed.accounts.onboard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { terms_of_service: {\n  accepted_date: '2019-12-27T18:11:19.117Z',\n  agreement_type: 'embedded',\n  agreement_url: 'agreement_url',\n} });\n\nconsole.log(accountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.onboard',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.onboard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  terms_of_service: {\n    accepted_date: '2019-12-27T18:11:19.117Z',\n    agreement_type: 'embedded',\n    agreement_url: 'agreement_url',\n  },\n});\n\nconsole.log(accountV1.data);",
+      },
+      python: {
+        method: 'embed.accounts.onboard',
+        example:
+          'import os\nfrom datetime import datetime\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.onboard(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    terms_of_service={\n        "accepted_date": datetime.fromisoformat("2019-12-27T18:11:19.117"),\n        "agreement_type": "embedded",\n        "agreement_url": "agreement_url",\n    },\n)\nprint(account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.Onboard',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Onboard(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountOnboardParams{\n\t\t\tTermsOfService: straddle.TermsOfServiceV1Param{\n\t\t\t\tAcceptedDate:  time.Now(),\n\t\t\t\tAgreementType: straddle.TermsOfServiceV1AgreementTypeEmbedded,\n\t\t\t\tAgreementURL:  straddle.String("agreement_url"),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.onboard',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.onboard(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  terms_of_service: {accepted_date: "2019-12-27T18:11:19.117Z", agreement_type: :embedded, agreement_url: "agreement_url"}\n)\n\nputs(account_v1)',
+      },
       cli: {
         method: 'accounts onboard',
         example:
@@ -313,29 +333,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'AccountOnboardParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    TermsOfService = new()\n    {\n        AcceptedDate = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),\n        AgreementType = AgreementType.Embedded,\n        AgreementUrl = "agreement_url",\n        AcceptedIP = "accepted_ip",\n        AcceptedUserAgent = "accepted_user_agent",\n    },\n};\n\nvar accountV1 = await client.Embed.Accounts.Onboard(parameters);\n\nConsole.WriteLine(accountV1);',
       },
-      go: {
-        method: 'client.Embed.Accounts.Onboard',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Onboard(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountOnboardParams{\n\t\t\tTermsOfService: straddle.TermsOfServiceV1Param{\n\t\t\t\tAcceptedDate:  time.Now(),\n\t\t\t\tAgreementType: straddle.TermsOfServiceV1AgreementTypeEmbedded,\n\t\t\t\tAgreementURL:  straddle.String("agreement_url"),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts/$ACCOUNT_ID/onboard \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "terms_of_service": {\n            "accepted_date": "2019-12-27T18:11:19.117Z",\n            "agreement_type": "embedded",\n            "agreement_url": "agreement_url"\n          }\n        }\'',
-      },
-      python: {
-        method: 'embed.accounts.onboard',
-        example:
-          'import os\nfrom datetime import datetime\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.onboard(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    terms_of_service={\n        "accepted_date": datetime.fromisoformat("2019-12-27T18:11:19.117"),\n        "agreement_type": "embedded",\n        "agreement_url": "agreement_url",\n    },\n)\nprint(account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.accounts.onboard',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.onboard(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  terms_of_service: {accepted_date: "2019-12-27T18:11:19.117Z", agreement_type: :embedded, agreement_url: "agreement_url"}\n)\n\nputs(account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.onboard',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.onboard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  terms_of_service: {\n    accepted_date: '2019-12-27T18:11:19.117Z',\n    agreement_type: 'embedded',\n    agreement_url: 'agreement_url',\n  },\n});\n\nconsole.log(accountV1.data);",
       },
     },
   },
@@ -360,6 +360,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## simulate\n\n`client.embed.accounts.simulate(account_id: string, final_status?: 'onboarding' | 'active', correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/accounts/{account_id}/simulate`\n\nSimulate the status transitions for sandbox accounts. This endpoint can only be used for sandbox accounts.\n\n### Parameters\n\n- `account_id: string`\n\n- `final_status?: 'onboarding' | 'active'`\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: object; capabilities?: { consent_types: object; customer_types: object; payment_types: object; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: object; payouts: object; }; terms_of_service?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; access_level: 'standard' | 'managed'; organization_id: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; type: 'business'; business_profile?: { name: string; website: string; address?: object; description?: string; industry?: object; legal_name?: string; phone?: string; support_channels?: object; tax_id?: string; use_case?: string; }; capabilities?: { consent_types: { internet: object; signed_agreement: object; }; customer_types: { businesses: object; individuals: object; }; payment_types: { charges: object; payouts: object; }; }; created_at?: string; external_id?: string; metadata?: object; settings?: { charges: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; payouts: { daily_amount: number; funding_time: 'immediate' | 'next_day' | 'one_day' | 'two_day' | 'three_day' | 'four_day' | 'five_day'; linked_bank_account_id: string; max_amount: number; monthly_amount: number; monthly_count: number; }; }; terms_of_service?: { accepted_date: string; agreement_type: 'embedded' | 'direct'; agreement_url: string; accepted_ip?: string; accepted_user_agent?: string; }; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst accountV1 = await client.embed.accounts.simulate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(accountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.simulate',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.simulate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(accountV1.data);",
+      },
+      python: {
+        method: 'embed.accounts.simulate',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.simulate(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.Simulate',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Simulate(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountSimulateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.simulate',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.simulate("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(account_v1)',
+      },
       cli: {
         method: 'accounts simulate',
         example:
@@ -370,29 +390,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'AccountSimulateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar accountV1 = await client.Embed.Accounts.Simulate(parameters);\n\nConsole.WriteLine(accountV1);',
       },
-      go: {
-        method: 'client.Embed.Accounts.Simulate',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\taccountV1, err := client.Embed.Accounts.Simulate(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountSimulateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", accountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts/$ACCOUNT_ID/simulate \\\n    -X POST \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.accounts.simulate',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\naccount_v1 = client.embed.accounts.simulate(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.accounts.simulate',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\naccount_v1 = straddle.embed.accounts.simulate("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.simulate',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst accountV1 = await client.embed.accounts.simulate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(accountV1.data);",
       },
     },
   },
@@ -422,6 +422,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.embed.accounts.capabilityRequests.create(account_id: string, businesses?: { enable: boolean; }, charges?: { daily_amount: number; enable: boolean; max_amount: number; monthly_amount: number; monthly_count: number; }, individuals?: { enable: boolean; }, internet?: { enable: boolean; }, payouts?: { daily_amount: number; enable: boolean; max_amount: number; monthly_amount: number; monthly_count: number; }, signed_agreement?: { enable: boolean; }, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object[]; meta: paged_response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/accounts/{account_id}/capability_requests`\n\nSubmits a request to enable a specific capability for an account. Use this endpoint to request additional features or services for an account.\n\n### Parameters\n\n- `account_id: string`\n\n- `businesses?: { enable: boolean; }`\n  Allows the account to accept payments from businesses.\n  - `enable: boolean`\n\n- `charges?: { daily_amount: number; enable: boolean; max_amount: number; monthly_amount: number; monthly_count: number; }`\n  The charges capability settings for the account.\n  - `daily_amount: number`\n    The maximum dollar amount of charges in a calendar day.\n  - `enable: boolean`\n    Determines whether `charges` are enabled for the account.\n  - `max_amount: number`\n    The maximum amount of a single charge.\n  - `monthly_amount: number`\n    The maximum dollar amount of charges in a calendar month.\n  - `monthly_count: number`\n    The maximum number of charges in a calendar month.\n\n- `individuals?: { enable: boolean; }`\n  Allows the account to accept payments from individuals.\n  - `enable: boolean`\n\n- `internet?: { enable: boolean; }`\n  Allows the account to accept payments authorized via the internet or mobile applications.\n  - `enable: boolean`\n\n- `payouts?: { daily_amount: number; enable: boolean; max_amount: number; monthly_amount: number; monthly_count: number; }`\n  The payouts capability settings for the account.\n  - `daily_amount: number`\n    The maximum dollar amount of payouts in a day.\n  - `enable: boolean`\n    Determines whether `payouts` are enabled for the account.\n  - `max_amount: number`\n    The maximum amount of a single payout.\n  - `monthly_amount: number`\n    The maximum dollar amount of payouts in a month.\n  - `monthly_count: number`\n    The maximum number of payouts in a month.\n\n- `signed_agreement?: { enable: boolean; }`\n  Allows the account to accept payments authorized by signed agreements or contracts.\n  - `enable: boolean`\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; category: 'payment_type' | 'customer_type' | 'consent_type'; created_at: string; enable: boolean; status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing'; type: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet'; updated_at: string; settings?: object; }[]; meta: { api_request_id: string; api_request_timestamp: string; max_page_size: number; page_number: number; page_size: number; sort_by: string; sort_order: 'asc' | 'desc'; total_items: number; total_pages: number; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; category: 'payment_type' | 'customer_type' | 'consent_type'; created_at: string; enable: boolean; status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing'; type: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet'; updated_at: string; settings?: object; }[]`\n  - `meta: { api_request_id: string; api_request_timestamp: string; max_page_size: number; page_number: number; page_size: number; sort_by: string; sort_order: 'asc' | 'desc'; total_items: number; total_pages: number; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst capabilityRequestPagedV1 = await client.embed.accounts.capabilityRequests.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(capabilityRequestPagedV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.capabilityRequests.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst capabilityRequestPagedV1 = await client.embed.accounts.capabilityRequests.create(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(capabilityRequestPagedV1.data);",
+      },
+      python: {
+        method: 'embed.accounts.capability_requests.create',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncapability_request_paged_v1 = client.embed.accounts.capability_requests.create(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(capability_request_paged_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.CapabilityRequests.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcapabilityRequestPagedV1, err := client.Embed.Accounts.CapabilityRequests.New(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountCapabilityRequestNewParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", capabilityRequestPagedV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.capability_requests.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncapability_request_paged_v1 = straddle.embed.accounts.capability_requests.create("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(capability_request_paged_v1)',
+      },
       cli: {
         method: 'capability_requests create',
         example:
@@ -432,29 +452,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CapabilityRequestCreateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar capabilityRequestPagedV1 = await client.Embed.Accounts.CapabilityRequests.Create(parameters);\n\nConsole.WriteLine(capabilityRequestPagedV1);',
       },
-      go: {
-        method: 'client.Embed.Accounts.CapabilityRequests.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcapabilityRequestPagedV1, err := client.Embed.Accounts.CapabilityRequests.New(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountCapabilityRequestNewParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", capabilityRequestPagedV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts/$ACCOUNT_ID/capability_requests \\\n    -X POST \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.accounts.capability_requests.create',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncapability_request_paged_v1 = client.embed.accounts.capability_requests.create(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(capability_request_paged_v1.data)',
-      },
-      ruby: {
-        method: 'embed.accounts.capability_requests.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncapability_request_paged_v1 = straddle.embed.accounts.capability_requests.create("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(capability_request_paged_v1)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.capabilityRequests.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst capabilityRequestPagedV1 = await client.embed.accounts.capabilityRequests.create(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(capabilityRequestPagedV1.data);",
       },
     },
   },
@@ -484,6 +484,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.embed.accounts.capabilityRequests.list(account_id: string, category?: 'payment_type' | 'customer_type' | 'consent_type', page_number?: number, page_size?: number, sort_by?: string, sort_order?: 'asc' | 'desc', status?: 'active' | 'inactive' | 'in_review' | 'rejected', type?: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet', correlation-id?: string, request-id?: string): { id: string; account_id: string; category: 'payment_type' | 'customer_type' | 'consent_type'; created_at: string; enable: boolean; status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing'; type: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet'; updated_at: string; settings?: object; }`\n\n**get** `/v1/accounts/{account_id}/capability_requests`\n\nRetrieves a list of capability requests associated with an account. The requests are returned sorted by creation date, with the most recent requests appearing first. This endpoint supports advanced sorting and filtering options.\n\n### Parameters\n\n- `account_id: string`\n\n- `category?: 'payment_type' | 'customer_type' | 'consent_type'`\n  Filter capability requests by category.\n\n- `page_number?: number`\n  Results page number. Starts at page 1.\n\n- `page_size?: number`\n  Page size.Max value: 1000\n\n- `sort_by?: string`\n  Sort By.\n\n- `sort_order?: 'asc' | 'desc'`\n  Sort Order.\n\n- `status?: 'active' | 'inactive' | 'in_review' | 'rejected'`\n  Filter capability requests by their current status.\n\n- `type?: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet'`\n  Filter capability requests by the specific type of capability.\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ id: string; account_id: string; category: 'payment_type' | 'customer_type' | 'consent_type'; created_at: string; enable: boolean; status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing'; type: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet'; updated_at: string; settings?: object; }`\n\n  - `id: string`\n  - `account_id: string`\n  - `category: 'payment_type' | 'customer_type' | 'consent_type'`\n  - `created_at: string`\n  - `enable: boolean`\n  - `status: 'active' | 'inactive' | 'in_review' | 'rejected' | 'approved' | 'reviewing'`\n  - `type: 'charges' | 'payouts' | 'individuals' | 'businesses' | 'signed_agreement' | 'internet'`\n  - `updated_at: string`\n  - `settings?: object`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const capabilityRequest of client.embed.accounts.capabilityRequests.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')) {\n  console.log(capabilityRequest);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.accounts.capabilityRequests.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const capabilityRequest of client.embed.accounts.capabilityRequests.list(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n)) {\n  console.log(capabilityRequest.id);\n}",
+      },
+      python: {
+        method: 'embed.accounts.capability_requests.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.accounts.capability_requests.list(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Embed.Accounts.CapabilityRequests.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Accounts.CapabilityRequests.List(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountCapabilityRequestListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'embed.accounts.capability_requests.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.accounts.capability_requests.list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(page)',
+      },
       cli: {
         method: 'capability_requests list',
         example:
@@ -494,29 +514,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CapabilityRequestListParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar page = await client.Embed.Accounts.CapabilityRequests.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Embed.Accounts.CapabilityRequests.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Accounts.CapabilityRequests.List(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedAccountCapabilityRequestListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/accounts/$ACCOUNT_ID/capability_requests \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.accounts.capability_requests.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.accounts.capability_requests.list(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'embed.accounts.capability_requests.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.accounts.capability_requests.list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.embed.accounts.capabilityRequests.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const capabilityRequest of client.embed.accounts.capabilityRequests.list(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n)) {\n  console.log(capabilityRequest.id);\n}",
       },
     },
   },
@@ -545,6 +545,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.embed.linkedBankAccounts.create(account_id: string, bank_account: { account_holder: string; account_number: string; routing_number: string; }, description?: string, metadata?: object, platform_id?: string, purposes?: 'charges' | 'payouts' | 'billing'[], correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/linked_bank_accounts`\n\nCreates a new linked bank account associated with a Straddle account. This endpoint allows you to associate external bank accounts with a Straddle account for various payment operations such as payment deposits, payout withdrawals, and more.\n\n### Parameters\n\n- `account_id: string`\n  The unique identifier of the Straddle account to associate this bank account with.\n\n- `bank_account: { account_holder: string; account_number: string; routing_number: string; }`\n  - `account_holder: string`\n    The name of the account holder as it appears on the bank account. Typically, this is the legal name of the business associated with the account.\n  - `account_number: string`\n    The bank account number.\n  - `routing_number: string`\n    The routing number of the bank account.\n\n- `description?: string`\n  Optional description for the bank account.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the linked bank account in a structured format.\n\n- `platform_id?: string`\n  The unique identifier of the Straddle Platform to associate this bank account with.\n\n- `purposes?: 'charges' | 'payouts' | 'billing'[]`\n  The purposes for the linked bank account.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.create({\n  account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  bank_account: {\n  account_holder: 'account_holder',\n  account_number: 'account_number',\n  routing_number: 'xxxxxxxxx',\n},\n});\n\nconsole.log(linkedBankAccountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.linkedBankAccounts.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.create({\n  account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  bank_account: {\n    account_holder: 'account_holder',\n    account_number: 'account_number',\n    routing_number: 'xxxxxxxxx',\n  },\n});\n\nconsole.log(linkedBankAccountV1.data);",
+      },
+      python: {
+        method: 'embed.linked_bank_accounts.create',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.create(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    bank_account={\n        "account_holder": "account_holder",\n        "account_number": "account_number",\n        "routing_number": "xxxxxxxxx",\n    },\n)\nprint(linked_bank_account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.LinkedBankAccounts.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.New(context.TODO(), straddle.EmbedLinkedBankAccountNewParams{\n\t\tAccountID: straddle.String("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),\n\t\tBankAccount: straddle.EmbedLinkedBankAccountNewParamsBankAccount{\n\t\t\tAccountHolder: "account_holder",\n\t\t\tAccountNumber: "account_number",\n\t\t\tRoutingNumber: "xxxxxxxxx",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.linked_bank_accounts.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.create(\n  account_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  bank_account: {account_holder: "account_holder", account_number: "account_number", routing_number: "xxxxxxxxx"}\n)\n\nputs(linked_bank_account_v1)',
+      },
       cli: {
         method: 'linked_bank_accounts create',
         example:
@@ -555,29 +575,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkedBankAccountCreateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    BankAccount = new()\n    {\n        AccountHolder = "account_holder",\n        AccountNumber = "account_number",\n        RoutingNumber = "xxxxxxxxx",\n    },\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Create(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
       },
-      go: {
-        method: 'client.Embed.LinkedBankAccounts.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.New(context.TODO(), straddle.EmbedLinkedBankAccountNewParams{\n\t\tAccountID: straddle.String("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),\n\t\tBankAccount: straddle.EmbedLinkedBankAccountNewParamsBankAccount{\n\t\t\tAccountHolder: "account_holder",\n\t\t\tAccountNumber: "account_number",\n\t\t\tRoutingNumber: "xxxxxxxxx",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/linked_bank_accounts \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "account_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "bank_account": {\n            "account_holder": "account_holder",\n            "account_number": "account_number",\n            "routing_number": "xxxxxxxxx"\n          }\n        }\'',
-      },
-      python: {
-        method: 'embed.linked_bank_accounts.create',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.create(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    bank_account={\n        "account_holder": "account_holder",\n        "account_number": "account_number",\n        "routing_number": "xxxxxxxxx",\n    },\n)\nprint(linked_bank_account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.linked_bank_accounts.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.create(\n  account_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  bank_account: {account_holder: "account_holder", account_number: "account_number", routing_number: "xxxxxxxxx"}\n)\n\nputs(linked_bank_account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.linkedBankAccounts.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.create({\n  account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  bank_account: {\n    account_holder: 'account_holder',\n    account_number: 'account_number',\n    routing_number: 'xxxxxxxxx',\n  },\n});\n\nconsole.log(linkedBankAccountV1.data);",
       },
     },
   },
@@ -607,6 +607,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.embed.linkedBankAccounts.list(account_id?: string, level?: 'account' | 'platform', page_number?: number, page_size?: number, purpose?: 'charges' | 'payouts' | 'billing', sort_by?: string, sort_order?: 'asc' | 'desc', status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled', correlation-id?: string, request-id?: string): { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }`\n\n**get** `/v1/linked_bank_accounts`\n\nReturns a list of bank accounts associated with a specific Straddle account. The linked bank accounts are returned sorted by creation date, with the most recently created appearing first. This endpoint supports pagination to handle accounts with multiple linked bank accounts.\n\n### Parameters\n\n- `account_id?: string`\n  The unique identifier of the related account.\n\n- `level?: 'account' | 'platform'`\n\n- `page_number?: number`\n  Results page number. Starts at page 1.\n\n- `page_size?: number`\n  Page size. Max value: 1000\n\n- `purpose?: 'charges' | 'payouts' | 'billing'`\n  The purpose of the linked bank accounts to return. Possible values: 'charges', 'payouts', 'billing'.\n\n- `sort_by?: string`\n  Sort By.\n\n- `sort_order?: 'asc' | 'desc'`\n  Sort Order.\n\n- `status?: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'`\n  The status of the linked bank accounts to return. Possible values: 'created', 'onboarding', 'active', 'inactive', 'rejected'.\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }`\n\n  - `id: string`\n  - `account_id: string`\n  - `bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }`\n  - `created_at: string`\n  - `purposes: 'charges' | 'payouts' | 'billing'[]`\n  - `status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'`\n  - `status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }`\n  - `updated_at: string`\n  - `description?: string`\n  - `metadata?: object`\n  - `platform_id?: string`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const linkedBankAccount of client.embed.linkedBankAccounts.list()) {\n  console.log(linkedBankAccount);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.linkedBankAccounts.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const linkedBankAccount of client.embed.linkedBankAccounts.list()) {\n  console.log(linkedBankAccount.id);\n}",
+      },
+      python: {
+        method: 'embed.linked_bank_accounts.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.linked_bank_accounts.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Embed.LinkedBankAccounts.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.LinkedBankAccounts.List(context.TODO(), straddle.EmbedLinkedBankAccountListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'embed.linked_bank_accounts.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.linked_bank_accounts.list\n\nputs(page)',
+      },
       cli: {
         method: 'linked_bank_accounts list',
         example: "straddle embed:linked-bank-accounts list \\\n  --api-key 'My API Key'",
@@ -616,29 +636,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkedBankAccountListParams parameters = new();\n\nvar page = await client.Embed.LinkedBankAccounts.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Embed.LinkedBankAccounts.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.LinkedBankAccounts.List(context.TODO(), straddle.EmbedLinkedBankAccountListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/linked_bank_accounts \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.linked_bank_accounts.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.linked_bank_accounts.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'embed.linked_bank_accounts.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.linked_bank_accounts.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.embed.linkedBankAccounts.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const linkedBankAccount of client.embed.linkedBankAccounts.list()) {\n  console.log(linkedBankAccount.id);\n}",
       },
     },
   },
@@ -664,6 +664,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.embed.linkedBankAccounts.update(linked_bank_account_id: string, bank_account: { account_holder: string; account_number: string; routing_number: string; }, metadata?: object, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/linked_bank_accounts/{linked_bank_account_id}`\n\nUpdates an existing linked bank account's information. This can be used to update account details during onboarding or to update metadata associated with the linked account. The linked bank account must be in 'created' or 'onboarding' status.\n\n### Parameters\n\n- `linked_bank_account_id: string`\n\n- `bank_account: { account_holder: string; account_number: string; routing_number: string; }`\n  - `account_holder: string`\n    The name of the account holder as it appears on the bank account. Typically, this is the legal name of the business associated with the account.\n  - `account_number: string`\n    The bank account number.\n  - `routing_number: string`\n    The routing number of the bank account.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the linked bank account in a structured format.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { bank_account: {\n  account_holder: 'account_holder',\n  account_number: 'account_number',\n  routing_number: 'xxxxxxxxx',\n} });\n\nconsole.log(linkedBankAccountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.linkedBankAccounts.update',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  {\n    bank_account: {\n      account_holder: 'account_holder',\n      account_number: 'account_number',\n      routing_number: 'xxxxxxxxx',\n    },\n  },\n);\n\nconsole.log(linkedBankAccountV1.data);",
+      },
+      python: {
+        method: 'embed.linked_bank_accounts.update',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.update(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    bank_account={\n        "account_holder": "account_holder",\n        "account_number": "account_number",\n        "routing_number": "xxxxxxxxx",\n    },\n)\nprint(linked_bank_account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.LinkedBankAccounts.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountUpdateParams{\n\t\t\tBankAccount: straddle.EmbedLinkedBankAccountUpdateParamsBankAccount{\n\t\t\t\tAccountHolder: "account_holder",\n\t\t\t\tAccountNumber: "account_number",\n\t\t\t\tRoutingNumber: "xxxxxxxxx",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.linked_bank_accounts.update',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  bank_account: {account_holder: "account_holder", account_number: "account_number", routing_number: "xxxxxxxxx"}\n)\n\nputs(linked_bank_account_v1)',
+      },
       cli: {
         method: 'linked_bank_accounts update',
         example:
@@ -674,29 +694,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkedBankAccountUpdateParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    BankAccount = new()\n    {\n        AccountHolder = "account_holder",\n        AccountNumber = "account_number",\n        RoutingNumber = "xxxxxxxxx",\n    },\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Update(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
       },
-      go: {
-        method: 'client.Embed.LinkedBankAccounts.Update',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountUpdateParams{\n\t\t\tBankAccount: straddle.EmbedLinkedBankAccountUpdateParamsBankAccount{\n\t\t\t\tAccountHolder: "account_holder",\n\t\t\t\tAccountNumber: "account_number",\n\t\t\t\tRoutingNumber: "xxxxxxxxx",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/linked_bank_accounts/$LINKED_BANK_ACCOUNT_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "bank_account": {\n            "account_holder": "account_holder",\n            "account_number": "account_number",\n            "routing_number": "xxxxxxxxx"\n          }\n        }\'',
-      },
-      python: {
-        method: 'embed.linked_bank_accounts.update',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.update(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    bank_account={\n        "account_holder": "account_holder",\n        "account_number": "account_number",\n        "routing_number": "xxxxxxxxx",\n    },\n)\nprint(linked_bank_account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.linked_bank_accounts.update',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  bank_account: {account_holder: "account_holder", account_number: "account_number", routing_number: "xxxxxxxxx"}\n)\n\nputs(linked_bank_account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.linkedBankAccounts.update',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  {\n    bank_account: {\n      account_holder: 'account_holder',\n      account_number: 'account_number',\n      routing_number: 'xxxxxxxxx',\n    },\n  },\n);\n\nconsole.log(linkedBankAccountV1.data);",
       },
     },
   },
@@ -715,6 +715,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.embed.linkedBankAccounts.get(linked_bank_account_id: string, correlation-id?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/linked_bank_accounts/{linked_bank_account_id}`\n\nRetrieves the details of a linked bank account that has previously been created. Supply the unique linked bank account `id`, and Straddle will return the corresponding information. The response includes masked account details for security purposes.\n\n### Parameters\n\n- `linked_bank_account_id: string`\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(linkedBankAccountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.linkedBankAccounts.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(linkedBankAccountV1.data);",
+      },
+      python: {
+        method: 'embed.linked_bank_accounts.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.get(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(linked_bank_account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.LinkedBankAccounts.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.linked_bank_accounts.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(linked_bank_account_v1)',
+      },
       cli: {
         method: 'linked_bank_accounts get',
         example:
@@ -725,29 +745,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkedBankAccountGetParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Get(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
       },
-      go: {
-        method: 'client.Embed.LinkedBankAccounts.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/linked_bank_accounts/$LINKED_BANK_ACCOUNT_ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.linked_bank_accounts.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.get(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(linked_bank_account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.linked_bank_accounts.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(linked_bank_account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.linkedBankAccounts.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(linkedBankAccountV1.data);",
       },
     },
   },
@@ -766,6 +766,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## unmask\n\n`client.embed.linkedBankAccounts.unmask(linked_bank_account_id: string, correlation-id?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/linked_bank_accounts/{linked_bank_account_id}/unmask`\n\nRetrieves the unmasked details of a linked bank account that has previously been created. Supply the unique linked bank account `id`, and Straddle will return the corresponding information, including sensitive details. This endpoint needs to be enabled by Straddle for your account and should only be used when absolutely necessary.\n\n### Parameters\n\n- `linked_bank_account_id: string`\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; bank_account: { account_holder: string; account_number: string; institution_name: string; routing_number: string; }; created_at: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; bank_account: { account_holder: string; account_number: string; institution_name: string; routing_number: string; }; created_at: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst linkedBankAccountUnmaskV1 = await client.embed.linkedBankAccounts.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(linkedBankAccountUnmaskV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.linkedBankAccounts.unmask',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountUnmaskV1 = await client.embed.linkedBankAccounts.unmask(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(linkedBankAccountUnmaskV1.data);",
+      },
+      python: {
+        method: 'embed.linked_bank_accounts.unmask',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_unmask_v1 = client.embed.linked_bank_accounts.unmask(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(linked_bank_account_unmask_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.LinkedBankAccounts.Unmask',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountUnmaskV1, err := client.Embed.LinkedBankAccounts.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountUnmaskV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.linked_bank_accounts.unmask',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_unmask_v1 = straddle.embed.linked_bank_accounts.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(linked_bank_account_unmask_v1)',
+      },
       cli: {
         method: 'linked_bank_accounts unmask',
         example:
@@ -776,29 +796,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkedBankAccountUnmaskParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar linkedBankAccountUnmaskV1 = await client.Embed.LinkedBankAccounts.Unmask(parameters);\n\nConsole.WriteLine(linkedBankAccountUnmaskV1);',
       },
-      go: {
-        method: 'client.Embed.LinkedBankAccounts.Unmask',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountUnmaskV1, err := client.Embed.LinkedBankAccounts.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountUnmaskV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/linked_bank_accounts/$LINKED_BANK_ACCOUNT_ID/unmask \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.linked_bank_accounts.unmask',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_unmask_v1 = client.embed.linked_bank_accounts.unmask(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(linked_bank_account_unmask_v1.data)',
-      },
-      ruby: {
-        method: 'embed.linked_bank_accounts.unmask',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_unmask_v1 = straddle.embed.linked_bank_accounts.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(linked_bank_account_unmask_v1)',
-      },
-      typescript: {
-        method: 'client.embed.linkedBankAccounts.unmask',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountUnmaskV1 = await client.embed.linkedBankAccounts.unmask(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(linkedBankAccountUnmaskV1.data);",
       },
     },
   },
@@ -822,6 +822,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## cancel\n\n`client.embed.linkedBankAccounts.cancel(linked_bank_account_id: string, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**patch** `/v1/linked_bank_accounts/{linked_bank_account_id}/cancel`\n\nCancels an existing linked bank account. This can be used to cancel a linked bank account before it has been reviewed. The linked bank account must be in 'created' status.\n\n### Parameters\n\n- `linked_bank_account_id: string`\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; bank_account: { account_holder: string; account_mask: string; institution_name: string; routing_number: string; }; created_at: string; purposes: 'charges' | 'payouts' | 'billing'[]; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive' | 'canceled'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; description?: string; metadata?: object; platform_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(linkedBankAccountV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.linkedBankAccounts.cancel',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.cancel(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(linkedBankAccountV1.data);",
+      },
+      python: {
+        method: 'embed.linked_bank_accounts.cancel',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.cancel(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(linked_bank_account_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.LinkedBankAccounts.Cancel',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountCancelParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.linked_bank_accounts.cancel',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(linked_bank_account_v1)',
+      },
       cli: {
         method: 'linked_bank_accounts cancel',
         example:
@@ -832,29 +852,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkedBankAccountCancelParams parameters = new()\n{\n    LinkedBankAccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar linkedBankAccountV1 = await client.Embed.LinkedBankAccounts.Cancel(parameters);\n\nConsole.WriteLine(linkedBankAccountV1);',
       },
-      go: {
-        method: 'client.Embed.LinkedBankAccounts.Cancel',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tlinkedBankAccountV1, err := client.Embed.LinkedBankAccounts.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedLinkedBankAccountCancelParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", linkedBankAccountV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/linked_bank_accounts/$LINKED_BANK_ACCOUNT_ID/cancel \\\n    -X PATCH \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.linked_bank_accounts.cancel',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nlinked_bank_account_v1 = client.embed.linked_bank_accounts.cancel(\n    linked_bank_account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(linked_bank_account_v1.data)',
-      },
-      ruby: {
-        method: 'embed.linked_bank_accounts.cancel',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nlinked_bank_account_v1 = straddle.embed.linked_bank_accounts.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(linked_bank_account_v1)',
-      },
-      typescript: {
-        method: 'client.embed.linkedBankAccounts.cancel',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst linkedBankAccountV1 = await client.embed.linkedBankAccounts.cancel(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(linkedBankAccountV1.data);",
       },
     },
   },
@@ -880,6 +880,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.embed.organizations.create(name: string, external_id?: string, metadata?: object, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/organizations`\n\nCreates a new organization related to your Straddle integration. Organizations can be used to group related accounts and manage permissions across multiple users.\n\n### Parameters\n\n- `name: string`\n  The name of the organization.\n\n- `external_id?: string`\n  Unique identifier for the organization in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the organization in a structured format.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; name: string; updated_at: string; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; name: string; updated_at: string; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst organizationV1 = await client.embed.organizations.create({ name: 'name' });\n\nconsole.log(organizationV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.organizations.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst organizationV1 = await client.embed.organizations.create({ name: 'name' });\n\nconsole.log(organizationV1.data);",
+      },
+      python: {
+        method: 'embed.organizations.create',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\norganization_v1 = client.embed.organizations.create(\n    name="name",\n)\nprint(organization_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Organizations.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\torganizationV1, err := client.Embed.Organizations.New(context.TODO(), straddle.EmbedOrganizationNewParams{\n\t\tName: "name",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organizationV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.organizations.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\norganization_v1 = straddle.embed.organizations.create(name: "name")\n\nputs(organization_v1)',
+      },
       cli: {
         method: 'organizations create',
         example: "straddle embed:organizations create \\\n  --api-key 'My API Key' \\\n  --name name",
@@ -889,29 +909,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'OrganizationCreateParams parameters = new() { Name = "name" };\n\nvar organizationV1 = await client.Embed.Organizations.Create(parameters);\n\nConsole.WriteLine(organizationV1);',
       },
-      go: {
-        method: 'client.Embed.Organizations.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\torganizationV1, err := client.Embed.Organizations.New(context.TODO(), straddle.EmbedOrganizationNewParams{\n\t\tName: "name",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organizationV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/organizations \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "name": "name"\n        }\'',
-      },
-      python: {
-        method: 'embed.organizations.create',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\norganization_v1 = client.embed.organizations.create(\n    name="name",\n)\nprint(organization_v1.data)',
-      },
-      ruby: {
-        method: 'embed.organizations.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\norganization_v1 = straddle.embed.organizations.create(name: "name")\n\nputs(organization_v1)',
-      },
-      typescript: {
-        method: 'client.embed.organizations.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst organizationV1 = await client.embed.organizations.create({ name: 'name' });\n\nconsole.log(organizationV1.data);",
       },
     },
   },
@@ -939,6 +939,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.embed.organizations.list(external_id?: string, name?: string, page_number?: number, page_size?: number, sort_by?: string, sort_order?: 'asc' | 'desc', correlation-id?: string, request-id?: string): { id: string; created_at: string; name: string; updated_at: string; external_id?: string; metadata?: object; }`\n\n**get** `/v1/organizations`\n\nRetrieves a list of organizations associated with your Straddle integration. The organizations are returned sorted by creation date, with the most recently created organizations appearing first. This endpoint supports advanced sorting and filtering options to help you find specific organizations.\n\n### Parameters\n\n- `external_id?: string`\n  List organizations by their external ID.\n\n- `name?: string`\n  List organizations by name (partial match supported).\n\n- `page_number?: number`\n  Results page number. Starts at page 1.\n\n- `page_size?: number`\n  Page size. Max value: 1000\n\n- `sort_by?: string`\n  Sort By.\n\n- `sort_order?: 'asc' | 'desc'`\n  Sort Order.\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ id: string; created_at: string; name: string; updated_at: string; external_id?: string; metadata?: object; }`\n\n  - `id: string`\n  - `created_at: string`\n  - `name: string`\n  - `updated_at: string`\n  - `external_id?: string`\n  - `metadata?: object`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const organization of client.embed.organizations.list()) {\n  console.log(organization);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.organizations.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const organization of client.embed.organizations.list()) {\n  console.log(organization.id);\n}",
+      },
+      python: {
+        method: 'embed.organizations.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.organizations.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Embed.Organizations.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Organizations.List(context.TODO(), straddle.EmbedOrganizationListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'embed.organizations.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.organizations.list\n\nputs(page)',
+      },
       cli: {
         method: 'organizations list',
         example: "straddle embed:organizations list \\\n  --api-key 'My API Key'",
@@ -948,29 +968,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'OrganizationListParams parameters = new();\n\nvar page = await client.Embed.Organizations.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Embed.Organizations.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Organizations.List(context.TODO(), straddle.EmbedOrganizationListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/organizations \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.organizations.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.organizations.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'embed.organizations.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.organizations.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.embed.organizations.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const organization of client.embed.organizations.list()) {\n  console.log(organization.id);\n}",
       },
     },
   },
@@ -989,6 +989,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.embed.organizations.get(organization_id: string, correlation-id?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/organizations/{organization_id}`\n\nRetrieves the details of an Organization that has previously been created. Supply the unique organization ID that was returned from your previous request, and Straddle will return the corresponding organization information.\n\n### Parameters\n\n- `organization_id: string`\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; name: string; updated_at: string; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; name: string; updated_at: string; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst organizationV1 = await client.embed.organizations.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(organizationV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.organizations.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst organizationV1 = await client.embed.organizations.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(organizationV1.data);",
+      },
+      python: {
+        method: 'embed.organizations.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\norganization_v1 = client.embed.organizations.get(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(organization_v1.data)',
+      },
+      go: {
+        method: 'client.Embed.Organizations.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\torganizationV1, err := client.Embed.Organizations.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedOrganizationGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organizationV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.organizations.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\norganization_v1 = straddle.embed.organizations.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(organization_v1)',
+      },
       cli: {
         method: 'organizations get',
         example:
@@ -999,29 +1019,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'OrganizationGetParams parameters = new()\n{\n    OrganizationID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar organizationV1 = await client.Embed.Organizations.Get(parameters);\n\nConsole.WriteLine(organizationV1);',
       },
-      go: {
-        method: 'client.Embed.Organizations.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\torganizationV1, err := client.Embed.Organizations.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedOrganizationGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organizationV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/organizations/$ORGANIZATION_ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.organizations.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\norganization_v1 = client.embed.organizations.get(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(organization_v1.data)',
-      },
-      ruby: {
-        method: 'embed.organizations.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\norganization_v1 = straddle.embed.organizations.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(organization_v1)',
-      },
-      typescript: {
-        method: 'client.embed.organizations.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst organizationV1 = await client.embed.organizations.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(organizationV1.data);",
       },
     },
   },
@@ -1054,6 +1054,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.embed.representatives.create(account_id: string, dob: string, email: string, first_name: string, last_name: string, mobile_number: string, relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }, ssn_last4: string, external_id?: string, metadata?: object, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/representatives`\n\nCreates a new representative associated with an account. Representatives are individuals who have legal authority or significant responsibility within the business.\n\n### Parameters\n\n- `account_id: string`\n  The unique identifier of the account this representative is associated with.\n\n- `dob: string`\n  Date of birth for the representative in ISO 8601 format (YYYY-MM-DD).\n\n- `email: string`\n  The company email address of the representative.\n\n- `first_name: string`\n  The first name of the representative.\n\n- `last_name: string`\n  The last name of the representative.\n\n- `mobile_number: string`\n  The mobile phone number of the representative.\n\n- `relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }`\n  - `control: boolean`\n    Whether the representative has significant responsibility to control, manage, or direct the organization. One representative must be identified under the control prong for each legal entity.\n  - `owner: boolean`\n    Whether the representative owns any percentage of of the equity interests of the legal entity.\n  - `primary: boolean`\n    Whether the person is authorized as the primary representative of the account. This is the person chosen by the business to provide information about themselves, general information about the account, and who consented to the services agreement. \n\n There can be only one primary representative for an account at a time.\n  - `percent_ownership?: number`\n    The percentage of ownership the representative has. Required if 'Owner' is true.\n  - `title?: string`\n    The job title of the representative.\n\n- `ssn_last4: string`\n  The last 4 digits of the representative's Social Security Number.\n\n- `external_id?: string`\n  Unique identifier for the representative in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the represetative in a structured format.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst representative = await client.embed.representatives.create({\n  account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  dob: '1980-01-01',\n  email: 'ron.swanson@pawnee.com',\n  first_name: 'first_name',\n  last_name: 'last_name',\n  mobile_number: '+12128675309',\n  relationship: {\n  control: true,\n  owner: true,\n  primary: true,\n},\n  ssn_last4: '1234',\n});\n\nconsole.log(representative);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.representatives.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.create({\n  account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  dob: '1980-01-01',\n  email: 'ron.swanson@pawnee.com',\n  first_name: 'first_name',\n  last_name: 'last_name',\n  mobile_number: '+12128675309',\n  relationship: {\n    control: true,\n    owner: true,\n    primary: true,\n  },\n  ssn_last4: '1234',\n});\n\nconsole.log(representative.data);",
+      },
+      python: {
+        method: 'embed.representatives.create',
+        example:
+          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.create(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    dob=date.fromisoformat("1980-01-01"),\n    email="ron.swanson@pawnee.com",\n    first_name="first_name",\n    last_name="last_name",\n    mobile_number="+12128675309",\n    relationship={\n        "control": True,\n        "owner": True,\n        "primary": True,\n    },\n    ssn_last4="1234",\n)\nprint(representative.data)',
+      },
+      go: {
+        method: 'client.Embed.Representatives.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.New(context.TODO(), straddle.EmbedRepresentativeNewParams{\n\t\tAccountID:    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tDob:          time.Now(),\n\t\tEmail:        "ron.swanson@pawnee.com",\n\t\tFirstName:    "first_name",\n\t\tLastName:     "last_name",\n\t\tMobileNumber: "+12128675309",\n\t\tRelationship: straddle.EmbedRepresentativeNewParamsRelationship{\n\t\t\tControl: true,\n\t\t\tOwner:   true,\n\t\t\tPrimary: true,\n\t\t},\n\t\tSsnLast4: "1234",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.representatives.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.create(\n  account_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  dob: "1980-01-01",\n  email: "ron.swanson@pawnee.com",\n  first_name: "first_name",\n  last_name: "last_name",\n  mobile_number: "+12128675309",\n  relationship: {control: true, owner: true, primary: true},\n  ssn_last4: "1234"\n)\n\nputs(representative)',
+      },
       cli: {
         method: 'representatives create',
         example:
@@ -1064,29 +1084,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'RepresentativeCreateParams parameters = new()\n{\n    AccountID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Dob = "1980-01-01",\n    Email = "ron.swanson@pawnee.com",\n    FirstName = "first_name",\n    LastName = "last_name",\n    MobileNumber = "+12128675309",\n    Relationship = new()\n    {\n        Control = true,\n        Owner = true,\n        Primary = true,\n        PercentOwnership = 0,\n        Title = "title",\n    },\n    SsnLast4 = "1234",\n};\n\nvar representative = await client.Embed.Representatives.Create(parameters);\n\nConsole.WriteLine(representative);',
       },
-      go: {
-        method: 'client.Embed.Representatives.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.New(context.TODO(), straddle.EmbedRepresentativeNewParams{\n\t\tAccountID:    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tDob:          time.Now(),\n\t\tEmail:        "ron.swanson@pawnee.com",\n\t\tFirstName:    "first_name",\n\t\tLastName:     "last_name",\n\t\tMobileNumber: "+12128675309",\n\t\tRelationship: straddle.EmbedRepresentativeNewParamsRelationship{\n\t\t\tControl: true,\n\t\t\tOwner:   true,\n\t\t\tPrimary: true,\n\t\t},\n\t\tSsnLast4: "1234",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/representatives \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "account_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "dob": "1980-01-01",\n          "email": "ron.swanson@pawnee.com",\n          "first_name": "first_name",\n          "last_name": "last_name",\n          "mobile_number": "+12128675309",\n          "relationship": {\n            "control": true,\n            "owner": true,\n            "primary": true\n          },\n          "ssn_last4": "1234"\n        }\'',
-      },
-      python: {
-        method: 'embed.representatives.create',
-        example:
-          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.create(\n    account_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    dob=date.fromisoformat("1980-01-01"),\n    email="ron.swanson@pawnee.com",\n    first_name="first_name",\n    last_name="last_name",\n    mobile_number="+12128675309",\n    relationship={\n        "control": True,\n        "owner": True,\n        "primary": True,\n    },\n    ssn_last4="1234",\n)\nprint(representative.data)',
-      },
-      ruby: {
-        method: 'embed.representatives.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.create(\n  account_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  dob: "1980-01-01",\n  email: "ron.swanson@pawnee.com",\n  first_name: "first_name",\n  last_name: "last_name",\n  mobile_number: "+12128675309",\n  relationship: {control: true, owner: true, primary: true},\n  ssn_last4: "1234"\n)\n\nputs(representative)',
-      },
-      typescript: {
-        method: 'client.embed.representatives.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.create({\n  account_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  dob: '1980-01-01',\n  email: 'ron.swanson@pawnee.com',\n  first_name: 'first_name',\n  last_name: 'last_name',\n  mobile_number: '+12128675309',\n  relationship: {\n    control: true,\n    owner: true,\n    primary: true,\n  },\n  ssn_last4: '1234',\n});\n\nconsole.log(representative.data);",
       },
     },
   },
@@ -1116,6 +1116,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.embed.representatives.list(account_id?: string, level?: 'account' | 'platform', organization_id?: string, page_number?: number, page_size?: number, platform_id?: string, sort_by?: string, sort_order?: 'asc' | 'desc', correlation-id?: string, request-id?: string): { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }`\n\n**get** `/v1/representatives`\n\nReturns a list of representatives associated with a specific account or organization. The representatives are returned sorted by creation date, with the most recently created representatives appearing first. This endpoint supports advanced sorting and filtering options.\n\n### Parameters\n\n- `account_id?: string`\n  The unique identifier of the account to list representatives for.\n\n- `level?: 'account' | 'platform'`\n\n- `organization_id?: string`\n\n- `page_number?: number`\n  Results page number. Starts at page 1.\n\n- `page_size?: number`\n  Page size. Max value: 1000\n\n- `platform_id?: string`\n\n- `sort_by?: string`\n  Sort By.\n\n- `sort_order?: 'asc' | 'desc'`\n  Sort Order.\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }`\n\n  - `id: string`\n  - `account_id: string`\n  - `created_at: string`\n  - `dob: string`\n  - `email: string`\n  - `first_name: string`\n  - `last_name: string`\n  - `mobile_number: string`\n  - `name: string`\n  - `relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }`\n  - `ssn_last4: string`\n  - `status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'`\n  - `status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }`\n  - `updated_at: string`\n  - `external_id?: string`\n  - `metadata?: object`\n  - `phone?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const representative of client.embed.representatives.list()) {\n  console.log(representative);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.representatives.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const representative of client.embed.representatives.list()) {\n  console.log(representative.id);\n}",
+      },
+      python: {
+        method: 'embed.representatives.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.representatives.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Embed.Representatives.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Representatives.List(context.TODO(), straddle.EmbedRepresentativeListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'embed.representatives.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.representatives.list\n\nputs(page)',
+      },
       cli: {
         method: 'representatives list',
         example: "straddle embed:representatives list \\\n  --api-key 'My API Key'",
@@ -1125,29 +1145,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'RepresentativeListParams parameters = new();\n\nvar page = await client.Embed.Representatives.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Embed.Representatives.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Embed.Representatives.List(context.TODO(), straddle.EmbedRepresentativeListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/representatives \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.representatives.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.embed.representatives.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'embed.representatives.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.embed.representatives.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.embed.representatives.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const representative of client.embed.representatives.list()) {\n  console.log(representative.id);\n}",
       },
     },
   },
@@ -1180,6 +1180,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.embed.representatives.update(representative_id: string, dob: string, email: string, first_name: string, last_name: string, mobile_number: string, relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }, ssn_last4: string, external_id?: string, metadata?: object, correlation-id?: string, idempotency-key?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/representatives/{representative_id}`\n\nUpdates an existing representative's information. This can be used to update personal details, contact information, or the relationship to the account or organization.\n\n### Parameters\n\n- `representative_id: string`\n\n- `dob: string`\n  The date of birth of the representative, in ISO 8601 format (YYYY-MM-DD).\n\n- `email: string`\n  The email address of the representative.\n\n- `first_name: string`\n  The first name of the representative.\n\n- `last_name: string`\n  The last name of the representative.\n\n- `mobile_number: string`\n  The mobile phone number of the representative.\n\n- `relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }`\n  - `control: boolean`\n    Whether the representative has significant responsibility to control, manage, or direct the organization. One representative must be identified under the control prong for each legal entity.\n  - `owner: boolean`\n    Whether the representative owns any percentage of of the equity interests of the legal entity.\n  - `primary: boolean`\n    Whether the person is authorized as the primary representative of the account. This is the person chosen by the business to provide information about themselves, general information about the account, and who consented to the services agreement. \n\n There can be only one primary representative for an account at a time.\n  - `percent_ownership?: number`\n    The percentage of ownership the representative has. Required if 'Owner' is true.\n  - `title?: string`\n    The job title of the representative.\n\n- `ssn_last4: string`\n  The last 4 digits of the representative's Social Security Number.\n\n- `external_id?: string`\n  Unique identifier for the representative in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the represetative in a structured format.\n\n- `correlation-id?: string`\n\n- `idempotency-key?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst representative = await client.embed.representatives.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  dob: '1980-01-01',\n  email: 'ron.swanson@pawnee.com',\n  first_name: 'Ron',\n  last_name: 'Swanson',\n  mobile_number: '+12128675309',\n  relationship: {\n  control: true,\n  owner: true,\n  primary: true,\n},\n  ssn_last4: '1234',\n});\n\nconsole.log(representative);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.representatives.update',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  {\n    dob: '1980-01-01',\n    email: 'ron.swanson@pawnee.com',\n    first_name: 'Ron',\n    last_name: 'Swanson',\n    mobile_number: '+12128675309',\n    relationship: {\n      control: true,\n      owner: true,\n      primary: true,\n    },\n    ssn_last4: '1234',\n  },\n);\n\nconsole.log(representative.data);",
+      },
+      python: {
+        method: 'embed.representatives.update',
+        example:
+          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.update(\n    representative_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    dob=date.fromisoformat("1980-01-01"),\n    email="ron.swanson@pawnee.com",\n    first_name="Ron",\n    last_name="Swanson",\n    mobile_number="+12128675309",\n    relationship={\n        "control": True,\n        "owner": True,\n        "primary": True,\n    },\n    ssn_last4="1234",\n)\nprint(representative.data)',
+      },
+      go: {
+        method: 'client.Embed.Representatives.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedRepresentativeUpdateParams{\n\t\t\tDob:          time.Now(),\n\t\t\tEmail:        "ron.swanson@pawnee.com",\n\t\t\tFirstName:    "Ron",\n\t\t\tLastName:     "Swanson",\n\t\t\tMobileNumber: "+12128675309",\n\t\t\tRelationship: straddle.EmbedRepresentativeUpdateParamsRelationship{\n\t\t\t\tControl: true,\n\t\t\t\tOwner:   true,\n\t\t\t\tPrimary: true,\n\t\t\t},\n\t\t\tSsnLast4: "1234",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.representatives.update',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  dob: "1980-01-01",\n  email: "ron.swanson@pawnee.com",\n  first_name: "Ron",\n  last_name: "Swanson",\n  mobile_number: "+12128675309",\n  relationship: {control: true, owner: true, primary: true},\n  ssn_last4: "1234"\n)\n\nputs(representative)',
+      },
       cli: {
         method: 'representatives update',
         example:
@@ -1190,29 +1210,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'RepresentativeUpdateParams parameters = new()\n{\n    RepresentativeID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Dob = "1980-01-01",\n    Email = "ron.swanson@pawnee.com",\n    FirstName = "Ron",\n    LastName = "Swanson",\n    MobileNumber = "+12128675309",\n    Relationship = new()\n    {\n        Control = true,\n        Owner = true,\n        Primary = true,\n        PercentOwnership = 0,\n        Title = "title",\n    },\n    SsnLast4 = "1234",\n};\n\nvar representative = await client.Embed.Representatives.Update(parameters);\n\nConsole.WriteLine(representative);',
       },
-      go: {
-        method: 'client.Embed.Representatives.Update',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedRepresentativeUpdateParams{\n\t\t\tDob:          time.Now(),\n\t\t\tEmail:        "ron.swanson@pawnee.com",\n\t\t\tFirstName:    "Ron",\n\t\t\tLastName:     "Swanson",\n\t\t\tMobileNumber: "+12128675309",\n\t\t\tRelationship: straddle.EmbedRepresentativeUpdateParamsRelationship{\n\t\t\t\tControl: true,\n\t\t\t\tOwner:   true,\n\t\t\t\tPrimary: true,\n\t\t\t},\n\t\t\tSsnLast4: "1234",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/representatives/$REPRESENTATIVE_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "dob": "1980-01-01",\n          "email": "ron.swanson@pawnee.com",\n          "first_name": "Ron",\n          "last_name": "Swanson",\n          "mobile_number": "+12128675309",\n          "relationship": {\n            "control": true,\n            "owner": true,\n            "primary": true\n          },\n          "ssn_last4": "1234"\n        }\'',
-      },
-      python: {
-        method: 'embed.representatives.update',
-        example:
-          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.update(\n    representative_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    dob=date.fromisoformat("1980-01-01"),\n    email="ron.swanson@pawnee.com",\n    first_name="Ron",\n    last_name="Swanson",\n    mobile_number="+12128675309",\n    relationship={\n        "control": True,\n        "owner": True,\n        "primary": True,\n    },\n    ssn_last4="1234",\n)\nprint(representative.data)',
-      },
-      ruby: {
-        method: 'embed.representatives.update',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  dob: "1980-01-01",\n  email: "ron.swanson@pawnee.com",\n  first_name: "Ron",\n  last_name: "Swanson",\n  mobile_number: "+12128675309",\n  relationship: {control: true, owner: true, primary: true},\n  ssn_last4: "1234"\n)\n\nputs(representative)',
-      },
-      typescript: {
-        method: 'client.embed.representatives.update',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  {\n    dob: '1980-01-01',\n    email: 'ron.swanson@pawnee.com',\n    first_name: 'Ron',\n    last_name: 'Swanson',\n    mobile_number: '+12128675309',\n    relationship: {\n      control: true,\n      owner: true,\n      primary: true,\n    },\n    ssn_last4: '1234',\n  },\n);\n\nconsole.log(representative.data);",
       },
     },
   },
@@ -1231,6 +1231,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.embed.representatives.get(representative_id: string, correlation-id?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/representatives/{representative_id}`\n\nRetrieves the details of an existing representative. Supply the unique representative ID, and Straddle will return the corresponding representative information.\n\n### Parameters\n\n- `representative_id: string`\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst representative = await client.embed.representatives.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(representative);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.representatives.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(representative.data);",
+      },
+      python: {
+        method: 'embed.representatives.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.get(\n    representative_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(representative.data)',
+      },
+      go: {
+        method: 'client.Embed.Representatives.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedRepresentativeGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.representatives.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(representative)',
+      },
       cli: {
         method: 'representatives get',
         example:
@@ -1241,29 +1261,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'RepresentativeGetParams parameters = new()\n{\n    RepresentativeID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar representative = await client.Embed.Representatives.Get(parameters);\n\nConsole.WriteLine(representative);',
       },
-      go: {
-        method: 'client.Embed.Representatives.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedRepresentativeGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/representatives/$REPRESENTATIVE_ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.representatives.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.get(\n    representative_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(representative.data)',
-      },
-      ruby: {
-        method: 'embed.representatives.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(representative)',
-      },
-      typescript: {
-        method: 'client.embed.representatives.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(representative.data);",
       },
     },
   },
@@ -1282,6 +1282,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## unmask\n\n`client.embed.representatives.unmask(representative_id: string, correlation-id?: string, request-id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/representatives/{representative_id}/unmask`\n\nRetrieves the unmasked details of a representative that has previously been created. Supply the unique representative ID, and Straddle will return the corresponding representative information, including sensitive details. This endpoint requires additional authentication and should be used with caution.\n\n### Parameters\n\n- `representative_id: string`\n\n- `correlation-id?: string`\n\n- `request-id?: string`\n\n### Returns\n\n- `{ data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; account_id: string; created_at: string; dob: string; email: string; first_name: string; last_name: string; mobile_number: string; name: string; relationship: { control: boolean; owner: boolean; primary: boolean; percent_ownership?: number; title?: string; }; ssn_last4: string; status: 'created' | 'onboarding' | 'active' | 'rejected' | 'inactive'; status_detail: { code: string; message: string; reason: string; source: 'watchtower'; }; updated_at: string; external_id?: string; metadata?: object; phone?: string; user_id?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst representative = await client.embed.representatives.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(representative);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.embed.representatives.unmask',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.unmask(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(representative.data);",
+      },
+      python: {
+        method: 'embed.representatives.unmask',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.unmask(\n    representative_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(representative.data)',
+      },
+      go: {
+        method: 'client.Embed.Representatives.Unmask',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedRepresentativeUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
+      },
+      ruby: {
+        method: 'embed.representatives.unmask',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(representative)',
+      },
       cli: {
         method: 'representatives unmask',
         example:
@@ -1292,29 +1312,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'RepresentativeUnmaskParams parameters = new()\n{\n    RepresentativeID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar representative = await client.Embed.Representatives.Unmask(parameters);\n\nConsole.WriteLine(representative);',
       },
-      go: {
-        method: 'client.Embed.Representatives.Unmask',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\trepresentative, err := client.Embed.Representatives.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.EmbedRepresentativeUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", representative.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/representatives/$REPRESENTATIVE_ID/unmask \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'embed.representatives.unmask',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nrepresentative = client.embed.representatives.unmask(\n    representative_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(representative.data)',
-      },
-      ruby: {
-        method: 'embed.representatives.unmask',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nrepresentative = straddle.embed.representatives.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(representative)',
-      },
-      typescript: {
-        method: 'client.embed.representatives.unmask',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst representative = await client.embed.representatives.unmask(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(representative.data);",
       },
     },
   },
@@ -1340,6 +1340,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## initialize\n\n`client.bridge.initialize(customer_id: string, config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }, external_id?: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/bridge/initialize`\n\nUse this endpoint to generate a session token for use in the Bridge widget.\n\n### Parameters\n\n- `customer_id: string`\n  The Straddle generated unique identifier of the `customer` to create a bridge token for.\n\n- `config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }`\n  - `processing_method?: 'inline' | 'background' | 'skip'`\n  - `sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'`\n\n- `external_id?: string`\n  Unique identifier for the paykey in your database, used for cross-referencing between Straddle and your systems.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { bridge_token: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { bridge_token: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst bridgeTokenV1 = await client.bridge.initialize({ customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(bridgeTokenV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.bridge.initialize',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst bridgeTokenV1 = await client.bridge.initialize({\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(bridgeTokenV1.data);",
+      },
+      python: {
+        method: 'bridge.initialize',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nbridge_token_v1 = client.bridge.initialize(\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(bridge_token_v1.data)',
+      },
+      go: {
+        method: 'client.Bridge.Initialize',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tbridgeTokenV1, err := client.Bridge.Initialize(context.TODO(), straddle.BridgeInitializeParams{\n\t\tCustomerID: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", bridgeTokenV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'bridge.initialize_',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nbridge_token_v1 = straddle.bridge.initialize_(customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(bridge_token_v1)',
+      },
       cli: {
         method: 'bridge initialize',
         example:
@@ -1350,29 +1370,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'BridgeInitializeParams parameters = new()\n{\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar bridgeTokenV1 = await client.Bridge.Initialize(parameters);\n\nConsole.WriteLine(bridgeTokenV1);',
       },
-      go: {
-        method: 'client.Bridge.Initialize',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tbridgeTokenV1, err := client.Bridge.Initialize(context.TODO(), straddle.BridgeInitializeParams{\n\t\tCustomerID: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", bridgeTokenV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/bridge/initialize \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "customer_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n        }\'',
-      },
-      python: {
-        method: 'bridge.initialize',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nbridge_token_v1 = client.bridge.initialize(\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(bridge_token_v1.data)',
-      },
-      ruby: {
-        method: 'bridge.initialize_',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nbridge_token_v1 = straddle.bridge.initialize_(customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(bridge_token_v1)',
-      },
-      typescript: {
-        method: 'client.bridge.initialize',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst bridgeTokenV1 = await client.bridge.initialize({\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(bridgeTokenV1.data);",
       },
     },
   },
@@ -1403,6 +1403,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## bank_account\n\n`client.bridge.link.bankAccount(account_number: string, account_type: 'checking' | 'savings', customer_id: string, routing_number: string, config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }, external_id?: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/bridge/bank_account`\n\nUse Bridge to create a new paykey using a bank routing and account number as the source. This endpoint allows you to create a secure payment token linked to a specific bank account.\n\n### Parameters\n\n- `account_number: string`\n  The bank account number.\n\n- `account_type: 'checking' | 'savings'`\n\n- `customer_id: string`\n  Unique identifier of the related customer object.\n\n- `routing_number: string`\n  The routing number of the bank account.\n\n- `config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }`\n  - `processing_method?: 'inline' | 'background' | 'skip'`\n  - `sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'`\n\n- `external_id?: string`\n  Unique identifier for the paykey in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the paykey in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyV1 = await client.bridge.link.bankAccount({\n  account_number: 'account_number',\n  account_type: 'checking',\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  routing_number: 'xxxxxxxxx',\n});\n\nconsole.log(paykeyV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.bridge.link.bankAccount',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.bridge.link.bankAccount({\n  account_number: 'account_number',\n  account_type: 'checking',\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  routing_number: 'xxxxxxxxx',\n});\n\nconsole.log(paykeyV1.data);",
+      },
+      python: {
+        method: 'bridge.link.bank_account',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.bridge.link.bank_account(\n    account_number="account_number",\n    account_type="checking",\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    routing_number="xxxxxxxxx",\n)\nprint(paykey_v1.data)',
+      },
+      go: {
+        method: 'client.Bridge.Link.BankAccount',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Bridge.Link.BankAccount(context.TODO(), straddle.BridgeLinkBankAccountParams{\n\t\tAccountNumber: "account_number",\n\t\tAccountType:   straddle.BridgeLinkBankAccountParamsAccountTypeChecking,\n\t\tCustomerID:    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tRoutingNumber: "xxxxxxxxx",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'bridge.link.bank_account',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.bridge.link.bank_account(\n  account_number: "account_number",\n  account_type: :checking,\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  routing_number: "xxxxxxxxx"\n)\n\nputs(paykey_v1)',
+      },
       cli: {
         method: 'link bank_account',
         example:
@@ -1413,29 +1433,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkBankAccountParams parameters = new()\n{\n    AccountNumber = "account_number",\n    AccountType = AccountType.Checking,\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    RoutingNumber = "xxxxxxxxx",\n};\n\nvar paykeyV1 = await client.Bridge.Link.BankAccount(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
-      go: {
-        method: 'client.Bridge.Link.BankAccount',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Bridge.Link.BankAccount(context.TODO(), straddle.BridgeLinkBankAccountParams{\n\t\tAccountNumber: "account_number",\n\t\tAccountType:   straddle.BridgeLinkBankAccountParamsAccountTypeChecking,\n\t\tCustomerID:    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tRoutingNumber: "xxxxxxxxx",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/bridge/bank_account \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "account_number": "account_number",\n          "account_type": "checking",\n          "customer_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "routing_number": "xxxxxxxxx"\n        }\'',
-      },
-      python: {
-        method: 'bridge.link.bank_account',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.bridge.link.bank_account(\n    account_number="account_number",\n    account_type="checking",\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    routing_number="xxxxxxxxx",\n)\nprint(paykey_v1.data)',
-      },
-      ruby: {
-        method: 'bridge.link.bank_account',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.bridge.link.bank_account(\n  account_number: "account_number",\n  account_type: :checking,\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  routing_number: "xxxxxxxxx"\n)\n\nputs(paykey_v1)',
-      },
-      typescript: {
-        method: 'client.bridge.link.bankAccount',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.bridge.link.bankAccount({\n  account_number: 'account_number',\n  account_type: 'checking',\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  routing_number: 'xxxxxxxxx',\n});\n\nconsole.log(paykeyV1.data);",
       },
     },
   },
@@ -1464,6 +1464,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## plaid\n\n`client.bridge.link.plaid(customer_id: string, plaid_token: string, config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }, external_id?: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/bridge/plaid`\n\nUse Bridge to create a new paykey using a Plaid token as the source. This endpoint allows you to create a secure payment token linked to a bank account authenticated through Plaid.\n\n### Parameters\n\n- `customer_id: string`\n  Unique identifier of the related customer object.\n\n- `plaid_token: string`\n  Plaid processor token generated by your application for use with the Straddle API.\n\n- `config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }`\n  - `processing_method?: 'inline' | 'background' | 'skip'`\n  - `sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'`\n\n- `external_id?: string`\n  Unique identifier for the paykey in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the paykey in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyV1 = await client.bridge.link.plaid({ customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', plaid_token: 'plaid_token' });\n\nconsole.log(paykeyV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.bridge.link.plaid',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.bridge.link.plaid({\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  plaid_token: 'plaid_token',\n});\n\nconsole.log(paykeyV1.data);",
+      },
+      python: {
+        method: 'bridge.link.plaid',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.bridge.link.plaid(\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    plaid_token="plaid_token",\n)\nprint(paykey_v1.data)',
+      },
+      go: {
+        method: 'client.Bridge.Link.Plaid',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Bridge.Link.Plaid(context.TODO(), straddle.BridgeLinkPlaidParams{\n\t\tCustomerID: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tPlaidToken: "plaid_token",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'bridge.link.plaid',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.bridge.link.plaid(\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  plaid_token: "plaid_token"\n)\n\nputs(paykey_v1)',
+      },
       cli: {
         method: 'link plaid',
         example:
@@ -1474,29 +1494,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkPlaidParams parameters = new()\n{\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    PlaidToken = "plaid_token",\n};\n\nvar paykeyV1 = await client.Bridge.Link.Plaid(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
-      go: {
-        method: 'client.Bridge.Link.Plaid',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Bridge.Link.Plaid(context.TODO(), straddle.BridgeLinkPlaidParams{\n\t\tCustomerID: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tPlaidToken: "plaid_token",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/bridge/plaid \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "customer_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "plaid_token": "plaid_token"\n        }\'',
-      },
-      python: {
-        method: 'bridge.link.plaid',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.bridge.link.plaid(\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    plaid_token="plaid_token",\n)\nprint(paykey_v1.data)',
-      },
-      ruby: {
-        method: 'bridge.link.plaid',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.bridge.link.plaid(\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  plaid_token: "plaid_token"\n)\n\nputs(paykey_v1)',
-      },
-      typescript: {
-        method: 'client.bridge.link.plaid',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.bridge.link.plaid({\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  plaid_token: 'plaid_token',\n});\n\nconsole.log(paykeyV1.data);",
       },
     },
   },
@@ -1526,6 +1526,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create_tan\n\n`client.bridge.link.createTan(account_type: 'checking' | 'savings', customer_id: string, routing_number: string, tan: string, config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }, external_id?: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/bridge/tan`\n\n### Parameters\n\n- `account_type: 'checking' | 'savings'`\n\n- `customer_id: string`\n  Unique identifier of the related customer object.\n\n- `routing_number: string`\n  Bank routing number.\n\n- `tan: string`\n  Tokenized account number.\n\n- `config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }`\n  - `processing_method?: 'inline' | 'background' | 'skip'`\n  - `sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'`\n\n- `external_id?: string`\n  Unique identifier for the paykey in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the paykey in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst response = await client.bridge.link.createTan({\n  account_type: 'checking',\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  routing_number: 'routing_number',\n  tan: 'tan',\n});\n\nconsole.log(response);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.bridge.link.createTan',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.bridge.link.createTan({\n  account_type: 'checking',\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  routing_number: 'routing_number',\n  tan: 'tan',\n});\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'bridge.link.create_tan',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.bridge.link.create_tan(\n    account_type="checking",\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    routing_number="routing_number",\n    tan="tan",\n)\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Bridge.Link.NewTan',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Bridge.Link.NewTan(context.TODO(), straddle.BridgeLinkNewTanParams{\n\t\tAccountType:   straddle.BridgeLinkNewTanParamsAccountTypeChecking,\n\t\tCustomerID:    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tRoutingNumber: "routing_number",\n\t\tTan:           "tan",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      ruby: {
+        method: 'bridge.link.create_tan',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.bridge.link.create_tan(\n  account_type: :checking,\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  routing_number: "routing_number",\n  tan: "tan"\n)\n\nputs(response)',
+      },
       cli: {
         method: 'link create_tan',
         example:
@@ -1536,29 +1556,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkCreateTanParams parameters = new()\n{\n    AccountType = AccountType.Checking,\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    RoutingNumber = "routing_number",\n    Tan = "tan",\n};\n\nvar response = await client.Bridge.Link.CreateTan(parameters);\n\nConsole.WriteLine(response);',
       },
-      go: {
-        method: 'client.Bridge.Link.NewTan',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Bridge.Link.NewTan(context.TODO(), straddle.BridgeLinkNewTanParams{\n\t\tAccountType:   straddle.BridgeLinkNewTanParamsAccountTypeChecking,\n\t\tCustomerID:    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tRoutingNumber: "routing_number",\n\t\tTan:           "tan",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/bridge/tan \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "account_type": "checking",\n          "customer_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "routing_number": "routing_number",\n          "tan": "tan"\n        }\'',
-      },
-      python: {
-        method: 'bridge.link.create_tan',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.bridge.link.create_tan(\n    account_type="checking",\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    routing_number="routing_number",\n    tan="tan",\n)\nprint(response.data)',
-      },
-      ruby: {
-        method: 'bridge.link.create_tan',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.bridge.link.create_tan(\n  account_type: :checking,\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  routing_number: "routing_number",\n  tan: "tan"\n)\n\nputs(response)',
-      },
-      typescript: {
-        method: 'client.bridge.link.createTan',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.bridge.link.createTan({\n  account_type: 'checking',\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  routing_number: 'routing_number',\n  tan: 'tan',\n});\n\nconsole.log(response.data);",
       },
     },
   },
@@ -1587,6 +1587,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create_paykey\n\n`client.bridge.link.createPaykey(customer_id: string, quiltt_token: string, config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }, external_id?: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/bridge/quiltt`\n\nCreates a new paykey using a Quiltt token as the source. This endpoint allows you to create a secure payment token linked to a bank account authenticated through Quiltt.\n\n### Parameters\n\n- `customer_id: string`\n  Unique identifier of the related customer object.\n\n- `quiltt_token: string`\n  Quiltt processor token generated by your application for use with the Straddle API.\n\n- `config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }`\n  - `processing_method?: 'inline' | 'background' | 'skip'`\n  - `sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'`\n\n- `external_id?: string`\n  Unique identifier for the paykey in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the paykey in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst response = await client.bridge.link.createPaykey({ customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', quiltt_token: 'quiltt_token' });\n\nconsole.log(response);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.bridge.link.createPaykey',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.bridge.link.createPaykey({\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  quiltt_token: 'quiltt_token',\n});\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'bridge.link.create_paykey',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.bridge.link.create_paykey(\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    quiltt_token="quiltt_token",\n)\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Bridge.Link.NewPaykey',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Bridge.Link.NewPaykey(context.TODO(), straddle.BridgeLinkNewPaykeyParams{\n\t\tCustomerID:  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tQuilttToken: "quiltt_token",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      ruby: {
+        method: 'bridge.link.create_paykey',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.bridge.link.create_paykey(\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  quiltt_token: "quiltt_token"\n)\n\nputs(response)',
+      },
       cli: {
         method: 'link create_paykey',
         example:
@@ -1597,29 +1617,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'LinkCreatePaykeyParams parameters = new()\n{\n    CustomerID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    QuilttToken = "quiltt_token",\n};\n\nvar response = await client.Bridge.Link.CreatePaykey(parameters);\n\nConsole.WriteLine(response);',
       },
-      go: {
-        method: 'client.Bridge.Link.NewPaykey',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Bridge.Link.NewPaykey(context.TODO(), straddle.BridgeLinkNewPaykeyParams{\n\t\tCustomerID:  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tQuilttToken: "quiltt_token",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/bridge/quiltt \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "customer_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "quiltt_token": "quiltt_token"\n        }\'',
-      },
-      python: {
-        method: 'bridge.link.create_paykey',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.bridge.link.create_paykey(\n    customer_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    quiltt_token="quiltt_token",\n)\nprint(response.data)',
-      },
-      ruby: {
-        method: 'bridge.link.create_paykey',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.bridge.link.create_paykey(\n  customer_id: "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  quiltt_token: "quiltt_token"\n)\n\nputs(response)',
-      },
-      typescript: {
-        method: 'client.bridge.link.createPaykey',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.bridge.link.createPaykey({\n  customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  quiltt_token: 'quiltt_token',\n});\n\nconsole.log(response.data);",
       },
     },
   },
@@ -1643,6 +1643,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.customers.get(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/customers/{id}`\n\nRetrieves the details of an existing customer. Supply the unique customer ID that was returned from your 'create customer' request, and Straddle will return the corresponding customer information.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: object; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: object[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerV1 = await client.customers.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerV1.data);",
+      },
+      python: {
+        method: 'customers.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_v1)',
+      },
       cli: {
         method: 'customers get',
         example:
@@ -1653,29 +1673,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CustomerGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerV1 = await client.Customers.Get(parameters);\n\nConsole.WriteLine(customerV1);',
       },
-      go: {
-        method: 'client.Customers.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers/$ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'customers.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_v1.data)',
-      },
-      ruby: {
-        method: 'customers.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_v1)',
-      },
-      typescript: {
-        method: 'client.customers.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerV1.data);",
       },
     },
   },
@@ -1709,6 +1709,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.customers.update(id: string, device: { ip_address: string; }, email: string, name: string, phone: string, status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected', address?: { address1: string; city: string; state: string; zip: string; address2?: string; }, compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }, external_id?: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/customers/{id}`\n\nUpdates an existing customer's information. This endpoint allows you to modify the customer's contact details, PII, and metadata.\n\n### Parameters\n\n- `id: string`\n\n- `device: { ip_address: string; }`\n  - `ip_address: string`\n    The customer's IP address at the time of profile creation. Use `0.0.0.0` to represent an offline customer registration.\n\n- `email: string`\n  The customer's email address.\n\n- `name: string`\n  The customer's full name or business name.\n\n- `phone: string`\n  The customer's phone number in E.164 format.\n\n- `status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'`\n\n- `address?: { address1: string; city: string; state: string; zip: string; address2?: string; }`\n  An object containing the customer's address. This is optional, but if provided, all required fields must be present.\n  - `address1: string`\n    Primary address line (e.g., street, PO Box).\n  - `city: string`\n    City, district, suburb, town, or village.\n  - `state: string`\n    Two-letter state code.\n  - `zip: string`\n    Zip or postal code.\n  - `address2?: string`\n    Secondary address line (e.g., apartment, suite, unit, or building).\n\n- `compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }`\n  Individual PII data required to trigger Patriot Act compliant KYC verification.\n\n- `external_id?: string`\n  Unique identifier for the customer in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the customer in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: object; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: object[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerV1 = await client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  device: { ip_address: '192.168.1.1' },\n  email: 'dev@stainless.com',\n  name: 'name',\n  phone: '+46991022',\n  status: 'pending',\n});\n\nconsole.log(customerV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.update',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  device: { ip_address: '192.168.1.1' },\n  email: 'dev@stainless.com',\n  name: 'name',\n  phone: '+46991022',\n  status: 'pending',\n});\n\nconsole.log(customerV1.data);",
+      },
+      python: {
+        method: 'customers.update',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.update(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    email="dev@stainless.com",\n    name="name",\n    phone="+46991022",\n    status="pending",\n)\nprint(customer_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerUpdateParams{\n\t\t\tDevice: straddle.DeviceUnmaskedV1Param{\n\t\t\t\tIPAddress: "192.168.1.1",\n\t\t\t},\n\t\t\tEmail:  "dev@stainless.com",\n\t\t\tName:   "name",\n\t\t\tPhone:  "+46991022",\n\t\t\tStatus: straddle.CustomerUpdateParamsStatusPending,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.update',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  device: {ip_address: "192.168.1.1"},\n  email: "dev@stainless.com",\n  name: "name",\n  phone: "+46991022",\n  status: :pending\n)\n\nputs(customer_v1)',
+      },
       cli: {
         method: 'customers update',
         example:
@@ -1719,29 +1739,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CustomerUpdateParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Device = new("192.168.1.1"),\n    Email = "dev@stainless.com",\n    Name = "name",\n    Phone = "+46991022",\n    Status = Status.Pending,\n};\n\nvar customerV1 = await client.Customers.Update(parameters);\n\nConsole.WriteLine(customerV1);',
       },
-      go: {
-        method: 'client.Customers.Update',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerUpdateParams{\n\t\t\tDevice: straddle.DeviceUnmaskedV1Param{\n\t\t\t\tIPAddress: "192.168.1.1",\n\t\t\t},\n\t\t\tEmail:  "dev@stainless.com",\n\t\t\tName:   "name",\n\t\t\tPhone:  "+46991022",\n\t\t\tStatus: straddle.CustomerUpdateParamsStatusPending,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers/$ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "device": {\n            "ip_address": "192.168.1.1"\n          },\n          "email": "dev@stainless.com",\n          "name": "name",\n          "phone": "+46991022",\n          "status": "pending"\n        }\'',
-      },
-      python: {
-        method: 'customers.update',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.update(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    email="dev@stainless.com",\n    name="name",\n    phone="+46991022",\n    status="pending",\n)\nprint(customer_v1.data)',
-      },
-      ruby: {
-        method: 'customers.update',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  device: {ip_address: "192.168.1.1"},\n  email: "dev@stainless.com",\n  name: "name",\n  phone: "+46991022",\n  status: :pending\n)\n\nputs(customer_v1)',
-      },
-      typescript: {
-        method: 'client.customers.update',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  device: { ip_address: '192.168.1.1' },\n  email: 'dev@stainless.com',\n  name: 'name',\n  phone: '+46991022',\n  status: 'pending',\n});\n\nconsole.log(customerV1.data);",
       },
     },
   },
@@ -1766,6 +1766,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.customers.delete(id: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**delete** `/v1/customers/{id}`\n\nPermanently removes a customer record from Straddle. This action cannot be undone and should only be used to satisfy regulatory requirements or for privacy compliance.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: object; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: object[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerV1 = await client.customers.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.delete',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerV1.data);",
+      },
+      python: {
+        method: 'customers.delete',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.delete(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.delete',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_v1)',
+      },
       cli: {
         method: 'customers delete',
         example:
@@ -1776,29 +1796,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CustomerDeleteParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerV1 = await client.Customers.Delete(parameters);\n\nConsole.WriteLine(customerV1);',
       },
-      go: {
-        method: 'client.Customers.Delete',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers/$ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'customers.delete',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.delete(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_v1.data)',
-      },
-      ruby: {
-        method: 'customers.delete',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_v1)',
-      },
-      typescript: {
-        method: 'client.customers.delete',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerV1.data);",
       },
     },
   },
@@ -1833,6 +1833,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.customers.list(created_from?: string, created_to?: string, email?: string, external_id?: string, name?: string, page_number?: number, page_size?: number, search_text?: string, sort_by?: 'name' | 'created_at', sort_order?: 'asc' | 'desc', status?: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'[], types?: 'individual' | 'business'[], Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; external_id?: string; }`\n\n**get** `/v1/customers`\n\nLists or searches customers connected to your account. All supported query parameters are optional. If none are provided, the response will include all customers connected to your account. This endpoint supports advanced sorting and filtering options.\n\n### Parameters\n\n- `created_from?: string`\n  Start date for filtering by `created_at` date.\n\n- `created_to?: string`\n  End date for filtering by `created_at` date.\n\n- `email?: string`\n  Filter customers by `email` address.\n\n- `external_id?: string`\n  Filter by your system's `external_id`.\n\n- `name?: string`\n  Filter customers by `name` (partial match).\n\n- `page_number?: number`\n  Page number for paginated results. Starts at 1.\n\n- `page_size?: number`\n  Number of results per page. Maximum: 1000.\n\n- `search_text?: string`\n  General search term to filter customers.\n\n- `sort_by?: 'name' | 'created_at'`\n\n- `sort_order?: 'asc' | 'desc'`\n\n- `status?: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'[]`\n  Filter customers by their current `status`.\n\n- `types?: 'individual' | 'business'[]`\n  Filter by customer type `individual` or `business`.\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; external_id?: string; }`\n\n  - `id: string`\n  - `created_at: string`\n  - `email: string`\n  - `name: string`\n  - `phone: string`\n  - `status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'`\n  - `type: 'individual' | 'business'`\n  - `updated_at: string`\n  - `external_id?: string`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const customer of client.customers.list()) {\n  console.log(customer);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const customer of client.customers.list()) {\n  console.log(customer.id);\n}",
+      },
+      python: {
+        method: 'customers.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.customers.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Customers.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Customers.List(context.TODO(), straddle.CustomerListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'customers.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.customers.list\n\nputs(page)',
+      },
       cli: {
         method: 'customers list',
         example: "straddle customers list \\\n  --api-key 'My API Key'",
@@ -1842,29 +1862,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CustomerListParams parameters = new();\n\nvar page = await client.Customers.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Customers.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Customers.List(context.TODO(), straddle.CustomerListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'customers.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.customers.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'customers.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.customers.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.customers.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const customer of client.customers.list()) {\n  console.log(customer.id);\n}",
       },
     },
   },
@@ -1898,6 +1898,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.customers.create(device: { ip_address: string; }, email: string, name: string, phone: string, type: 'individual' | 'business', address?: { address1: string; city: string; state: string; zip: string; address2?: string; }, compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }, config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }, external_id?: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/customers`\n\nCreates a new customer record and automatically initiates identity, fraud, and risk assessment scores. This endpoint allows you to create a customer profile and associate it with paykeys and payments.\n\n### Parameters\n\n- `device: { ip_address: string; }`\n  - `ip_address: string`\n    The customer's IP address at the time of profile creation. Use `0.0.0.0` to represent an offline customer registration.\n\n- `email: string`\n  The customer's email address.\n\n- `name: string`\n  Full name of the individual or business name.\n\n- `phone: string`\n  The customer's phone number in E.164 format. Mobile number is preferred.\n\n- `type: 'individual' | 'business'`\n\n- `address?: { address1: string; city: string; state: string; zip: string; address2?: string; }`\n  An object containing the customer's address. **This is optional.** If used, all required fields must be present.\n  - `address1: string`\n    Primary address line (e.g., street, PO Box).\n  - `city: string`\n    City, district, suburb, town, or village.\n  - `state: string`\n    Two-letter state code.\n  - `zip: string`\n    Zip or postal code.\n  - `address2?: string`\n    Secondary address line (e.g., apartment, suite, unit, or building).\n\n- `compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }`\n  An object containing the customer's compliance profile. **This is optional.** If all required fields must be present for the appropriate customer type.\n\n- `config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }`\n  - `processing_method?: 'inline' | 'background' | 'skip'`\n  - `sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'`\n\n- `external_id?: string`\n  Unique identifier for the customer in your database, used for cross-referencing between Straddle and your systems.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the customer in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: object; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: object[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerV1 = await client.customers.create({\n  device: { ip_address: '192.168.1.1' },\n  email: 'ron.swanson@pawnee.com',\n  name: 'Ron Swanson',\n  phone: '+12128675309',\n  type: 'individual',\n});\n\nconsole.log(customerV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.create({\n  device: { ip_address: '192.168.1.1' },\n  email: 'ron.swanson@pawnee.com',\n  name: 'Ron Swanson',\n  phone: '+12128675309',\n  type: 'individual',\n});\n\nconsole.log(customerV1.data);",
+      },
+      python: {
+        method: 'customers.create',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.create(\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    email="ron.swanson@pawnee.com",\n    name="Ron Swanson",\n    phone="+12128675309",\n    type="individual",\n)\nprint(customer_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.New(context.TODO(), straddle.CustomerNewParams{\n\t\tDevice: straddle.DeviceUnmaskedV1Param{\n\t\t\tIPAddress: "192.168.1.1",\n\t\t},\n\t\tEmail: "ron.swanson@pawnee.com",\n\t\tName:  "Ron Swanson",\n\t\tPhone: "+12128675309",\n\t\tType:  straddle.CustomerNewParamsTypeIndividual,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.create(\n  device: {ip_address: "192.168.1.1"},\n  email: "ron.swanson@pawnee.com",\n  name: "Ron Swanson",\n  phone: "+12128675309",\n  type: :individual\n)\n\nputs(customer_v1)',
+      },
       cli: {
         method: 'customers create',
         example:
@@ -1908,29 +1928,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CustomerCreateParams parameters = new()\n{\n    Device = new("192.168.1.1"),\n    Email = "ron.swanson@pawnee.com",\n    Name = "Ron Swanson",\n    Phone = "+12128675309",\n    Type = Type.Individual,\n};\n\nvar customerV1 = await client.Customers.Create(parameters);\n\nConsole.WriteLine(customerV1);',
       },
-      go: {
-        method: 'client.Customers.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.New(context.TODO(), straddle.CustomerNewParams{\n\t\tDevice: straddle.DeviceUnmaskedV1Param{\n\t\t\tIPAddress: "192.168.1.1",\n\t\t},\n\t\tEmail: "ron.swanson@pawnee.com",\n\t\tName:  "Ron Swanson",\n\t\tPhone: "+12128675309",\n\t\tType:  straddle.CustomerNewParamsTypeIndividual,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "device": {\n            "ip_address": "192.168.1.1"\n          },\n          "email": "ron.swanson@pawnee.com",\n          "name": "Ron Swanson",\n          "phone": "+12128675309",\n          "type": "individual",\n          "external_id": "customer_123"\n        }\'',
-      },
-      python: {
-        method: 'customers.create',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.create(\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    email="ron.swanson@pawnee.com",\n    name="Ron Swanson",\n    phone="+12128675309",\n    type="individual",\n)\nprint(customer_v1.data)',
-      },
-      ruby: {
-        method: 'customers.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.create(\n  device: {ip_address: "192.168.1.1"},\n  email: "ron.swanson@pawnee.com",\n  name: "Ron Swanson",\n  phone: "+12128675309",\n  type: :individual\n)\n\nputs(customer_v1)',
-      },
-      typescript: {
-        method: 'client.customers.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.create({\n  device: { ip_address: '192.168.1.1' },\n  email: 'ron.swanson@pawnee.com',\n  name: 'Ron Swanson',\n  phone: '+12128675309',\n  type: 'individual',\n});\n\nconsole.log(customerV1.data);",
       },
     },
   },
@@ -1954,6 +1954,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## unmasked\n\n`client.customers.unmasked(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/customers/{id}/unmasked`\n\nRetrieves the unmasked details, including PII, of an existing customer. Supply the unique customer ID that was returned from your 'create customer' request, and Straddle will return the corresponding customer information. This endpoint needs to be enabled by Straddle and should only be used when absolutely necessary.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: object; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: object[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: object; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerUnmaskedV1 = await client.customers.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerUnmaskedV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.unmasked',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerUnmaskedV1 = await client.customers.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerUnmaskedV1.data);",
+      },
+      python: {
+        method: 'customers.unmasked',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_unmasked_v1 = client.customers.unmasked(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_unmasked_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.Unmasked',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerUnmaskedV1, err := client.Customers.Unmasked(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerUnmaskedParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerUnmaskedV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.unmasked',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_unmasked_v1 = straddle.customers.unmasked("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_unmasked_v1)',
+      },
       cli: {
         method: 'customers unmasked',
         example:
@@ -1964,29 +1984,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'CustomerUnmaskedParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerUnmaskedV1 = await client.Customers.Unmasked(parameters);\n\nConsole.WriteLine(customerUnmaskedV1);',
       },
-      go: {
-        method: 'client.Customers.Unmasked',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerUnmaskedV1, err := client.Customers.Unmasked(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerUnmaskedParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerUnmaskedV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers/$ID/unmasked \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'customers.unmasked',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_unmasked_v1 = client.customers.unmasked(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_unmasked_v1.data)',
-      },
-      ruby: {
-        method: 'customers.unmasked',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_unmasked_v1 = straddle.customers.unmasked("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_unmasked_v1)',
-      },
-      typescript: {
-        method: 'client.customers.unmasked',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerUnmaskedV1 = await client.customers.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerUnmaskedV1.data);",
       },
     },
   },
@@ -2010,6 +2010,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.customers.review.get(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/customers/{id}/review`\n\nRetrieves and analyzes the results of a customer's identity validation and fraud score. This endpoint provides a comprehensive breakdown of the validation outcome, including:\n- Risk and correlation scores\n- Reason codes for the decision\n- Results of watchlist screening\n- Any network alerts detected\nUse this endpoint to gain insights into the verification process and make informed decisions about customer onboarding.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { customer_details: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: customer_address_v1; compliance_profile?: object | object; config?: object; device?: object; external_id?: string; metadata?: object; }; identity_details?: { breakdown: object; created_at: string; decision: 'accept' | 'reject' | 'review'; review_id: string; updated_at: string; kyc?: object; messages?: object; network_alerts?: object; reputation?: object; watch_list?: object; }; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { customer_details: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }; identity_details?: { breakdown: { address?: object; business_evaluation?: object; business_identification?: object; business_validation?: object; email?: object; fraud?: object; phone?: object; synthetic?: object; }; created_at: string; decision: 'accept' | 'reject' | 'review'; review_id: string; updated_at: string; kyc?: { validations: { address?: boolean; city?: boolean; dob?: boolean; email?: boolean; first_name?: boolean; last_name?: boolean; phone?: boolean; ssn?: boolean; state?: boolean; zip?: boolean; }; codes?: string[]; decision?: 'accept' | 'reject' | 'review'; }; messages?: object; network_alerts?: { alerts?: string[]; codes?: string[]; decision?: 'accept' | 'reject' | 'review'; }; reputation?: { codes?: string[]; decision?: 'accept' | 'reject' | 'review'; insights?: { accounts_active_count?: number; accounts_closed_count?: number; accounts_closed_dates?: string[]; accounts_count?: number; accounts_fraud_count?: number; accounts_fraud_labeled_dates?: string[]; accounts_fraud_loss_total_amount?: number; ach_fraud_transactions_count?: number; ach_fraud_transactions_dates?: string[]; ach_fraud_transactions_total_amount?: number; ach_returned_transactions_count?: number; ach_returned_transactions_dates?: string[]; ach_returned_transactions_total_amount?: number; applications_approved_count?: number; applications_count?: number; applications_dates?: string[]; applications_declined_count?: number; applications_fraud_count?: number; card_disputed_transactions_count?: number; card_disputed_transactions_dates?: string[]; card_disputed_transactions_total_amount?: number; card_fraud_transactions_count?: number; card_fraud_transactions_dates?: string[]; card_fraud_transactions_total_amount?: number; card_stopped_transactions_count?: number; card_stopped_transactions_dates?: string[]; user_active_profile_count?: number; user_address_count?: number; user_closed_profile_count?: number; user_dob_count?: number; user_email_count?: number; user_institution_count?: number; user_mobile_count?: number; }; risk_score?: number; }; watch_list?: { codes?: string[]; decision?: 'accept' | 'reject' | 'review'; matched?: string[]; matches?: { correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence'; list_name: string; match_fields: string[]; urls: string[]; }[]; }; }; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerReviewV1 = await client.customers.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerReviewV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.review.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerReviewV1 = await client.customers.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerReviewV1.data);",
+      },
+      python: {
+        method: 'customers.review.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_review_v1 = client.customers.review.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_review_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.Review.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerReviewV1, err := client.Customers.Review.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerReviewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerReviewV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.review.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_review_v1 = straddle.customers.review.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_review_v1)',
+      },
       cli: {
         method: 'review get',
         example:
@@ -2020,29 +2040,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ReviewGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerReviewV1 = await client.Customers.Review.Get(parameters);\n\nConsole.WriteLine(customerReviewV1);',
       },
-      go: {
-        method: 'client.Customers.Review.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerReviewV1, err := client.Customers.Review.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerReviewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerReviewV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers/$ID/review \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'customers.review.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_review_v1 = client.customers.review.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_review_v1.data)',
-      },
-      ruby: {
-        method: 'customers.review.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_review_v1 = straddle.customers.review.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_review_v1)',
-      },
-      typescript: {
-        method: 'client.customers.review.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerReviewV1 = await client.customers.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerReviewV1.data);",
       },
     },
   },
@@ -2068,6 +2068,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## decision\n\n`client.customers.review.decision(id: string, status: 'verified' | 'rejected', Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**patch** `/v1/customers/{id}/review`\n\nUpdates the status of a customer's identity decision. This endpoint allows you to modify the outcome of a customer risk screening and is useful for correcting or updating the status of a customer's verification. Note that this endpoint is only available for customers with a current status of `review`.\n\n### Parameters\n\n- `id: string`\n\n- `status: 'verified' | 'rejected'`\n  The final status of the customer review.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: object; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: object[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerV1 = await client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { status: 'verified' });\n\nconsole.log(customerV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.review.decision',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  status: 'verified',\n});\n\nconsole.log(customerV1.data);",
+      },
+      python: {
+        method: 'customers.review.decision',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.review.decision(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    status="verified",\n)\nprint(customer_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.Review.Decision',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Review.Decision(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerReviewDecisionParams{\n\t\t\tStatus: straddle.CustomerReviewDecisionParamsStatusVerified,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.review.decision',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.review.decision("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", status: :verified)\n\nputs(customer_v1)',
+      },
       cli: {
         method: 'review decision',
         example:
@@ -2078,29 +2098,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ReviewDecisionParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Status = Status.Verified,\n};\n\nvar customerV1 = await client.Customers.Review.Decision(parameters);\n\nConsole.WriteLine(customerV1);',
       },
-      go: {
-        method: 'client.Customers.Review.Decision',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Review.Decision(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerReviewDecisionParams{\n\t\t\tStatus: straddle.CustomerReviewDecisionParamsStatusVerified,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers/$ID/review \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "status": "verified"\n        }\'',
-      },
-      python: {
-        method: 'customers.review.decision',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.review.decision(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    status="verified",\n)\nprint(customer_v1.data)',
-      },
-      ruby: {
-        method: 'customers.review.decision',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.review.decision("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", status: :verified)\n\nputs(customer_v1)',
-      },
-      typescript: {
-        method: 'client.customers.review.decision',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  status: 'verified',\n});\n\nconsole.log(customerV1.data);",
       },
     },
   },
@@ -2125,6 +2125,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## refresh_review\n\n`client.customers.review.refreshReview(id: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/customers/{id}/refresh_review`\n\nUpdates the decision of a customer's identity validation. This endpoint allows you to modify the outcome of a customer decision and is useful for correcting or updating the status of a customer's verification.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: object; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: object[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; created_at: string; email: string; name: string; phone: string; status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected'; type: 'individual' | 'business'; updated_at: string; address?: { address1: string; city: string; state: string; zip: string; address2?: string; }; compliance_profile?: { dob: string; ssn: string; } | { ein: string; legal_business_name: string; representatives?: { name: string; email?: string; phone?: string; }[]; website?: string; }; config?: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review'; }; device?: { ip_address: string; }; external_id?: string; metadata?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst customerV1 = await client.customers.review.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.customers.review.refreshReview',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.review.refreshReview(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(customerV1.data);",
+      },
+      python: {
+        method: 'customers.review.refresh_review',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.review.refresh_review(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_v1.data)',
+      },
+      go: {
+        method: 'client.Customers.Review.RefreshReview',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Review.RefreshReview(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerReviewRefreshReviewParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'customers.review.refresh_review',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.review.refresh_review("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_v1)',
+      },
       cli: {
         method: 'review refresh_review',
         example:
@@ -2135,29 +2155,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ReviewRefreshReviewParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar customerV1 = await client.Customers.Review.RefreshReview(parameters);\n\nConsole.WriteLine(customerV1);',
       },
-      go: {
-        method: 'client.Customers.Review.RefreshReview',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcustomerV1, err := client.Customers.Review.RefreshReview(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.CustomerReviewRefreshReviewParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", customerV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/customers/$ID/refresh_review \\\n    -X PUT \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'customers.review.refresh_review',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncustomer_v1 = client.customers.review.refresh_review(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_v1.data)',
-      },
-      ruby: {
-        method: 'customers.review.refresh_review',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncustomer_v1 = straddle.customers.review.refresh_review("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(customer_v1)',
-      },
-      typescript: {
-        method: 'client.customers.review.refreshReview',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst customerV1 = await client.customers.review.refreshReview(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(customerV1.data);",
       },
     },
   },
@@ -2181,6 +2181,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.paykeys.get(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/paykeys/{id}`\n\nRetrieves the details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record , including the `paykey` token value and masked bank account details.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyV1 = await client.paykeys.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
+      },
+      python: {
+        method: 'paykeys.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
+      },
+      go: {
+        method: 'client.Paykeys.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
+      },
       cli: {
         method: 'paykeys get',
         example:
@@ -2191,29 +2211,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PaykeyGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.Get(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
-      go: {
-        method: 'client.Paykeys.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
-      },
-      ruby: {
-        method: 'paykeys.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
-      },
-      typescript: {
-        method: 'client.paykeys.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
       },
     },
   },
@@ -2237,6 +2237,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## unmasked\n\n`client.paykeys.unmasked(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/paykeys/{id}/unmasked`\n\nRetrieves the unmasked details of an existing paykey. Supply the unique paykey `id` and Straddle will return the corresponding paykey record, including the unmasked bank account details. This endpoint needs to be enabled by Straddle for your account and should only be used when absolutely necessary.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyUnmaskedV1 = await client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyUnmaskedV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.unmasked',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyUnmaskedV1 = await client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyUnmaskedV1.data);",
+      },
+      python: {
+        method: 'paykeys.unmasked',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_unmasked_v1 = client.paykeys.unmasked(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_unmasked_v1.data)',
+      },
+      go: {
+        method: 'client.Paykeys.Unmasked',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyUnmaskedV1, err := client.Paykeys.Unmasked(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyUnmaskedParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyUnmaskedV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.unmasked',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_unmasked_v1 = straddle.paykeys.unmasked("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_unmasked_v1)',
+      },
       cli: {
         method: 'paykeys unmasked',
         example:
@@ -2247,29 +2267,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PaykeyUnmaskedParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyUnmaskedV1 = await client.Paykeys.Unmasked(parameters);\n\nConsole.WriteLine(paykeyUnmaskedV1);',
       },
-      go: {
-        method: 'client.Paykeys.Unmasked',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyUnmaskedV1, err := client.Paykeys.Unmasked(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyUnmaskedParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyUnmaskedV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID/unmasked \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.unmasked',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_unmasked_v1 = client.paykeys.unmasked(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_unmasked_v1.data)',
-      },
-      ruby: {
-        method: 'paykeys.unmasked',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_unmasked_v1 = straddle.paykeys.unmasked("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_unmasked_v1)',
-      },
-      typescript: {
-        method: 'client.paykeys.unmasked',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyUnmaskedV1 = await client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyUnmaskedV1.data);",
       },
     },
   },
@@ -2303,6 +2303,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.paykeys.list(created_from?: string, created_to?: string, customer_id?: string, page_number?: number, page_size?: number, search_text?: string, sort_by?: 'institution_name' | 'expires_at' | 'created_at', sort_order?: 'asc' | 'desc', source?: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'[], status?: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'[], unblock_eligible?: boolean, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n\n**get** `/v1/paykeys`\n\nReturns a list of paykeys associated with a Straddle account. This endpoint supports advanced sorting and filtering options.\n\n### Parameters\n\n- `created_from?: string`\n  Start date for filtering by creation date.\n\n- `created_to?: string`\n  End date for filtering by creation date.\n\n- `customer_id?: string`\n  Filter paykeys by related customer ID.\n\n- `page_number?: number`\n  Page number for paginated results. Starts at 1.\n\n- `page_size?: number`\n  Number of results per page. Maximum: 1000.\n\n- `search_text?: string`\n  General search term to filter paykeys.\n\n- `sort_by?: 'institution_name' | 'expires_at' | 'created_at'`\n\n- `sort_order?: 'asc' | 'desc'`\n\n- `source?: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'[]`\n  Filter paykeys by their source.\n\n- `status?: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'[]`\n  Filter paykeys by their current status.\n\n- `unblock_eligible?: boolean`\n  Filter paykeys by unblock eligibility. When true, returns only blocked paykeys eligible for client-initiated unblocking (blocked due to R29 returns and not previously unblocked). When false, returns only blocked paykeys that are not eligible for unblocking.\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n\n  - `id: string`\n  - `config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }`\n  - `created_at: string`\n  - `label: string`\n  - `paykey: string`\n  - `source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'`\n  - `status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'`\n  - `updated_at: string`\n  - `bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }`\n  - `customer_id?: string`\n  - `expires_at?: string`\n  - `external_id?: string`\n  - `institution_name?: string`\n  - `status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }`\n  - `unblock_eligible?: boolean`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const paykey of client.paykeys.list()) {\n  console.log(paykey);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const paykey of client.paykeys.list()) {\n  console.log(paykey.id);\n}",
+      },
+      python: {
+        method: 'paykeys.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.paykeys.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Paykeys.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Paykeys.List(context.TODO(), straddle.PaykeyListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.paykeys.list\n\nputs(page)',
+      },
       cli: {
         method: 'paykeys list',
         example: "straddle paykeys list \\\n  --api-key 'My API Key'",
@@ -2312,29 +2332,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PaykeyListParams parameters = new();\n\nvar page = await client.Paykeys.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Paykeys.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Paykeys.List(context.TODO(), straddle.PaykeyListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.paykeys.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'paykeys.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.paykeys.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.paykeys.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const paykey of client.paykeys.list()) {\n  console.log(paykey.id);\n}",
       },
     },
   },
@@ -2358,6 +2358,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## reveal\n\n`client.paykeys.reveal(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/paykeys/{id}/reveal`\n\nRetrieves the details of a paykey that has previously been created. Supply the unique paykey ID that was returned from your previous request, and Straddle will return the corresponding paykey information including the unmasked token.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst response = await client.paykeys.reveal('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.reveal',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.paykeys.reveal('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'paykeys.reveal',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.paykeys.reveal(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Paykeys.Reveal',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Paykeys.Reveal(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyRevealParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.reveal',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.paykeys.reveal("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(response)',
+      },
       cli: {
         method: 'paykeys reveal',
         example:
@@ -2368,29 +2388,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PaykeyRevealParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar response = await client.Paykeys.Reveal(parameters);\n\nConsole.WriteLine(response);',
       },
-      go: {
-        method: 'client.Paykeys.Reveal',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Paykeys.Reveal(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyRevealParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID/reveal \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.reveal',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.paykeys.reveal(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
-      ruby: {
-        method: 'paykeys.reveal',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.paykeys.reveal("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(response)',
-      },
-      typescript: {
-        method: 'client.paykeys.reveal',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.paykeys.reveal('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
     },
   },
@@ -2415,6 +2415,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## cancel\n\n`client.paykeys.cancel(id: string, reason?: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/paykeys/{id}/cancel`\n\n### Parameters\n\n- `id: string`\n\n- `reason?: string`\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyV1 = await client.paykeys.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.cancel',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
+      },
+      python: {
+        method: 'paykeys.cancel',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.cancel(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
+      },
+      go: {
+        method: 'client.Paykeys.Cancel',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyCancelParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.cancel',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
+      },
       cli: {
         method: 'paykeys cancel',
         example:
@@ -2425,29 +2445,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PaykeyCancelParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.Cancel(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
-      go: {
-        method: 'client.Paykeys.Cancel',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyCancelParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID/cancel \\\n    -X PUT \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.cancel',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.cancel(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
-      },
-      ruby: {
-        method: 'paykeys.cancel',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
-      },
-      typescript: {
-        method: 'client.paykeys.cancel',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
       },
     },
   },
@@ -2472,6 +2472,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update_balance\n\n`client.paykeys.updateBalance(id: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/paykeys/{id}/refresh_balance`\n\nUpdates the balance of a paykey. This endpoint allows you to refresh the balance of a paykey.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyV1 = await client.paykeys.updateBalance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.updateBalance',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.updateBalance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
+      },
+      python: {
+        method: 'paykeys.update_balance',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.update_balance(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
+      },
+      go: {
+        method: 'client.Paykeys.UpdateBalance',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.UpdateBalance(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyUpdateBalanceParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.update_balance',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.update_balance("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
+      },
       cli: {
         method: 'paykeys update_balance',
         example:
@@ -2482,29 +2502,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PaykeyUpdateBalanceParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.UpdateBalance(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
-      go: {
-        method: 'client.Paykeys.UpdateBalance',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.UpdateBalance(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyUpdateBalanceParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID/refresh_balance \\\n    -X PUT \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.update_balance',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.update_balance(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
-      },
-      ruby: {
-        method: 'paykeys.update_balance',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.update_balance("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
-      },
-      typescript: {
-        method: 'client.paykeys.updateBalance',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.updateBalance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
       },
     },
   },
@@ -2529,6 +2529,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## decision\n\n`client.paykeys.review.decision(id: string, status: 'active' | 'rejected', Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**patch** `/v1/paykeys/{id}/review`\n\nUpdate the status of a paykey when in review status\n\n### Parameters\n\n- `id: string`\n\n- `status: 'active' | 'rejected'`\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyV1 = await client.paykeys.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { status: 'active' });\n\nconsole.log(paykeyV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.review.decision',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  status: 'active',\n});\n\nconsole.log(paykeyV1.data);",
+      },
+      python: {
+        method: 'paykeys.review.decision',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.review.decision(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    status="active",\n)\nprint(paykey_v1.data)',
+      },
+      go: {
+        method: 'client.Paykeys.Review.Decision',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Review.Decision(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyReviewDecisionParams{\n\t\t\tStatus: straddle.PaykeyReviewDecisionParamsStatusActive,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.review.decision',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.review.decision("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", status: :active)\n\nputs(paykey_v1)',
+      },
       cli: {
         method: 'review decision',
         example:
@@ -2539,29 +2559,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ReviewDecisionParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Status = Status.Active,\n};\n\nvar paykeyV1 = await client.Paykeys.Review.Decision(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
-      go: {
-        method: 'client.Paykeys.Review.Decision',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Review.Decision(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyReviewDecisionParams{\n\t\t\tStatus: straddle.PaykeyReviewDecisionParamsStatusActive,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID/review \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "status": "active"\n        }\'',
-      },
-      python: {
-        method: 'paykeys.review.decision',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.review.decision(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    status="active",\n)\nprint(paykey_v1.data)',
-      },
-      ruby: {
-        method: 'paykeys.review.decision',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.review.decision("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", status: :active)\n\nputs(paykey_v1)',
-      },
-      typescript: {
-        method: 'client.paykeys.review.decision',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.review.decision('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  status: 'active',\n});\n\nconsole.log(paykeyV1.data);",
       },
     },
   },
@@ -2584,6 +2584,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.paykeys.review.get(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/paykeys/{id}/review`\n\nGet additional details about a paykey.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { paykey_details: { id: string; config: object; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: object; bank_data?: object; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: object; unblock_eligible?: boolean; }; verification_details?: { id: string; breakdown: object; created_at: string; decision: 'accept' | 'reject' | 'review'; messages: object; updated_at: string; }; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { paykey_details: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; verification_details?: { id: string; breakdown: { account_validation?: { codes: string[]; decision: 'accept' | 'reject' | 'review'; reason?: string; }; name_match?: { codes: string[]; decision: 'accept' | 'reject' | 'review'; correlation_score?: number; customer_name?: string; matched_name?: string; names_on_account?: string[]; reason?: string; }; }; created_at: string; decision: 'accept' | 'reject' | 'review'; messages: object; updated_at: string; }; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst review = await client.paykeys.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(review);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.review.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst review = await client.paykeys.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(review.data);",
+      },
+      python: {
+        method: 'paykeys.review.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nreview = client.paykeys.review.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(review.data)',
+      },
+      go: {
+        method: 'client.Paykeys.Review.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\treview, err := client.Paykeys.Review.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyReviewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", review.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.review.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nreview = straddle.paykeys.review.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(review)',
+      },
       cli: {
         method: 'review get',
         example:
@@ -2594,29 +2614,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ReviewGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar review = await client.Paykeys.Review.Get(parameters);\n\nConsole.WriteLine(review);',
       },
-      go: {
-        method: 'client.Paykeys.Review.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\treview, err := client.Paykeys.Review.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyReviewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", review.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID/review \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.review.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nreview = client.paykeys.review.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(review.data)',
-      },
-      ruby: {
-        method: 'paykeys.review.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nreview = straddle.paykeys.review.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(review)',
-      },
-      typescript: {
-        method: 'client.paykeys.review.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst review = await client.paykeys.review.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(review.data);",
       },
     },
   },
@@ -2641,6 +2641,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## refresh_review\n\n`client.paykeys.review.refreshReview(id: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/paykeys/{id}/refresh_review`\n\nUpdates the decision of a paykey's review validation. This endpoint allows you to refresh the outcome of a paykey's decision and is useful for correcting or updating the status of a paykey's verification.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; config: { processing_method?: 'inline' | 'background' | 'skip'; sandbox_outcome?: 'standard' | 'active' | 'rejected' | 'review'; }; created_at: string; label: string; paykey: string; source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'; status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked'; updated_at: string; balance?: { status: 'pending' | 'completed' | 'failed'; account_balance?: number; updated_at?: string; }; bank_data?: { account_number: string; account_type: 'checking' | 'savings'; routing_number: string; }; customer_id?: string; expires_at?: string; external_id?: string; institution_name?: string; metadata?: object; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; unblock_eligible?: boolean; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst paykeyV1 = await client.paykeys.review.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.paykeys.review.refreshReview',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.review.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
+      },
+      python: {
+        method: 'paykeys.review.refresh_review',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.review.refresh_review(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
+      },
+      go: {
+        method: 'client.Paykeys.Review.RefreshReview',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Review.RefreshReview(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyReviewRefreshReviewParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'paykeys.review.refresh_review',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.review.refresh_review("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
+      },
       cli: {
         method: 'review refresh_review',
         example:
@@ -2651,29 +2671,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ReviewRefreshReviewParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar paykeyV1 = await client.Paykeys.Review.RefreshReview(parameters);\n\nConsole.WriteLine(paykeyV1);',
       },
-      go: {
-        method: 'client.Paykeys.Review.RefreshReview',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpaykeyV1, err := client.Paykeys.Review.RefreshReview(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PaykeyReviewRefreshReviewParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", paykeyV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/paykeys/$ID/refresh_review \\\n    -X PUT \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'paykeys.review.refresh_review',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npaykey_v1 = client.paykeys.review.refresh_review(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(paykey_v1.data)',
-      },
-      ruby: {
-        method: 'paykeys.review.refresh_review',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npaykey_v1 = straddle.paykeys.review.refresh_review("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(paykey_v1)',
-      },
-      typescript: {
-        method: 'client.paykeys.review.refreshReview',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst paykeyV1 = await client.paykeys.review.refreshReview('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(paykeyV1.data);",
       },
     },
   },
@@ -2697,6 +2697,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.charges.get(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/charges/{id}`\n\nRetrieves the details of an existing charge. Supply the unique charge `id`, and Straddle will return the corresponding charge information.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst chargeV1 = await client.charges.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.charges.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
+      },
+      python: {
+        method: 'charges.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
+      },
+      go: {
+        method: 'client.Charges.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'charges.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
+      },
       cli: {
         method: 'charges get',
         example:
@@ -2707,29 +2727,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ChargeGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Get(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
-      go: {
-        method: 'client.Charges.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/charges/$ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'charges.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
-      },
-      ruby: {
-        method: 'charges.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
-      },
-      typescript: {
-        method: 'client.charges.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
       },
     },
   },
@@ -2758,6 +2758,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.charges.update(id: string, amount: number, description: string, payment_date: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/charges/{id}`\n\nChange the values of parameters associated with a charge prior to processing. The status of the charge must be `created`, `scheduled`, or `on_hold`.\n\n### Parameters\n\n- `id: string`\n\n- `amount: number`\n  The amount of the charge in cents.\n\n- `description: string`\n  An arbitrary description for the charge.\n\n- `payment_date: string`\n  The desired date on which the payment should be occur. For charges, this means the date you want the customer to be debited on.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the charge in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst chargeV1 = await client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  amount: 10000,\n  description: 'Monthly subscription fee',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(chargeV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.charges.update',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  amount: 10000,\n  description: 'Monthly subscription fee',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(chargeV1.data);",
+      },
+      python: {
+        method: 'charges.update',
+        example:
+          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.update(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    amount=10000,\n    description="Monthly subscription fee",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(charge_v1.data)',
+      },
+      go: {
+        method: 'client.Charges.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeUpdateParams{\n\t\t\tAmount:      10000,\n\t\t\tDescription: straddle.String("Monthly subscription fee"),\n\t\t\tPaymentDate: time.Now(),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'charges.update',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  amount: 10000,\n  description: "Monthly subscription fee",\n  payment_date: "2019-12-27"\n)\n\nputs(charge_v1)',
+      },
       cli: {
         method: 'charges update',
         example:
@@ -2768,29 +2788,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ChargeUpdateParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Amount = 10000,\n    Description = "Monthly subscription fee",\n    PaymentDate = "2019-12-27",\n};\n\nvar chargeV1 = await client.Charges.Update(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
-      go: {
-        method: 'client.Charges.Update',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeUpdateParams{\n\t\t\tAmount:      10000,\n\t\t\tDescription: straddle.String("Monthly subscription fee"),\n\t\t\tPaymentDate: time.Now(),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/charges/$ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "amount": 10000,\n          "description": "Monthly subscription fee",\n          "payment_date": "2019-12-27"\n        }\'',
-      },
-      python: {
-        method: 'charges.update',
-        example:
-          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.update(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    amount=10000,\n    description="Monthly subscription fee",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(charge_v1.data)',
-      },
-      ruby: {
-        method: 'charges.update',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  amount: 10000,\n  description: "Monthly subscription fee",\n  payment_date: "2019-12-27"\n)\n\nputs(charge_v1)',
-      },
-      typescript: {
-        method: 'client.charges.update',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  amount: 10000,\n  description: 'Monthly subscription fee',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(chargeV1.data);",
       },
     },
   },
@@ -2823,6 +2823,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.charges.create(amount: number, config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }, consent_type: 'internet' | 'signed', currency: string, description: string, device: { ip_address: string; }, external_id: string, paykey: string, payment_date: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/charges`\n\nUse charges to collect money from a customer for the sale of goods or services.\n\n### Parameters\n\n- `amount: number`\n  The amount of the charge in cents.\n\n- `config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }`\n  - `balance_check: 'required' | 'enabled' | 'disabled'`\n    Defines whether to check the customer's balance before processing the charge.\n  - `auto_hold?: boolean`\n    Defines whether to automatically place this charge on hold after being created.\n  - `auto_hold_message?: string`\n    The reason the charge is being automatically held on creation.\n  - `sandbox_outcome?: string`\n    Payment will simulate processing if not Standard.\n\n- `consent_type: 'internet' | 'signed'`\n  The channel or mechanism through which the payment was authorized. Use `internet` for payments made online or through a mobile app and `signed` for signed agreements where there is a consent form or contract. Use `signed` for PDF signatures.\n\n- `currency: string`\n  The currency of the charge. Only USD is supported.\n\n- `description: string`\n  An arbitrary description for the charge.\n\n- `device: { ip_address: string; }`\n  - `ip_address: string`\n    The IP address of the device used when the customer authorized the charge or payout. Use `0.0.0.0` to represent an offline consent interaction.\n\n- `external_id: string`\n  Unique identifier for the charge in your database. This value must be unique across all charges.\n\n- `paykey: string`\n  Value of the `paykey` used for the charge.\n\n- `payment_date: string`\n  The desired date on which the payment should be occur. For charges, this means the date you want the customer to be debited on.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the charge in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst chargeV1 = await client.charges.create({\n  amount: 10000,\n  config: { balance_check: 'required' },\n  consent_type: 'internet',\n  currency: 'currency',\n  description: 'Monthly subscription fee',\n  device: { ip_address: '192.168.1.1' },\n  external_id: 'external_id',\n  paykey: 'paykey',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(chargeV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.charges.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.create({\n  amount: 10000,\n  config: { balance_check: 'required' },\n  consent_type: 'internet',\n  currency: 'currency',\n  description: 'Monthly subscription fee',\n  device: { ip_address: '192.168.1.1' },\n  external_id: 'external_id',\n  paykey: 'paykey',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(chargeV1.data);",
+      },
+      python: {
+        method: 'charges.create',
+        example:
+          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.create(\n    amount=10000,\n    config={\n        "balance_check": "required"\n    },\n    consent_type="internet",\n    currency="currency",\n    description="Monthly subscription fee",\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    external_id="external_id",\n    paykey="paykey",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(charge_v1.data)',
+      },
+      go: {
+        method: 'client.Charges.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n\t"github.com/straddleio/straddle-go/shared"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.New(context.TODO(), straddle.ChargeNewParams{\n\t\tAmount: 10000,\n\t\tConfig: straddle.ChargeNewParamsConfig{\n\t\t\tBalanceCheck: "required",\n\t\t},\n\t\tConsentType: straddle.ChargeNewParamsConsentTypeInternet,\n\t\tCurrency:    "currency",\n\t\tDescription: straddle.String("Monthly subscription fee"),\n\t\tDevice: shared.DeviceInfoV1Param{\n\t\t\tIPAddress: "192.168.1.1",\n\t\t},\n\t\tExternalID:  "external_id",\n\t\tPaykey:      "paykey",\n\t\tPaymentDate: time.Now(),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'charges.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.create(\n  amount: 10000,\n  config: {balance_check: :required},\n  consent_type: :internet,\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\n\nputs(charge_v1)',
+      },
       cli: {
         method: 'charges create',
         example:
@@ -2833,29 +2853,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ChargeCreateParams parameters = new()\n{\n    Amount = 10000,\n    Config = new()\n    {\n        BalanceCheck = BalanceCheck.Required,\n        AutoHold = true,\n        AutoHoldMessage = "auto_hold_message",\n        SandboxOutcome = SandboxOutcome.Standard,\n    },\n    ConsentType = ConsentType.Internet,\n    Currency = "currency",\n    Description = "Monthly subscription fee",\n    Device = new("192.168.1.1"),\n    ExternalID = "external_id",\n    Paykey = "paykey",\n    PaymentDate = "2019-12-27",\n};\n\nvar chargeV1 = await client.Charges.Create(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
-      go: {
-        method: 'client.Charges.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n\t"github.com/straddleio/straddle-go/shared"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.New(context.TODO(), straddle.ChargeNewParams{\n\t\tAmount: 10000,\n\t\tConfig: straddle.ChargeNewParamsConfig{\n\t\t\tBalanceCheck: "required",\n\t\t},\n\t\tConsentType: straddle.ChargeNewParamsConsentTypeInternet,\n\t\tCurrency:    "currency",\n\t\tDescription: straddle.String("Monthly subscription fee"),\n\t\tDevice: shared.DeviceInfoV1Param{\n\t\t\tIPAddress: "192.168.1.1",\n\t\t},\n\t\tExternalID:  "external_id",\n\t\tPaykey:      "paykey",\n\t\tPaymentDate: time.Now(),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/charges \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "amount": 10000,\n          "config": {\n            "balance_check": "required"\n          },\n          "consent_type": "internet",\n          "currency": "currency",\n          "description": "Monthly subscription fee",\n          "device": {\n            "ip_address": "192.168.1.1"\n          },\n          "external_id": "external_id",\n          "paykey": "paykey",\n          "payment_date": "2019-12-27"\n        }\'',
-      },
-      python: {
-        method: 'charges.create',
-        example:
-          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.create(\n    amount=10000,\n    config={\n        "balance_check": "required"\n    },\n    consent_type="internet",\n    currency="currency",\n    description="Monthly subscription fee",\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    external_id="external_id",\n    paykey="paykey",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(charge_v1.data)',
-      },
-      ruby: {
-        method: 'charges.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.create(\n  amount: 10000,\n  config: {balance_check: :required},\n  consent_type: :internet,\n  currency: "currency",\n  description: "Monthly subscription fee",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\n\nputs(charge_v1)',
-      },
-      typescript: {
-        method: 'client.charges.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.create({\n  amount: 10000,\n  config: { balance_check: 'required' },\n  consent_type: 'internet',\n  currency: 'currency',\n  description: 'Monthly subscription fee',\n  device: { ip_address: '192.168.1.1' },\n  external_id: 'external_id',\n  paykey: 'paykey',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(chargeV1.data);",
       },
     },
   },
@@ -2881,6 +2881,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## hold\n\n`client.charges.hold(id: string, reason?: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/charges/{id}/hold`\n\nPlace a charge on hold to prevent it from being originated for processing. The status of the charge must be `created` or `scheduled`.\n\n### Parameters\n\n- `id: string`\n\n- `reason?: string`\n  Details about why the charge status was updated.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst chargeV1 = await client.charges.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.charges.hold',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
+      },
+      python: {
+        method: 'charges.hold',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.hold(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
+      },
+      go: {
+        method: 'client.Charges.Hold',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Hold(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeHoldParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'charges.hold',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.hold("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
+      },
       cli: {
         method: 'charges hold',
         example:
@@ -2891,29 +2911,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ChargeHoldParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Hold(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
-      go: {
-        method: 'client.Charges.Hold',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Hold(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeHoldParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/charges/$ID/hold \\\n    -X PUT \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'charges.hold',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.hold(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
-      },
-      ruby: {
-        method: 'charges.hold',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.hold("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
-      },
-      typescript: {
-        method: 'client.charges.hold',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
       },
     },
   },
@@ -2938,6 +2938,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## release\n\n`client.charges.release(id: string, reason?: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/charges/{id}/release`\n\nRelease a charge from an `on_hold` status to allow it to be rescheduled for processing.\n\n### Parameters\n\n- `id: string`\n\n- `reason?: string`\n  Details about why the charge status was updated.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst chargeV1 = await client.charges.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.charges.release',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
+      },
+      python: {
+        method: 'charges.release',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.release(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
+      },
+      go: {
+        method: 'client.Charges.Release',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Release(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeReleaseParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'charges.release',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.release("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
+      },
       cli: {
         method: 'charges release',
         example:
@@ -2948,29 +2968,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ChargeReleaseParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Release(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
-      go: {
-        method: 'client.Charges.Release',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Release(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeReleaseParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/charges/$ID/release \\\n    -X PUT \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'charges.release',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.release(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
-      },
-      ruby: {
-        method: 'charges.release',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.release("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
-      },
-      typescript: {
-        method: 'client.charges.release',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
       },
     },
   },
@@ -2996,6 +2996,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## cancel\n\n`client.charges.cancel(id: string, reason?: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/charges/{id}/cancel`\n\nCancel a charge to prevent it from being originated for processing. The status of the charge must be `created`, `scheduled`, or `on_hold`.\n\n### Parameters\n\n- `id: string`\n\n- `reason?: string`\n  Details about why the charge status was updated.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst chargeV1 = await client.charges.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.charges.cancel',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
+      },
+      python: {
+        method: 'charges.cancel',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.cancel(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
+      },
+      go: {
+        method: 'client.Charges.Cancel',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeCancelParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'charges.cancel',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
+      },
       cli: {
         method: 'charges cancel',
         example:
@@ -3006,29 +3026,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ChargeCancelParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar chargeV1 = await client.Charges.Cancel(parameters);\n\nConsole.WriteLine(chargeV1);',
       },
-      go: {
-        method: 'client.Charges.Cancel',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchargeV1, err := client.Charges.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeCancelParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chargeV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/charges/$ID/cancel \\\n    -X PUT \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'charges.cancel',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\ncharge_v1 = client.charges.cancel(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(charge_v1.data)',
-      },
-      ruby: {
-        method: 'charges.cancel',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\ncharge_v1 = straddle.charges.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(charge_v1)',
-      },
-      typescript: {
-        method: 'client.charges.cancel',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst chargeV1 = await client.charges.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(chargeV1.data);",
       },
     },
   },
@@ -3051,6 +3051,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## unmask\n\n`client.charges.unmask(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/charges/{id}/unmask`\n\nGet a charge by id.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { balance_check: 'required' | 'enabled' | 'disabled'; auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; consent_type: 'internet' | 'signed'; created_at: string; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst response = await client.charges.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.charges.unmask',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.charges.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'charges.unmask',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.charges.unmask(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Charges.Unmask',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Charges.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      ruby: {
+        method: 'charges.unmask',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.charges.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(response)',
+      },
       cli: {
         method: 'charges unmask',
         example:
@@ -3061,29 +3081,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ChargeUnmaskParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar response = await client.Charges.Unmask(parameters);\n\nConsole.WriteLine(response);',
       },
-      go: {
-        method: 'client.Charges.Unmask',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Charges.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.ChargeUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/charges/$ID/unmask \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'charges.unmask',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.charges.unmask(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
-      ruby: {
-        method: 'charges.unmask',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.charges.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(response)',
-      },
-      typescript: {
-        method: 'client.charges.unmask',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.charges.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
     },
   },
@@ -3120,6 +3120,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.fundingEvents.list(created_from?: string, created_to?: string, direction?: 'deposit' | 'withdrawal', event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal', page_number?: number, page_size?: number, search_text?: string, sort_by?: 'transfer_date' | 'id' | 'amount', sort_order?: 'asc' | 'desc', status?: string[], status_reason?: string[], status_source?: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'[], trace_id?: string, trace_number?: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { id: string; amount: number; created_at: string; direction: 'deposit' | 'withdrawal'; event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal'; payment_count: number; trace_ids: object; trace_numbers: string[]; transfer_date: string; updated_at: string; status?: string; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; trace_number?: string; }`\n\n**get** `/v1/funding_events`\n\nRetrieves a list of funding events for your account. This endpoint supports advanced sorting and filtering options.\n\n### Parameters\n\n- `created_from?: string`\n  The start date of the range to filter by using the `YYYY-MM-DD` format.\n\n- `created_to?: string`\n  The end date of the range to filter by using the `YYYY-MM-DD` format.\n\n- `direction?: 'deposit' | 'withdrawal'`\n  Describes the direction of the funding event from the perspective of the `linked_bank_account`.\n\n- `event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal'`\n  The funding event types describes the direction and reason for the funding event.\n\n- `page_number?: number`\n  Results page number. Starts at page 1.\n\n- `page_size?: number`\n  Results page size. Max value: 1000\n\n- `search_text?: string`\n  Search text.\n\n- `sort_by?: 'transfer_date' | 'id' | 'amount'`\n  The field to sort the results by.\n\n- `sort_order?: 'asc' | 'desc'`\n  The order in which to sort the results.\n\n- `status?: string[]`\n  Funding Event status.\n\n- `status_reason?: string[]`\n  Reason for latest payment status change.\n\n- `status_source?: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'[]`\n  Source of latest payment status change.\n\n- `trace_id?: string`\n  Trace Id.\n\n- `trace_number?: string`\n  Trace number.\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ id: string; amount: number; created_at: string; direction: 'deposit' | 'withdrawal'; event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal'; payment_count: number; trace_ids: object; trace_numbers: string[]; transfer_date: string; updated_at: string; status?: string; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; trace_number?: string; }`\n\n  - `id: string`\n  - `amount: number`\n  - `created_at: string`\n  - `direction: 'deposit' | 'withdrawal'`\n  - `event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal'`\n  - `payment_count: number`\n  - `trace_ids: object`\n  - `trace_numbers: string[]`\n  - `transfer_date: string`\n  - `updated_at: string`\n  - `status?: string`\n  - `status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }`\n  - `trace_number?: string`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const fundingEvent of client.fundingEvents.list()) {\n  console.log(fundingEvent);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.fundingEvents.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const fundingEvent of client.fundingEvents.list()) {\n  console.log(fundingEvent.id);\n}",
+      },
+      python: {
+        method: 'funding_events.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.funding_events.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.FundingEvents.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.FundingEvents.List(context.TODO(), straddle.FundingEventListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'funding_events.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.funding_events.list\n\nputs(page)',
+      },
       cli: {
         method: 'funding_events list',
         example: "straddle funding-events list \\\n  --api-key 'My API Key'",
@@ -3129,29 +3149,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'FundingEventListParams parameters = new();\n\nvar page = await client.FundingEvents.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.FundingEvents.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.FundingEvents.List(context.TODO(), straddle.FundingEventListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/funding_events \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'funding_events.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.funding_events.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'funding_events.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.funding_events.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.fundingEvents.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const fundingEvent of client.fundingEvents.list()) {\n  console.log(fundingEvent.id);\n}",
       },
     },
   },
@@ -3175,6 +3175,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.fundingEvents.get(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/funding_events/{id}`\n\nRetrieves the details of an existing funding event. Supply the unique funding event `id`, and Straddle will return the individual transaction items that make up the funding event.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; created_at: string; direction: 'deposit' | 'withdrawal'; event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal'; payment_count: number; trace_ids: object; trace_numbers: string[]; transfer_date: string; updated_at: string; status?: string; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; trace_number?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; created_at: string; direction: 'deposit' | 'withdrawal'; event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal'; payment_count: number; trace_ids: object; trace_numbers: string[]; transfer_date: string; updated_at: string; status?: string; status_details?: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; trace_number?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst fundingEventSummaryItemV1 = await client.fundingEvents.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(fundingEventSummaryItemV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.fundingEvents.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst fundingEventSummaryItemV1 = await client.fundingEvents.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(fundingEventSummaryItemV1.data);",
+      },
+      python: {
+        method: 'funding_events.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nfunding_event_summary_item_v1 = client.funding_events.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(funding_event_summary_item_v1.data)',
+      },
+      go: {
+        method: 'client.FundingEvents.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tfundingEventSummaryItemV1, err := client.FundingEvents.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.FundingEventGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", fundingEventSummaryItemV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'funding_events.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nfunding_event_summary_item_v1 = straddle.funding_events.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(funding_event_summary_item_v1)',
+      },
       cli: {
         method: 'funding_events get',
         example:
@@ -3185,29 +3205,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'FundingEventGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar fundingEventSummaryItemV1 = await client.FundingEvents.Get(parameters);\n\nConsole.WriteLine(fundingEventSummaryItemV1);',
       },
-      go: {
-        method: 'client.FundingEvents.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tfundingEventSummaryItemV1, err := client.FundingEvents.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.FundingEventGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", fundingEventSummaryItemV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/funding_events/$ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'funding_events.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nfunding_event_summary_item_v1 = client.funding_events.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(funding_event_summary_item_v1.data)',
-      },
-      ruby: {
-        method: 'funding_events.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nfunding_event_summary_item_v1 = straddle.funding_events.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(funding_event_summary_item_v1)',
-      },
-      typescript: {
-        method: 'client.fundingEvents.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst fundingEventSummaryItemV1 = await client.fundingEvents.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(fundingEventSummaryItemV1.data);",
       },
     },
   },
@@ -3257,6 +3257,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.payments.list(customer_id?: string, default_page_size?: number, default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount', default_sort_order?: 'asc' | 'desc', external_id?: string, funding_id?: string, include_metadata?: boolean, max_amount?: number, max_created_at?: string, max_effective_at?: string, max_payment_date?: string, min_amount?: number, min_created_at?: string, min_effective_at?: string, min_payment_date?: string, page_number?: number, page_size?: number, paykey?: string, paykey_id?: string, payment_id?: string, payment_status?: string[], payment_type?: 'charge' | 'payout'[], search_text?: string, sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount', sort_order?: 'asc' | 'desc', status_reason?: string[], status_source?: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'[], Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { id: string; amount: number; created_at: string; currency: string; description: string; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; payment_type: 'charge' | 'payout'; status: string; status_details: object; trace_ids: object; updated_at: string; customer_details?: object; effective_at?: string; funding_id?: string; metadata?: object; paykey_details?: object; related_payments?: object; }`\n\n**get** `/v1/payments`\n\nSearch for payments, including `charges` and `payouts`, using a variety of criteria. This endpoint supports advanced sorting and filtering options.\n\n### Parameters\n\n- `customer_id?: string`\n  Search using the `customer_id` of a `charge` or `payout`.\n\n- `default_page_size?: number`\n\n- `default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount'`\n  The field to sort the results by.\n\n- `default_sort_order?: 'asc' | 'desc'`\n\n- `external_id?: string`\n  Search using the `external_id` of a `charge` or `payout`.\n\n- `funding_id?: string`\n  Search using the `funding_id` of a `charge` or `payout`.\n\n- `include_metadata?: boolean`\n  Include the metadata for payments in the returned data.\n\n- `max_amount?: number`\n  Search using a maximum `amount` of a `charge` or `payout`.\n\n- `max_created_at?: string`\n  Search using the latest `created_at` date of a `charge` or `payout`.\n\n- `max_effective_at?: string`\n  Search using the latest `effective_date` of a `charge` or `payout`.\n\n- `max_payment_date?: string`\n  Search using the latest `payment_date` of a `charge` or `payout`.\n\n- `min_amount?: number`\n  Search using the minimum `amount of a `charge` or `payout`.\n\n- `min_created_at?: string`\n  Search using the earliest `created_at` date of a `charge` or `payout`.\n\n- `min_effective_at?: string`\n  Search using the earliest `effective_date` of a `charge` or `payout`.\n\n- `min_payment_date?: string`\n  Search using the earliest ` `of a `charge` or `payout`.\n\n- `page_number?: number`\n  Results page number. Starts at page 1.\n\n- `page_size?: number`\n  Results page size. Max value: 1000\n\n- `paykey?: string`\n  Search using the `paykey` of a `charge` or `payout`.\n\n- `paykey_id?: string`\n  Search using the `paykey_id` of a `charge` or `payout`.\n\n- `payment_id?: string`\n  Search using the `id` of a `charge` or `payout`.\n\n- `payment_status?: string[]`\n  Search by the status of a `charge` or `payout`.\n\n- `payment_type?: 'charge' | 'payout'[]`\n  Search by the type of a `charge` or `payout`.\n\n- `search_text?: string`\n  Search using a text string associated with a `charge` or `payout`.\n\n- `sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount'`\n  The field to sort the results by.\n\n- `sort_order?: 'asc' | 'desc'`\n\n- `status_reason?: string[]`\n  Reason for latest payment status change.\n\n- `status_source?: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'[]`\n  Source of latest payment status change.\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ id: string; amount: number; created_at: string; currency: string; description: string; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; payment_type: 'charge' | 'payout'; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; trace_ids: object; updated_at: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; funding_id?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; related_payments?: object; }`\n\n  - `id: string`\n  - `amount: number`\n  - `created_at: string`\n  - `currency: string`\n  - `description: string`\n  - `external_id: string`\n  - `funding_ids: string[]`\n  - `paykey: string`\n  - `payment_date: string`\n  - `payment_type: 'charge' | 'payout'`\n  - `status: string`\n  - `status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }`\n  - `trace_ids: object`\n  - `updated_at: string`\n  - `customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }`\n  - `effective_at?: string`\n  - `funding_id?: string`\n  - `metadata?: object`\n  - `paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }`\n  - `related_payments?: object`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\n// Automatically fetches more pages as needed.\nfor await (const payment of client.payments.list()) {\n  console.log(payment);\n}\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payments.list',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const payment of client.payments.list()) {\n  console.log(payment.id);\n}",
+      },
+      python: {
+        method: 'payments.list',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.payments.list()\npage = page.data[0]\nprint(page.id)',
+      },
+      go: {
+        method: 'client.Payments.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Payments.List(context.TODO(), straddle.PaymentListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+      },
+      ruby: {
+        method: 'payments.list',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.payments.list\n\nputs(page)',
+      },
       cli: {
         method: 'payments list',
         example: "straddle payments list \\\n  --api-key 'My API Key'",
@@ -3266,29 +3286,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PaymentListParams parameters = new();\n\nvar page = await client.Payments.List(parameters);\nawait foreach (var item in page.Paginate())\n{\n    Console.WriteLine(item);\n}',
       },
-      go: {
-        method: 'client.Payments.List',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Payments.List(context.TODO(), straddle.PaymentListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payments \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'payments.list',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npage = client.payments.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      ruby: {
-        method: 'payments.list',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npage = straddle.payments.list\n\nputs(page)',
-      },
-      typescript: {
-        method: 'client.payments.list',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const payment of client.payments.list()) {\n  console.log(payment.id);\n}",
       },
     },
   },
@@ -3312,6 +3312,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.payouts.get(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/payouts/{id}`\n\nRetrieves the details of an existing payout. Supply the unique payout `id` to retrieve the corresponding payout information.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst payoutV1 = await client.payouts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(payoutV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payouts.get',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(payoutV1.data);",
+      },
+      python: {
+        method: 'payouts.get',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(payout_v1.data)',
+      },
+      go: {
+        method: 'client.Payouts.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'payouts.get',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(payout_v1)',
+      },
       cli: {
         method: 'payouts get',
         example:
@@ -3322,29 +3342,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PayoutGetParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar payoutV1 = await client.Payouts.Get(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
-      go: {
-        method: 'client.Payouts.Get',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payouts/$ID \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'payouts.get',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.get(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(payout_v1.data)',
-      },
-      ruby: {
-        method: 'payouts.get',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.get("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(payout_v1)',
-      },
-      typescript: {
-        method: 'client.payouts.get',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(payoutV1.data);",
       },
     },
   },
@@ -3373,6 +3373,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.payouts.update(id: string, amount: number, description: string, payment_date: string, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/payouts/{id}`\n\nUpdate the details of a payout prior to processing. The status of the payout must be `created`, `scheduled`, or `on_hold`.\n\n### Parameters\n\n- `id: string`\n\n- `amount: number`\n  The amount of the payout in cents.\n\n- `description: string`\n  An arbitrary description for the payout.\n\n- `payment_date: string`\n  The desired date on which the payment should be occur. For payouts, this means the date you want the funds to be sent from your bank account.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the payout in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst payoutV1 = await client.payouts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  amount: 10000,\n  description: 'description',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(payoutV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payouts.update',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  amount: 10000,\n  description: 'description',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(payoutV1.data);",
+      },
+      python: {
+        method: 'payouts.update',
+        example:
+          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.update(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    amount=10000,\n    description="description",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(payout_v1.data)',
+      },
+      go: {
+        method: 'client.Payouts.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutUpdateParams{\n\t\t\tAmount:      10000,\n\t\t\tDescription: straddle.String("description"),\n\t\t\tPaymentDate: time.Now(),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'payouts.update',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  amount: 10000,\n  description: "description",\n  payment_date: "2019-12-27"\n)\n\nputs(payout_v1)',
+      },
       cli: {
         method: 'payouts update',
         example:
@@ -3383,29 +3403,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PayoutUpdateParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Amount = 10000,\n    Description = "description",\n    PaymentDate = "2019-12-27",\n};\n\nvar payoutV1 = await client.Payouts.Update(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
-      go: {
-        method: 'client.Payouts.Update',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutUpdateParams{\n\t\t\tAmount:      10000,\n\t\t\tDescription: straddle.String("description"),\n\t\t\tPaymentDate: time.Now(),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payouts/$ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "amount": 10000,\n          "description": "description",\n          "payment_date": "2019-12-27"\n        }\'',
-      },
-      python: {
-        method: 'payouts.update',
-        example:
-          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.update(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    amount=10000,\n    description="description",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(payout_v1.data)',
-      },
-      ruby: {
-        method: 'payouts.update',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.update(\n  "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n  amount: 10000,\n  description: "description",\n  payment_date: "2019-12-27"\n)\n\nputs(payout_v1)',
-      },
-      typescript: {
-        method: 'client.payouts.update',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  amount: 10000,\n  description: 'description',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(payoutV1.data);",
       },
     },
   },
@@ -3437,6 +3437,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.payouts.create(amount: number, currency: string, description: string, device: { ip_address: string; }, external_id: string, paykey: string, payment_date: string, config?: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }, metadata?: object, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/payouts`\n\nUse payouts to send money to your customers.\n\n### Parameters\n\n- `amount: number`\n  The amount of the payout in cents.\n\n- `currency: string`\n  The currency of the payout. Only USD is supported.\n\n- `description: string`\n  An arbitrary description for the payout.\n\n- `device: { ip_address: string; }`\n  Information about the device used when the customer authorized the payout.\n  - `ip_address: string`\n    The IP address of the device used when the customer authorized the charge or payout. Use `0.0.0.0` to represent an offline consent interaction.\n\n- `external_id: string`\n  Unique identifier for the payout in your database. This value must be unique across all payouts.\n\n- `paykey: string`\n  Value of the `paykey` used for the payout.\n\n- `payment_date: string`\n  The desired date on which the payout should be occur. For payouts, this means the date you want the funds to be sent from your bank account.\n\n- `config?: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }`\n  - `auto_hold?: boolean`\n    Defines whether to automatically place this charge on hold after being created.\n  - `auto_hold_message?: string`\n    The reason the payout is being automatically held on creation.\n  - `sandbox_outcome?: string`\n    Payment will simulate processing if not Standard.\n\n- `metadata?: object`\n  Up to 20 additional user-defined key-value pairs. Useful for storing additional information about the payout in a structured format.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst payoutV1 = await client.payouts.create({\n  amount: 10000,\n  currency: 'currency',\n  description: 'Vendor invoice payment',\n  device: { ip_address: '192.168.1.1' },\n  external_id: 'external_id',\n  paykey: 'paykey',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(payoutV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payouts.create',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.create({\n  amount: 10000,\n  currency: 'currency',\n  description: 'Vendor invoice payment',\n  device: { ip_address: '192.168.1.1' },\n  external_id: 'external_id',\n  paykey: 'paykey',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(payoutV1.data);",
+      },
+      python: {
+        method: 'payouts.create',
+        example:
+          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.create(\n    amount=10000,\n    currency="currency",\n    description="Vendor invoice payment",\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    external_id="external_id",\n    paykey="paykey",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(payout_v1.data)',
+      },
+      go: {
+        method: 'client.Payouts.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n\t"github.com/straddleio/straddle-go/shared"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.New(context.TODO(), straddle.PayoutNewParams{\n\t\tAmount:      10000,\n\t\tCurrency:    "currency",\n\t\tDescription: straddle.String("Vendor invoice payment"),\n\t\tDevice: shared.DeviceInfoV1Param{\n\t\t\tIPAddress: "192.168.1.1",\n\t\t},\n\t\tExternalID:  "external_id",\n\t\tPaykey:      "paykey",\n\t\tPaymentDate: time.Now(),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'payouts.create',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.create(\n  amount: 10000,\n  currency: "currency",\n  description: "Vendor invoice payment",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\n\nputs(payout_v1)',
+      },
       cli: {
         method: 'payouts create',
         example:
@@ -3447,29 +3467,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PayoutCreateParams parameters = new()\n{\n    Amount = 10000,\n    Currency = "currency",\n    Description = "Vendor invoice payment",\n    Device = new("192.168.1.1"),\n    ExternalID = "external_id",\n    Paykey = "paykey",\n    PaymentDate = "2019-12-27",\n};\n\nvar payoutV1 = await client.Payouts.Create(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
-      go: {
-        method: 'client.Payouts.New',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\t"time"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n\t"github.com/straddleio/straddle-go/shared"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.New(context.TODO(), straddle.PayoutNewParams{\n\t\tAmount:      10000,\n\t\tCurrency:    "currency",\n\t\tDescription: straddle.String("Vendor invoice payment"),\n\t\tDevice: shared.DeviceInfoV1Param{\n\t\t\tIPAddress: "192.168.1.1",\n\t\t},\n\t\tExternalID:  "external_id",\n\t\tPaykey:      "paykey",\n\t\tPaymentDate: time.Now(),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payouts \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "amount": 10000,\n          "currency": "currency",\n          "description": "Vendor invoice payment",\n          "device": {\n            "ip_address": "192.168.1.1"\n          },\n          "external_id": "external_id",\n          "paykey": "paykey",\n          "payment_date": "2019-12-27"\n        }\'',
-      },
-      python: {
-        method: 'payouts.create',
-        example:
-          'import os\nfrom datetime import date\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.create(\n    amount=10000,\n    currency="currency",\n    description="Vendor invoice payment",\n    device={\n        "ip_address": "192.168.1.1"\n    },\n    external_id="external_id",\n    paykey="paykey",\n    payment_date=date.fromisoformat("2019-12-27"),\n)\nprint(payout_v1.data)',
-      },
-      ruby: {
-        method: 'payouts.create',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.create(\n  amount: 10000,\n  currency: "currency",\n  description: "Vendor invoice payment",\n  device: {ip_address: "192.168.1.1"},\n  external_id: "external_id",\n  paykey: "paykey",\n  payment_date: "2019-12-27"\n)\n\nputs(payout_v1)',
-      },
-      typescript: {
-        method: 'client.payouts.create',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.create({\n  amount: 10000,\n  currency: 'currency',\n  description: 'Vendor invoice payment',\n  device: { ip_address: '192.168.1.1' },\n  external_id: 'external_id',\n  paykey: 'paykey',\n  payment_date: '2019-12-27',\n});\n\nconsole.log(payoutV1.data);",
       },
     },
   },
@@ -3495,6 +3495,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## hold\n\n`client.payouts.hold(id: string, reason: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/payouts/{id}/hold`\n\nHold a payout to prevent it from being processed. The status of the payout must be `created`, `scheduled`, or `on_hold`.\n\n### Parameters\n\n- `id: string`\n\n- `reason: string`\n  Details about why the payout status was updated.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst payoutV1 = await client.payouts.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { reason: 'reason' });\n\nconsole.log(payoutV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payouts.hold',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  reason: 'reason',\n});\n\nconsole.log(payoutV1.data);",
+      },
+      python: {
+        method: 'payouts.hold',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.hold(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    reason="reason",\n)\nprint(payout_v1.data)',
+      },
+      go: {
+        method: 'client.Payouts.Hold',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Hold(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutHoldParams{\n\t\t\tReason: "reason",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'payouts.hold',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.hold("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", reason: "reason")\n\nputs(payout_v1)',
+      },
       cli: {
         method: 'payouts hold',
         example:
@@ -3505,29 +3525,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PayoutHoldParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Reason = "reason",\n};\n\nvar payoutV1 = await client.Payouts.Hold(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
-      go: {
-        method: 'client.Payouts.Hold',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Hold(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutHoldParams{\n\t\t\tReason: "reason",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payouts/$ID/hold \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "reason": "reason"\n        }\'',
-      },
-      python: {
-        method: 'payouts.hold',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.hold(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    reason="reason",\n)\nprint(payout_v1.data)',
-      },
-      ruby: {
-        method: 'payouts.hold',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.hold("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", reason: "reason")\n\nputs(payout_v1)',
-      },
-      typescript: {
-        method: 'client.payouts.hold',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.hold('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  reason: 'reason',\n});\n\nconsole.log(payoutV1.data);",
       },
     },
   },
@@ -3552,6 +3552,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## release\n\n`client.payouts.release(id: string, reason: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/payouts/{id}/release`\n\nRelease a payout from a `hold` status to allow it to be rescheduled for processing.\n\n### Parameters\n\n- `id: string`\n\n- `reason: string`\n  Details about why the payout status was updated.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst payoutV1 = await client.payouts.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { reason: 'reason' });\n\nconsole.log(payoutV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payouts.release',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  reason: 'reason',\n});\n\nconsole.log(payoutV1.data);",
+      },
+      python: {
+        method: 'payouts.release',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.release(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    reason="reason",\n)\nprint(payout_v1.data)',
+      },
+      go: {
+        method: 'client.Payouts.Release',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Release(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutReleaseParams{\n\t\t\tReason: "reason",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'payouts.release',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.release("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", reason: "reason")\n\nputs(payout_v1)',
+      },
       cli: {
         method: 'payouts release',
         example:
@@ -3562,29 +3582,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PayoutReleaseParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Reason = "reason",\n};\n\nvar payoutV1 = await client.Payouts.Release(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
-      go: {
-        method: 'client.Payouts.Release',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Release(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutReleaseParams{\n\t\t\tReason: "reason",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payouts/$ID/release \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "reason": "reason"\n        }\'',
-      },
-      python: {
-        method: 'payouts.release',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.release(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    reason="reason",\n)\nprint(payout_v1.data)',
-      },
-      ruby: {
-        method: 'payouts.release',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.release("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", reason: "reason")\n\nputs(payout_v1)',
-      },
-      typescript: {
-        method: 'client.payouts.release',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.release('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  reason: 'reason',\n});\n\nconsole.log(payoutV1.data);",
       },
     },
   },
@@ -3610,6 +3610,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## cancel\n\n`client.payouts.cancel(id: string, reason: string, Correlation-Id?: string, Idempotency-Key?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**put** `/v1/payouts/{id}/cancel`\n\nCancel a payout to prevent it from being processed. The status of the payout must be `created`, `scheduled`, or `on_hold`.\n\n### Parameters\n\n- `id: string`\n\n- `reason: string`\n  Details about why the payout status was updated.\n\n- `Correlation-Id?: string`\n\n- `Idempotency-Key?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: object; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst payoutV1 = await client.payouts.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { reason: 'reason' });\n\nconsole.log(payoutV1);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payouts.cancel',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  reason: 'reason',\n});\n\nconsole.log(payoutV1.data);",
+      },
+      python: {
+        method: 'payouts.cancel',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.cancel(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    reason="reason",\n)\nprint(payout_v1.data)',
+      },
+      go: {
+        method: 'client.Payouts.Cancel',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutCancelParams{\n\t\t\tReason: "reason",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
+      },
+      ruby: {
+        method: 'payouts.cancel',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", reason: "reason")\n\nputs(payout_v1)',
+      },
       cli: {
         method: 'payouts cancel',
         example:
@@ -3620,29 +3640,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PayoutCancelParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    Reason = "reason",\n};\n\nvar payoutV1 = await client.Payouts.Cancel(parameters);\n\nConsole.WriteLine(payoutV1);',
       },
-      go: {
-        method: 'client.Payouts.Cancel',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpayoutV1, err := client.Payouts.Cancel(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutCancelParams{\n\t\t\tReason: "reason",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", payoutV1.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payouts/$ID/cancel \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY" \\\n    -d \'{\n          "reason": "reason"\n        }\'',
-      },
-      python: {
-        method: 'payouts.cancel',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\npayout_v1 = client.payouts.cancel(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    reason="reason",\n)\nprint(payout_v1.data)',
-      },
-      ruby: {
-        method: 'payouts.cancel',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\npayout_v1 = straddle.payouts.cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", reason: "reason")\n\nputs(payout_v1)',
-      },
-      typescript: {
-        method: 'client.payouts.cancel',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst payoutV1 = await client.payouts.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  reason: 'reason',\n});\n\nconsole.log(payoutV1.data);",
       },
     },
   },
@@ -3665,6 +3665,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## unmask\n\n`client.payouts.unmask(id: string, Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**get** `/v1/payouts/{id}/unmask`\n\nGet a payout by id.\n\n### Parameters\n\n- `id: string`\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: object; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: object; effective_at?: string; metadata?: object; paykey_details?: object; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { id: string; amount: number; config: { auto_hold?: boolean; auto_hold_message?: string; sandbox_outcome?: string; }; currency: string; description: string; device: { ip_address: string; }; external_id: string; funding_ids: string[]; paykey: string; payment_date: string; status: string; status_details: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; code?: string; }; status_history: { changed_at: string; message: string; reason: string; source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'; status: string; code?: string; }[]; trace_ids: object; created_at?: string; customer_details?: { id: string; customer_type: 'individual' | 'business'; email: string; name: string; phone: string; }; effective_at?: string; metadata?: object; paykey_details?: { id: string; customer_id: string; label: string; balance?: number; }; payment_rail?: 'ach'; processed_at?: string; related_payments?: object; updated_at?: string; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst response = await client.payouts.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.payouts.unmask',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.payouts.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'payouts.unmask',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.payouts.unmask(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Payouts.Unmask',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Payouts.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      ruby: {
+        method: 'payouts.unmask',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.payouts.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(response)',
+      },
       cli: {
         method: 'payouts unmask',
         example:
@@ -3675,29 +3695,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'PayoutUnmaskParams parameters = new()\n{\n    ID = "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n};\n\nvar response = await client.Payouts.Unmask(parameters);\n\nConsole.WriteLine(response);',
       },
-      go: {
-        method: 'client.Payouts.Unmask',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Payouts.Unmask(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tstraddle.PayoutUnmaskParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/payouts/$ID/unmask \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'payouts.unmask',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.payouts.unmask(\n    id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
-      ruby: {
-        method: 'payouts.unmask',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.payouts.unmask("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\nputs(response)',
-      },
-      typescript: {
-        method: 'client.payouts.unmask',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.payouts.unmask('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
     },
   },
@@ -3715,6 +3715,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create_total_customers_by_status\n\n`client.reports.createTotalCustomersByStatus(Correlation-Id?: string, Request-Id?: string, Straddle-Account-Id?: string): { data: object; meta: response_metadata; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n**post** `/v1/reports/total_customers_by_status`\n\n### Parameters\n\n- `Correlation-Id?: string`\n\n- `Request-Id?: string`\n\n- `Straddle-Account-Id?: string`\n\n### Returns\n\n- `{ data: { inactive: number; pending: number; rejected: number; review: number; verified: number; }; meta: { api_request_id: string; api_request_timestamp: string; }; response_type: 'object' | 'array' | 'error' | 'none'; }`\n\n  - `data: { inactive: number; pending: number; rejected: number; review: number; verified: number; }`\n  - `meta: { api_request_id: string; api_request_timestamp: string; }`\n  - `response_type: 'object' | 'array' | 'error' | 'none'`\n\n### Example\n\n```typescript\nimport Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle();\n\nconst response = await client.reports.createTotalCustomersByStatus();\n\nconsole.log(response);\n```",
     perLanguage: {
+      typescript: {
+        method: 'client.reports.createTotalCustomersByStatus',
+        example:
+          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.reports.createTotalCustomersByStatus();\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'reports.create_total_customers_by_status',
+        example:
+          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.reports.create_total_customers_by_status()\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Reports.NewTotalCustomersByStatus',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Reports.NewTotalCustomersByStatus(context.TODO(), straddle.ReportNewTotalCustomersByStatusParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      ruby: {
+        method: 'reports.create_total_customers_by_status',
+        example:
+          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.reports.create_total_customers_by_status\n\nputs(response)',
+      },
       cli: {
         method: 'reports create_total_customers_by_status',
         example: "straddle reports create-total-customers-by-status \\\n  --api-key 'My API Key'",
@@ -3724,29 +3744,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           'ReportCreateTotalCustomersByStatusParams parameters = new();\n\nvar response = await client.Reports.CreateTotalCustomersByStatus(parameters);\n\nConsole.WriteLine(response);',
       },
-      go: {
-        method: 'client.Reports.NewTotalCustomersByStatus',
-        example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/straddleio/straddle-go"\n\t"github.com/straddleio/straddle-go/option"\n)\n\nfunc main() {\n\tclient := straddle.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Reports.NewTotalCustomersByStatus(context.TODO(), straddle.ReportNewTotalCustomersByStatusParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
-      },
       http: {
         example:
           'curl https://sandbox.straddle.com/v1/reports/total_customers_by_status \\\n    -X POST \\\n    -H "Authorization: Bearer $STRADDLE_API_KEY"',
-      },
-      python: {
-        method: 'reports.create_total_customers_by_status',
-        example:
-          'import os\nfrom straddle import Straddle\n\nclient = Straddle(\n    api_key=os.environ.get("STRADDLE_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.reports.create_total_customers_by_status()\nprint(response.data)',
-      },
-      ruby: {
-        method: 'reports.create_total_customers_by_status',
-        example:
-          'require "straddle"\n\nstraddle = Straddle::Client.new(\n  api_key: "My API Key",\n  environment: "production" # defaults to "sandbox"\n)\n\nresponse = straddle.reports.create_total_customers_by_status\n\nputs(response)',
-      },
-      typescript: {
-        method: 'client.reports.createTotalCustomersByStatus',
-        example:
-          "import Straddle from '@straddlecom/straddle';\n\nconst client = new Straddle({\n  apiKey: process.env['STRADDLE_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.reports.createTotalCustomersByStatus();\n\nconsole.log(response.data);",
       },
     },
   },
