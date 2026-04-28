@@ -15,25 +15,32 @@ const serverConfig: ServerConfig = {
   orgName: 'Straddle',
   instructionsUrl: 'https://docs.straddle.com',
   logoUrl: undefined,
-  clientProperties: [{
-  key: 'apiKey',
-  label: 'API Key',
-  description: 'Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.',
-  required: true,
-  default: undefined,
-  placeholder: 'My API Key',
-  type: 'password',
-}, {
-  key: 'environment',
-  label: 'Environment',
-  description: 'The environment to use for the client',
-  required: false,
-  default: 'sandbox',
-  placeholder: 'sandbox',
-  type: 'select',
-  options: [{ label: 'sandbox', value: 'sandbox' }, { label: 'production', value: 'production' }],
-}],
-};;
+  clientProperties: [
+    {
+      key: 'apiKey',
+      label: 'API Key',
+      description:
+        'Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.',
+      required: true,
+      default: undefined,
+      placeholder: 'My API Key',
+      type: 'password',
+    },
+    {
+      key: 'environment',
+      label: 'Environment',
+      description: 'The environment to use for the client',
+      required: false,
+      default: 'sandbox',
+      placeholder: 'sandbox',
+      type: 'select',
+      options: [
+        { label: 'sandbox', value: 'sandbox' },
+        { label: 'production', value: 'production' },
+      ],
+    },
+  ],
+};
 
 export class MyMCP extends McpAgent<Env, unknown, MCPProps> {
   // Each Durable Object needs its own McpServer instance.

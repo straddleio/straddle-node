@@ -7,9 +7,26 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 
 export class Reports extends APIResource {
-  createTotalCustomersByStatus(params: ReportCreateTotalCustomersByStatusParams | null | undefined = {}, options?: RequestOptions): APIPromise<ReportCreateTotalCustomersByStatusResponse> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.post('/v1/reports/total_customers_by_status', { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  createTotalCustomersByStatus(
+    params: ReportCreateTotalCustomersByStatusParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ReportCreateTotalCustomersByStatusResponse> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.post('/v1/reports/total_customers_by_status', {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -67,6 +84,6 @@ export interface ReportCreateTotalCustomersByStatusParams {
 export declare namespace Reports {
   export {
     type ReportCreateTotalCustomersByStatusResponse as ReportCreateTotalCustomersByStatusResponse,
-    type ReportCreateTotalCustomersByStatusParams as ReportCreateTotalCustomersByStatusParams
+    type ReportCreateTotalCustomersByStatusParams as ReportCreateTotalCustomersByStatusParams,
   };
 }

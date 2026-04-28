@@ -59,8 +59,8 @@ function getTSDiagnostics(code: string): string[] {
   const codeWithImport = [
     'import { Straddle } from "@straddlecom/straddle";',
     functionSource.type === 'declaration' ?
-      `async function run(${functionSource.client}: Straddle)` :
-      `const run: (${functionSource.client}: Straddle) => Promise<unknown> =`,
+      `async function run(${functionSource.client}: Straddle)`
+    : `const run: (${functionSource.client}: Straddle) => Promise<unknown> =`,
     functionSource.code,
   ].join('\n');
   const sourcePath = path.resolve('code.ts');
@@ -108,69 +108,69 @@ function getTSDiagnostics(code: string): string[] {
 
 const fuse = new Fuse(
   [
-    "client.embed.accounts.create",
-    "client.embed.accounts.get",
-    "client.embed.accounts.list",
-    "client.embed.accounts.onboard",
-    "client.embed.accounts.simulate",
-    "client.embed.accounts.update",
-    "client.embed.accounts.capabilityRequests.create",
-    "client.embed.accounts.capabilityRequests.list",
-    "client.embed.linkedBankAccounts.cancel",
-    "client.embed.linkedBankAccounts.create",
-    "client.embed.linkedBankAccounts.get",
-    "client.embed.linkedBankAccounts.list",
-    "client.embed.linkedBankAccounts.unmask",
-    "client.embed.linkedBankAccounts.update",
-    "client.embed.organizations.create",
-    "client.embed.organizations.get",
-    "client.embed.organizations.list",
-    "client.embed.representatives.create",
-    "client.embed.representatives.get",
-    "client.embed.representatives.list",
-    "client.embed.representatives.unmask",
-    "client.embed.representatives.update",
-    "client.bridge.initialize",
-    "client.bridge.link.bankAccount",
-    "client.bridge.link.createPaykey",
-    "client.bridge.link.createTan",
-    "client.bridge.link.plaid",
-    "client.customers.create",
-    "client.customers.delete",
-    "client.customers.get",
-    "client.customers.list",
-    "client.customers.unmasked",
-    "client.customers.update",
-    "client.customers.review.decision",
-    "client.customers.review.get",
-    "client.customers.review.refreshReview",
-    "client.paykeys.cancel",
-    "client.paykeys.get",
-    "client.paykeys.list",
-    "client.paykeys.reveal",
-    "client.paykeys.unmasked",
-    "client.paykeys.updateBalance",
-    "client.paykeys.review.decision",
-    "client.paykeys.review.get",
-    "client.paykeys.review.refreshReview",
-    "client.charges.cancel",
-    "client.charges.create",
-    "client.charges.get",
-    "client.charges.hold",
-    "client.charges.release",
-    "client.charges.unmask",
-    "client.charges.update",
-    "client.fundingEvents.get",
-    "client.fundingEvents.list",
-    "client.payments.list",
-    "client.payouts.cancel",
-    "client.payouts.create",
-    "client.payouts.get",
-    "client.payouts.hold",
-    "client.payouts.release",
-    "client.payouts.unmask",
-    "client.payouts.update",
-    "client.reports.createTotalCustomersByStatus"
+    'client.embed.accounts.create',
+    'client.embed.accounts.get',
+    'client.embed.accounts.list',
+    'client.embed.accounts.onboard',
+    'client.embed.accounts.simulate',
+    'client.embed.accounts.update',
+    'client.embed.accounts.capabilityRequests.create',
+    'client.embed.accounts.capabilityRequests.list',
+    'client.embed.linkedBankAccounts.cancel',
+    'client.embed.linkedBankAccounts.create',
+    'client.embed.linkedBankAccounts.get',
+    'client.embed.linkedBankAccounts.list',
+    'client.embed.linkedBankAccounts.unmask',
+    'client.embed.linkedBankAccounts.update',
+    'client.embed.organizations.create',
+    'client.embed.organizations.get',
+    'client.embed.organizations.list',
+    'client.embed.representatives.create',
+    'client.embed.representatives.get',
+    'client.embed.representatives.list',
+    'client.embed.representatives.unmask',
+    'client.embed.representatives.update',
+    'client.bridge.initialize',
+    'client.bridge.link.bankAccount',
+    'client.bridge.link.createPaykey',
+    'client.bridge.link.createTan',
+    'client.bridge.link.plaid',
+    'client.customers.create',
+    'client.customers.delete',
+    'client.customers.get',
+    'client.customers.list',
+    'client.customers.unmasked',
+    'client.customers.update',
+    'client.customers.review.decision',
+    'client.customers.review.get',
+    'client.customers.review.refreshReview',
+    'client.paykeys.cancel',
+    'client.paykeys.get',
+    'client.paykeys.list',
+    'client.paykeys.reveal',
+    'client.paykeys.unmasked',
+    'client.paykeys.updateBalance',
+    'client.paykeys.review.decision',
+    'client.paykeys.review.get',
+    'client.paykeys.review.refreshReview',
+    'client.charges.cancel',
+    'client.charges.create',
+    'client.charges.get',
+    'client.charges.hold',
+    'client.charges.release',
+    'client.charges.unmask',
+    'client.charges.update',
+    'client.fundingEvents.get',
+    'client.fundingEvents.list',
+    'client.payments.list',
+    'client.payouts.cancel',
+    'client.payouts.create',
+    'client.payouts.get',
+    'client.payouts.hold',
+    'client.payouts.release',
+    'client.payouts.unmask',
+    'client.payouts.update',
+    'client.reports.createTotalCustomersByStatus',
   ],
   { threshold: 1, shouldSort: true },
 );
@@ -253,7 +253,12 @@ function parseError(code: string, error: unknown): string | undefined {
     // Deno uses V8; the first "<anonymous>:LINE:COLUMN" is the top of stack.
     const lineNumber = error.stack?.match(/<anonymous>:([0-9]+):[0-9]+/)?.[1];
     // -1 for the zero-based indexing
-    const line = lineNumber && code.split('\n').at(parseInt(lineNumber, 10) - 1)?.trim();
+    const line =
+      lineNumber &&
+      code
+        .split('\n')
+        .at(parseInt(lineNumber, 10) - 1)
+        ?.trim();
     return line ? `${message}\n  at line ${lineNumber}\n    ${line}` : message;
   } catch {
     return message;
@@ -265,8 +270,9 @@ const fetch = async (req: Request): Promise<Response> => {
 
   const runFunctionSource = code ? getRunFunctionSource(code) : null;
   if (!runFunctionSource) {
-    const message = code
-      ? 'The code is missing a top-level `run` function.'
+    const message =
+      code ?
+        'The code is missing a top-level `run` function.'
       : 'The code argument is missing. Provide one containing a top-level `run` function.';
     return Response.json(
       {
@@ -311,7 +317,7 @@ const fetch = async (req: Request): Promise<Response> => {
   try {
     let run_ = async (client: any) => {};
     run_ = (await tseval(`${code}\nexport default run;`)).default;
-    const result = await run_(makeSdkProxy(client, { path: ["client"] }));
+    const result = await run_(makeSdkProxy(client, { path: ['client'] }));
     return Response.json({
       is_error: false,
       result,

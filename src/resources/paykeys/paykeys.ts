@@ -3,7 +3,13 @@
 import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
 import * as ReviewAPI from './review';
-import { Review, ReviewDecisionParams, ReviewGetParams, ReviewGetResponse, ReviewRefreshReviewParams } from './review';
+import {
+  Review,
+  ReviewDecisionParams,
+  ReviewGetParams,
+  ReviewGetResponse,
+  ReviewRefreshReviewParams,
+} from './review';
 import { APIPromise } from '../../core/api-promise';
 import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
@@ -20,14 +26,55 @@ export class Paykeys extends APIResource {
    * Returns a list of paykeys associated with a Straddle account. This endpoint
    * supports advanced sorting and filtering options.
    */
-  list(params: PaykeyListParams | null | undefined = {}, options?: RequestOptions): PagePromise<PaykeySummaryPagedV1DataPageNumberSchema, PaykeySummaryPagedV1.Data> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...query } = params ?? {}
-    return this._client.getAPIList('/v1/paykeys', PageNumberSchema<PaykeySummaryPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  list(
+    params: PaykeyListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<PaykeySummaryPagedV1DataPageNumberSchema, PaykeySummaryPagedV1.Data> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...query
+    } = params ?? {};
+    return this._client.getAPIList('/v1/paykeys', PageNumberSchema<PaykeySummaryPagedV1.Data>, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
-  cancel(id: string, params: PaykeyCancelParams | null | undefined = {}, options?: RequestOptions): APIPromise<PaykeyV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params ?? {}
-    return this._client.put(path`/v1/paykeys/${id}/cancel`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  cancel(
+    id: string,
+    params: PaykeyCancelParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params ?? {};
+    return this._client.put(path`/v1/paykeys/${id}/cancel`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -35,9 +82,27 @@ export class Paykeys extends APIResource {
    * Straddle will return the corresponding paykey record , including the `paykey`
    * token value and masked bank account details.
    */
-  get(id: string, params: PaykeyGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<PaykeyV1> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/paykeys/${id}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  get(
+    id: string,
+    params: PaykeyGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/paykeys/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -45,9 +110,27 @@ export class Paykeys extends APIResource {
    * unique paykey ID that was returned from your previous request, and Straddle will
    * return the corresponding paykey information including the unmasked token.
    */
-  reveal(id: string, params: PaykeyRevealParams | null | undefined = {}, options?: RequestOptions): APIPromise<PaykeyRevealResponse> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/paykeys/${id}/reveal`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  reveal(
+    id: string,
+    params: PaykeyRevealParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyRevealResponse> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/paykeys/${id}/reveal`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -56,22 +139,60 @@ export class Paykeys extends APIResource {
    * unmasked bank account details. This endpoint needs to be enabled by Straddle for
    * your account and should only be used when absolutely necessary.
    */
-  unmasked(id: string, params: PaykeyUnmaskedParams | null | undefined = {}, options?: RequestOptions): APIPromise<PaykeyUnmaskedV1> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/paykeys/${id}/unmasked`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  unmasked(
+    id: string,
+    params: PaykeyUnmaskedParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyUnmaskedV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/paykeys/${id}/unmasked`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Updates the balance of a paykey. This endpoint allows you to refresh the balance
    * of a paykey.
    */
-  updateBalance(id: string, params: PaykeyUpdateBalanceParams | null | undefined = {}, options?: RequestOptions): APIPromise<PaykeyV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.put(path`/v1/paykeys/${id}/refresh_balance`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  updateBalance(
+    id: string,
+    params: PaykeyUpdateBalanceParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeyV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.put(path`/v1/paykeys/${id}/refresh_balance`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
-export type PaykeySummaryPagedV1DataPageNumberSchema = PageNumberSchema<PaykeySummaryPagedV1.Data>
+export type PaykeySummaryPagedV1DataPageNumberSchema = PageNumberSchema<PaykeySummaryPagedV1.Data>;
 
 export interface PaykeySummaryPagedV1 {
   data: Array<PaykeySummaryPagedV1.Data>;
@@ -191,7 +312,34 @@ export namespace PaykeySummaryPagedV1 {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -378,7 +526,34 @@ export namespace PaykeyUnmaskedV1 {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -532,7 +707,34 @@ export namespace PaykeyV1 {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -680,7 +882,34 @@ export namespace PaykeyRevealResponse {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -875,7 +1104,7 @@ export declare namespace Paykeys {
     type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
     type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
-    type PaykeyUpdateBalanceParams as PaykeyUpdateBalanceParams
+    type PaykeyUpdateBalanceParams as PaykeyUpdateBalanceParams,
   };
 
   export {
@@ -883,6 +1112,6 @@ export declare namespace Paykeys {
     type ReviewGetResponse as ReviewGetResponse,
     type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
-    type ReviewRefreshReviewParams as ReviewRefreshReviewParams
+    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
   };
 }

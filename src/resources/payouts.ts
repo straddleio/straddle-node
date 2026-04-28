@@ -28,8 +28,26 @@ export class Payouts extends APIResource {
    * ```
    */
   create(params: PayoutCreateParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.post('/v1/payouts', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.post('/v1/payouts', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -49,8 +67,26 @@ export class Payouts extends APIResource {
    * ```
    */
   update(id: string, params: PayoutUpdateParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.put(path`/v1/payouts/${id}`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/payouts/${id}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -66,8 +102,26 @@ export class Payouts extends APIResource {
    * ```
    */
   cancel(id: string, params: PayoutCancelParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.put(path`/v1/payouts/${id}/cancel`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/payouts/${id}/cancel`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -81,9 +135,27 @@ export class Payouts extends APIResource {
    * );
    * ```
    */
-  get(id: string, params: PayoutGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<PayoutV1> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/payouts/${id}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  get(
+    id: string,
+    params: PayoutGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PayoutV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/payouts/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -99,8 +171,26 @@ export class Payouts extends APIResource {
    * ```
    */
   hold(id: string, params: PayoutHoldParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.put(path`/v1/payouts/${id}/hold`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/payouts/${id}/hold`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -116,8 +206,26 @@ export class Payouts extends APIResource {
    * ```
    */
   release(id: string, params: PayoutReleaseParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.put(path`/v1/payouts/${id}/release`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/payouts/${id}/release`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -130,9 +238,27 @@ export class Payouts extends APIResource {
    * );
    * ```
    */
-  unmask(id: string, params: PayoutUnmaskParams | null | undefined = {}, options?: RequestOptions): APIPromise<PayoutUnmaskResponse> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/payouts/${id}/unmask`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  unmask(
+    id: string,
+    params: PayoutUnmaskParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PayoutUnmaskResponse> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/payouts/${id}/unmask`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -213,7 +339,16 @@ export namespace PayoutV1 {
     /**
      * The current status of the payout.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating';
+    status:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     /**
      * Details about the current status of the payout.
@@ -297,7 +432,18 @@ export namespace PayoutV1 {
       /**
        * Payment will simulate processing if not Standard.
        */
-      sandbox_outcome?: 'standard' | 'paid' | 'on_hold_daily_limit' | 'cancelled_for_fraud_risk' | 'cancelled_for_balance_check' | 'failed_insufficient_funds' | 'reversed_insufficient_funds' | 'failed_customer_dispute' | 'reversed_customer_dispute' | 'failed_closed_bank_account' | 'reversed_closed_bank_account';
+      sandbox_outcome?:
+        | 'standard'
+        | 'paid'
+        | 'on_hold_daily_limit'
+        | 'cancelled_for_fraud_risk'
+        | 'cancelled_for_balance_check'
+        | 'failed_insufficient_funds'
+        | 'reversed_insufficient_funds'
+        | 'failed_customer_dispute'
+        | 'reversed_customer_dispute'
+        | 'failed_closed_bank_account'
+        | 'reversed_closed_bank_account';
     }
 
     export interface StatusHistory {
@@ -315,7 +461,34 @@ export namespace PayoutV1 {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -326,7 +499,16 @@ export namespace PayoutV1 {
       /**
        * The current status of the `charge` or `payout`.
        */
-      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating';
+      status:
+        | 'created'
+        | 'scheduled'
+        | 'failed'
+        | 'cancelled'
+        | 'on_hold'
+        | 'pending'
+        | 'paid'
+        | 'reversed'
+        | 'validating';
 
       /**
        * The status code if applicable.
@@ -405,7 +587,16 @@ export namespace PayoutUnmaskResponse {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating';
+    status:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     status_details: Shared.StatusDetailsV1;
 
@@ -477,7 +668,18 @@ export namespace PayoutUnmaskResponse {
       /**
        * Payment will simulate processing if not Standard.
        */
-      sandbox_outcome?: 'standard' | 'paid' | 'on_hold_daily_limit' | 'cancelled_for_fraud_risk' | 'cancelled_for_balance_check' | 'failed_insufficient_funds' | 'reversed_insufficient_funds' | 'failed_customer_dispute' | 'reversed_customer_dispute' | 'failed_closed_bank_account' | 'reversed_closed_bank_account';
+      sandbox_outcome?:
+        | 'standard'
+        | 'paid'
+        | 'on_hold_daily_limit'
+        | 'cancelled_for_fraud_risk'
+        | 'cancelled_for_balance_check'
+        | 'failed_insufficient_funds'
+        | 'reversed_insufficient_funds'
+        | 'failed_customer_dispute'
+        | 'reversed_customer_dispute'
+        | 'failed_closed_bank_account'
+        | 'reversed_closed_bank_account';
     }
 
     export interface Device {
@@ -502,7 +704,34 @@ export namespace PayoutUnmaskResponse {
        * A machine-readable identifier for the specific status, useful for programmatic
        * handling.
        */
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       /**
        * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
@@ -513,7 +742,16 @@ export namespace PayoutUnmaskResponse {
       /**
        * The current status of the `charge` or `payout`.
        */
-      status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating';
+      status:
+        | 'created'
+        | 'scheduled'
+        | 'failed'
+        | 'cancelled'
+        | 'on_hold'
+        | 'pending'
+        | 'paid'
+        | 'reversed'
+        | 'validating';
 
       /**
        * The status code if applicable.
@@ -611,7 +849,18 @@ export namespace PayoutCreateParams {
     /**
      * Payment will simulate processing if not Standard.
      */
-    sandbox_outcome?: 'standard' | 'paid' | 'on_hold_daily_limit' | 'cancelled_for_fraud_risk' | 'cancelled_for_balance_check' | 'failed_insufficient_funds' | 'reversed_insufficient_funds' | 'failed_customer_dispute' | 'reversed_customer_dispute' | 'failed_closed_bank_account' | 'reversed_closed_bank_account';
+    sandbox_outcome?:
+      | 'standard'
+      | 'paid'
+      | 'on_hold_daily_limit'
+      | 'cancelled_for_fraud_risk'
+      | 'cancelled_for_balance_check'
+      | 'failed_insufficient_funds'
+      | 'reversed_insufficient_funds'
+      | 'failed_customer_dispute'
+      | 'reversed_customer_dispute'
+      | 'failed_closed_bank_account'
+      | 'reversed_closed_bank_account';
   }
 }
 
@@ -792,6 +1041,6 @@ export declare namespace Payouts {
     type PayoutGetParams as PayoutGetParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
-    type PayoutUnmaskParams as PayoutUnmaskParams
+    type PayoutUnmaskParams as PayoutUnmaskParams,
   };
 }

@@ -14,13 +14,32 @@ export class Payments extends APIResource {
    * Search for payments, including `charges` and `payouts`, using a variety of
    * criteria. This endpoint supports advanced sorting and filtering options.
    */
-  list(params: PaymentListParams | null | undefined = {}, options?: RequestOptions): PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...query } = params ?? {}
-    return this._client.getAPIList('/v1/payments', PageNumberSchema<PaymentSummaryPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  list(
+    params: PaymentListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<PaymentSummaryPagedV1DataPageNumberSchema, PaymentSummaryPagedV1.Data> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...query
+    } = params ?? {};
+    return this._client.getAPIList('/v1/payments', PageNumberSchema<PaymentSummaryPagedV1.Data>, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
-export type PaymentSummaryPagedV1DataPageNumberSchema = PageNumberSchema<PaymentSummaryPagedV1.Data>
+export type PaymentSummaryPagedV1DataPageNumberSchema = PageNumberSchema<PaymentSummaryPagedV1.Data>;
 
 export interface PaymentSummaryPagedV1 {
   data: Array<PaymentSummaryPagedV1.Data>;
@@ -97,7 +116,16 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating';
+    status:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     /**
      * Details about the current status of the `charge` or `payout`.
@@ -287,7 +315,17 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: Search by the status of a `charge` or `payout`.
    */
-  payment_status?: Array<'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating'>;
+  payment_status?: Array<
+    | 'created'
+    | 'scheduled'
+    | 'failed'
+    | 'cancelled'
+    | 'on_hold'
+    | 'pending'
+    | 'paid'
+    | 'reversed'
+    | 'validating'
+  >;
 
   /**
    * Query param: Search by the type of a `charge` or `payout`.
@@ -312,7 +350,35 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: Reason for latest payment status change.
    */
-  status_reason?: Array<'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold'>;
+  status_reason?: Array<
+    | 'insufficient_funds'
+    | 'closed_bank_account'
+    | 'invalid_bank_account'
+    | 'invalid_routing'
+    | 'disputed'
+    | 'payment_stopped'
+    | 'owner_deceased'
+    | 'frozen_bank_account'
+    | 'risk_review'
+    | 'fraudulent'
+    | 'duplicate_entry'
+    | 'invalid_paykey'
+    | 'payment_blocked'
+    | 'amount_too_large'
+    | 'too_many_attempts'
+    | 'internal_system_error'
+    | 'user_request'
+    | 'ok'
+    | 'other_network_return'
+    | 'payout_refused'
+    | 'cancel_request'
+    | 'failed_verification'
+    | 'require_review'
+    | 'blocked_by_system'
+    | 'watchtower_review'
+    | 'validating'
+    | 'auto_hold'
+  >;
 
   /**
    * Query param: Source of latest payment status change.
@@ -341,6 +407,6 @@ export declare namespace Payments {
   export {
     type PaymentSummaryPagedV1 as PaymentSummaryPagedV1,
     type PaymentSummaryPagedV1DataPageNumberSchema as PaymentSummaryPagedV1DataPageNumberSchema,
-    type PaymentListParams as PaymentListParams
+    type PaymentListParams as PaymentListParams,
   };
 }
