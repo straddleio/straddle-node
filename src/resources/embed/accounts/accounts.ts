@@ -735,11 +735,6 @@ export namespace AccountV1 {
  */
 export interface AddressV1 {
   /**
-   * Primary address line (e.g., street, PO Box).
-   */
-  address1: string;
-
-  /**
    * City, district, suburb, town, or village.
    */
   city: string | null;
@@ -758,16 +753,6 @@ export interface AddressV1 {
    * Two-letter state code.
    */
   state: string | null;
-
-  /**
-   * Zip or postal code.
-   */
-  zip: string;
-
-  /**
-   * Secondary address line (e.g., apartment, suite, unit, or building).
-   */
-  address2?: string | null;
 
   /**
    * The country of the address, in ISO 3166-1 alpha-2 format.
@@ -980,11 +965,6 @@ export interface AccountUpdateParams {
 }
 
 export interface AccountListParams extends PageNumberSchemaParams {
-  /**
-   * Query param
-   */
-  external_id?: string;
-
   /**
    * Query param
    */
