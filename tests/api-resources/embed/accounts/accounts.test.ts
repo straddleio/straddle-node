@@ -32,10 +32,13 @@ describe('resource accounts', () => {
         name: 'name',
         website: 'https://example.com',
         address: {
+          address1: 'address1',
           city: 'city',
           line1: 'line1',
           postal_code: '21029-1360',
           state: 'SE',
+          zip: 'zip',
+          address2: 'address2',
           country: 'country',
           line2: 'line2',
         },
@@ -83,10 +86,13 @@ describe('resource accounts', () => {
         name: 'name',
         website: 'https://example.com',
         address: {
+          address1: 'address1',
           city: 'city',
           line1: 'line1',
           postal_code: '21029-1360',
           state: 'SE',
+          zip: 'zip',
+          address2: 'address2',
           country: 'country',
           line2: 'line2',
         },
@@ -130,6 +136,7 @@ describe('resource accounts', () => {
     await expect(
       client.embed.accounts.list(
         {
+          external_id: 'external_id',
           page_number: 0,
           page_size: 0,
           search_text: 'search_text',
