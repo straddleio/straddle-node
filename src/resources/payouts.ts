@@ -337,11 +337,6 @@ export namespace PayoutV1 {
     payment_date: string;
 
     /**
-     * Is the payout a refund.
-     */
-    refund: boolean;
-
-    /**
      * The current status of the payout.
      */
     status:
@@ -588,11 +583,6 @@ export namespace PayoutUnmaskResponse {
      * Payment date.
      */
     payment_date: string;
-
-    /**
-     * Is the payout a refund.
-     */
-    refund: boolean;
 
     /**
      * The current status of the `charge` or `payout`.
