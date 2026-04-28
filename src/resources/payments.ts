@@ -111,7 +111,7 @@ export namespace PaymentSummaryPagedV1 {
     /**
      * The type of payment. Valid values are `charge` or `payout`.
      */
-    payment_type: 'charge' | 'payout' | 'refund';
+    payment_type: 'charge' | 'payout';
 
     /**
      * The current status of the `charge` or `payout`.
@@ -169,11 +169,6 @@ export namespace PaymentSummaryPagedV1 {
      * Information about the paykey used for the `charge` or `payout`.
      */
     paykey_details?: Shared.PaykeyDetailsV1;
-
-    /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
   }
 
   export interface Meta {
@@ -330,7 +325,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: Search by the type of a `charge` or `payout`.
    */
-  payment_type?: Array<'charge' | 'payout' | 'refund'>;
+  payment_type?: Array<'charge' | 'payout'>;
 
   /**
    * Query param: Search using a text string associated with a `charge` or `payout`.
