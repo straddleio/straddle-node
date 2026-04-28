@@ -17,8 +17,26 @@ export class Link extends APIResource {
    * specific bank account.
    */
   bankAccount(params: LinkBankAccountParams, options?: RequestOptions): APIPromise<PaykeysAPI.PaykeyV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.post('/v1/bridge/bank_account', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.post('/v1/bridge/bank_account', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -26,14 +44,53 @@ export class Link extends APIResource {
    * you to create a secure payment token linked to a bank account authenticated
    * through Quiltt.
    */
-  createPaykey(params: LinkCreatePaykeyParams, options?: RequestOptions): APIPromise<LinkCreatePaykeyResponse> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.post('/v1/bridge/quiltt', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  createPaykey(
+    params: LinkCreatePaykeyParams,
+    options?: RequestOptions,
+  ): APIPromise<LinkCreatePaykeyResponse> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.post('/v1/bridge/quiltt', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   createTan(params: LinkCreateTanParams, options?: RequestOptions): APIPromise<LinkCreateTanResponse> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.post('/v1/bridge/tan', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.post('/v1/bridge/tan', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -42,8 +99,26 @@ export class Link extends APIResource {
    * authenticated through Plaid.
    */
   plaid(params: LinkPlaidParams, options?: RequestOptions): APIPromise<PaykeysAPI.PaykeyV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.post('/v1/bridge/plaid', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.post('/v1/bridge/plaid', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -183,7 +258,34 @@ export namespace LinkCreatePaykeyResponse {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -331,7 +433,34 @@ export namespace LinkCreateTanResponse {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -608,6 +737,6 @@ export declare namespace Link {
     type LinkBankAccountParams as LinkBankAccountParams,
     type LinkCreatePaykeyParams as LinkCreatePaykeyParams,
     type LinkCreateTanParams as LinkCreateTanParams,
-    type LinkPlaidParams as LinkPlaidParams
+    type LinkPlaidParams as LinkPlaidParams,
   };
 }

@@ -16,9 +16,28 @@ export class FundingEvents extends APIResource {
    * Retrieves a list of funding events for your account. This endpoint supports
    * advanced sorting and filtering options.
    */
-  list(params: FundingEventListParams | null | undefined = {}, options?: RequestOptions): PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...query } = params ?? {}
-    return this._client.getAPIList('/v1/funding_events', PageNumberSchema<FundingEventSummaryPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  list(
+    params: FundingEventListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...query
+    } = params ?? {};
+    return this._client.getAPIList('/v1/funding_events', PageNumberSchema<FundingEventSummaryPagedV1.Data>, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -26,13 +45,32 @@ export class FundingEvents extends APIResource {
    * event `id`, and Straddle will return the individual transaction items that make
    * up the funding event.
    */
-  get(id: string, params: FundingEventGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<FundingEventSummaryItemV1> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/funding_events/${id}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  get(
+    id: string,
+    params: FundingEventGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<FundingEventSummaryItemV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/funding_events/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
-export type FundingEventSummaryPagedV1DataPageNumberSchema = PageNumberSchema<FundingEventSummaryPagedV1.Data>
+export type FundingEventSummaryPagedV1DataPageNumberSchema =
+  PageNumberSchema<FundingEventSummaryPagedV1.Data>;
 
 export interface FundingEventSummaryItemV1 {
   data: FundingEventSummaryItemV1.Data;
@@ -113,7 +151,16 @@ export namespace FundingEventSummaryItemV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating';
+    status?:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     status_details?: Data.StatusDetails;
 
@@ -135,7 +182,34 @@ export namespace FundingEventSummaryItemV1 {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -223,7 +297,16 @@ export namespace FundingEventSummaryPagedV1 {
     /**
      * The current status of the `charge` or `payout`.
      */
-    status?: 'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating';
+    status?:
+      | 'created'
+      | 'scheduled'
+      | 'failed'
+      | 'cancelled'
+      | 'on_hold'
+      | 'pending'
+      | 'paid'
+      | 'reversed'
+      | 'validating';
 
     status_details?: Data.StatusDetails;
 
@@ -245,7 +328,34 @@ export namespace FundingEventSummaryPagedV1 {
        */
       message: string;
 
-      reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+      reason:
+        | 'insufficient_funds'
+        | 'closed_bank_account'
+        | 'invalid_bank_account'
+        | 'invalid_routing'
+        | 'disputed'
+        | 'payment_stopped'
+        | 'owner_deceased'
+        | 'frozen_bank_account'
+        | 'risk_review'
+        | 'fraudulent'
+        | 'duplicate_entry'
+        | 'invalid_paykey'
+        | 'payment_blocked'
+        | 'amount_too_large'
+        | 'too_many_attempts'
+        | 'internal_system_error'
+        | 'user_request'
+        | 'ok'
+        | 'other_network_return'
+        | 'payout_refused'
+        | 'cancel_request'
+        | 'failed_verification'
+        | 'require_review'
+        | 'blocked_by_system'
+        | 'watchtower_review'
+        | 'validating'
+        | 'auto_hold';
 
       source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -341,12 +451,50 @@ export interface FundingEventListParams extends PageNumberSchemaParams {
   /**
    * Query param: Funding Event status.
    */
-  status?: Array<'created' | 'scheduled' | 'failed' | 'cancelled' | 'on_hold' | 'pending' | 'paid' | 'reversed' | 'validating'> | null;
+  status?: Array<
+    | 'created'
+    | 'scheduled'
+    | 'failed'
+    | 'cancelled'
+    | 'on_hold'
+    | 'pending'
+    | 'paid'
+    | 'reversed'
+    | 'validating'
+  > | null;
 
   /**
    * Query param: Reason for latest payment status change.
    */
-  status_reason?: Array<'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold'> | null;
+  status_reason?: Array<
+    | 'insufficient_funds'
+    | 'closed_bank_account'
+    | 'invalid_bank_account'
+    | 'invalid_routing'
+    | 'disputed'
+    | 'payment_stopped'
+    | 'owner_deceased'
+    | 'frozen_bank_account'
+    | 'risk_review'
+    | 'fraudulent'
+    | 'duplicate_entry'
+    | 'invalid_paykey'
+    | 'payment_blocked'
+    | 'amount_too_large'
+    | 'too_many_attempts'
+    | 'internal_system_error'
+    | 'user_request'
+    | 'ok'
+    | 'other_network_return'
+    | 'payout_refused'
+    | 'cancel_request'
+    | 'failed_verification'
+    | 'require_review'
+    | 'blocked_by_system'
+    | 'watchtower_review'
+    | 'validating'
+    | 'auto_hold'
+  > | null;
 
   /**
    * Query param: Source of latest payment status change.
@@ -404,6 +552,6 @@ export declare namespace FundingEvents {
     type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
     type FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
     type FundingEventListParams as FundingEventListParams,
-    type FundingEventGetParams as FundingEventGetParams
+    type FundingEventGetParams as FundingEventGetParams,
   };
 }

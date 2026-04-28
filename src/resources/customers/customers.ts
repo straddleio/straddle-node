@@ -4,7 +4,14 @@ import { APIResource } from '../../core/resource';
 import * as CustomersAPI from './customers';
 import * as Shared from '../shared';
 import * as ReviewAPI from './review';
-import { CustomerReviewV1, IdentityVerificationBreakdownV1, Review, ReviewDecisionParams, ReviewGetParams, ReviewRefreshReviewParams } from './review';
+import {
+  CustomerReviewV1,
+  IdentityVerificationBreakdownV1,
+  Review,
+  ReviewDecisionParams,
+  ReviewGetParams,
+  ReviewRefreshReviewParams,
+} from './review';
 import { APIPromise } from '../../core/api-promise';
 import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
@@ -34,8 +41,26 @@ export class Customers extends APIResource {
    * ```
    */
   create(params: CustomerCreateParams, options?: RequestOptions): APIPromise<CustomerV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.post('/v1/customers', { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.post('/v1/customers', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -57,8 +82,26 @@ export class Customers extends APIResource {
    * ```
    */
   update(id: string, params: CustomerUpdateParams, options?: RequestOptions): APIPromise<CustomerV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.put(path`/v1/customers/${id}`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.put(path`/v1/customers/${id}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -75,9 +118,28 @@ export class Customers extends APIResource {
    * }
    * ```
    */
-  list(params: CustomerListParams | null | undefined = {}, options?: RequestOptions): PagePromise<CustomerSummaryPagedV1DataPageNumberSchema, CustomerSummaryPagedV1.Data> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...query } = params ?? {}
-    return this._client.getAPIList('/v1/customers', PageNumberSchema<CustomerSummaryPagedV1.Data>, { query, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  list(
+    params: CustomerListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<CustomerSummaryPagedV1DataPageNumberSchema, CustomerSummaryPagedV1.Data> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...query
+    } = params ?? {};
+    return this._client.getAPIList('/v1/customers', PageNumberSchema<CustomerSummaryPagedV1.Data>, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -92,9 +154,29 @@ export class Customers extends APIResource {
    * );
    * ```
    */
-  delete(id: string, params: CustomerDeleteParams | null | undefined = {}, options?: RequestOptions): APIPromise<CustomerV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.delete(path`/v1/customers/${id}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  delete(
+    id: string,
+    params: CustomerDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.delete(path`/v1/customers/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -109,9 +191,27 @@ export class Customers extends APIResource {
    * );
    * ```
    */
-  get(id: string, params: CustomerGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<CustomerV1> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/customers/${id}`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  get(
+    id: string,
+    params: CustomerGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/customers/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -128,13 +228,31 @@ export class Customers extends APIResource {
    * );
    * ```
    */
-  unmasked(id: string, params: CustomerUnmaskedParams | null | undefined = {}, options?: RequestOptions): APIPromise<CustomerUnmaskedV1> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/customers/${id}/unmasked`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  unmasked(
+    id: string,
+    params: CustomerUnmaskedParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerUnmaskedV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/customers/${id}/unmasked`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
-export type CustomerSummaryPagedV1DataPageNumberSchema = PageNumberSchema<CustomerSummaryPagedV1.Data>
+export type CustomerSummaryPagedV1DataPageNumberSchema = PageNumberSchema<CustomerSummaryPagedV1.Data>;
 
 /**
  * An object containing the customer's address. This is optional, but if provided,
@@ -617,7 +735,10 @@ export interface CustomerCreateParams {
    * optional.** If all required fields must be present for the appropriate customer
    * type.
    */
-  compliance_profile?: CustomerCreateParams.IndividualComplianceProfile | CustomerCreateParams.BusinessComplianceProfile | null;
+  compliance_profile?:
+    | CustomerCreateParams.IndividualComplianceProfile
+    | CustomerCreateParams.BusinessComplianceProfile
+    | null;
 
   /**
    * Body param
@@ -758,7 +879,10 @@ export interface CustomerUpdateParams {
    * Body param: Individual PII data required to trigger Patriot Act compliant KYC
    * verification.
    */
-  compliance_profile?: CustomerUpdateParams.IndividualComplianceProfile | CustomerUpdateParams.BusinessComplianceProfile | null;
+  compliance_profile?:
+    | CustomerUpdateParams.IndividualComplianceProfile
+    | CustomerUpdateParams.BusinessComplianceProfile
+    | null;
 
   /**
    * Body param: Unique identifier for the customer in your database, used for
@@ -992,7 +1116,7 @@ export declare namespace Customers {
     type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
     type CustomerGetParams as CustomerGetParams,
-    type CustomerUnmaskedParams as CustomerUnmaskedParams
+    type CustomerUnmaskedParams as CustomerUnmaskedParams,
   };
 
   export {
@@ -1001,6 +1125,6 @@ export declare namespace Customers {
     type IdentityVerificationBreakdownV1 as IdentityVerificationBreakdownV1,
     type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
-    type ReviewRefreshReviewParams as ReviewRefreshReviewParams
+    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
   };
 }

@@ -15,17 +15,57 @@ export class Review extends APIResource {
   /**
    * Update the status of a paykey when in review status
    */
-  decision(id: string, params: ReviewDecisionParams, options?: RequestOptions): APIPromise<PaykeysAPI.PaykeyV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID, ...body } = params
-    return this._client.patch(path`/v1/paykeys/${id}/review`, { body, ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  decision(
+    id: string,
+    params: ReviewDecisionParams,
+    options?: RequestOptions,
+  ): APIPromise<PaykeysAPI.PaykeyV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.patch(path`/v1/paykeys/${id}/review`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Get additional details about a paykey.
    */
-  get(id: string, params: ReviewGetParams | null | undefined = {}, options?: RequestOptions): APIPromise<ReviewGetResponse> {
-    const { 'Correlation-Id': correlationID, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.get(path`/v1/paykeys/${id}/review`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  get(
+    id: string,
+    params: ReviewGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ReviewGetResponse> {
+    const {
+      'Correlation-Id': correlationID,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.get(path`/v1/paykeys/${id}/review`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -33,9 +73,29 @@ export class Review extends APIResource {
    * to refresh the outcome of a paykey's decision and is useful for correcting or
    * updating the status of a paykey's verification.
    */
-  refreshReview(id: string, params: ReviewRefreshReviewParams | null | undefined = {}, options?: RequestOptions): APIPromise<PaykeysAPI.PaykeyV1> {
-    const { 'Correlation-Id': correlationID, 'Idempotency-Key': idempotencyKey, 'Request-Id': requestID, 'Straddle-Account-Id': straddleAccountID } = params ?? {}
-    return this._client.put(path`/v1/paykeys/${id}/refresh_review`, { ...options, headers: buildHeaders([{...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined), ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined), ...(requestID != null ? { 'Request-Id': requestID } : undefined), ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined)}, options?.headers]) });
+  refreshReview(
+    id: string,
+    params: ReviewRefreshReviewParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PaykeysAPI.PaykeyV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+    } = params ?? {};
+    return this._client.put(path`/v1/paykeys/${id}/refresh_review`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -188,7 +248,34 @@ export namespace ReviewGetResponse {
          */
         message: string;
 
-        reason: 'insufficient_funds' | 'closed_bank_account' | 'invalid_bank_account' | 'invalid_routing' | 'disputed' | 'payment_stopped' | 'owner_deceased' | 'frozen_bank_account' | 'risk_review' | 'fraudulent' | 'duplicate_entry' | 'invalid_paykey' | 'payment_blocked' | 'amount_too_large' | 'too_many_attempts' | 'internal_system_error' | 'user_request' | 'ok' | 'other_network_return' | 'payout_refused' | 'cancel_request' | 'failed_verification' | 'require_review' | 'blocked_by_system' | 'watchtower_review' | 'validating' | 'auto_hold';
+        reason:
+          | 'insufficient_funds'
+          | 'closed_bank_account'
+          | 'invalid_bank_account'
+          | 'invalid_routing'
+          | 'disputed'
+          | 'payment_stopped'
+          | 'owner_deceased'
+          | 'frozen_bank_account'
+          | 'risk_review'
+          | 'fraudulent'
+          | 'duplicate_entry'
+          | 'invalid_paykey'
+          | 'payment_blocked'
+          | 'amount_too_large'
+          | 'too_many_attempts'
+          | 'internal_system_error'
+          | 'user_request'
+          | 'ok'
+          | 'other_network_return'
+          | 'payout_refused'
+          | 'cancel_request'
+          | 'failed_verification'
+          | 'require_review'
+          | 'blocked_by_system'
+          | 'watchtower_review'
+          | 'validating'
+          | 'auto_hold';
 
         source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
 
@@ -334,6 +421,6 @@ export declare namespace Review {
     type ReviewGetResponse as ReviewGetResponse,
     type ReviewDecisionParams as ReviewDecisionParams,
     type ReviewGetParams as ReviewGetParams,
-    type ReviewRefreshReviewParams as ReviewRefreshReviewParams
+    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
   };
 }

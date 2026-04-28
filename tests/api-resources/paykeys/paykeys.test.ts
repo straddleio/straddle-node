@@ -2,7 +2,10 @@
 
 import Straddle from '@straddlecom/straddle';
 
-const client = new Straddle({ apiKey: 'My API Key', baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010' });
+const client = new Straddle({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource paykeys', () => {
   test('list', async () => {
@@ -18,24 +21,27 @@ describe('resource paykeys', () => {
 
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.paykeys.list({
-    created_from: '2019-12-27T18:11:19.117Z',
-    created_to: '2019-12-27T18:11:19.117Z',
-    customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    page_number: 0,
-    page_size: 0,
-    search_text: 'search_text',
-    sort_by: 'institution_name',
-    sort_order: 'asc',
-    source: ['bank_account'],
-    status: ['pending'],
-    unblock_eligible: true,
-    'Correlation-Id': 'Correlation-Id',
-    'Request-Id': 'Request-Id',
-    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(Straddle.NotFoundError);
+    await expect(
+      client.paykeys.list(
+        {
+          created_from: '2019-12-27T18:11:19.117Z',
+          created_to: '2019-12-27T18:11:19.117Z',
+          customer_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          page_number: 0,
+          page_size: 0,
+          search_text: 'search_text',
+          sort_by: 'institution_name',
+          sort_order: 'asc',
+          source: ['bank_account'],
+          status: ['pending'],
+          unblock_eligible: true,
+          'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('cancel', async () => {
@@ -51,15 +57,19 @@ describe('resource paykeys', () => {
 
   test('cancel: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.paykeys.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-    reason: 'reason',
-    'Correlation-Id': 'Correlation-Id',
-    'Idempotency-Key': 'xxxxxxxxxx',
-    'Request-Id': 'Request-Id',
-    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(Straddle.NotFoundError);
+    await expect(
+      client.paykeys.cancel(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          reason: 'reason',
+          'Correlation-Id': 'Correlation-Id',
+          'Idempotency-Key': 'xxxxxxxxxx',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('get', async () => {
@@ -75,13 +85,17 @@ describe('resource paykeys', () => {
 
   test('get: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.paykeys.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-    'Correlation-Id': 'Correlation-Id',
-    'Request-Id': 'Request-Id',
-    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(Straddle.NotFoundError);
+    await expect(
+      client.paykeys.get(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('reveal', async () => {
@@ -97,13 +111,17 @@ describe('resource paykeys', () => {
 
   test('reveal: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.paykeys.reveal('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-    'Correlation-Id': 'Correlation-Id',
-    'Request-Id': 'Request-Id',
-    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(Straddle.NotFoundError);
+    await expect(
+      client.paykeys.reveal(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('unmasked', async () => {
@@ -119,13 +137,17 @@ describe('resource paykeys', () => {
 
   test('unmasked: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.paykeys.unmasked('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-    'Correlation-Id': 'Correlation-Id',
-    'Request-Id': 'Request-Id',
-    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(Straddle.NotFoundError);
+    await expect(
+      client.paykeys.unmasked(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 
   test('updateBalance', async () => {
@@ -141,13 +163,17 @@ describe('resource paykeys', () => {
 
   test('updateBalance: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.paykeys.updateBalance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-    'Correlation-Id': 'Correlation-Id',
-    'Idempotency-Key': 'xxxxxxxxxx',
-    'Request-Id': 'Request-Id',
-    'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(Straddle.NotFoundError);
+    await expect(
+      client.paykeys.updateBalance(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          'Correlation-Id': 'Correlation-Id',
+          'Idempotency-Key': 'xxxxxxxxxx',
+          'Request-Id': 'Request-Id',
+          'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Straddle.NotFoundError);
   });
 });
