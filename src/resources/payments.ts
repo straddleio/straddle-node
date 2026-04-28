@@ -169,11 +169,6 @@ export namespace PaymentSummaryPagedV1 {
      * Information about the paykey used for the `charge` or `payout`.
      */
     paykey_details?: Shared.PaykeyDetailsV1;
-
-    /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
   }
 
   export interface Meta {
