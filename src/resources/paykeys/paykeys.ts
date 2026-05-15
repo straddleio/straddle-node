@@ -923,6 +923,16 @@ export namespace PaykeyRevealResponse {
 
 export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
+   * Query param: Start date for filtering by creation date.
+   */
+  created_from?: string;
+
+  /**
+   * Query param: End date for filtering by creation date.
+   */
+  created_to?: string;
+
+  /**
    * Query param: Filter paykeys by related customer ID.
    */
   customer_id?: string;
