@@ -1,7 +1,6 @@
 import fs from 'fs';
 import type { ResponseLike } from '@straddlecom/straddle/internal/to-file';
 import { toFile } from '@straddlecom/straddle/core/uploads';
-import { File } from 'node:buffer';
 
 class MyClass {
   name: string = 'foo';
