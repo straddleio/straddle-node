@@ -326,21 +326,6 @@ export namespace PayoutV1 {
     funding_ids: Array<string>;
 
     /**
-     * Has the payout been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the payout a refund of an original charge.
-     */
-    is_refund: boolean;
-
-    /**
-     * Is the payout a resubmit of an original payout.
-     */
-    is_resubmit: boolean;
-
-    /**
      * Value of the `paykey` used for the payout.
      */
     paykey: string;
@@ -421,7 +406,7 @@ export namespace PayoutV1 {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: Array<Data.RelatedPayment> | null;
 
     /**
      * The time the payout was last updated.
@@ -530,6 +515,20 @@ export namespace PayoutV1 {
        */
       code?: string | null;
     }
+
+    export interface RelatedPayment {
+      /**
+       * The ID of the related payment.
+       */
+      id: string;
+
+      /**
+       * The type of payment.
+       */
+      payment_type: 'charge' | 'payout';
+
+      relationship: 'original' | 'resubmit' | 'refund';
+    }
   }
 }
 
@@ -588,21 +587,6 @@ export namespace PayoutUnmaskResponse {
      * Funding Ids
      */
     funding_ids: Array<string>;
-
-    /**
-     * Has the payout been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the payout a refund of an original charge.
-     */
-    is_refund: boolean;
-
-    /**
-     * Is the payout a resubmit of an original payout.
-     */
-    is_resubmit: boolean;
 
     /**
      * Paykey.
@@ -675,7 +659,7 @@ export namespace PayoutUnmaskResponse {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: Array<Data.RelatedPayment> | null;
 
     /**
      * Updated at.
@@ -787,6 +771,20 @@ export namespace PayoutUnmaskResponse {
        * The status code if applicable.
        */
       code?: string | null;
+    }
+
+    export interface RelatedPayment {
+      /**
+       * The ID of the related payment.
+       */
+      id: string;
+
+      /**
+       * The type of payment.
+       */
+      payment_type: 'charge' | 'payout';
+
+      relationship: 'original' | 'resubmit' | 'refund';
     }
   }
 }

@@ -350,21 +350,6 @@ export namespace ChargeV1 {
     funding_ids: Array<string>;
 
     /**
-     * Has the charge been refunded by an associated payout.
-     */
-    has_refund: boolean;
-
-    /**
-     * Has the charge been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the charge a resubmit of an original charge.
-     */
-    is_resubmit: boolean;
-
-    /**
      * Value of the `paykey` used for the charge.
      */
     paykey: string;
@@ -445,7 +430,7 @@ export namespace ChargeV1 {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: Array<Data.RelatedPayment> | null;
   }
 
   export namespace Data {
@@ -557,6 +542,20 @@ export namespace ChargeV1 {
        */
       code?: string | null;
     }
+
+    export interface RelatedPayment {
+      /**
+       * The ID of the related payment.
+       */
+      id: string;
+
+      /**
+       * The type of payment.
+       */
+      payment_type: 'charge' | 'payout';
+
+      relationship: 'original' | 'resubmit' | 'refund';
+    }
   }
 }
 
@@ -630,21 +629,6 @@ export namespace ChargeUnmaskResponse {
     funding_ids: Array<string>;
 
     /**
-     * Has the charge been refunded by an associated payout.
-     */
-    has_refund: boolean;
-
-    /**
-     * Has the charge been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the charge a resubmit of an original charge.
-     */
-    is_resubmit: boolean;
-
-    /**
      * Paykey.
      */
     paykey: string;
@@ -715,7 +699,7 @@ export namespace ChargeUnmaskResponse {
     /**
      * Related payments.
      */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
+    related_payments?: Array<Data.RelatedPayment> | null;
   }
 
   export namespace Data {
@@ -827,6 +811,20 @@ export namespace ChargeUnmaskResponse {
        * The status code if applicable.
        */
       code?: string | null;
+    }
+
+    export interface RelatedPayment {
+      /**
+       * The ID of the related payment.
+       */
+      id: string;
+
+      /**
+       * The type of payment.
+       */
+      payment_type: 'charge' | 'payout';
+
+      relationship: 'original' | 'resubmit' | 'refund';
     }
   }
 }
