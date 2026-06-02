@@ -326,21 +326,6 @@ export namespace PayoutV1 {
     funding_ids: Array<string>;
 
     /**
-     * Has the payout been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the payout a refund of an original charge.
-     */
-    is_refund: boolean;
-
-    /**
-     * Is the payout a resubmit of an original payout.
-     */
-    is_resubmit: boolean;
-
-    /**
      * Value of the `paykey` used for the payout.
      */
     paykey: string;
@@ -602,21 +587,6 @@ export namespace PayoutUnmaskResponse {
      * Funding Ids
      */
     funding_ids: Array<string>;
-
-    /**
-     * Has the payout been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the payout a refund of an original charge.
-     */
-    is_refund: boolean;
-
-    /**
-     * Is the payout a resubmit of an original payout.
-     */
-    is_resubmit: boolean;
 
     /**
      * Paykey.

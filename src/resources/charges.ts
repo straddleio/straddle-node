@@ -350,21 +350,6 @@ export namespace ChargeV1 {
     funding_ids: Array<string>;
 
     /**
-     * Has the charge been refunded by an associated payout.
-     */
-    has_refund: boolean;
-
-    /**
-     * Has the charge been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the charge a resubmit of an original charge.
-     */
-    is_resubmit: boolean;
-
-    /**
      * Value of the `paykey` used for the charge.
      */
     paykey: string;
@@ -642,21 +627,6 @@ export namespace ChargeUnmaskResponse {
      * Funding Ids
      */
     funding_ids: Array<string>;
-
-    /**
-     * Has the charge been refunded by an associated payout.
-     */
-    has_refund: boolean;
-
-    /**
-     * Has the charge been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the charge a resubmit of an original charge.
-     */
-    is_resubmit: boolean;
 
     /**
      * Paykey.

@@ -97,27 +97,6 @@ export namespace PaymentSummaryPagedV1 {
     funding_ids: Array<string>;
 
     /**
-     * Has the payment been refunded by an associated payout (only applicable to
-     * charges).
-     */
-    has_refund: boolean;
-
-    /**
-     * Has the payment been resubmitted.
-     */
-    has_resubmit: boolean;
-
-    /**
-     * Is the payment a refund of an original charge (only applicable to payouts).
-     */
-    is_refund: boolean;
-
-    /**
-     * Is the payment a resubmit of an original payment.
-     */
-    is_resubmit: boolean;
-
-    /**
      * Value of the `paykey` used for the `charge` or `payout`.
      */
     paykey: string;
@@ -190,28 +169,6 @@ export namespace PaymentSummaryPagedV1 {
      * Information about the paykey used for the `charge` or `payout`.
      */
     paykey_details?: Shared.PaykeyDetailsV1;
-
-    /**
-     * Payments related to this one (e.g. refunds, resubmissions), mapped by payment ID
-     * to relationship type.
-     */
-    related_payments?: Array<Data.RelatedPayment> | null;
-  }
-
-  export namespace Data {
-    export interface RelatedPayment {
-      /**
-       * The ID of the related payment.
-       */
-      id: string;
-
-      /**
-       * The type of payment.
-       */
-      payment_type: 'charge' | 'payout';
-
-      relationship: 'original' | 'resubmit' | 'refund';
-    }
   }
 
   export interface Meta {
@@ -288,31 +245,9 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   funding_id?: string;
 
   /**
-   * Query param: Has the payment been refunded by an associated payout (only
-   * applicable to charges).
-   */
-  has_refund?: boolean;
-
-  /**
-   * Query param: Has the payment been resubmitted.
-   */
-  has_resubmit?: boolean;
-
-  /**
    * Query param: Include the metadata for payments in the returned data.
    */
   include_metadata?: boolean;
-
-  /**
-   * Query param: Is the payment a refund of an original charge (only applicable to
-   * payouts).
-   */
-  is_refund?: boolean;
-
-  /**
-   * Query param: Is the payment a resubmit of an original payment.
-   */
-  is_resubmit?: boolean;
 
   /**
    * Query param: Search using a maximum `amount` of a `charge` or `payout`.
