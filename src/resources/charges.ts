@@ -415,12 +415,6 @@ export namespace ChargeV1 {
     customer_details?: Shared.CustomerDetailsV1;
 
     /**
-     * Documents uploaded for this charge (e.g. proof of authorization), in the order
-     * they were uploaded.
-     */
-    documents?: Array<Data.Document> | null;
-
-    /**
      * Timestamp of when the charge was effective in the customer's bank account,
      * otherwise known as the date on which the customer is debited.
      */
@@ -562,30 +556,6 @@ export namespace ChargeV1 {
        * The status code if applicable.
        */
       code?: string | null;
-    }
-
-    export interface Document {
-      /**
-       * Unique identifier for this document.
-       */
-      document_id: string;
-
-      /**
-       * The file name of this document as uploaded.
-       */
-      document_name: string;
-
-      /**
-       * The size of this document in bytes.
-       */
-      document_size: number;
-
-      document_type: 'payment_authorization';
-
-      /**
-       * The UTC timestamp when this document was uploaded.
-       */
-      uploaded_at: string;
     }
 
     export interface RelatedPayment {
@@ -735,12 +705,6 @@ export namespace ChargeUnmaskResponse {
     customer_details?: Shared.CustomerDetailsV1;
 
     /**
-     * Documents uploaded for this charge (e.g. proof of authorization), in the order
-     * they were uploaded.
-     */
-    documents?: Array<Data.Document> | null;
-
-    /**
      * Effective at.
      */
     effective_at?: string | null;
@@ -877,30 +841,6 @@ export namespace ChargeUnmaskResponse {
        * The status code if applicable.
        */
       code?: string | null;
-    }
-
-    export interface Document {
-      /**
-       * Unique identifier for this document.
-       */
-      document_id: string;
-
-      /**
-       * The file name of this document as uploaded.
-       */
-      document_name: string;
-
-      /**
-       * The size of this document in bytes.
-       */
-      document_size: number;
-
-      document_type: 'payment_authorization';
-
-      /**
-       * The UTC timestamp when this document was uploaded.
-       */
-      uploaded_at: string;
     }
 
     export interface RelatedPayment {
