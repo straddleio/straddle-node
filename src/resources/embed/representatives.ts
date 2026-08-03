@@ -320,7 +320,7 @@ export namespace Representative {
       control: boolean;
 
       /**
-       * Whether the representative owns any percentage of of the equity interests of the
+       * Whether the representative owns any percentage of the equity interests of the
        * legal entity.
        */
       owner: boolean;
@@ -496,7 +496,7 @@ export namespace RepresentativePaged {
       control: boolean;
 
       /**
-       * Whether the representative owns any percentage of of the equity interests of the
+       * Whether the representative owns any percentage of the equity interests of the
        * legal entity.
        */
       owner: boolean;
@@ -639,7 +639,7 @@ export namespace RepresentativeCreateParams {
     control: boolean;
 
     /**
-     * Whether the representative owns any percentage of of the equity interests of the
+     * Whether the representative owns any percentage of the equity interests of the
      * legal entity.
      */
     owner: boolean;
@@ -742,7 +742,7 @@ export namespace RepresentativeUpdateParams {
     control: boolean;
 
     /**
-     * Whether the representative owns any percentage of of the equity interests of the
+     * Whether the representative owns any percentage of the equity interests of the
      * legal entity.
      */
     owner: boolean;
