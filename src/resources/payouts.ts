@@ -391,6 +391,12 @@ export namespace PayoutV1 {
     customer_details?: Shared.CustomerDetailsV1;
 
     /**
+     * Documents uploaded for this payout (e.g. proof of authorization), in the order
+     * they were uploaded.
+     */
+    documents?: Array<Data.Document> | null;
+
+    /**
      * The actual date on which the payment occurred. For payouts, this is the date the
      * funds were sent from your bank account.
      */
@@ -531,6 +537,30 @@ export namespace PayoutV1 {
       code?: string | null;
     }
 
+    export interface Document {
+      /**
+       * Unique identifier for this document.
+       */
+      document_id: string;
+
+      /**
+       * The file name of this document as uploaded.
+       */
+      document_name: string;
+
+      /**
+       * The size of this document in bytes.
+       */
+      document_size: number;
+
+      document_type: 'payment_authorization';
+
+      /**
+       * The UTC timestamp when this document was uploaded.
+       */
+      uploaded_at: string;
+    }
+
     export interface RelatedPayment {
       /**
        * The ID of the related payment.
@@ -663,6 +693,12 @@ export namespace PayoutUnmaskResponse {
      * Information about the customer associated with the charge or payout.
      */
     customer_details?: Shared.CustomerDetailsV1;
+
+    /**
+     * Documents uploaded for this payout (e.g. proof of authorization), in the order
+     * they were uploaded.
+     */
+    documents?: Array<Data.Document> | null;
 
     /**
      * Effective at.
@@ -801,6 +837,30 @@ export namespace PayoutUnmaskResponse {
        * The status code if applicable.
        */
       code?: string | null;
+    }
+
+    export interface Document {
+      /**
+       * Unique identifier for this document.
+       */
+      document_id: string;
+
+      /**
+       * The file name of this document as uploaded.
+       */
+      document_name: string;
+
+      /**
+       * The size of this document in bytes.
+       */
+      document_size: number;
+
+      document_type: 'payment_authorization';
+
+      /**
+       * The UTC timestamp when this document was uploaded.
+       */
+      uploaded_at: string;
     }
 
     export interface RelatedPayment {
