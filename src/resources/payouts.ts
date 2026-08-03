@@ -3,8 +3,10 @@
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
+import { type Uploadable } from '../core/uploads';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
+import { multipartFormRequestOptions } from '../internal/uploads';
 import { path } from '../internal/utils/path';
 
 /**
@@ -260,6 +262,52 @@ export class Payouts extends APIResource {
       ]),
     });
   }
+
+  /**
+   * Uploads a document as proof of authorization for a payout. Uploading again adds
+   * another entry to documents rather than replacing the previous one.
+   *
+   * @example
+   * ```ts
+   * const payoutV1 =
+   *   await client.payouts.uploadAuthorizationDocument(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { File: fs.createReadStream('path/to/file') },
+   *   );
+   * ```
+   */
+  uploadAuthorizationDocument(
+    id: string,
+    params: PayoutUploadAuthorizationDocumentParams,
+    options?: RequestOptions,
+  ): APIPromise<PayoutV1> {
+    const {
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      'Request-Id': requestID,
+      'Straddle-Account-Id': straddleAccountID,
+      ...body
+    } = params;
+    return this._client.post(
+      path`/v1/payouts/${id}/authorization`,
+      multipartFormRequestOptions(
+        {
+          body,
+          ...options,
+          headers: buildHeaders([
+            {
+              ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
+              ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+              ...(requestID != null ? { 'Request-Id': requestID } : undefined),
+              ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+            },
+            options?.headers,
+          ]),
+        },
+        this._client,
+      ),
+    );
+  }
 }
 
 export interface PayoutV1 {
@@ -389,6 +437,12 @@ export namespace PayoutV1 {
      * Information about the customer associated with the payout.
      */
     customer_details?: Shared.CustomerDetailsV1;
+
+    /**
+     * Documents uploaded for this payout (e.g. proof of authorization), in the order
+     * they were uploaded.
+     */
+    documents?: Array<Data.Document> | null;
 
     /**
      * The actual date on which the payment occurred. For payouts, this is the date the
@@ -531,6 +585,30 @@ export namespace PayoutV1 {
       code?: string | null;
     }
 
+    export interface Document {
+      /**
+       * Unique identifier for this document.
+       */
+      document_id: string;
+
+      /**
+       * The file name of this document as uploaded.
+       */
+      document_name: string;
+
+      /**
+       * The size of this document in bytes.
+       */
+      document_size: number;
+
+      document_type: 'payment_authorization';
+
+      /**
+       * The UTC timestamp when this document was uploaded.
+       */
+      uploaded_at: string;
+    }
+
     export interface RelatedPayment {
       /**
        * The ID of the related payment.
@@ -663,6 +741,12 @@ export namespace PayoutUnmaskResponse {
      * Information about the customer associated with the charge or payout.
      */
     customer_details?: Shared.CustomerDetailsV1;
+
+    /**
+     * Documents uploaded for this payout (e.g. proof of authorization), in the order
+     * they were uploaded.
+     */
+    documents?: Array<Data.Document> | null;
 
     /**
      * Effective at.
@@ -801,6 +885,30 @@ export namespace PayoutUnmaskResponse {
        * The status code if applicable.
        */
       code?: string | null;
+    }
+
+    export interface Document {
+      /**
+       * Unique identifier for this document.
+       */
+      document_id: string;
+
+      /**
+       * The file name of this document as uploaded.
+       */
+      document_name: string;
+
+      /**
+       * The size of this document in bytes.
+       */
+      document_size: number;
+
+      document_type: 'payment_authorization';
+
+      /**
+       * The UTC timestamp when this document was uploaded.
+       */
+      uploaded_at: string;
     }
 
     export interface RelatedPayment {
@@ -1089,6 +1197,36 @@ export interface PayoutUnmaskParams {
   'Straddle-Account-Id'?: string;
 }
 
+export interface PayoutUploadAuthorizationDocumentParams {
+  /**
+   * Body param: The document file to upload as proof of authorization for this
+   * payout.
+   */
+  File: Uploadable;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a series
+   * of requests.
+   */
+  'Correlation-Id'?: string;
+
+  /**
+   * Header param: Optional client generated value to use for idempotent requests.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
+   * Header param: Optional client generated identifier to trace and debug a request.
+   */
+  'Request-Id'?: string;
+
+  /**
+   * Header param: For use by platforms to specify an account id and set scope of a
+   * request.
+   */
+  'Straddle-Account-Id'?: string;
+}
+
 export declare namespace Payouts {
   export {
     type PayoutV1 as PayoutV1,
@@ -1100,5 +1238,6 @@ export declare namespace Payouts {
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
     type PayoutUnmaskParams as PayoutUnmaskParams,
+    type PayoutUploadAuthorizationDocumentParams as PayoutUploadAuthorizationDocumentParams,
   };
 }

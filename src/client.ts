@@ -54,6 +54,7 @@ import {
   PayoutUnmaskParams,
   PayoutUnmaskResponse,
   PayoutUpdateParams,
+  PayoutUploadAuthorizationDocumentParams,
   PayoutV1,
   Payouts,
 } from './resources/payouts';
@@ -988,6 +989,7 @@ export declare namespace Straddle {
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
     type PayoutUnmaskParams as PayoutUnmaskParams,
+    type PayoutUploadAuthorizationDocumentParams as PayoutUploadAuthorizationDocumentParams,
   };
 
   export {

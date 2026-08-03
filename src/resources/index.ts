@@ -69,6 +69,7 @@ export {
   type PayoutHoldParams,
   type PayoutReleaseParams,
   type PayoutUnmaskParams,
+  type PayoutUploadAuthorizationDocumentParams,
 } from './payouts';
 export {
   Reports,

@@ -383,6 +383,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v1/payouts/{id}/unmask',
   },
   {
+    clientCallName: 'client.payouts.uploadAuthorizationDocument',
+    fullyQualifiedName: 'payouts.uploadAuthorizationDocument',
+    httpMethod: 'post',
+    httpPath: '/v1/payouts/{id}/authorization',
+  },
+  {
     clientCallName: 'client.reports.createTotalCustomersByStatus',
     fullyQualifiedName: 'reports.createTotalCustomersByStatus',
     httpMethod: 'post',

@@ -230,6 +230,7 @@ Methods:
 - <code title="put /v1/payouts/{id}/hold">client.payouts.<a href="./src/resources/payouts.ts">hold</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="put /v1/payouts/{id}/release">client.payouts.<a href="./src/resources/payouts.ts">release</a>(id, { ...params }) -> PayoutV1</code>
 - <code title="get /v1/payouts/{id}/unmask">client.payouts.<a href="./src/resources/payouts.ts">unmask</a>(id, { ...params }) -> PayoutUnmaskResponse</code>
+- <code title="post /v1/payouts/{id}/authorization">client.payouts.<a href="./src/resources/payouts.ts">uploadAuthorizationDocument</a>(id, { ...params }) -> PayoutV1</code>
 
 # Reports
 

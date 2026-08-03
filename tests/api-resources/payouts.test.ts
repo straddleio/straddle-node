@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Straddle from '@straddlecom/straddle';
+import Straddle, { toFile } from '@straddlecom/straddle';
 
 const client = new Straddle({
   apiKey: 'My API Key',
@@ -194,5 +194,32 @@ describe('resource payouts', () => {
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Straddle.NotFoundError);
+  });
+
+  test('uploadAuthorizationDocument: only required params', async () => {
+    const responsePromise = client.payouts.uploadAuthorizationDocument(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { File: await toFile(Buffer.from('Example data'), 'README.md') },
+    );
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('uploadAuthorizationDocument: required and optional params', async () => {
+    const response = await client.payouts.uploadAuthorizationDocument(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      {
+        File: await toFile(Buffer.from('Example data'), 'README.md'),
+        'Correlation-Id': 'Correlation-Id',
+        'Idempotency-Key': 'xxxxxxxxxx',
+        'Request-Id': 'Request-Id',
+        'Straddle-Account-Id': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      },
+    );
   });
 });

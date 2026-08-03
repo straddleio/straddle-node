@@ -170,6 +170,7 @@ const fuse = new Fuse(
     'client.payouts.release',
     'client.payouts.unmask',
     'client.payouts.update',
+    'client.payouts.uploadAuthorizationDocument',
     'client.reports.createTotalCustomersByStatus',
   ],
   { threshold: 1, shouldSort: true },
