@@ -1,6 +1,6 @@
 {
   "name": "@straddlecom/straddle",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The official TypeScript library for the Straddle API",
   "author": "Straddle <help@straddle.com>",
   "types": "dist/index.d.ts",

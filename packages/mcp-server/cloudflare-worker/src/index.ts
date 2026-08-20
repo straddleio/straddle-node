@@ -63,7 +63,7 @@ const INSTRUCTIONS_FETCH_TIMEOUT_MS = 5000;
 
 function fallbackMcpServer(): McpServer {
   return new McpServer(
-    { name: 'straddlecom_straddle_api', version: '3.0.0' },
+    { name: 'straddlecom_straddle_api', version: '3.1.0' },
     { capabilities: { tools: {}, logging: {} } },
   );
 }
