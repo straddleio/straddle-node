@@ -315,6 +315,11 @@ export namespace AccountPagedV1 {
      */
     metadata?: { [key: string]: string | null } | null;
 
+    /**
+     * The unique identifier of the pricing plan currently assigned to this account.
+     */
+    plan_id?: string | null;
+
     settings?: Data.Settings;
 
     terms_of_service?: AccountsAPI.TermsOfServiceV1;
@@ -558,6 +563,11 @@ export namespace AccountV1 {
      */
     metadata?: { [key: string]: string | null } | null;
 
+    /**
+     * The unique identifier of the pricing plan currently assigned to this account.
+     */
+    plan_id?: string | null;
+
     settings?: Data.Settings;
 
     terms_of_service?: AccountsAPI.TermsOfServiceV1;
@@ -735,6 +745,11 @@ export namespace AccountV1 {
  */
 export interface AddressV1 {
   /**
+   * Primary address line (e.g., street, PO Box).
+   */
+  address1: string;
+
+  /**
    * City, district, suburb, town, or village.
    */
   city: string | null;
@@ -753,6 +768,16 @@ export interface AddressV1 {
    * Two-letter state code.
    */
   state: string | null;
+
+  /**
+   * Zip or postal code.
+   */
+  zip: string;
+
+  /**
+   * Secondary address line (e.g., apartment, suite, unit, or building).
+   */
+  address2?: string | null;
 
   /**
    * The country of the address, in ISO 3166-1 alpha-2 format.
