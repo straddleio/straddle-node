@@ -512,7 +512,9 @@ export namespace PayoutV1 {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account';
+        | 'reversed_closed_bank_account'
+        | 'failed_not_authorized'
+        | 'reversed_not_authorized';
     }
 
     export interface StatusHistory {
@@ -807,7 +809,9 @@ export namespace PayoutUnmaskResponse {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account';
+        | 'reversed_closed_bank_account'
+        | 'failed_not_authorized'
+        | 'reversed_not_authorized';
     }
 
     export interface Device {
@@ -1026,7 +1030,9 @@ export namespace PayoutCreateParams {
       | 'failed_customer_dispute'
       | 'reversed_customer_dispute'
       | 'failed_closed_bank_account'
-      | 'reversed_closed_bank_account';
+      | 'reversed_closed_bank_account'
+      | 'failed_not_authorized'
+      | 'reversed_not_authorized';
   }
 }
 
