@@ -1,5 +1,29 @@
 # Changelog
 
+## 3.1.0 (2026-08-20)
+
+Full Changelog: [v3.0.0...v3.1.0](https://github.com/straddleio/straddle-node/compare/v3.0.0...v3.1.0)
+
+### Features
+
+* **docs:** Preliminary update to SDK Spec ([0bf0217](https://github.com/straddleio/straddle-node/commit/0bf0217ac6f2ae5c14af3eddc211a09ab0f70c1a))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([e2a3cc4](https://github.com/straddleio/straddle-node/commit/e2a3cc4957e11eba6fc1c159096e6bb624013dbd))
+* **docs:** Release Updates to SDK based on Open API Spec (Final) ([8b3aa94](https://github.com/straddleio/straddle-node/commit/8b3aa940311c5fc0ec0e5bb3a7a14e8235f70d96))
+* support setting headers via env ([fec1ded](https://github.com/straddleio/straddle-node/commit/fec1deda50f45a16dace23a060e657f60b414ffc))
+
+
+### Chores
+
+* avoid formatting file that gets changed during releases ([318ed4d](https://github.com/straddleio/straddle-node/commit/318ed4d30a8b7c4631da8fc0840e1e2496ffe716))
+* **format:** run eslint and prettier separately ([7044d9e](https://github.com/straddleio/straddle-node/commit/7044d9ec9a525e4d113e6dc6f6c35896d59cfe7e))
+* **formatter:** run prettier and eslint separately ([1a28c62](https://github.com/straddleio/straddle-node/commit/1a28c625e83f0f1ad133447dc1c401e6a4f4b6c1))
+* **internal:** codegen related update ([9c33afe](https://github.com/straddleio/straddle-node/commit/9c33afec43c0be21c47be4431248c3667e46c526))
+* **internal:** fix MCP cloudflare worker builds ([25c0dec](https://github.com/straddleio/straddle-node/commit/25c0dec77541b5169b2f9ddf8ddd4425ee10e988))
+* **internal:** more robust bootstrap script ([b54b39d](https://github.com/straddleio/straddle-node/commit/b54b39dd3f0a1e5c1f93ed423bea7d6396a0f6cd))
+* **internal:** update docs ordering ([e20fb8f](https://github.com/straddleio/straddle-node/commit/e20fb8f175394f0f7b49089689be34c457fa94ff))
+* restructure docs search code ([96a9765](https://github.com/straddleio/straddle-node/commit/96a97657c01292a646af2f328bde0729ceb7ef7f))
+* **tests:** bump steady to v0.22.1 ([26be0fb](https://github.com/straddleio/straddle-node/commit/26be0fb68f8fb4ee3409375dafc5d4c7a4523936))
+
 ## 3.0.0 (2026-04-17)
 
 Full Changelog: [v2.1.0...v3.0.0](https://github.com/straddleio/straddle-node/compare/v2.1.0...v3.0.0)
