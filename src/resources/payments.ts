@@ -270,7 +270,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount' | 'updated_at';
+  default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
   /**
    * Query param
@@ -336,11 +336,6 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   max_payment_date?: string;
 
   /**
-   * Query param: Filter to payments last updated on or before this timestamp.
-   */
-  max_updated_at?: string;
-
-  /**
    * Query param: Search using the minimum `amount of a `charge`or`payout`.
    */
   min_amount?: number;
@@ -361,11 +356,6 @@ export interface PaymentListParams extends PageNumberSchemaParams {
    * Query param: Search using the earliest ` `of a `charge` or `payout`.
    */
   min_payment_date?: string;
-
-  /**
-   * Query param: Filter to payments last updated on or after this timestamp.
-   */
-  min_updated_at?: string;
 
   /**
    * Query param: Search using the `paykey` of a `charge` or `payout`.
@@ -410,7 +400,7 @@ export interface PaymentListParams extends PageNumberSchemaParams {
   /**
    * Query param: The field to sort the results by.
    */
-  sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount' | 'updated_at';
+  sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id' | 'amount';
 
   /**
    * Query param

@@ -488,9 +488,7 @@ export namespace ChargeV1 {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account'
-        | 'failed_not_authorized'
-        | 'reversed_not_authorized';
+        | 'reversed_closed_bank_account';
     }
 
     /**
@@ -801,9 +799,7 @@ export namespace ChargeUnmaskResponse {
         | 'failed_customer_dispute'
         | 'reversed_customer_dispute'
         | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account'
-        | 'failed_not_authorized'
-        | 'reversed_not_authorized';
+        | 'reversed_closed_bank_account';
     }
 
     export interface Device {
@@ -1034,9 +1030,7 @@ export namespace ChargeCreateParams {
       | 'failed_customer_dispute'
       | 'reversed_customer_dispute'
       | 'failed_closed_bank_account'
-      | 'reversed_closed_bank_account'
-      | 'failed_not_authorized'
-      | 'reversed_not_authorized';
+      | 'reversed_closed_bank_account';
   }
 }
 
