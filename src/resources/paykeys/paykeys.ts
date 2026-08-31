@@ -237,7 +237,7 @@ export namespace PaykeySummaryPagedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt' | 'mastercard';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
@@ -437,7 +437,7 @@ export namespace PaykeyUnmaskedV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt' | 'mastercard';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
@@ -610,7 +610,7 @@ export namespace PaykeyV1 {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt' | 'mastercard';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
@@ -792,7 +792,7 @@ export namespace PaykeyRevealResponse {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt' | 'mastercard';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
@@ -955,7 +955,7 @@ export interface PaykeyListParams extends PageNumberSchemaParams {
   /**
    * Query param: Filter paykeys by their source.
    */
-  source?: Array<'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt'>;
+  source?: Array<'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt' | 'mastercard'>;
 
   /**
    * Query param: Filter paykeys by their current status.

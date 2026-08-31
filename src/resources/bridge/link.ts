@@ -168,7 +168,7 @@ export namespace LinkCreatePaykeyResponse {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt' | 'mastercard';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
@@ -343,7 +343,7 @@ export namespace LinkCreateTanResponse {
      */
     paykey: string;
 
-    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt';
+    source: 'bank_account' | 'straddle' | 'mx' | 'plaid' | 'tan' | 'quiltt' | 'mastercard';
 
     status: 'pending' | 'active' | 'inactive' | 'rejected' | 'review' | 'blocked';
 
