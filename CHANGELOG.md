@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.0](https://github.com/straddleio/straddle-node/compare/v3.1.0...v1.0.0) (2026-09-01)
+
+
+### Features
+
+* **api:** initial SDK generation ([54f9211](https://github.com/straddleio/straddle-node/commit/54f9211ae258505c973ebc7c0e9aa114db69c5bd))
+
+
+### Chores
+
+* **api:** update generated SDK content ([3d04204](https://github.com/straddleio/straddle-node/commit/3d0420492db3c754a2b9fe19d96cb1a6374bfedf))
+* release 1.0.0 ([a438c5d](https://github.com/straddleio/straddle-node/commit/a438c5d0f9ce96330b0bf0a21bf0918ed8f144dc))
+* release 1.0.0 ([9232d86](https://github.com/straddleio/straddle-node/commit/9232d869c3f2d0f78c2762ffd97343eb030df54a))
+
 ## 3.1.0 (2026-08-20)
 
 Full Changelog: [v3.0.0...v3.1.0](https://github.com/straddleio/straddle-node/compare/v3.0.0...v3.1.0)

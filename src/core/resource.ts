@@ -1,11 +1,3 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import type { Straddle } from '../client';
-
-export abstract class APIResource {
-  protected _client: Straddle;
-
-  constructor(client: Straddle) {
-    this._client = client;
-  }
-}
+export { APIResource } from '../resource';

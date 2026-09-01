@@ -1,132 +1,90 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from '../../core/resource';
-import * as ReviewAPI from './review';
-import * as Shared from '../shared';
-import * as CustomersAPI from './customers';
-import { APIPromise } from '../../core/api-promise';
+import { APIResource } from '../../resource';
+import { APIPromise } from '../../api-promise';
+import type { RequestOptions } from '../../internal/request-options';
 import { buildHeaders } from '../../internal/headers';
-import { RequestOptions } from '../../internal/request-options';
-import { path } from '../../internal/utils/path';
+import { path as __scalarPath } from '../../internal/utils/path';
+import type * as CustomersAPI from './customers';
+import type * as AccountsAPI from '../accounts';
+import type * as BridgeAPI from '../bridge';
 
-/**
- * Customers represent the end users who send or receive payments through your integration. Each customer undergoes automatic identity verification and fraud screening upon creation. Use customers to track payment history, manage bank account connections, and maintain a secure record of all transactions associated with a user. Customers can be either individuals or businesses with appropriate compliance checks for each type.
- */
 export class Review extends APIResource {
   /**
-   * Updates the status of a customer's identity decision. This endpoint allows you
-   * to modify the outcome of a customer risk screening and is useful for correcting
-   * or updating the status of a customer's verification. Note that this endpoint is
-   * only available for customers with a current status of `review`.
+   * Returns the results of a customer's identity and fraud review. The response includes decisions, risk and correlation scores, reason codes, watchlist matches, and network alerts.
+   *
+   * @param {string} id - Unique identifier for the customer.
+   * @param {ReviewListParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomerReviewResponse>} OK
    *
    * @example
    * ```ts
-   * const customerV1 = await client.customers.review.decision(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { status: 'verified' },
+   * const customerReview = await client.customers.review.list('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  list(
+    id: string,
+    params: ReviewListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerReviewResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/customers/${id}/review`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Updates the verification decision for a customer. The customer's current `status` must be `review`.
+   *
+   * @param {string} id - Unique identifier for the customer.
+   * @param {ReviewSetVerificationDecisionParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomersAPI.CustomerResponse>} OK
+   *
+   * @example
+   * ```ts
+   * const customer = await client.customers.review.setVerificationDecision(
+   *   '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+   *   {
+   *     status: 'verified',
+   *   },
    * );
    * ```
    */
-  decision(
+  setVerificationDecision(
     id: string,
-    params: ReviewDecisionParams,
+    params: ReviewSetVerificationDecisionParams,
     options?: RequestOptions,
-  ): APIPromise<CustomersAPI.CustomerV1> {
+  ): APIPromise<CustomersAPI.CustomerResponse> {
     const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params;
-    return this._client.patch(path`/v1/customers/${id}/review`, {
+    return this._client.patch(__scalarPath`/v1/customers/${id}/review`, {
       body,
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Retrieves and analyzes the results of a customer's identity validation and fraud
-   * score. This endpoint provides a comprehensive breakdown of the validation
-   * outcome, including:
-   *
-   * - Risk and correlation scores
-   * - Reason codes for the decision
-   * - Results of watchlist screening
-   * - Any network alerts detected Use this endpoint to gain insights into the
-   *   verification process and make informed decisions about customer onboarding.
-   *
-   * @example
-   * ```ts
-   * const customerReviewV1 = await client.customers.review.get(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  get(
-    id: string,
-    params: ReviewGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomerReviewV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.get(path`/v1/customers/${id}/review`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Updates the decision of a customer's identity validation. This endpoint allows
-   * you to modify the outcome of a customer decision and is useful for correcting or
-   * updating the status of a customer's verification.
-   *
-   * @example
-   * ```ts
-   * const customerV1 =
-   *   await client.customers.review.refreshReview(
-   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   );
-   * ```
-   */
-  refreshReview(
-    id: string,
-    params: ReviewRefreshReviewParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomersAPI.CustomerV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.put(path`/v1/customers/${id}/refresh_review`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -134,508 +92,425 @@ export class Review extends APIResource {
   }
 }
 
-export interface CustomerReviewV1 {
-  data: CustomerReviewV1.Data;
-
+export interface CustomerReviewResponse {
   /**
-   * Metadata about the API request, including an identifier and timestamp.
+   * Metadata for an API request.
    */
-  meta: Shared.ResponseMetadata;
-
+  meta: AccountsAPI.ResponseMetadata;
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: BridgeAPI.ResponseType;
+  data: CustomerReview;
 }
 
-export namespace CustomerReviewV1 {
-  export interface Data {
-    customer_details: Data.CustomerDetails;
-
-    identity_details?: Data.IdentityDetails;
-  }
-
-  export namespace Data {
-    export interface CustomerDetails {
-      /**
-       * Unique identifier for the customer.
-       */
-      id: string;
-
-      /**
-       * Timestamp of when the customer record was created.
-       */
-      created_at: string;
-
-      /**
-       * The customer's email address.
-       */
-      email: string;
-
-      /**
-       * Full name of the individual or business name.
-       */
-      name: string;
-
-      /**
-       * The customer's phone number in E.164 format.
-       */
-      phone: string;
-
-      status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
-
-      type: 'individual' | 'business';
-
-      /**
-       * Timestamp of the most recent update to the customer record.
-       */
-      updated_at: string;
-
-      /**
-       * An object containing the customer's address. This is optional, but if provided,
-       * all required fields must be present.
-       */
-      address?: CustomersAPI.CustomerAddressV1 | null;
-
-      /**
-       * PII required to trigger Patriot Act compliant KYC verification.
-       */
-      compliance_profile?:
-        | CustomerDetails.IndividualComplianceProfile
-        | CustomerDetails.BusinessComplianceProfile
-        | null;
-
-      config?: CustomerDetails.Config;
-
-      device?: CustomerDetails.Device;
-
-      /**
-       * Unique identifier for the customer in your database, used for cross-referencing
-       * between Straddle and your systems.
-       */
-      external_id?: string | null;
-
-      /**
-       * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-       * information about the customer in a structured format.
-       */
-      metadata?: { [key: string]: string } | null;
-    }
-
-    export namespace CustomerDetails {
-      /**
-       * PII required to trigger Patriot Act compliant KYC verification.
-       */
-      export interface IndividualComplianceProfile {
-        /**
-         * Masked date of birth in \***\*-**-\*\* format.
-         */
-        dob: string | null;
-
-        /**
-         * Masked Social Security Number in the format **\*-**-\*\*\*\*.
-         */
-        ssn: string | null;
-      }
-
-      /**
-       * Business registration data required to trigger Patriot Act compliant KYB
-       * verification.
-       */
-      export interface BusinessComplianceProfile {
-        /**
-         * Masked Employer Identification Number in the format **-**\*****
-         */
-        ein: string | null;
-
-        /**
-         * The official registered name of the business. This name should be correlated
-         * with the `ein` value.
-         */
-        legal_business_name: string | null;
-
-        /**
-         * A list of people related to the company. Only valid where customer type is
-         * 'business'.
-         */
-        representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-        /**
-         * Official business website URL. Optional but recommended for enhanced KYB.
-         */
-        website?: string | null;
-      }
-
-      export namespace BusinessComplianceProfile {
-        export interface Representative {
-          name: string;
-
-          email?: string | null;
-
-          phone?: string | null;
-        }
-      }
-
-      export interface Config {
-        processing_method?: 'inline' | 'background' | 'skip';
-
-        sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
-      }
-
-      export interface Device {
-        /**
-         * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
-         * represent an offline customer registration.
-         */
-        ip_address: string;
-      }
-    }
-
-    export interface IdentityDetails {
-      /**
-       * Detailed breakdown of the customer verification results, including decisions,
-       * risk scores, correlation score, and more.
-       */
-      breakdown: IdentityDetails.Breakdown;
-
-      /**
-       * Timestamp of when the review was initiated.
-       */
-      created_at: string;
-
-      decision: 'accept' | 'reject' | 'review';
-
-      /**
-       * Unique identifier for the review.
-       */
-      review_id: string;
-
-      /**
-       * Timestamp of the most recent update to the review.
-       */
-      updated_at: string;
-
-      kyc?: IdentityDetails.KYC;
-
-      /**
-       * Dictionary of all messages from the customer verification process.
-       */
-      messages?: { [key: string]: string } | null;
-
-      network_alerts?: IdentityDetails.NetworkAlerts;
-
-      reputation?: IdentityDetails.Reputation;
-
-      watch_list?: IdentityDetails.WatchList;
-    }
-
-    export namespace IdentityDetails {
-      /**
-       * Detailed breakdown of the customer verification results, including decisions,
-       * risk scores, correlation score, and more.
-       */
-      export interface Breakdown {
-        address?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        business_evaluation?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        business_identification?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        business_validation?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        email?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        fraud?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        phone?: ReviewAPI.IdentityVerificationBreakdownV1;
-
-        synthetic?: ReviewAPI.IdentityVerificationBreakdownV1;
-      }
-
-      export interface KYC {
-        /**
-         * Boolean values indicating the result of each validation in the KYC process.
-         */
-        validations: KYC.Validations;
-
-        /**
-         * List of specific result codes from the KYC screening process.
-         */
-        codes?: Array<string> | null;
-
-        decision?: 'accept' | 'reject' | 'review';
-      }
-
-      export namespace KYC {
-        /**
-         * Boolean values indicating the result of each validation in the KYC process.
-         */
-        export interface Validations {
-          address?: boolean;
-
-          city?: boolean;
-
-          dob?: boolean;
-
-          email?: boolean;
-
-          first_name?: boolean;
-
-          last_name?: boolean;
-
-          phone?: boolean;
-
-          ssn?: boolean;
-
-          state?: boolean;
-
-          zip?: boolean;
-        }
-      }
-
-      export interface NetworkAlerts {
-        /**
-         * Any alerts or flags raised during the consortium alert screening.
-         */
-        alerts?: Array<string> | null;
-
-        /**
-         * List of specific result codes from the consortium alert screening.
-         */
-        codes?: Array<string> | null;
-
-        decision?: 'accept' | 'reject' | 'review';
-      }
-
-      export interface Reputation {
-        /**
-         * Specific codes related to the Straddle reputation screening results.
-         */
-        codes?: Array<string> | null;
-
-        decision?: 'accept' | 'reject' | 'review';
-
-        insights?: Reputation.Insights;
-
-        risk_score?: number | null;
-      }
-
-      export namespace Reputation {
-        export interface Insights {
-          accounts_active_count?: number | null;
-
-          accounts_closed_count?: number | null;
-
-          accounts_closed_dates?: Array<string> | null;
-
-          accounts_count?: number | null;
-
-          accounts_fraud_count?: number | null;
-
-          accounts_fraud_labeled_dates?: Array<string> | null;
-
-          accounts_fraud_loss_total_amount?: number | null;
-
-          ach_fraud_transactions_count?: number | null;
-
-          ach_fraud_transactions_dates?: Array<string> | null;
-
-          ach_fraud_transactions_total_amount?: number | null;
-
-          ach_returned_transactions_count?: number | null;
-
-          ach_returned_transactions_dates?: Array<string> | null;
-
-          ach_returned_transactions_total_amount?: number | null;
-
-          applications_approved_count?: number | null;
-
-          applications_count?: number | null;
-
-          applications_dates?: Array<string> | null;
-
-          applications_declined_count?: number | null;
-
-          applications_fraud_count?: number | null;
-
-          card_disputed_transactions_count?: number | null;
-
-          card_disputed_transactions_dates?: Array<string> | null;
-
-          card_disputed_transactions_total_amount?: number | null;
-
-          card_fraud_transactions_count?: number | null;
-
-          card_fraud_transactions_dates?: Array<string> | null;
-
-          card_fraud_transactions_total_amount?: number | null;
-
-          card_stopped_transactions_count?: number | null;
-
-          card_stopped_transactions_dates?: Array<string> | null;
-
-          user_active_profile_count?: number | null;
-
-          user_address_count?: number | null;
-
-          user_closed_profile_count?: number | null;
-
-          user_dob_count?: number | null;
-
-          user_email_count?: number | null;
-
-          user_institution_count?: number | null;
-
-          user_mobile_count?: number | null;
-        }
-      }
-
-      export interface WatchList {
-        /**
-         * Specific codes related to the Straddle watchlist screening results.
-         */
-        codes?: Array<string> | null;
-
-        decision?: 'accept' | 'reject' | 'review';
-
-        /**
-         * Information about any matches found during screening.
-         */
-        matched?: Array<string> | null;
-
-        /**
-         * Information about any matches found during screening.
-         */
-        matches?: Array<WatchList.Match> | null;
-      }
-
-      export namespace WatchList {
-        export interface Match {
-          correlation: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
-
-          /**
-           * The name of the list the match was found.
-           */
-          list_name: string;
-
-          /**
-           * Data fields that matched.
-           */
-          match_fields: Array<string>;
-
-          /**
-           * Relevent Urls to review.
-           */
-          urls: Array<string>;
-        }
-      }
-    }
+export interface CustomerReview {
+  customer_details: CustomersAPI.Customer;
+  identity_details?: CustomerIdentityVerification;
+}
+
+export interface CustomerIdentityVerification {
+  /**
+   * Unique identifier for the review.
+   * @format uuid
+   */
+  review_id: string;
+  decision: VerificationDecision;
+  /**
+   * Results for each customer verification check, including decisions, risk scores, and correlation scores.
+   */
+  breakdown: CustomerIdentityVerification.Breakdown;
+  /**
+   * Timestamp of when the review was initiated.
+   * @format date-time
+   */
+  created_at: string;
+  /**
+   * Timestamp of the most recent update to the review.
+   * @format date-time
+   */
+  updated_at: string;
+  /**
+   * Messages returned by the customer verification process.
+   */
+  messages?: Record<string, string> | null;
+  network_alerts?: IdentityVerificationAlerts;
+  watch_list?: IdentityVerificationWatchlist;
+  kyc?: CustomerKYCVerification;
+  reputation?: ReputationCheck;
+}
+
+export namespace CustomerIdentityVerification {
+  export interface Breakdown {
+    address?: IdentityVerificationBreakdown;
+    email?: IdentityVerificationBreakdown;
+    fraud?: IdentityVerificationBreakdown;
+    phone?: IdentityVerificationBreakdown;
+    synthetic?: IdentityVerificationBreakdown;
+    business_identification?: IdentityVerificationBreakdown;
+    business_validation?: IdentityVerificationBreakdown;
+    business_evaluation?: IdentityVerificationBreakdown;
   }
 }
 
-export interface IdentityVerificationBreakdownV1 {
+export type VerificationDecision = 'accept' | 'reject' | 'review';
+
+export interface IdentityVerificationBreakdown {
+  decision?: VerificationDecision;
   /**
    * List of specific result codes from the fraud and risk screening.
    */
   codes?: Array<string> | null;
-
-  correlation?: 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
-
   /**
-   * Represents the strength of the correlation between provided and known
-   * information. A higher score indicates a stronger correlation.
-   */
-  correlation_score?: number | null;
-
-  decision?: 'accept' | 'reject' | 'review';
-
-  /**
-   * Predicts the inherent risk associated with the customer for a given module. A
-   * higher score indicates a greater likelihood of fraud.
+   * Predicts the inherent risk associated with the customer for a given module. A higher score indicates a greater likelihood of fraud.
+   * @format double
    */
   risk_score?: number | null;
+  /**
+   * Represents the strength of the correlation between provided and known information. A higher score indicates a stronger correlation.
+   * @format double
+   */
+  correlation_score?: number | null;
+  correlation?: CorrelationBucket;
 }
 
-export interface ReviewDecisionParams {
+export interface IdentityVerificationAlerts {
+  decision?: VerificationDecision;
+  /**
+   * List of specific result codes from the consortium alert screening.
+   */
+  codes?: Array<string> | null;
+  /**
+   * Any alerts or flags raised during the consortium alert screening.
+   */
+  alerts?: Array<string> | null;
+}
+
+export interface IdentityVerificationWatchlist {
+  decision?: VerificationDecision;
+  /**
+   * Result codes from Straddle watchlist screening.
+   */
+  codes?: Array<string> | null;
+  /**
+   * Names of watchlists with matches.
+   */
+  matched?: Array<string> | null;
+  /**
+   * Details for matches found during watchlist screening.
+   */
+  matches?: Array<IdentityVerificationWatchlistMatch> | null;
+}
+
+export interface CustomerKYCVerification {
+  /**
+   * Results for each Know Your Customer (KYC) validation.
+   */
+  validations: CustomerKYCVerification.Validations;
+  decision?: VerificationDecision;
+  /**
+   * Result codes from Know Your Customer (KYC) screening.
+   */
+  codes?: Array<string> | null;
+}
+
+export namespace CustomerKYCVerification {
+  export interface Validations {
+    /**
+     * Whether the customer's first name passed validation.
+     */
+    first_name?: boolean;
+    /**
+     * Whether the customer's last name passed validation.
+     */
+    last_name?: boolean;
+    /**
+     * Whether the customer's address passed validation.
+     */
+    address?: boolean;
+    /**
+     * Whether the customer's city passed validation.
+     */
+    city?: boolean;
+    /**
+     * Whether the customer's state passed validation.
+     */
+    state?: boolean;
+    /**
+     * Whether the customer's ZIP code passed validation.
+     */
+    zip?: boolean;
+    /**
+     * Whether the customer's phone passed validation.
+     */
+    phone?: boolean;
+    /**
+     * Whether the customer's date of birth passed validation.
+     */
+    dob?: boolean;
+    /**
+     * Whether the customer's Social Security number passed validation.
+     */
+    ssn?: boolean;
+    /**
+     * Whether the customer's email passed validation.
+     */
+    email?: boolean;
+  }
+}
+
+export interface ReputationCheck {
+  decision?: VerificationDecision;
+  /**
+   * Specific codes related to the Straddle reputation screening results.
+   */
+  codes?: Array<string> | null;
+  /**
+   * Risk score produced by the reputation check.
+   * @format double
+   */
+  risk_score?: number | null;
+  insights?: ReputationInsights;
+}
+
+export type CorrelationBucket = 'low_confidence' | 'potential_match' | 'likely_match' | 'high_confidence';
+
+export interface IdentityVerificationWatchlistMatch {
+  /**
+   * Name of the watchlist that contains the matching record.
+   */
+  list_name: string;
+  /**
+   * Source URLs associated with the match.
+   */
+  urls: Array<string>;
+  /**
+   * Customer fields that match the watchlist record.
+   */
+  match_fields: Array<string>;
+  correlation: CorrelationBucket;
+}
+
+export interface ReputationInsights {
+  /**
+   * Number of fraudulent ACH transactions.
+   * @format int32
+   */
+  ach_fraud_transactions_count?: number | null;
+  /**
+   * Total amount of fraudulent ACH transactions.
+   * @format double
+   */
+  ach_fraud_transactions_total_amount?: number | null;
+  /**
+   * Dates when fraudulent ACH transactions occurred.
+   */
+  ach_fraud_transactions_dates?: Array<string> | null;
+  /**
+   * Number of returned ACH transactions.
+   * @format int32
+   */
+  ach_returned_transactions_count?: number | null;
+  /**
+   * Total amount of returned ACH transactions.
+   * @format double
+   */
+  ach_returned_transactions_total_amount?: number | null;
+  /**
+   * Dates when ACH transactions were returned.
+   */
+  ach_returned_transactions_dates?: Array<string> | null;
+  /**
+   * Number of fraudulent card transactions.
+   * @format int32
+   */
+  card_fraud_transactions_count?: number | null;
+  /**
+   * Total amount of fraudulent card transactions.
+   * @format double
+   */
+  card_fraud_transactions_total_amount?: number | null;
+  /**
+   * Dates when fraudulent card transactions occurred.
+   */
+  card_fraud_transactions_dates?: Array<string> | null;
+  /**
+   * Number of disputed card transactions.
+   * @format int32
+   */
+  card_disputed_transactions_count?: number | null;
+  /**
+   * Total amount of disputed card transactions.
+   * @format double
+   */
+  card_disputed_transactions_total_amount?: number | null;
+  /**
+   * Dates when card transactions were disputed.
+   */
+  card_disputed_transactions_dates?: Array<string> | null;
+  /**
+   * Number of stopped card transactions.
+   * @format int32
+   */
+  card_stopped_transactions_count?: number | null;
+  /**
+   * Dates when card transactions were stopped.
+   */
+  card_stopped_transactions_dates?: Array<string> | null;
+  /**
+   * Number of accounts associated with the identity.
+   * @format int32
+   */
+  accounts_count?: number | null;
+  /**
+   * Number of active accounts associated with the identity.
+   * @format int32
+   */
+  accounts_active_count?: number | null;
+  /**
+   * Number of closed accounts associated with the identity.
+   * @format int32
+   */
+  accounts_closed_count?: number | null;
+  /**
+   * Dates when accounts associated with the identity were closed.
+   */
+  accounts_closed_dates?: Array<string> | null;
+  /**
+   * Number of accounts associated with fraud.
+   * @format int32
+   */
+  accounts_fraud_count?: number | null;
+  /**
+   * Total fraud loss associated with the accounts.
+   * @format double
+   */
+  accounts_fraud_loss_total_amount?: number | null;
+  /**
+   * Dates when accounts were labeled as fraudulent.
+   */
+  accounts_fraud_labeled_dates?: Array<string> | null;
+  /**
+   * Number of applications associated with the identity.
+   * @format int32
+   */
+  applications_count?: number | null;
+  /**
+   * Dates when applications associated with the identity were submitted.
+   */
+  applications_dates?: Array<string> | null;
+  /**
+   * Number of approved applications associated with the identity.
+   * @format int32
+   */
+  applications_approved_count?: number | null;
+  /**
+   * Number of declined applications associated with the identity.
+   * @format int32
+   */
+  applications_declined_count?: number | null;
+  /**
+   * Number of applications associated with fraud.
+   * @format int32
+   */
+  applications_fraud_count?: number | null;
+  /**
+   * Number of financial institutions associated with the identity.
+   * @format int32
+   */
+  user_institution_count?: number | null;
+  /**
+   * Number of dates of birth associated with the identity.
+   * @format int32
+   */
+  user_dob_count?: number | null;
+  /**
+   * Number of mobile numbers associated with the identity.
+   * @format int32
+   */
+  user_mobile_count?: number | null;
+  /**
+   * Number of email addresses associated with the identity.
+   * @format int32
+   */
+  user_email_count?: number | null;
+  /**
+   * Number of addresses associated with the identity.
+   * @format int32
+   */
+  user_address_count?: number | null;
+  /**
+   * Number of active profiles associated with the identity.
+   * @format int32
+   */
+  user_active_profile_count?: number | null;
+  /**
+   * Number of closed profiles associated with the identity.
+   * @format int32
+   */
+  user_closed_profile_count?: number | null;
+}
+
+export interface ReviewListParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+}
+
+export interface ReviewSetVerificationDecisionParams {
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
   /**
    * Body param: The final status of the customer review.
    */
   status: 'verified' | 'rejected';
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
 }
-
-export interface ReviewGetParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
-export interface ReviewRefreshReviewParams {
-  /**
-   * Optional client generated identifier to trace and debug a series of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
-}
-
 export declare namespace Review {
   export {
-    type CustomerReviewV1 as CustomerReviewV1,
-    type IdentityVerificationBreakdownV1 as IdentityVerificationBreakdownV1,
-    type ReviewDecisionParams as ReviewDecisionParams,
-    type ReviewGetParams as ReviewGetParams,
-    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
+    type CustomerReviewResponse as CustomerReviewResponse,
+    type CustomerReview as CustomerReview,
+    type CustomerIdentityVerification as CustomerIdentityVerification,
+    type VerificationDecision as VerificationDecision,
+    type IdentityVerificationBreakdown as IdentityVerificationBreakdown,
+    type IdentityVerificationAlerts as IdentityVerificationAlerts,
+    type IdentityVerificationWatchlist as IdentityVerificationWatchlist,
+    type CustomerKYCVerification as CustomerKYCVerification,
+    type ReputationCheck as ReputationCheck,
+    type CorrelationBucket as CorrelationBucket,
+    type IdentityVerificationWatchlistMatch as IdentityVerificationWatchlistMatch,
+    type ReputationInsights as ReputationInsights,
+    type ReviewListParams as ReviewListParams,
+    type ReviewSetVerificationDecisionParams as ReviewSetVerificationDecisionParams,
   };
 }

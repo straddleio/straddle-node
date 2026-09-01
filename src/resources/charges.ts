@@ -1,40 +1,125 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from '../core/resource';
-import * as Shared from './shared';
-import { APIPromise } from '../core/api-promise';
+import { APIResource } from '../resource';
+import { APIPromise } from '../api-promise';
+import type { RequestOptions } from '../internal/request-options';
 import { buildHeaders } from '../internal/headers';
-import { RequestOptions } from '../internal/request-options';
-import { path } from '../internal/utils/path';
+import { multipartFormRequestOptions } from '../internal/uploads';
+import { path as __scalarPath } from '../internal/utils/path';
+import type { Uploadable } from '../core/uploads';
+import type * as AccountsAPI from './accounts';
+import type * as BridgeAPI from './bridge';
+import type * as CustomersAPI from './customers/customers';
 
-/**
- * Charges represent attempts to debit money from a customer's bank account using a Paykey. Each charge includes automatic balance verification, real-time fraud screening, and multi-rail optimization and detailed status tracking throughout the payment lifecycle. Use charges to accept bank payments with confidence knowing every transaction is protected.
- */
 export class Charges extends APIResource {
   /**
-   * Use charges to collect money from a customer for the sale of goods or services.
+   * Returns a charge by its unique identifier.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeRetrieveParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} OK
    *
    * @example
    * ```ts
-   * const chargeV1 = await client.charges.create({
-   *   amount: 10000,
-   *   config: { balance_check: 'required' },
-   *   consent_type: 'internet',
-   *   currency: 'currency',
+   * const charge = await client.charges.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  retrieve(
+    id: string,
+    params: ChargeRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ChargeResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/charges/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Updates the description, amount, `payment_date`, or metadata. The charge must have a status of `created` or `on_hold`.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeUpdateParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} OK
+   *
+   * @example
+   * ```ts
+   * const charge = await client.charges.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
    *   description: 'Monthly subscription fee',
-   *   device: { ip_address: '192.168.1.1' },
-   *   external_id: 'external_id',
-   *   paykey: 'paykey',
-   *   payment_date: '2019-12-27',
+   *   amount: 10000,
+   *   payment_date: '2024-01-01',
    * });
    * ```
    */
-  create(params: ChargeCreateParams, options?: RequestOptions): APIPromise<ChargeV1> {
+  update(id: string, params: ChargeUpdateParams, options?: RequestOptions): APIPromise<ChargeResponse> {
     const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
+      ...body
+    } = params;
+    return this._client.put(__scalarPath`/v1/charges/${id}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Creates a charge against a customer's paykey. Straddle submits the charge for processing on `payment_date` unless the charge is on hold.
+   *
+   * @param {ChargeCreateParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const charge = await client.charges.create({
+   *   paykey: '',
+   *   description: 'Monthly subscription fee',
+   *   amount: 10000,
+   *   currency: 'USD',
+   *   payment_date: '2024-01-01',
+   *   consent_type: 'internet',
+   *   device: {
+   *     ip_address: '192.168.1.1',
+   *   },
+   *   external_id: '',
+   *   config: {
+   *     balance_check: 'enabled',
+   *   },
+   * });
+   * ```
+   */
+  create(params: ChargeCreateParams, options?: RequestOptions): APIPromise<ChargeResponse> {
+    const {
       'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
       ...body
     } = params;
     return this._client.post('/v1/charges', {
@@ -42,10 +127,10 @@ export class Charges extends APIResource {
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -53,148 +138,39 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Change the values of parameters associated with a charge prior to processing.
-   * The status of the charge must be `created`, `scheduled`, or `on_hold`.
+   * Places a charge on hold to prevent submission for processing. The charge must have a status of `created` or `scheduled`.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeHoldParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} OK
    *
    * @example
    * ```ts
-   * const chargeV1 = await client.charges.update(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   {
-   *     amount: 10000,
-   *     description: 'Monthly subscription fee',
-   *     payment_date: '2019-12-27',
-   *   },
-   * );
-   * ```
-   */
-  update(id: string, params: ChargeUpdateParams, options?: RequestOptions): APIPromise<ChargeV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/charges/${id}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Cancel a charge to prevent it from being originated for processing. The status
-   * of the charge must be `created`, `scheduled`, or `on_hold`.
-   *
-   * @example
-   * ```ts
-   * const chargeV1 = await client.charges.cancel(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  cancel(
-    id: string,
-    params: ChargeCancelParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ChargeV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params ?? {};
-    return this._client.put(path`/v1/charges/${id}/cancel`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Retrieves the details of an existing charge. Supply the unique charge `id`, and
-   * Straddle will return the corresponding charge information.
-   *
-   * @example
-   * ```ts
-   * const chargeV1 = await client.charges.get(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  get(
-    id: string,
-    params: ChargeGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ChargeV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.get(path`/v1/charges/${id}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Place a charge on hold to prevent it from being originated for processing. The
-   * status of the charge must be `created` or `scheduled`.
-   *
-   * @example
-   * ```ts
-   * const chargeV1 = await client.charges.hold(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
+   * const charge = await client.charges.hold('7c9e6679-7425-40de-944b-e07fc1f90ae7');
    * ```
    */
   hold(
     id: string,
     params: ChargeHoldParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ChargeV1> {
+  ): APIPromise<ChargeResponse> {
     const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params ?? {};
-    return this._client.put(path`/v1/charges/${id}/hold`, {
+    return this._client.put(__scalarPath`/v1/charges/${id}/hold`, {
       body,
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -202,37 +178,39 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Release a charge from an `on_hold` status to allow it to be rescheduled for
-   * processing.
+   * Releases a charge from `on_hold` and returns it to `created` for submission on `payment_date`.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeReleaseParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} OK
    *
    * @example
    * ```ts
-   * const chargeV1 = await client.charges.release(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
+   * const charge = await client.charges.release('7c9e6679-7425-40de-944b-e07fc1f90ae7');
    * ```
    */
   release(
     id: string,
     params: ChargeReleaseParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ChargeV1> {
+  ): APIPromise<ChargeResponse> {
     const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params ?? {};
-    return this._client.put(path`/v1/charges/${id}/release`, {
+    return this._client.put(__scalarPath`/v1/charges/${id}/release`, {
       body,
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -240,859 +218,1174 @@ export class Charges extends APIResource {
   }
 
   /**
-   * Get a charge by id.
+   * Cancels a charge. The charge must have a status of `created`, `scheduled`, or `on_hold`.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeCancelParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} OK
    *
    * @example
    * ```ts
-   * const response = await client.charges.unmask(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
+   * const charge = await client.charges.cancel('7c9e6679-7425-40de-944b-e07fc1f90ae7');
    * ```
    */
-  unmask(
+  cancel(
     id: string,
-    params: ChargeUnmaskParams | null | undefined = {},
+    params: ChargeCancelParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ChargeUnmaskResponse> {
+  ): APIPromise<ChargeResponse> {
     const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
       'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
     } = params ?? {};
-    return this._client.get(path`/v1/charges/${id}/unmask`, {
+    return this._client.put(__scalarPath`/v1/charges/${id}/cancel`, {
+      body,
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
     });
   }
-}
-
-export interface ChargeV1 {
-  data: ChargeV1.Data;
 
   /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: Shared.ResponseMetadata;
-
-  /**
-   * Indicates the structure of the returned content.
+   * Return a charge with its sensitive fields unmasked.
    *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace ChargeV1 {
-  export interface Data {
-    /**
-     * Unique identifier for the charge.
-     */
-    id: string;
-
-    /**
-     * The amount of the charge in cents.
-     */
-    amount: number;
-
-    /**
-     * Configuration options for the charge.
-     */
-    config: Data.Config;
-
-    /**
-     * The channel or mechanism through which the payment was authorized. Use
-     * `internet` for payments made online or through a mobile app and `signed` for
-     * signed agreements where there is a consent form or contract. Use `signed` for
-     * PDF signatures.
-     */
-    consent_type: 'internet' | 'signed';
-
-    /**
-     * Timestamp of when the charge was created.
-     */
-    created_at: string | null;
-
-    /**
-     * The currency of the charge. Only USD is supported.
-     */
-    currency: string;
-
-    /**
-     * An arbitrary description for the charge.
-     */
-    description: string | null;
-
-    /**
-     * Information about the device used when the customer authorized the payment.
-     */
-    device: Shared.DeviceInfoV1;
-
-    /**
-     * Unique identifier for the charge in your database. This value must be unique
-     * across all charges.
-     */
-    external_id: string;
-
-    /**
-     * Funding Ids
-     */
-    funding_ids: Array<string>;
-
-    /**
-     * Value of the `paykey` used for the charge.
-     */
-    paykey: string;
-
-    /**
-     * The desired date on which the payment should be occur. For charges, this means
-     * the date you want the customer to be debited on.
-     */
-    payment_date: string;
-
-    /**
-     * The current status of the charge.
-     */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
-
-    /**
-     * Additional details about the current status of the charge.
-     */
-    status_details: Shared.StatusDetailsV1;
-
-    /**
-     * Status history.
-     */
-    status_history: Array<Data.StatusHistory>;
-
-    /**
-     * Trace Ids.
-     */
-    trace_ids: { [key: string]: string };
-
-    /**
-     * Timestamp of when the charge was last updated.
-     */
-    updated_at: string | null;
-
-    /**
-     * Information about the customer associated with the charge.
-     */
-    customer_details?: Shared.CustomerDetailsV1;
-
-    /**
-     * Timestamp of when the charge was effective in the customer's bank account,
-     * otherwise known as the date on which the customer is debited.
-     */
-    effective_at?: string | null;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the charge in a structured format.
-     */
-    metadata?: { [key: string]: string } | null;
-
-    /**
-     * Information about the paykey used for the charge.
-     */
-    paykey_details?: Shared.PaykeyDetailsV1;
-
-    /**
-     * The payment rail that the charge will be processed through.
-     */
-    payment_rail?: 'ach';
-
-    /**
-     * Timestamp of when the charge was processed by Straddle and originated to the
-     * payment rail.
-     */
-    processed_at?: string | null;
-
-    /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
-  }
-
-  export namespace Data {
-    /**
-     * Configuration options for the charge.
-     */
-    export interface Config {
-      /**
-       * Defines whether to check the customer's balance before processing the charge.
-       */
-      balance_check: 'required' | 'enabled' | 'disabled';
-
-      /**
-       * Defines whether to automatically place this charge on hold after being created.
-       */
-      auto_hold?: boolean | null;
-
-      /**
-       * The reason the charge is being automatically held on creation.
-       */
-      auto_hold_message?: string | null;
-
-      /**
-       * Payment will simulate processing if not Standard.
-       */
-      sandbox_outcome?:
-        | 'standard'
-        | 'paid'
-        | 'on_hold_daily_limit'
-        | 'cancelled_for_fraud_risk'
-        | 'cancelled_for_balance_check'
-        | 'failed_insufficient_funds'
-        | 'reversed_insufficient_funds'
-        | 'failed_customer_dispute'
-        | 'reversed_customer_dispute'
-        | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account';
-    }
-
-    /**
-     * A record of the charge's status changes over time.
-     */
-    export interface StatusHistory {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused'
-        | 'cancel_request'
-        | 'failed_verification'
-        | 'require_review'
-        | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The current status of the `charge` or `payout`.
-       */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'validating';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
-  }
-}
-
-export interface ChargeUnmaskResponse {
-  data: ChargeUnmaskResponse.Data;
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: Shared.ResponseMetadata;
-
-  /**
-   * Indicates the structure of the returned content.
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeListUnmaskedParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<UnmaskedChargeResponse>} OK
    *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * @example
+   * ```ts
+   * const unmaskedCharge = await client.charges.listUnmasked('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace ChargeUnmaskResponse {
-  export interface Data {
-    /**
-     * Id.
-     */
-    id: string;
-
-    /**
-     * Amount.
-     */
-    amount: number;
-
-    config: Data.Config;
-
-    /**
-     * The channel or mechanism through which the payment was authorized. Use
-     * `internet` for payments made online or through a mobile app and `signed` for
-     * signed agreements where there is a consent form or contract. Use `signed` for
-     * PDF signatures.
-     */
-    consent_type: 'internet' | 'signed';
-
-    /**
-     * Created at.
-     */
-    created_at: string;
-
-    /**
-     * Currency.
-     */
-    currency: string;
-
-    /**
-     * Description.
-     */
-    description: string | null;
-
-    device: Data.Device;
-
-    /**
-     * External id.
-     */
-    external_id: string;
-
-    /**
-     * Funding Ids
-     */
-    funding_ids: Array<string>;
-
-    /**
-     * Paykey.
-     */
-    paykey: string;
-
-    /**
-     * Payment date.
-     */
-    payment_date: string;
-
-    /**
-     * The current status of the `charge` or `payout`.
-     */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
-
-    status_details: Shared.StatusDetailsV1;
-
-    /**
-     * Status history.
-     */
-    status_history: Array<Data.StatusHistory>;
-
-    /**
-     * Trace Ids.
-     */
-    trace_ids: { [key: string]: string };
-
-    /**
-     * Updated at.
-     */
-    updated_at: string;
-
-    /**
-     * Information about the customer associated with the charge or payout.
-     */
-    customer_details?: Shared.CustomerDetailsV1;
-
-    /**
-     * Effective at.
-     */
-    effective_at?: string | null;
-
-    /**
-     * Metadata.
-     */
-    metadata?: { [key: string]: string } | null;
-
-    paykey_details?: Shared.PaykeyDetailsV1;
-
-    /**
-     * The payment rail used for the charge or payout.
-     */
-    payment_rail?: 'ach';
-
-    /**
-     * Processed at.
-     */
-    processed_at?: string | null;
-
-    /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
+  listUnmasked(
+    id: string,
+    params: ChargeListUnmaskedParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<UnmaskedChargeResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/charges/${id}/unmask`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
-  export namespace Data {
-    export interface Config {
-      /**
-       * Defines whether to check the customer's balance before processing the charge.
-       */
-      balance_check: 'required' | 'enabled' | 'disabled';
+  /**
+   * Creates a new charge from a failed, reversed, or cancelled charge. The request can override `description`, `external_id`, and `payment_date`. Other payment details come from the original charge.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeResubmitParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const charge = await client.charges.resubmit('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  resubmit(
+    id: string,
+    params: ChargeResubmitParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ChargeResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params ?? {};
+    return this._client.post(__scalarPath`/v1/charges/${id}/resubmit`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
 
-      /**
-       * Defines whether to automatically place this charge on hold after being created.
-       */
-      auto_hold?: boolean | null;
+  /**
+   * Creates a payout to return funds from a paid charge to the customer's bank account. The payout is linked to the charge through `related_payments`. A charge can be refunded once, either fully or partially.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeRefundParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<PayoutResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const payout = await client.charges.refund('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   amount: 5000,
+   * });
+   * ```
+   */
+  refund(id: string, params: ChargeRefundParams, options?: RequestOptions): APIPromise<PayoutResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
+    return this._client.post(__scalarPath`/v1/charges/${id}/refund`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
 
-      /**
-       * The reason the charge is being automatically held on creation.
-       */
-      auto_hold_message?: string | null;
-
-      /**
-       * Payment will simulate processing if not Standard.
-       */
-      sandbox_outcome?:
-        | 'standard'
-        | 'paid'
-        | 'on_hold_daily_limit'
-        | 'cancelled_for_fraud_risk'
-        | 'cancelled_for_balance_check'
-        | 'failed_insufficient_funds'
-        | 'reversed_insufficient_funds'
-        | 'failed_customer_dispute'
-        | 'reversed_customer_dispute'
-        | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account';
-    }
-
-    export interface Device {
-      /**
-       * Ip address.
-       */
-      ip_address: string;
-    }
-
-    export interface StatusHistory {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused'
-        | 'cancel_request'
-        | 'failed_verification'
-        | 'require_review'
-        | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The current status of the `charge` or `payout`.
-       */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'validating';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
+  /**
+   * Uploads a proof-of-authorization document for a charge. A later upload adds another document and does not replace an existing one.
+   *
+   * @param {string} id - Unique identifier for the charge.
+   * @param {ChargeUploadAuthorizationProofParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargeResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const charge = await client.charges.uploadAuthorizationProof('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   File: '',
+   * });
+   * ```
+   */
+  uploadAuthorizationProof(
+    id: string,
+    params: ChargeUploadAuthorizationProofParams,
+    options?: RequestOptions,
+  ): APIPromise<ChargeResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
+    return this._client.post(
+      __scalarPath`/v1/charges/${id}/authorization`,
+      multipartFormRequestOptions(
+        {
+          body,
+          ...options,
+          headers: buildHeaders([
+            {
+              ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+              ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+              ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+              ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+            },
+            options?.headers,
+          ]),
+        },
+        this._client,
+      ),
+    );
   }
 }
 
-export interface ChargeCreateParams {
+export interface ChargeResponse {
   /**
-   * Body param: The amount of the charge in cents.
+   * Metadata for an API request.
    */
-  amount: number;
-
+  meta: AccountsAPI.ResponseMetadata;
   /**
-   * Body param
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
    */
-  config: ChargeCreateParams.Config;
+  response_type: BridgeAPI.ResponseType;
+  data: Charge;
+}
 
+export interface UnmaskedChargeResponse {
   /**
-   * Body param: The channel or mechanism through which the payment was authorized.
-   * Use `internet` for payments made online or through a mobile app and `signed` for
-   * signed agreements where there is a consent form or contract. Use `signed` for
-   * PDF signatures.
+   * Metadata for an API request.
    */
-  consent_type: 'internet' | 'signed';
-
+  meta: AccountsAPI.ResponseMetadata;
   /**
-   * Body param: The currency of the charge. Only USD is supported.
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
    */
-  currency: string;
+  response_type: BridgeAPI.ResponseType;
+  data: UnmaskedCharge;
+}
 
+export interface PayoutResponse {
   /**
-   * Body param: An arbitrary description for the charge.
+   * Metadata for an API request.
    */
-  description: string | null;
-
+  meta: AccountsAPI.ResponseMetadata;
   /**
-   * Body param
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
    */
-  device: Shared.DeviceInfoV1;
+  response_type: BridgeAPI.ResponseType;
+  data: Payout;
+}
 
+export interface Charge {
   /**
-   * Body param: Unique identifier for the charge in your database. This value must
-   * be unique across all charges.
+   * Unique identifier for this charge.
+   * @format uuid
    */
-  external_id: string;
-
+  id: string;
   /**
-   * Body param: Value of the `paykey` used for the charge.
+   * The masked paykey token used for this charge.
    */
   paykey: string;
-
   /**
-   * Body param: The desired date on which the payment should be occur. For charges,
-   * this means the date you want the customer to be debited on.
+   * A human-readable description of the charge.
+   */
+  description: string | null;
+  /**
+   * Amount in cents.
+   * @format int32
+   */
+  amount: number;
+  /**
+   * Currency code. Only `USD` is supported.
+   */
+  currency: string;
+  /**
+   * Date when Straddle submits the charge for processing.
+   * @format date
    */
   payment_date: string;
-
   /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the charge in a structured format.
+   * How the customer authorized the charge. `internet` covers online and mobile authorization. `signed` covers written or PDF-signed agreements.
    */
-  metadata?: { [key: string]: string } | null;
-
+  consent_type: ConsentType;
   /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Device used when the customer authorized the charge.
    */
-  'Correlation-Id'?: string;
-
+  device: MaskedPaymentDevice;
   /**
-   * Header param: Optional client generated value to use for idempotent requests.
+   * Your unique identifier for this charge, used to correlate with your internal records.
    */
-  'Idempotency-Key'?: string;
-
+  external_id: string;
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Configuration options for the charge.
    */
-  'Request-Id'?: string;
-
+  config: ChargeConfiguration;
   /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
+   * Timestamp when this charge was created.
+   * @format date-time
    */
-  'Straddle-Account-Id'?: string;
+  created_at: string | null;
+  /**
+   * Timestamp when this charge was last updated.
+   * @format date-time
+   */
+  updated_at: string | null;
+  /**
+   * The current status of the charge.
+   */
+  status: PaymentStatus;
+  /**
+   * Reason, source, and message for the most recent charge status change.
+   */
+  status_details: BridgeAPI.PaymentStatusDetails;
+  /**
+   * Complete ordered history of all status changes for this charge.
+   */
+  status_history: Array<PaymentStatusHistory>;
+  /**
+   * IDs of the funding events that included this charge.
+   */
+  funding_ids: Array<string>;
+  /**
+   * Trace identifiers from the payment network. Keys depend on the payment rail.
+   */
+  trace_ids: Record<string, string>;
+  /**
+   * Whether an associated payout has refunded this charge.
+   */
+  has_refund: boolean;
+  /**
+   * Whether this charge resubmits an original charge.
+   */
+  is_resubmit: boolean;
+  /**
+   * Whether this charge has been resubmitted.
+   */
+  has_resubmit: boolean;
+  /**
+   * Payment rail used to process the charge.
+   */
+  payment_rail?: PaymentRail;
+  /**
+   * Information about the paykey used for the charge.
+   */
+  paykey_details?: PaykeyDetails;
+  /**
+   * Information about the customer associated with the charge.
+   */
+  customer_details?: CustomerDetails;
+  /**
+   * Timestamp when this charge was submitted to the payment network. Null until processed.
+   * @format date-time
+   */
+  processed_at?: string | null;
+  /**
+   * Timestamp when funds were settled. Null until settlement is confirmed.
+   * @format date-time
+   */
+  effective_at?: string | null;
+  /**
+   * Key-value metadata stored with this charge.
+   */
+  metadata?: Record<string, string> | null;
+  /**
+   * Related payments and their relationship to this charge.
+   */
+  related_payments?: Array<RelatedPayment> | null;
+  /**
+   * Authorization documents for this charge, ordered by upload time.
+   */
+  documents?: Array<PaymentAuthorizationProof> | null;
 }
 
-export namespace ChargeCreateParams {
-  export interface Config {
-    /**
-     * Defines whether to check the customer's balance before processing the charge.
-     */
-    balance_check: 'required' | 'enabled' | 'disabled';
+export interface UnmaskedCharge {
+  /**
+   * Unique identifier for this charge.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * A human-readable description of the charge.
+   */
+  description: string | null;
+  /**
+   * Amount in cents.
+   * @format int32
+   */
+  amount: number;
+  /**
+   * Currency code. Only `USD` is supported.
+   */
+  currency: string;
+  /**
+   * Date when Straddle submits the charge for processing.
+   * @format date
+   */
+  payment_date: string;
+  /**
+   * How the customer authorized the charge. `internet` covers online and mobile authorization. `signed` covers written or PDF-signed agreements.
+   */
+  consent_type: ConsentType;
+  device: PaymentDevice;
+  /**
+   * Your unique identifier for this charge, used to correlate with your internal records.
+   */
+  external_id: string;
+  config: ChargeConfiguration;
+  /**
+   * Timestamp when this charge was created.
+   * @format date-time
+   */
+  created_at: string;
+  /**
+   * Timestamp when this charge was last updated.
+   * @format date-time
+   */
+  updated_at: string;
+  /**
+   * The current status of the `charge` or `payout`.
+   */
+  status: PaymentStatus;
+  status_details: BridgeAPI.PaymentStatusDetails;
+  /**
+   * Complete ordered history of all status changes for this charge.
+   */
+  status_history: Array<PaymentStatusHistory>;
+  /**
+   * IDs of the funding events that included this charge.
+   */
+  funding_ids: Array<string>;
+  /**
+   * Unmasked paykey token used for this charge.
+   */
+  paykey: string;
+  /**
+   * Trace identifiers from the payment network. Keys depend on the payment rail.
+   */
+  trace_ids: Record<string, string>;
+  /**
+   * Whether an associated payout has refunded this charge.
+   */
+  has_refund: boolean;
+  /**
+   * Whether this charge resubmits an original charge.
+   */
+  is_resubmit: boolean;
+  /**
+   * Whether this charge has been resubmitted.
+   */
+  has_resubmit: boolean;
+  /**
+   * The payment rail used for the charge or payout.
+   */
+  payment_rail?: PaymentRail;
+  paykey_details?: PaykeyDetails;
+  /**
+   * Information about the customer associated with the charge or payout.
+   */
+  customer_details?: CustomerDetails;
+  /**
+   * Timestamp when this charge was submitted to the payment network. Null until processed.
+   * @format date-time
+   */
+  processed_at?: string | null;
+  /**
+   * Timestamp when funds were settled. Null until settlement is confirmed.
+   * @format date-time
+   */
+  effective_at?: string | null;
+  /**
+   * Key-value metadata stored with this charge.
+   */
+  metadata?: Record<string, string> | null;
+  /**
+   * Related payments and their relationship to this charge.
+   */
+  related_payments?: Array<RelatedPayment> | null;
+  /**
+   * Authorization documents for this charge, ordered by upload time.
+   */
+  documents?: Array<PaymentAuthorizationProof> | null;
+}
 
-    /**
-     * Defines whether to automatically place this charge on hold after being created.
-     */
-    auto_hold?: boolean | null;
+export interface Payout {
+  /**
+   * Unique identifier for this payout.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * The masked paykey token used for this payout.
+   */
+  paykey: string;
+  /**
+   * A human-readable description of the payout.
+   */
+  description: string | null;
+  /**
+   * Amount in cents.
+   * @format int32
+   */
+  amount: number;
+  /**
+   * Currency code. Only `USD` is supported.
+   */
+  currency: string;
+  /**
+   * Date when Straddle submits the payout for processing.
+   * @format date
+   */
+  payment_date: string;
+  /**
+   * Device used when the customer authorized the payout.
+   */
+  device: MaskedPaymentDevice;
+  /**
+   * Your unique identifier for this payout, used to correlate with your internal records.
+   */
+  external_id: string;
+  /**
+   * Configuration for the payout.
+   */
+  config: PayoutConfiguration;
+  /**
+   * The current status of the payout.
+   */
+  status: PaymentStatus;
+  /**
+   * Reason, source, and message for the most recent payout status change.
+   */
+  status_details: BridgeAPI.PaymentStatusDetails;
+  /**
+   * Complete ordered history of all status changes for this payout.
+   */
+  status_history: Array<PaymentStatusHistory>;
+  /**
+   * IDs of the funding events that included this payout.
+   */
+  funding_ids: Array<string>;
+  /**
+   * Trace identifiers from the payment network. Keys depend on the payment rail.
+   */
+  trace_ids: Record<string, string>;
+  /**
+   * Whether this payout refunds an original charge.
+   */
+  is_refund: boolean;
+  /**
+   * Whether this payout resubmits an original payout.
+   */
+  is_resubmit: boolean;
+  /**
+   * Whether this payout has been resubmitted.
+   */
+  has_resubmit: boolean;
+  /**
+   * Payment rail used to process the payout.
+   */
+  payment_rail?: PaymentRail;
+  /**
+   * Information about the customer associated with the payout.
+   */
+  customer_details?: CustomerDetails;
+  /**
+   * Information about the paykey used for the payout.
+   */
+  paykey_details?: PaykeyDetails;
+  /**
+   * Timestamp when this payout was created.
+   * @format date-time
+   */
+  created_at?: string | null;
+  /**
+   * Timestamp when this payout was last updated.
+   * @format date-time
+   */
+  updated_at?: string | null;
+  /**
+   * Timestamp when this payout was submitted to the payment network. Null until processed.
+   * @format date-time
+   */
+  processed_at?: string | null;
+  /**
+   * Timestamp when funds were settled. Null until settlement is confirmed.
+   * @format date-time
+   */
+  effective_at?: string | null;
+  /**
+   * Key-value metadata stored with this payout.
+   */
+  metadata?: Record<string, string> | null;
+  /**
+   * Related payments and their relationship to this payout.
+   */
+  related_payments?: Array<RelatedPayment> | null;
+  /**
+   * Authorization documents for this payout, ordered by upload time.
+   */
+  documents?: Array<PaymentAuthorizationProof> | null;
+}
 
-    /**
-     * The reason the charge is being automatically held on creation.
-     */
-    auto_hold_message?: string | null;
+/**
+ * The payment rail used for the charge or payout.
+ */
+export type PaymentRail = 'ach';
 
-    /**
-     * Payment will simulate processing if not Standard.
-     */
-    sandbox_outcome?:
-      | 'standard'
-      | 'paid'
-      | 'on_hold_daily_limit'
-      | 'cancelled_for_fraud_risk'
-      | 'cancelled_for_balance_check'
-      | 'failed_insufficient_funds'
-      | 'reversed_insufficient_funds'
-      | 'failed_customer_dispute'
-      | 'reversed_customer_dispute'
-      | 'failed_closed_bank_account'
-      | 'reversed_closed_bank_account';
-  }
+export interface PaykeyDetails {
+  /**
+   * Unique identifier for the paykey.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Unique identifier for the customer associated with the paykey.
+   * @format uuid
+   */
+  customer_id: string;
+  /**
+   * Display label combining the bank name and masked account number.
+   */
+  label: string;
+  /**
+   * The most recent available balance in the smallest currency unit, if a balance check was performed.
+   * @format int32
+   */
+  balance?: number | null;
+}
+
+/**
+ * Information about the customer associated with the charge or payout.
+ */
+export interface CustomerDetails {
+  /**
+   * Unique identifier for the customer.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Customer's full name or business name.
+   */
+  name: string;
+  /**
+   * Whether the customer is an individual or a business.
+   */
+  customer_type: CustomersAPI.CustomerType;
+  /**
+   * Customer's email address.
+   */
+  email: string;
+  /**
+   * Customer's phone number in E.164 format.
+   */
+  phone: string;
+}
+
+/**
+ * How the customer authorized the charge. `internet` covers online and mobile authorization. `signed` covers written or PDF-signed agreements.
+ */
+export type ConsentType = 'internet' | 'signed';
+
+export interface MaskedPaymentDevice {
+  /**
+   * Masked IP address of the device used when the customer authorized the charge or payout.
+   */
+  ip_address: string;
+}
+
+export interface ChargeConfiguration {
+  /**
+   * Balance check mode to use before processing the charge.
+   */
+  balance_check: BalanceCheckMode;
+  /**
+   * Payment will simulate processing if not Standard.
+   */
+  sandbox_outcome?: SimulatedPaymentOutcome;
+  /**
+   * Whether to place the charge on hold automatically after creation.
+   */
+  auto_hold?: boolean | null;
+  /**
+   * Reason for placing the charge on hold automatically.
+   */
+  auto_hold_message?: string | null;
+}
+
+/**
+ * The current status of the `charge` or `payout`.
+ */
+export type PaymentStatus =
+  | 'created'
+  | 'scheduled'
+  | 'failed'
+  | 'cancelled'
+  | 'on_hold'
+  | 'pending'
+  | 'paid'
+  | 'reversed'
+  | 'validating';
+
+export interface PaymentStatusHistory {
+  /**
+   * Machine-readable reason for the status.
+   */
+  reason: BridgeAPI.PaymentStatusReason;
+  /**
+   * Source of the status change.
+   */
+  source: BridgeAPI.PaymentStatusSource;
+  /**
+   * Human-readable status description.
+   */
+  message: string;
+  /**
+   * Timestamp when the status changed.
+   * @format date-time
+   */
+  changed_at: string;
+  /**
+   * The current status of the `charge` or `payout`.
+   */
+  status: PaymentStatus;
+  /**
+   * Status code, when available.
+   */
+  code?: string | null;
+}
+
+export interface RelatedPayment {
+  /**
+   * Unique identifier of the related payment.
+   * @format uuid
+   */
+  id: string;
+  relationship: PaymentRelationship;
+  /**
+   * The type of payment.
+   */
+  payment_type: PaymentType;
+}
+
+export interface PaymentAuthorizationProof {
+  /**
+   * Unique identifier for this document.
+   * @format uuid
+   */
+  document_id: string;
+  /**
+   * The file name of this document as uploaded.
+   */
+  document_name: string;
+  document_type: PaymentDocumentType;
+  /**
+   * The size of this document in bytes.
+   * @format int64
+   */
+  document_size: number;
+  /**
+   * The UTC timestamp when this document was uploaded.
+   * @format date-time
+   */
+  uploaded_at: string;
+}
+
+export interface PaymentDevice {
+  /**
+   * The IP address of the device used when the customer authorized the charge or payout. Use `0.0.0.0` to represent an offline consent interaction.
+   * @format ipv4
+   */
+  ip_address: string;
+}
+
+export interface PayoutConfiguration {
+  /**
+   * Payment will simulate processing if not Standard.
+   */
+  sandbox_outcome?: SimulatedPaymentOutcome;
+  /**
+   * Whether to place the payout on hold automatically after creation.
+   */
+  auto_hold?: boolean | null;
+  /**
+   * Reason for placing the payout on hold automatically.
+   */
+  auto_hold_message?: string | null;
+}
+
+export type BalanceCheckMode = 'required' | 'enabled' | 'disabled';
+
+/**
+ * Payment will simulate processing if not Standard.
+ */
+export type SimulatedPaymentOutcome =
+  | 'standard'
+  | 'paid'
+  | 'on_hold_daily_limit'
+  | 'cancelled_for_fraud_risk'
+  | 'cancelled_for_balance_check'
+  | 'failed_insufficient_funds'
+  | 'reversed_insufficient_funds'
+  | 'failed_customer_dispute'
+  | 'reversed_customer_dispute'
+  | 'failed_closed_bank_account'
+  | 'reversed_closed_bank_account'
+  | 'failed_not_authorized'
+  | 'reversed_not_authorized';
+
+export type PaymentRelationship = 'original' | 'resubmit' | 'refund';
+
+/**
+ * The type of payment.
+ */
+export type PaymentType = 'charge' | 'payout';
+
+export type PaymentDocumentType = 'payment_authorization';
+
+export interface ChargeRetrieveParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
 }
 
 export interface ChargeUpdateParams {
   /**
-   * Body param: The amount of the charge in cents.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
-  amount: number;
-
+  'Straddle-Account-Id'?: string;
   /**
-   * Body param: An arbitrary description for the charge.
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Updated description for the charge.
    */
   description: string | null;
-
   /**
-   * Body param: The desired date on which the payment should be occur. For charges,
-   * this means the date you want the customer to be debited on.
+   * Body param: Amount in cents.
+   * @format int32
+   */
+  amount: number;
+  /**
+   * Body param: New date for Straddle to submit the charge for processing.
+   * @format date
    */
   payment_date: string;
-
   /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the charge in a structured format.
+   * Body param: Replacement metadata for the charge. Up to 20 user-defined string key-value pairs.
    */
-  metadata?: { [key: string]: string } | null;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
+  metadata?: Record<string, string> | null;
 }
 
-export interface ChargeCancelParams {
+export interface ChargeCreateParams {
   /**
-   * Body param: Details about why the charge status was updated.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
-  reason?: string | null;
-
+  'Straddle-Account-Id'?: string;
   /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Header param: Optional client generated value to use for idempotent requests.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
   'Idempotency-Key'?: string;
-
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Body param: The paykey token that identifies the customer's bank account.
    */
-  'Request-Id'?: string;
-
+  paykey: string;
   /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
+   * Body param: Description shown on the customer's bank statement where supported.
    */
-  'Straddle-Account-Id'?: string;
-}
-
-export interface ChargeGetParams {
+  description: string | null;
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * Body param: Amount in cents.
+   * @format int32
    */
-  'Correlation-Id'?: string;
-
+  amount: number;
   /**
-   * Optional client generated identifier to trace and debug a request.
+   * Body param: Currency code. Only `USD` is supported.
    */
-  'Request-Id'?: string;
-
+  currency: string;
   /**
-   * For use by platforms to specify an account id and set scope of a request.
+   * Body param: Date when Straddle submits the charge for processing.
+   * @format date
    */
-  'Straddle-Account-Id'?: string;
+  payment_date: string;
+  /**
+   * Body param: How the customer authorized the charge. `internet` covers online and mobile authorization. `signed` covers written or PDF-signed agreements.
+   */
+  consent_type: ConsentType;
+  /**
+   * Body param
+   */
+  device: PaymentDevice;
+  /**
+   * Body param: Your unique identifier for the charge. Must be unique across charges.
+   */
+  external_id: string;
+  /**
+   * Body param
+   */
+  config: ChargeConfiguration;
+  /**
+   * Body param: Up to 20 user-defined string key-value pairs.
+   */
+  metadata?: Record<string, string> | null;
 }
 
 export interface ChargeHoldParams {
   /**
-   * Body param: Details about why the charge status was updated.
-   */
-  reason?: string | null;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
   'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Message explaining the charge status change.
+   */
+  reason?: string | null;
 }
 
 export interface ChargeReleaseParams {
   /**
-   * Body param: Details about why the charge status was updated.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
-  reason?: string | null;
-
+  'Straddle-Account-Id'?: string;
   /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Header param: Optional client generated value to use for idempotent requests.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
   'Idempotency-Key'?: string;
-
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Body param: Message explaining the charge status change.
    */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
+  reason?: string | null;
 }
 
-export interface ChargeUnmaskParams {
+export interface ChargeCancelParams {
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Optional client generated identifier to trace and debug a request.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
-  'Request-Id'?: string;
-
+  'Idempotency-Key'?: string;
   /**
-   * For use by platforms to specify an account id and set scope of a request.
+   * Body param: Message explaining the charge status change.
    */
-  'Straddle-Account-Id'?: string;
+  reason?: string | null;
 }
 
+export interface ChargeListUnmaskedParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+}
+
+export interface ChargeResubmitParams {
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Description for the resubmitted charge. Defaults to the original description if omitted.
+   */
+  description?: string | null;
+  /**
+   * Body param: Date when Straddle submits the resubmitted charge for processing. Defaults to today if omitted.
+   * @format date
+   */
+  payment_date?: string | null;
+  /**
+   * Body param: Your unique identifier for the resubmitted charge. Defaults to a new value if omitted.
+   */
+  external_id?: string | null;
+}
+
+export interface ChargeRefundParams {
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Refund amount in cents. `null` refunds the full original amount. A value must be greater than zero and no more than the original charge amount.
+   * @format int32
+   */
+  amount: number | null;
+  /**
+   * Body param: Description for the refund payout. Defaults to a description that identifies the original charge.
+   */
+  description?: string | null;
+  /**
+   * Body param: Your unique identifier for the refund. Defaults to a new value if omitted.
+   */
+  external_id?: string | null;
+  /**
+   * Body param: Date when Straddle submits the refund payout for processing. Defaults to today if omitted.
+   * @format date
+   */
+  payment_date?: string | null;
+  /**
+   * Body param: User-defined string key-value pairs for the refund payout.
+   */
+  metadata?: Record<string, string> | null;
+}
+
+export interface ChargeUploadAuthorizationProofParams {
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: The document file to upload as proof of authorization for this charge.
+   * @format binary
+   */
+  File: Uploadable;
+}
 export declare namespace Charges {
   export {
-    type ChargeV1 as ChargeV1,
-    type ChargeUnmaskResponse as ChargeUnmaskResponse,
-    type ChargeCreateParams as ChargeCreateParams,
+    type ChargeResponse as ChargeResponse,
+    type UnmaskedChargeResponse as UnmaskedChargeResponse,
+    type PayoutResponse as PayoutResponse,
+    type Charge as Charge,
+    type UnmaskedCharge as UnmaskedCharge,
+    type Payout as Payout,
+    type PaymentRail as PaymentRail,
+    type PaykeyDetails as PaykeyDetails,
+    type CustomerDetails as CustomerDetails,
+    type ConsentType as ConsentType,
+    type MaskedPaymentDevice as MaskedPaymentDevice,
+    type ChargeConfiguration as ChargeConfiguration,
+    type PaymentStatus as PaymentStatus,
+    type PaymentStatusHistory as PaymentStatusHistory,
+    type RelatedPayment as RelatedPayment,
+    type PaymentAuthorizationProof as PaymentAuthorizationProof,
+    type PaymentDevice as PaymentDevice,
+    type PayoutConfiguration as PayoutConfiguration,
+    type BalanceCheckMode as BalanceCheckMode,
+    type SimulatedPaymentOutcome as SimulatedPaymentOutcome,
+    type PaymentRelationship as PaymentRelationship,
+    type PaymentType as PaymentType,
+    type PaymentDocumentType as PaymentDocumentType,
+    type ChargeRetrieveParams as ChargeRetrieveParams,
     type ChargeUpdateParams as ChargeUpdateParams,
-    type ChargeCancelParams as ChargeCancelParams,
-    type ChargeGetParams as ChargeGetParams,
+    type ChargeCreateParams as ChargeCreateParams,
     type ChargeHoldParams as ChargeHoldParams,
     type ChargeReleaseParams as ChargeReleaseParams,
-    type ChargeUnmaskParams as ChargeUnmaskParams,
+    type ChargeCancelParams as ChargeCancelParams,
+    type ChargeListUnmaskedParams as ChargeListUnmaskedParams,
+    type ChargeResubmitParams as ChargeResubmitParams,
+    type ChargeRefundParams as ChargeRefundParams,
+    type ChargeUploadAuthorizationProofParams as ChargeUploadAuthorizationProofParams,
   };
 }

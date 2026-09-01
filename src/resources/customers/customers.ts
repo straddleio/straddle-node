@@ -1,51 +1,219 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from '../../core/resource';
-import * as CustomersAPI from './customers';
-import * as Shared from '../shared';
+import { APIResource } from '../../resource';
+import { APIPromise } from '../../api-promise';
+import type { RequestOptions } from '../../internal/request-options';
+import { buildHeaders } from '../../internal/headers';
+import { path as __scalarPath } from '../../internal/utils/path';
+import type * as AccountsAPI from '../accounts';
+import type * as BridgeAPI from '../bridge';
 import * as ReviewAPI from './review';
 import {
-  CustomerReviewV1,
-  IdentityVerificationBreakdownV1,
   Review,
-  ReviewDecisionParams,
-  ReviewGetParams,
-  ReviewRefreshReviewParams,
+  type CustomerReviewResponse,
+  type CustomerReview,
+  type CustomerIdentityVerification,
+  type VerificationDecision,
+  type IdentityVerificationBreakdown,
+  type IdentityVerificationAlerts,
+  type IdentityVerificationWatchlist,
+  type CustomerKYCVerification,
+  type ReputationCheck,
+  type CorrelationBucket,
+  type IdentityVerificationWatchlistMatch,
+  type ReputationInsights,
+  type ReviewListParams,
+  type ReviewSetVerificationDecisionParams,
 } from './review';
-import { APIPromise } from '../../core/api-promise';
-import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../../core/pagination';
-import { buildHeaders } from '../../internal/headers';
-import { RequestOptions } from '../../internal/request-options';
-import { path } from '../../internal/utils/path';
 
-/**
- * Customers represent the end users who send or receive payments through your integration. Each customer undergoes automatic identity verification and fraud screening upon creation. Use customers to track payment history, manage bank account connections, and maintain a secure record of all transactions associated with a user. Customers can be either individuals or businesses with appropriate compliance checks for each type.
- */
 export class Customers extends APIResource {
   review: ReviewAPI.Review = new ReviewAPI.Review(this._client);
 
   /**
-   * Creates a new customer record and automatically initiates identity, fraud, and
-   * risk assessment scores. This endpoint allows you to create a customer profile
-   * and associate it with paykeys and payments.
+   * Returns a customer by `id`.
+   *
+   * @param {string} id - Unique identifier for the customer.
+   * @param {CustomerRetrieveParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomerResponse>} OK
    *
    * @example
    * ```ts
-   * const customerV1 = await client.customers.create({
-   *   device: { ip_address: '192.168.1.1' },
-   *   email: 'ron.swanson@pawnee.com',
-   *   name: 'Ron Swanson',
-   *   phone: '+12128675309',
-   *   type: 'individual',
+   * const customer = await client.customers.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  retrieve(
+    id: string,
+    params: CustomerRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/customers/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Updates an existing customer's profile, status, and metadata.
+   *
+   * @param {string} id - Unique identifier for the customer.
+   * @param {CustomerUpdateParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomerResponse>} OK
+   *
+   * @example
+   * ```ts
+   * const customer = await client.customers.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   name: '',
+   *   email: 'user@example.com',
+   *   phone: '',
+   *   device: {
+   *     ip_address: '192.168.1.1',
+   *   },
+   *   status: 'verified',
    * });
    * ```
    */
-  create(params: CustomerCreateParams, options?: RequestOptions): APIPromise<CustomerV1> {
+  update(id: string, params: CustomerUpdateParams, options?: RequestOptions): APIPromise<CustomerResponse> {
     const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
+      ...body
+    } = params;
+    return this._client.put(__scalarPath`/v1/customers/${id}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Permanently deletes a customer record. The deletion cannot be undone. Use this endpoint only to meet regulatory or privacy requirements.
+   *
+   * @param {string} id - Unique identifier for the customer.
+   * @param {CustomerDeleteParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomerResponse>} OK
+   *
+   * @example
+   * ```ts
+   * const customer = await client.customers.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  delete(
+    id: string,
+    params: CustomerDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerResponse> {
+    const {
       'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+    } = params ?? {};
+    return this._client.delete(__scalarPath`/v1/customers/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Returns a paginated list of customers for the account. Optional query parameters filter, search, and sort the results.
+   *
+   * @param {CustomerListParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomerSummaryList>} OK
+   *
+   * @example
+   * ```ts
+   * const customerSummaryList = await client.customers.list({
+   *   page_number: 1,
+   *   page_size: 100,
+   *   sort_order: 'asc',
+   * });
+   * ```
+   */
+  list(
+    params: CustomerListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerSummaryList> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      ...query
+    } = params ?? {};
+    return this._client.get('/v1/customers', {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Creates a customer and starts identity, fraud, and risk assessments.
+   *
+   * @param {CustomerCreateParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomerResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const customer = await client.customers.create({
+   *   name: 'Ron Swanson',
+   *   type: 'individual',
+   *   email: 'ron.swanson@pawnee.com',
+   *   address: { address1: '123 Main St', city: 'Anytown', state: 'CA', zip: '94105' },
+   *   phone: '+12128675309',
+   *   external_id: 'customer_123',
+   *   device: { ip_address: '192.168.1.1' },
+   *   metadata: {},
+   * });
+   * ```
+   */
+  create(params: CustomerCreateParams, options?: RequestOptions): APIPromise<CustomerResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
       ...body
     } = params;
     return this._client.post('/v1/customers', {
@@ -53,10 +221,10 @@ export class Customers extends APIResource {
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -64,187 +232,73 @@ export class Customers extends APIResource {
   }
 
   /**
-   * Updates an existing customer's information. This endpoint allows you to modify
-   * the customer's contact details, PII, and metadata.
+   * Returns unmasked details for a customer, including personally identifiable information. Straddle must enable this endpoint for your account. Use this endpoint only when unmasked data is necessary.
+   *
+   * @param {string} id - Unique identifier for the customer.
+   * @param {CustomerListUnmaskedParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<UnmaskedCustomerResponse>} OK
    *
    * @example
    * ```ts
-   * const customerV1 = await client.customers.update(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   {
-   *     device: { ip_address: '192.168.1.1' },
-   *     email: 'dev@stainless.com',
-   *     name: 'name',
-   *     phone: '+46991022',
-   *     status: 'pending',
-   *   },
-   * );
+   * const unmaskedCustomer = await client.customers.listUnmasked('7c9e6679-7425-40de-944b-e07fc1f90ae7');
    * ```
    */
-  update(id: string, params: CustomerUpdateParams, options?: RequestOptions): APIPromise<CustomerV1> {
+  listUnmasked(
+    id: string,
+    params: CustomerListUnmaskedParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<UnmaskedCustomerResponse> {
     const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/customers/${id}/unmasked`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Starts a new identity review for a customer. The review runs asynchronously. Webhooks and the customer review endpoint return updated results.
+   *
+   * @param {string} id - Unique identifier for the customer.
+   * @param {CustomerRefreshReviewParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<CustomerResponse>} Accepted
+   *
+   * @example
+   * ```ts
+   * const customer = await client.customers.refreshReview('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  refreshReview(
+    id: string,
+    params: CustomerRefreshReviewParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/customers/${id}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Lists or searches customers connected to your account. All supported query
-   * parameters are optional. If none are provided, the response will include all
-   * customers connected to your account. This endpoint supports advanced sorting and
-   * filtering options.
-   *
-   * @example
-   * ```ts
-   * // Automatically fetches more pages as needed.
-   * for await (const customer of client.customers.list()) {
-   *   // ...
-   * }
-   * ```
-   */
-  list(
-    params: CustomerListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<CustomerSummaryPagedV1DataPageNumberSchema, CustomerSummaryPagedV1.Data> {
-    const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...query
     } = params ?? {};
-    return this._client.getAPIList('/v1/customers', PageNumberSchema<CustomerSummaryPagedV1.Data>, {
-      query,
+    return this._client.put(__scalarPath`/v1/customers/${id}/refresh_review`, {
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Permanently removes a customer record from Straddle. This action cannot be
-   * undone and should only be used to satisfy regulatory requirements or for privacy
-   * compliance.
-   *
-   * @example
-   * ```ts
-   * const customerV1 = await client.customers.delete(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  delete(
-    id: string,
-    params: CustomerDeleteParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomerV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.delete(path`/v1/customers/${id}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Retrieves the details of an existing customer. Supply the unique customer ID
-   * that was returned from your 'create customer' request, and Straddle will return
-   * the corresponding customer information.
-   *
-   * @example
-   * ```ts
-   * const customerV1 = await client.customers.get(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  get(
-    id: string,
-    params: CustomerGetParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomerV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.get(path`/v1/customers/${id}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Retrieves the unmasked details, including PII, of an existing customer. Supply
-   * the unique customer ID that was returned from your 'create customer' request,
-   * and Straddle will return the corresponding customer information. This endpoint
-   * needs to be enabled by Straddle and should only be used when absolutely
-   * necessary.
-   *
-   * @example
-   * ```ts
-   * const customerUnmaskedV1 = await client.customers.unmasked(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  unmasked(
-    id: string,
-    params: CustomerUnmaskedParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<CustomerUnmaskedV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.get(path`/v1/customers/${id}/unmasked`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -252,879 +306,658 @@ export class Customers extends APIResource {
   }
 }
 
-export type CustomerSummaryPagedV1DataPageNumberSchema = PageNumberSchema<CustomerSummaryPagedV1.Data>;
+export interface CustomerResponse {
+  /**
+   * Metadata for an API request.
+   */
+  meta: AccountsAPI.ResponseMetadata;
+  /**
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
+   */
+  response_type: BridgeAPI.ResponseType;
+  data: Customer;
+}
+
+export interface CustomerSummaryList {
+  /**
+   * Metadata for an API request and a page of results.
+   */
+  meta: AccountsAPI.PageMetadata;
+  /**
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
+   */
+  response_type: BridgeAPI.ResponseType;
+  /**
+   * Customers returned for this page.
+   */
+  data: Array<CustomerSummary>;
+}
+
+export interface UnmaskedCustomerResponse {
+  /**
+   * Metadata for an API request.
+   */
+  meta: AccountsAPI.ResponseMetadata;
+  /**
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
+   */
+  response_type: BridgeAPI.ResponseType;
+  data: UnmaskedCustomer;
+}
+
+export interface Customer {
+  /**
+   * Unique identifier for the customer.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Full name for an individual customer or business name for a business customer.
+   */
+  name: string;
+  type: CustomerType;
+  /**
+   * The customer's email address.
+   * @format email
+   */
+  email: string;
+  /**
+   * The customer's phone number in E.164 format.
+   * @pattern ^\+[1-9]\d{1,14}$
+   */
+  phone: string;
+  status: CustomerStatus;
+  /**
+   * Timestamp of when the customer record was created.
+   * @format date-time
+   */
+  created_at: string;
+  /**
+   * Timestamp of the most recent update to the customer record.
+   * @format date-time
+   */
+  updated_at: string;
+  /**
+   * Unique identifier for the customer in your system.
+   */
+  external_id?: string | null;
+  /**
+   * Customer postal address. When provided, the object must include all required fields.
+   */
+  address?: CustomerAddress | null;
+  compliance_profile?: ComplianceProfile | null;
+  device?: MaskedCustomerDevice;
+  /**
+   * Up to 20 user-defined key-value pairs associated with the customer.
+   */
+  metadata?: Record<string, string> | null;
+  config?: CustomerConfiguration;
+}
+
+export interface CustomerSummary {
+  /**
+   * Unique identifier for the customer.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Full name for an individual customer or business name for a business customer.
+   */
+  name: string;
+  type: CustomerType;
+  /**
+   * The customer's email address.
+   * @format email
+   */
+  email: string;
+  /**
+   * The customer's phone number in E.164 format.
+   * @pattern ^\+[1-9]\d{1,14}$
+   */
+  phone: string;
+  status: CustomerStatus;
+  /**
+   * Timestamp of when the customer record was created.
+   * @format date-time
+   */
+  created_at: string;
+  /**
+   * Timestamp of the most recent update to the customer record.
+   * @format date-time
+   */
+  updated_at: string;
+  /**
+   * Unique identifier for the customer in your system.
+   */
+  external_id?: string | null;
+}
+
+export interface UnmaskedCustomer {
+  /**
+   * Unique identifier for the customer.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Full name for an individual customer or business name for a business customer.
+   */
+  name: string;
+  type: CustomerType;
+  /**
+   * The customer's email address.
+   * @format email
+   */
+  email: string;
+  /**
+   * The customer's phone number in E.164 format.
+   * @pattern ^\+[1-9]\d{1,14}$
+   */
+  phone: string;
+  status: CustomerStatus;
+  /**
+   * Timestamp of when the customer record was created.
+   * @format date-time
+   */
+  created_at: string;
+  /**
+   * Timestamp of the most recent update to the customer record.
+   * @format date-time
+   */
+  updated_at: string;
+  /**
+   * Unique identifier for the customer in your system.
+   */
+  external_id?: string | null;
+  /**
+   * Customer postal address. When provided, the object must include all required fields.
+   */
+  address?: CustomerAddress | null;
+  compliance_profile?: UnmaskedComplianceProfile | null;
+  device?: CustomerDevice;
+  /**
+   * Up to 20 user-defined key-value pairs associated with the customer.
+   */
+  metadata?: Record<string, string> | null;
+  config?: CustomerConfiguration;
+}
+
+export type CustomerType = 'individual' | 'business';
+
+export type CustomerStatus = 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
 
 /**
- * An object containing the customer's address. This is optional, but if provided,
- * all required fields must be present.
+ * Customer postal address. When provided, the object must include all required fields.
  */
-export interface CustomerAddressV1 {
+export interface CustomerAddress {
   /**
-   * Primary address line (e.g., street, PO Box).
+   * Primary address line, such as a street address or PO Box.
+   * @maxLength 100
    */
   address1: string;
-
   /**
    * City, district, suburb, town, or village.
+   * @maxLength 100
    */
   city: string;
-
   /**
    * Two-letter state code.
+   * @pattern ^[A-Z]{2}$
    */
   state: string;
-
   /**
-   * Zip or postal code.
+   * ZIP or postal code.
+   * @pattern ^[0-9]{5}(-[0-9]{4})?$
    */
   zip: string;
-
   /**
-   * Secondary address line (e.g., apartment, suite, unit, or building).
+   * Secondary address line, such as an apartment, suite, unit, or building.
+   * @maxLength 100
    */
   address2?: string | null;
 }
 
-export interface CustomerSummaryPagedV1 {
-  data: Array<CustomerSummaryPagedV1.Data>;
+export type ComplianceProfile =
+  | ComplianceProfile.IndividualComplianceProfile
+  | ComplianceProfile.BusinessComplianceProfile;
 
-  meta: CustomerSummaryPagedV1.Meta;
-
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace CustomerSummaryPagedV1 {
-  export interface Data {
+export namespace ComplianceProfile {
+  export interface IndividualComplianceProfile {
     /**
-     * Unique identifier for the customer.
+     * Masked date of birth in `****-**-**` format.
      */
-    id: string;
-
+    dob: string | null;
     /**
-     * Timestamp of when the customer record was created.
+     * Masked Social Security number in `***-**-****` format.
      */
-    created_at: string;
-
-    /**
-     * The customer's email address.
-     */
-    email: string;
-
-    /**
-     * Full name of the individual or business name.
-     */
-    name: string;
-
-    /**
-     * The customer's phone number in E.164 format.
-     */
-    phone: string;
-
-    status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
-
-    type: 'individual' | 'business';
-
-    /**
-     * Timestamp of the most recent update to the customer record.
-     */
-    updated_at: string;
-
-    /**
-     * Unique identifier for the customer in your database, used for cross-referencing
-     * between Straddle and your systems.
-     */
-    external_id?: string | null;
+    ssn: string | null;
   }
 
-  export interface Meta {
+  export interface BusinessComplianceProfile {
     /**
-     * Unique identifier for this API request, useful for troubleshooting.
+     * Masked Employer Identification Number in `**-*******` format.
      */
-    api_request_id: string;
-
+    ein: string | null;
     /**
-     * Timestamp for this API request, useful for troubleshooting.
+     * Official registered business name associated with `ein`.
      */
-    api_request_timestamp: string;
-
+    legal_business_name: string | null;
     /**
-     * Maximum allowed page size for this endpoint.
+     * Official business website URL.
+     * @format uri
      */
-    max_page_size: number;
-
+    website?: string | null;
     /**
-     * Page number for paginated results.
+     * Representatives associated with the business. Valid only for `business` customers.
      */
-    page_number: number;
-
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
-
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
-
-    sort_order: 'asc' | 'desc';
-
-    total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
+    representatives?: Array<BusinessCustomerRepresentative> | null;
   }
 }
 
-export interface CustomerUnmaskedV1 {
-  data: CustomerUnmaskedV1.Data;
-
+export interface MaskedCustomerDevice {
   /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: Shared.ResponseMetadata;
-
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace CustomerUnmaskedV1 {
-  export interface Data {
-    /**
-     * Unique identifier for the customer.
-     */
-    id: string;
-
-    /**
-     * Timestamp of when the customer record was created.
-     */
-    created_at: string;
-
-    /**
-     * The customer's email address.
-     */
-    email: string;
-
-    /**
-     * Full name of the individual or business name.
-     */
-    name: string;
-
-    /**
-     * The customer's phone number in E.164 format.
-     */
-    phone: string;
-
-    status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
-
-    type: 'individual' | 'business';
-
-    /**
-     * Timestamp of the most recent update to the customer record.
-     */
-    updated_at: string;
-
-    /**
-     * An object containing the customer's address. This is optional, but if provided,
-     * all required fields must be present.
-     */
-    address?: CustomersAPI.CustomerAddressV1 | null;
-
-    /**
-     * Individual PII data required to trigger Patriot Act compliant KYC verification.
-     */
-    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
-
-    config?: Data.Config;
-
-    device?: CustomersAPI.DeviceUnmaskedV1;
-
-    /**
-     * Unique identifier for the customer in your database, used for cross-referencing
-     * between Straddle and your systems.
-     */
-    external_id?: string | null;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the customer in a structured format.
-     */
-    metadata?: { [key: string]: string } | null;
-  }
-
-  export namespace Data {
-    /**
-     * Individual PII data required to trigger Patriot Act compliant KYC verification.
-     */
-    export interface IndividualComplianceProfile {
-      /**
-       * Date of birth (YYYY-MM-DD). Required for Patriot Act-compliant KYC verification.
-       */
-      dob: string | null;
-
-      /**
-       * Social Security Number (format XXX-XX-XXXX). Required for Patriot Act-compliant
-       * KYC verification.
-       */
-      ssn: string | null;
-    }
-
-    /**
-     * Business registration data required to trigger Patriot Act compliant KYB
-     * verification.
-     */
-    export interface BusinessComplianceProfile {
-      /**
-       * Employer Identification Number (format XX-XXXXXXX). Required for Patriot
-       * Act-compliant KYB verification.
-       */
-      ein: string | null;
-
-      /**
-       * Official registered business name as listed with the IRS. This value will be
-       * matched against the 'legal_business name'.
-       */
-      legal_business_name: string | null;
-
-      /**
-       * A list of people related to the company. Only valid where customer type is
-       * 'business'.
-       */
-      representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-      /**
-       * Official business website URL. Optional but recommended for enhanced KYB.
-       */
-      website?: string | null;
-    }
-
-    export namespace BusinessComplianceProfile {
-      export interface Representative {
-        name: string;
-
-        email?: string | null;
-
-        phone?: string | null;
-      }
-    }
-
-    export interface Config {
-      processing_method?: 'inline' | 'background' | 'skip';
-
-      sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
-    }
-  }
-}
-
-export interface CustomerV1 {
-  data: CustomerV1.Data;
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: Shared.ResponseMetadata;
-
-  /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace CustomerV1 {
-  export interface Data {
-    /**
-     * Unique identifier for the customer.
-     */
-    id: string;
-
-    /**
-     * Timestamp of when the customer record was created.
-     */
-    created_at: string;
-
-    /**
-     * The customer's email address.
-     */
-    email: string;
-
-    /**
-     * Full name of the individual or business name.
-     */
-    name: string;
-
-    /**
-     * The customer's phone number in E.164 format.
-     */
-    phone: string;
-
-    status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
-
-    type: 'individual' | 'business';
-
-    /**
-     * Timestamp of the most recent update to the customer record.
-     */
-    updated_at: string;
-
-    /**
-     * An object containing the customer's address. This is optional, but if provided,
-     * all required fields must be present.
-     */
-    address?: CustomersAPI.CustomerAddressV1 | null;
-
-    /**
-     * PII required to trigger Patriot Act compliant KYC verification.
-     */
-    compliance_profile?: Data.IndividualComplianceProfile | Data.BusinessComplianceProfile | null;
-
-    config?: Data.Config;
-
-    device?: Data.Device;
-
-    /**
-     * Unique identifier for the customer in your database, used for cross-referencing
-     * between Straddle and your systems.
-     */
-    external_id?: string | null;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the customer in a structured format.
-     */
-    metadata?: { [key: string]: string } | null;
-  }
-
-  export namespace Data {
-    /**
-     * PII required to trigger Patriot Act compliant KYC verification.
-     */
-    export interface IndividualComplianceProfile {
-      /**
-       * Masked date of birth in \***\*-**-\*\* format.
-       */
-      dob: string | null;
-
-      /**
-       * Masked Social Security Number in the format **\*-**-\*\*\*\*.
-       */
-      ssn: string | null;
-    }
-
-    /**
-     * Business registration data required to trigger Patriot Act compliant KYB
-     * verification.
-     */
-    export interface BusinessComplianceProfile {
-      /**
-       * Masked Employer Identification Number in the format **-**\*****
-       */
-      ein: string | null;
-
-      /**
-       * The official registered name of the business. This name should be correlated
-       * with the `ein` value.
-       */
-      legal_business_name: string | null;
-
-      /**
-       * A list of people related to the company. Only valid where customer type is
-       * 'business'.
-       */
-      representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-      /**
-       * Official business website URL. Optional but recommended for enhanced KYB.
-       */
-      website?: string | null;
-    }
-
-    export namespace BusinessComplianceProfile {
-      export interface Representative {
-        name: string;
-
-        email?: string | null;
-
-        phone?: string | null;
-      }
-    }
-
-    export interface Config {
-      processing_method?: 'inline' | 'background' | 'skip';
-
-      sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
-    }
-
-    export interface Device {
-      /**
-       * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
-       * represent an offline customer registration.
-       */
-      ip_address: string;
-    }
-  }
-}
-
-export interface DeviceUnmaskedV1 {
-  /**
-   * The customer's IP address at the time of profile creation. Use `0.0.0.0` to
-   * represent an offline customer registration.
+   * Masked IP address of the customer's device at the time of profile creation.
+   * @minLength 1
    */
   ip_address: string;
 }
 
-export interface CustomerCreateParams {
-  /**
-   * Body param
-   */
-  device: DeviceUnmaskedV1;
-
-  /**
-   * Body param: The customer's email address.
-   */
-  email: string;
-
-  /**
-   * Body param: Full name of the individual or business name.
-   */
-  name: string;
-
-  /**
-   * Body param: The customer's phone number in E.164 format. Mobile number is
-   * preferred.
-   */
-  phone: string;
-
-  /**
-   * Body param
-   */
-  type: 'individual' | 'business';
-
-  /**
-   * Body param: An object containing the customer's address. **This is optional.**
-   * If used, all required fields must be present.
-   */
-  address?: CustomerAddressV1 | null;
-
-  /**
-   * Body param: An object containing the customer's compliance profile. **This is
-   * optional.** If all required fields must be present for the appropriate customer
-   * type.
-   */
-  compliance_profile?:
-    | CustomerCreateParams.IndividualComplianceProfile
-    | CustomerCreateParams.BusinessComplianceProfile
-    | null;
-
-  /**
-   * Body param
-   */
-  config?: CustomerCreateParams.Config;
-
-  /**
-   * Body param: Unique identifier for the customer in your database, used for
-   * cross-referencing between Straddle and your systems.
-   */
-  external_id?: string | null;
-
-  /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the customer in a structured format.
-   */
-  metadata?: { [key: string]: string } | null;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
+export interface CustomerConfiguration {
+  sandbox_outcome?: SimulatedCustomerOutcome;
+  processing_method?: BridgeAPI.PaykeyProcessingMode;
 }
 
-export namespace CustomerCreateParams {
-  /**
-   * Individual PII data required to trigger Patriot Act compliant KYC verification.
-   */
+export type UnmaskedComplianceProfile =
+  | UnmaskedComplianceProfile.IndividualComplianceProfile
+  | UnmaskedComplianceProfile.BusinessComplianceProfile;
+
+export namespace UnmaskedComplianceProfile {
   export interface IndividualComplianceProfile {
     /**
-     * Date of birth (YYYY-MM-DD). Required for Patriot Act-compliant KYC verification.
-     */
-    dob: string | null;
-
-    /**
-     * Social Security Number (format XXX-XX-XXXX). Required for Patriot Act-compliant
-     * KYC verification.
+     * Social Security number in `XXX-XX-XXXX` format. Required for Patriot Act-compliant KYC verification.
+     * @pattern ^[0-9]{3}-[0-9]{2}-[0-9]{4}$
      */
     ssn: string | null;
+    /**
+     * Date of birth in `YYYY-MM-DD` format. Required for Patriot Act-compliant KYC verification.
+     * @format date
+     */
+    dob: string | null;
   }
 
-  /**
-   * Business registration data required to trigger Patriot Act compliant KYB
-   * verification.
-   */
   export interface BusinessComplianceProfile {
     /**
-     * Employer Identification Number (format XX-XXXXXXX). Required for Patriot
-     * Act-compliant KYB verification.
+     * Employer Identification Number in `XX-XXXXXXX` format. Required for Patriot Act-compliant KYB verification.
+     * @pattern ^[0-9]{2}-[0-9]{7}$
      */
     ein: string | null;
-
     /**
-     * Official registered business name as listed with the IRS. This value will be
-     * matched against the 'legal_business name'.
+     * Official business name registered with the IRS.
      */
     legal_business_name: string | null;
-
     /**
-     * A list of people related to the company. Only valid where customer type is
-     * 'business'.
-     */
-    representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-    /**
-     * Official business website URL. Optional but recommended for enhanced KYB.
+     * Official business website URL.
+     * @format uri
      */
     website?: string | null;
+    /**
+     * Representatives associated with the business. Valid only for `business` customers.
+     */
+    representatives?: Array<BusinessCustomerRepresentative> | null;
   }
+}
 
-  export namespace BusinessComplianceProfile {
-    export interface Representative {
-      name: string;
+export interface CustomerDevice {
+  /**
+   * Customer IP address at profile creation. `0.0.0.0` represents an offline registration.
+   * @format ipv4
+   * @minLength 1
+   */
+  ip_address: string;
+}
 
-      email?: string | null;
+export interface BusinessCustomerRepresentative {
+  /**
+   * Full name of the representative.
+   */
+  name: string;
+  /**
+   * Email address of the representative.
+   */
+  email?: string | null;
+  /**
+   * Phone number of the representative.
+   */
+  phone?: string | null;
+}
 
-      phone?: string | null;
-    }
-  }
+export type SimulatedCustomerOutcome = 'standard' | 'verified' | 'rejected' | 'review';
 
-  export interface Config {
-    processing_method?: 'inline' | 'background' | 'skip';
-
-    sandbox_outcome?: 'standard' | 'verified' | 'rejected' | 'review';
-  }
+export interface CustomerRetrieveParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
 }
 
 export interface CustomerUpdateParams {
   /**
-   * Body param
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
-  device: DeviceUnmaskedV1;
-
+  'Straddle-Account-Id'?: string;
   /**
-   * Body param: The customer's email address.
+   * Header param: Optional client-generated identifier for tracing one request.
    */
-  email: string;
-
+  'Request-Id'?: string;
   /**
-   * Body param: The customer's full name or business name.
-   */
-  name: string;
-
-  /**
-   * Body param: The customer's phone number in E.164 format.
-   */
-  phone: string;
-
-  /**
-   * Body param
-   */
-  status: 'pending' | 'review' | 'verified' | 'inactive' | 'rejected';
-
-  /**
-   * Body param: An object containing the customer's address. This is optional, but
-   * if provided, all required fields must be present.
-   */
-  address?: CustomerAddressV1 | null;
-
-  /**
-   * Body param: Individual PII data required to trigger Patriot Act compliant KYC
-   * verification.
-   */
-  compliance_profile?:
-    | CustomerUpdateParams.IndividualComplianceProfile
-    | CustomerUpdateParams.BusinessComplianceProfile
-    | null;
-
-  /**
-   * Body param: Unique identifier for the customer in your database, used for
-   * cross-referencing between Straddle and your systems.
-   */
-  external_id?: string | null;
-
-  /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the customer in a structured format.
-   */
-  metadata?: { [key: string]: string } | null;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Header param: Optional client generated value to use for idempotent requests.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
   'Idempotency-Key'?: string;
-
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Body param: Full name for an individual customer or business name for a business customer.
    */
-  'Request-Id'?: string;
-
+  name: string;
   /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
+   * Body param: Customer email address.
+   * @format email
    */
-  'Straddle-Account-Id'?: string;
-}
-
-export namespace CustomerUpdateParams {
+  email: string;
   /**
-   * Individual PII data required to trigger Patriot Act compliant KYC verification.
+   * Body param: Customer postal address. When provided, the object must include all required fields.
    */
-  export interface IndividualComplianceProfile {
-    /**
-     * Date of birth (YYYY-MM-DD). Required for Patriot Act-compliant KYC verification.
-     */
-    dob: string | null;
-
-    /**
-     * Social Security Number (format XXX-XX-XXXX). Required for Patriot Act-compliant
-     * KYC verification.
-     */
-    ssn: string | null;
-  }
-
+  address?: CustomerAddress | null;
   /**
-   * Business registration data required to trigger Patriot Act compliant KYB
-   * verification.
+   * Body param: Customer phone number in E.164 format.
+   * @pattern ^\+[1-9]\d{1,14}$
    */
-  export interface BusinessComplianceProfile {
-    /**
-     * Employer Identification Number (format XX-XXXXXXX). Required for Patriot
-     * Act-compliant KYB verification.
-     */
-    ein: string | null;
-
-    /**
-     * Official registered business name as listed with the IRS. This value will be
-     * matched against the 'legal_business name'.
-     */
-    legal_business_name: string | null;
-
-    /**
-     * A list of people related to the company. Only valid where customer type is
-     * 'business'.
-     */
-    representatives?: Array<BusinessComplianceProfile.Representative> | null;
-
-    /**
-     * Official business website URL. Optional but recommended for enhanced KYB.
-     */
-    website?: string | null;
-  }
-
-  export namespace BusinessComplianceProfile {
-    export interface Representative {
-      name: string;
-
-      email?: string | null;
-
-      phone?: string | null;
-    }
-  }
-}
-
-export interface CustomerListParams extends PageNumberSchemaParams {
+  phone: string;
   /**
-   * Query param: Start date for filtering by `created_at` date.
+   * Body param
    */
-  created_from?: string;
-
+  compliance_profile?: UnmaskedComplianceProfile | null;
   /**
-   * Query param: End date for filtering by `created_at` date.
+   * Body param: Unique identifier for the customer in your system.
    */
-  created_to?: string;
-
+  external_id?: string | null;
   /**
-   * Query param: Filter customers by `email` address.
+   * Body param
    */
-  email?: string;
-
+  device: CustomerDevice;
   /**
-   * Query param: Filter by your system's `external_id`.
+   * Body param
    */
-  external_id?: string;
-
+  status: CustomerStatus;
   /**
-   * Query param: Filter customers by `name` (partial match).
+   * Body param: Up to 20 user-defined key-value pairs associated with the customer.
    */
-  name?: string;
-
-  /**
-   * Query param: General search term to filter customers.
-   */
-  search_text?: string;
-
-  /**
-   * Query param
-   */
-  sort_by?: 'name' | 'created_at';
-
-  /**
-   * Query param
-   */
-  sort_order?: 'asc' | 'desc';
-
-  /**
-   * Query param: Filter customers by their current `status`.
-   */
-  status?: Array<'pending' | 'review' | 'verified' | 'inactive' | 'rejected'>;
-
-  /**
-   * Query param: Filter by customer type `individual` or `business`.
-   */
-  types?: Array<'individual' | 'business'>;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an `account_id` to set the scope
-   * of a request.
-   */
-  'Straddle-Account-Id'?: string;
+  metadata?: Record<string, string> | null;
 }
 
 export interface CustomerDeleteParams {
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Optional client generated value to use for idempotent requests.
+   * Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
   'Idempotency-Key'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
 }
 
-export interface CustomerGetParams {
+export interface CustomerListParams {
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * Query param: Page number for paginated results. Starts at 1.
+   * @default 1
+   * @format int32
+   */
+  page_number?: number;
+  /**
+   * Query param: Number of results per page. Maximum: 1000.
+   * @default 100
+   * @format int32
+   */
+  page_size?: number;
+  /**
+   * Query param: Field used to sort the results.
+   */
+  sort_by?: 'name' | 'created_at';
+  /**
+   * Query param: Order in which to sort the results.
+   * @default asc
+   */
+  sort_order?: AccountsAPI.SortOrder;
+  /**
+   * Query param: Start date for filtering by `created_at` date.
+   * @format date-time
+   */
+  created_from?: string;
+  /**
+   * Query param: End date for filtering by `created_at` date.
+   * @format date-time
+   */
+  created_to?: string;
+  /**
+   * Query param: Filter customers by `name` (partial match).
+   */
+  name?: string;
+  /**
+   * Query param: Filter by your system's `external_id`.
+   */
+  external_id?: string;
+  /**
+   * Query param: Filter customers by `email` address.
+   */
+  email?: string;
+  /**
+   * Query param: Filter customers by their current `status`.
+   */
+  status?: Array<CustomerStatus>;
+  /**
+   * Query param: General search term to filter customers.
+   */
+  search_text?: string;
+  /**
+   * Query param: Filter by customer type `individual` or `business`.
+   */
+  types?: Array<CustomerType>;
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
-  /**
-   * Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * For use by platforms to specify an account id and set scope of a request.
-   */
-  'Straddle-Account-Id'?: string;
 }
 
-export interface CustomerUnmaskedParams {
+export interface CustomerCreateParams {
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Optional client generated identifier to trace and debug a request.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
-  'Request-Id'?: string;
-
+  'Idempotency-Key'?: string;
   /**
-   * For use by platforms to specify an account id and set scope of a request.
+   * Body param: Full name for an individual customer or business name for a business customer.
    */
-  'Straddle-Account-Id'?: string;
+  name: string;
+  /**
+   * Body param
+   */
+  type: CustomerType;
+  /**
+   * Body param: Customer email address.
+   * @format email
+   */
+  email: string;
+  /**
+   * Body param: Customer postal address. When provided, the object must include all required fields.
+   */
+  address?: CustomerAddress | null;
+  /**
+   * Body param: Customer phone number in E.164 format. A mobile number is preferred.
+   * @pattern ^\+[1-9]\d{1,14}$
+   */
+  phone: string;
+  /**
+   * Body param: Customer compliance profile. When provided, the object must include all fields required for the customer type.
+   */
+  compliance_profile?: UnmaskedComplianceProfile | null;
+  /**
+   * Body param: Unique identifier for the customer in your system.
+   */
+  external_id?: string | null;
+  /**
+   * Body param
+   */
+  device: CustomerDevice;
+  /**
+   * Body param: Up to 20 user-defined key-value pairs associated with the customer.
+   */
+  metadata?: Record<string, string> | null;
+  /**
+   * Body param
+   */
+  config?: CustomerConfiguration;
 }
 
+export interface CustomerListUnmaskedParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+}
+
+export interface CustomerRefreshReviewParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+}
 Customers.Review = Review;
 
 export declare namespace Customers {
   export {
-    type CustomerAddressV1 as CustomerAddressV1,
-    type CustomerSummaryPagedV1 as CustomerSummaryPagedV1,
-    type CustomerUnmaskedV1 as CustomerUnmaskedV1,
-    type CustomerV1 as CustomerV1,
-    type DeviceUnmaskedV1 as DeviceUnmaskedV1,
-    type CustomerSummaryPagedV1DataPageNumberSchema as CustomerSummaryPagedV1DataPageNumberSchema,
-    type CustomerCreateParams as CustomerCreateParams,
+    type CustomerResponse as CustomerResponse,
+    type CustomerSummaryList as CustomerSummaryList,
+    type UnmaskedCustomerResponse as UnmaskedCustomerResponse,
+    type Customer as Customer,
+    type CustomerSummary as CustomerSummary,
+    type UnmaskedCustomer as UnmaskedCustomer,
+    type CustomerType as CustomerType,
+    type CustomerStatus as CustomerStatus,
+    type CustomerAddress as CustomerAddress,
+    type ComplianceProfile as ComplianceProfile,
+    type MaskedCustomerDevice as MaskedCustomerDevice,
+    type CustomerConfiguration as CustomerConfiguration,
+    type UnmaskedComplianceProfile as UnmaskedComplianceProfile,
+    type CustomerDevice as CustomerDevice,
+    type BusinessCustomerRepresentative as BusinessCustomerRepresentative,
+    type SimulatedCustomerOutcome as SimulatedCustomerOutcome,
+    type CustomerRetrieveParams as CustomerRetrieveParams,
     type CustomerUpdateParams as CustomerUpdateParams,
-    type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
-    type CustomerGetParams as CustomerGetParams,
-    type CustomerUnmaskedParams as CustomerUnmaskedParams,
+    type CustomerListParams as CustomerListParams,
+    type CustomerCreateParams as CustomerCreateParams,
+    type CustomerListUnmaskedParams as CustomerListUnmaskedParams,
+    type CustomerRefreshReviewParams as CustomerRefreshReviewParams,
   };
 
   export {
     Review as Review,
-    type CustomerReviewV1 as CustomerReviewV1,
-    type IdentityVerificationBreakdownV1 as IdentityVerificationBreakdownV1,
-    type ReviewDecisionParams as ReviewDecisionParams,
-    type ReviewGetParams as ReviewGetParams,
-    type ReviewRefreshReviewParams as ReviewRefreshReviewParams,
+    type CustomerReviewResponse as CustomerReviewResponse,
+    type CustomerReview as CustomerReview,
+    type CustomerIdentityVerification as CustomerIdentityVerification,
+    type VerificationDecision as VerificationDecision,
+    type IdentityVerificationBreakdown as IdentityVerificationBreakdown,
+    type IdentityVerificationAlerts as IdentityVerificationAlerts,
+    type IdentityVerificationWatchlist as IdentityVerificationWatchlist,
+    type CustomerKYCVerification as CustomerKYCVerification,
+    type ReputationCheck as ReputationCheck,
+    type CorrelationBucket as CorrelationBucket,
+    type IdentityVerificationWatchlistMatch as IdentityVerificationWatchlistMatch,
+    type ReputationInsights as ReputationInsights,
+    type ReviewListParams as ReviewListParams,
+    type ReviewSetVerificationDecisionParams as ReviewSetVerificationDecisionParams,
   };
 }

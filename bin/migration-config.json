@@ -1,6 +1,0 @@
-{
-  "pkg": "@straddlecom/straddle",
-  "githubRepo": "https://github.com/straddleio/straddle-node",
-  "clientClass": "Straddle",
-  "methods": []
-}

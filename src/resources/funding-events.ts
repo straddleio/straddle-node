@@ -1,39 +1,51 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from '../core/resource';
-import * as Shared from './shared';
-import { APIPromise } from '../core/api-promise';
-import { PageNumberSchema, type PageNumberSchemaParams, PagePromise } from '../core/pagination';
+import { APIResource } from '../resource';
+import { APIPromise } from '../api-promise';
+import type { RequestOptions } from '../internal/request-options';
 import { buildHeaders } from '../internal/headers';
-import { RequestOptions } from '../internal/request-options';
-import { path } from '../internal/utils/path';
+import { path as __scalarPath } from '../internal/utils/path';
+import type * as AccountsAPI from './accounts';
+import type * as BridgeAPI from './bridge';
+import type * as ChargesAPI from './charges';
+import type * as LinkedBankAccountsAPI from './linked-bank-accounts';
+import type * as CustomersAPI from './customers/customers';
 
-/**
- * Funding events represent all money movement between Straddle and an Account's external bank accounts. They are automatically generated when charges settle or payouts are initiated. Each event provides detailed tracking of settlement status, fee breakdowns, and reconciliation data across both incoming and outgoing transfers. Use funding events to monitor your platform's entire money movement lifecycle.
- */
 export class FundingEvents extends APIResource {
   /**
-   * Retrieves a list of funding events for your account. This endpoint supports
-   * advanced sorting and filtering options.
+   * Returns a paginated list of funding events that match the specified filters.
+   *
+   * @param {FundingEventListParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<FundingEventSummaryList>} OK
+   *
+   * @example
+   * ```ts
+   * const fundingEventSummaryList = await client.fundingEvents.list({
+   *   page_number: 1,
+   *   page_size: 100,
+   *   sort_order: 'asc',
+   * });
+   * ```
    */
   list(
     params: FundingEventListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<FundingEventSummaryPagedV1DataPageNumberSchema, FundingEventSummaryPagedV1.Data> {
+  ): APIPromise<FundingEventSummaryList> {
     const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
       'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
       ...query
     } = params ?? {};
-    return this._client.getAPIList('/v1/funding_events', PageNumberSchema<FundingEventSummaryPagedV1.Data>, {
+    return this._client.get('/v1/funding_events', {
       query,
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
         },
         options?.headers,
       ]),
@@ -41,27 +53,116 @@ export class FundingEvents extends APIResource {
   }
 
   /**
-   * Retrieves the details of an existing funding event. Supply the unique funding
-   * event `id`, and Straddle will return the individual transaction items that make
-   * up the funding event.
+   * Returns a funding event by its unique identifier, including its current status, status history, and linked bank account details when available.
+   *
+   * @param {string} id - Unique identifier for the funding event.
+   * @param {FundingEventRetrieveParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<FundingEventResponse>} OK
+   *
+   * @example
+   * ```ts
+   * const fundingEvent = await client.fundingEvents.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
    */
-  get(
+  retrieve(
     id: string,
-    params: FundingEventGetParams | null | undefined = {},
+    params: FundingEventRetrieveParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<FundingEventSummaryItemV1> {
+  ): APIPromise<FundingEventResponse> {
     const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
       'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
     } = params ?? {};
-    return this._client.get(path`/v1/funding_events/${id}`, {
+    return this._client.get(__scalarPath`/v1/funding_events/${id}`, {
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Creates a funding event for unfunded charge or payout activity in the sandbox and returns its ID. This endpoint is unavailable in production.
+   *
+   * @param {FundingEventSimulateParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<FundingEventSimulation>} Created
+   *
+   * @example
+   * ```ts
+   * const fundingEventSimulation = await client.fundingEvents.simulate({
+   *   funding_event_job_type: 'charges',
+   * });
+   * ```
+   */
+  simulate(params: FundingEventSimulateParams, options?: RequestOptions): APIPromise<FundingEventSimulation> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
+    return this._client.post('/v1/funding_events/simulate', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Returns a paginated list of payments included in the funding event.
+   *
+   * @param {string} id - Unique identifier for the funding event.
+   * @param {FundingEventListPaymentsParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<FundingEventPaymentList>} OK
+   *
+   * @example
+   * ```ts
+   * const fundingEventPaymentList = await client.fundingEvents.listPayments(
+   *   '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+   *   {
+   *     default_sort_order: 'asc',
+   *     sort_order: 'asc',
+   *   },
+   * );
+   * ```
+   */
+  listPayments(
+    id: string,
+    params: FundingEventListPaymentsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<FundingEventPaymentList> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      ...query
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/funding_event_payments/${id}`, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
         },
         options?.headers,
       ]),
@@ -69,489 +170,497 @@ export class FundingEvents extends APIResource {
   }
 }
 
-export type FundingEventSummaryPagedV1DataPageNumberSchema =
-  PageNumberSchema<FundingEventSummaryPagedV1.Data>;
-
-export interface FundingEventSummaryItemV1 {
-  data: FundingEventSummaryItemV1.Data;
-
+export interface FundingEventSummaryList {
   /**
-   * Metadata about the API request, including an identifier and timestamp.
+   * Metadata for an API request and a page of results.
    */
-  meta: Shared.ResponseMetadata;
-
+  meta: AccountsAPI.PageMetadata;
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  response_type: BridgeAPI.ResponseType;
+  /**
+   * Funding events returned for this page.
+   */
+  data: Array<FundingEventSummary>;
 }
 
-export namespace FundingEventSummaryItemV1 {
-  export interface Data {
-    /**
-     * Unique identifier for the funding event.
-     */
-    id: string;
-
-    /**
-     * The amount of the funding event in cents.
-     */
-    amount: number;
-
-    /**
-     * Created at.
-     */
-    created_at: string;
-
-    /**
-     * Describes the direction of the funding event from the perspective of the
-     * `linked_bank_account`.
-     */
-    direction: 'deposit' | 'withdrawal';
-
-    /**
-     * The funding event types describes the direction and reason for the funding
-     * event.
-     */
-    event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
-
-    /**
-     * The number of payments associated with the funding event.
-     */
-    payment_count: number;
-
-    /**
-     * Trace Ids.
-     */
-    trace_ids: { [key: string]: string };
-
-    /**
-     * Trace number.
-     */
-    trace_numbers: Array<string>;
-
-    /**
-     * The date on which the funding event occurred. For `deposits` and `returns`, this
-     * is the date the funds were credited to your bank account. For `withdrawals` and
-     * `reversals`, this is the date the funds were debited from your bank account.
-     */
-    transfer_date: string;
-
-    /**
-     * Updated at.
-     */
-    updated_at: string;
-
-    /**
-     * The current status of the `charge` or `payout`.
-     */
-    status?:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
-
-    status_details?: Data.StatusDetails;
-
-    /**
-     * The trace number of the funding event.
-     */
-    trace_number?: string | null;
-  }
-
-  export namespace Data {
-    export interface StatusDetails {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused'
-        | 'cancel_request'
-        | 'failed_verification'
-        | 'require_review'
-        | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
-
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
-  }
+export interface FundingEventResponse {
+  /**
+   * Metadata for an API request.
+   */
+  meta: AccountsAPI.ResponseMetadata;
+  /**
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
+   */
+  response_type: BridgeAPI.ResponseType;
+  data: FundingEvent;
 }
 
-export interface FundingEventSummaryPagedV1 {
-  data: Array<FundingEventSummaryPagedV1.Data>;
-
-  meta: FundingEventSummaryPagedV1.Meta;
-
+export interface FundingEventSimulation {
   /**
-   * Indicates the structure of the returned content.
-   *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * Metadata for an API request.
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
+  meta: AccountsAPI.ResponseMetadata;
+  /**
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
+   */
+  response_type: BridgeAPI.ResponseType;
+  data: FundingEventSimulationResult;
 }
 
-export namespace FundingEventSummaryPagedV1 {
-  export interface Data {
-    /**
-     * Unique identifier for the funding event.
-     */
-    id: string;
-
-    /**
-     * The amount of the funding event in cents.
-     */
-    amount: number;
-
-    /**
-     * Created at.
-     */
-    created_at: string;
-
-    /**
-     * Describes the direction of the funding event from the perspective of the
-     * `linked_bank_account`.
-     */
-    direction: 'deposit' | 'withdrawal';
-
-    /**
-     * The funding event types describes the direction and reason for the funding
-     * event.
-     */
-    event_type: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
-
-    /**
-     * The number of payments associated with the funding event.
-     */
-    payment_count: number;
-
-    /**
-     * Trace Ids.
-     */
-    trace_ids: { [key: string]: string };
-
-    /**
-     * Trace number.
-     */
-    trace_numbers: Array<string>;
-
-    /**
-     * The date on which the funding event occurred. For `deposits` and `returns`, this
-     * is the date the funds were credited to your bank account. For `withdrawals` and
-     * `reversals`, this is the date the funds were debited from your bank account.
-     */
-    transfer_date: string;
-
-    /**
-     * Updated at.
-     */
-    updated_at: string;
-
-    /**
-     * The current status of the `charge` or `payout`.
-     */
-    status?:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
-
-    status_details?: Data.StatusDetails;
-
-    /**
-     * The trace number of the funding event.
-     */
-    trace_number?: string | null;
-  }
-
-  export namespace Data {
-    export interface StatusDetails {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the current status.
-       */
-      message: string;
-
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused'
-        | 'cancel_request'
-        | 'failed_verification'
-        | 'require_review'
-        | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
-
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
-  }
-
-  export interface Meta {
-    /**
-     * Unique identifier for this API request, useful for troubleshooting.
-     */
-    api_request_id: string;
-
-    /**
-     * Timestamp for this API request, useful for troubleshooting.
-     */
-    api_request_timestamp: string;
-
-    /**
-     * Maximum allowed page size for this endpoint.
-     */
-    max_page_size: number;
-
-    /**
-     * Page number for paginated results.
-     */
-    page_number: number;
-
-    /**
-     * Number of items per page in this response.
-     */
-    page_size: number;
-
-    /**
-     * The field that the results were sorted by.
-     */
-    sort_by: string;
-
-    sort_order: 'asc' | 'desc';
-
-    total_items: number;
-
-    /**
-     * The number of pages available.
-     */
-    total_pages: number;
-  }
+export interface FundingEventPaymentList {
+  /**
+   * Metadata for an API request and a page of results.
+   */
+  meta: AccountsAPI.PageMetadata;
+  /**
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
+   */
+  response_type: BridgeAPI.ResponseType;
+  /**
+   * Funding-event payments returned for this page.
+   */
+  data: Array<FundingEventPayment>;
 }
 
-export interface FundingEventListParams extends PageNumberSchemaParams {
+export interface FundingEventSummary {
   /**
-   * Query param: The start date of the range to filter by using the `YYYY-MM-DD`
-   * format.
+   * Unique identifier for this funding event.
+   * @format uuid
    */
-  created_from?: string | null;
-
+  id: string;
   /**
-   * Query param: The end date of the range to filter by using the `YYYY-MM-DD`
-   * format.
+   * Total funding event amount in the smallest currency unit. For example, `1000` is $10.00 USD.
+   * @format int32
    */
-  created_to?: string | null;
-
+  amount: number;
   /**
-   * Query param: Describes the direction of the funding event from the perspective
-   * of the `linked_bank_account`.
+   * Transfer direction relative to the linked bank account. `deposit` moves funds into the account, and `withdrawal` moves funds out.
    */
-  direction?: 'deposit' | 'withdrawal';
-
+  direction: TransferDirection;
   /**
-   * Query param: The funding event types describes the direction and reason for the
-   * funding event.
+   * Reason for the funding event. `charge_deposit` settles collected charges to the linked bank account. `charge_reversal` withdraws funds for reversed charges. `payout_withdrawal` withdraws funds for payouts. `payout_return` deposits returned payout funds.
    */
-  event_type?: 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
-
+  event_type: FundingEventType;
   /**
-   * Query param: Search text.
+   * Number of payments included in this funding event.
+   * @format int32
    */
-  search_text?: string | null;
-
+  payment_count: number;
   /**
-   * Query param: The field to sort the results by.
+   * The date the funds transfer was initiated.
+   * @format date
    */
-  sort_by?: 'transfer_date' | 'id' | 'amount';
-
+  transfer_date: string;
   /**
-   * Query param: The order in which to sort the results.
+   * Network trace numbers associated with payments in this funding event.
    */
-  sort_order?: 'asc' | 'desc';
-
+  trace_numbers: Array<string>;
   /**
-   * Query param: Funding Event status.
+   * Timestamp when this funding event was created.
+   * @format date-time
    */
-  status?: Array<
-    | 'created'
-    | 'scheduled'
-    | 'failed'
-    | 'cancelled'
-    | 'on_hold'
-    | 'pending'
-    | 'paid'
-    | 'reversed'
-    | 'validating'
-  > | null;
-
+  created_at: string;
   /**
-   * Query param: Reason for latest payment status change.
+   * Timestamp when this funding event was last updated.
+   * @format date-time
    */
-  status_reason?: Array<
-    | 'insufficient_funds'
-    | 'closed_bank_account'
-    | 'invalid_bank_account'
-    | 'invalid_routing'
-    | 'disputed'
-    | 'payment_stopped'
-    | 'owner_deceased'
-    | 'frozen_bank_account'
-    | 'risk_review'
-    | 'fraudulent'
-    | 'duplicate_entry'
-    | 'invalid_paykey'
-    | 'payment_blocked'
-    | 'amount_too_large'
-    | 'too_many_attempts'
-    | 'internal_system_error'
-    | 'user_request'
-    | 'ok'
-    | 'other_network_return'
-    | 'payout_refused'
-    | 'cancel_request'
-    | 'failed_verification'
-    | 'require_review'
-    | 'blocked_by_system'
-    | 'watchtower_review'
-    | 'validating'
-    | 'auto_hold'
-  > | null;
-
+  updated_at: string;
   /**
-   * Query param: Source of latest payment status change.
+   * Network-level trace identifiers assigned during processing. Keys vary by payment rail.
    */
-  status_source?: Array<'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system'> | null;
-
+  trace_ids: Record<string, string>;
   /**
-   * Query param: Trace Id.
-   */
-  trace_id?: string | null;
-
-  /**
-   * Query param: Trace number.
+   * The trace number of the funding event.
    */
   trace_number?: string | null;
-
   /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Current status of this funding event.
+   * @default created
    */
-  'Correlation-Id'?: string;
-
+  status?: ChargesAPI.PaymentStatus;
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Reason, source, and message for the most recent status change.
    */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
+  status_details?: BridgeAPI.PaymentStatusDetails;
 }
 
-export interface FundingEventGetParams {
+export interface FundingEvent {
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * Unique identifier for this funding event.
+   * @format uuid
    */
-  'Correlation-Id'?: string;
-
+  id: string;
   /**
-   * Optional client generated identifier to trace and debug a request.
+   * Total funding event amount in the smallest currency unit. For example, `1000` is $10.00 USD.
+   * @format int32
    */
-  'Request-Id'?: string;
-
+  amount: number;
   /**
-   * For use by platforms to specify an account id and set scope of a request.
+   * Transfer direction relative to the linked bank account. `deposit` moves funds into the account, and `withdrawal` moves funds out.
    */
-  'Straddle-Account-Id'?: string;
+  direction: FundingEventTransferDirection;
+  /**
+   * Reason for the funding event. `charge_deposit` settles collected charges to the linked bank account. `charge_reversal` withdraws funds for reversed charges. `payout_withdrawal` withdraws funds for payouts. `payout_return` deposits returned payout funds.
+   */
+  event_type: FundingEventType;
+  /**
+   * Network trace numbers associated with payments in this funding event.
+   */
+  trace_numbers: Array<string>;
+  /**
+   * Number of payments included in this funding event.
+   * @format int32
+   */
+  payment_count: number;
+  /**
+   * The date the funds transfer was initiated.
+   * @format date
+   */
+  transfer_date: string;
+  /**
+   * Timestamp when this funding event was created.
+   * @format date-time
+   */
+  created_at: string;
+  /**
+   * Timestamp when this funding event was last updated.
+   * @format date-time
+   */
+  updated_at: string;
+  /**
+   * Network-level trace identifiers assigned during processing. Keys vary by payment rail.
+   */
+  trace_ids: Record<string, string>;
+  /**
+   * Complete ordered history of all status changes for this funding event.
+   */
+  status_history: Array<ChargesAPI.PaymentStatusHistory>;
+  /**
+   * Current status of this funding event.
+   * @default created
+   */
+  status?: ChargesAPI.PaymentStatus;
+  /**
+   * Reason, source, and message for the most recent status change.
+   */
+  status_details?: BridgeAPI.PaymentStatusDetails;
+  /**
+   * Configuration used to process this funding event.
+   */
+  config?: FundingEventConfiguration;
+  /**
+   * Details of the linked bank account used for this funding event.
+   */
+  linked_bank_account_details?: LinkedBankAccountsAPI.UnmaskedLinkedBankAccountDetails;
 }
 
+export interface FundingEventSimulationResult {
+  /**
+   * Unique identifier for the created funding event.
+   * @format uuid
+   */
+  id: string;
+}
+
+export interface FundingEventPayment {
+  /**
+   * Unique identifier for this payment.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * Whether this payment is a charge or payout.
+   */
+  payment_type: ChargesAPI.PaymentType;
+  /**
+   * The date on which this payment was submitted for processing.
+   * @format date
+   */
+  payment_date: string;
+  /**
+   * Three-letter ISO 4217 currency code.
+   */
+  currency: string;
+  /**
+   * Portion of the payment amount included in this funding event, in the smallest currency unit.
+   * @format int32
+   */
+  funding_amount: number;
+  /**
+   * Reason this payment was included in the funding event.
+   */
+  reason: FundingEventPaymentReason;
+  /**
+   * Total payment amount in the smallest currency unit (e.g. 1000 = $10.00 USD).
+   * @format int32
+   */
+  payment_amount: number;
+  /**
+   * Current status of this payment.
+   */
+  status: ChargesAPI.PaymentStatus;
+  /**
+   * Your unique identifier for this payment, used to correlate with your internal records.
+   */
+  external_id: string;
+  /**
+   * Network-level trace identifiers assigned during processing. Keys vary by payment rail.
+   */
+  trace_ids: Record<string, string>;
+  /**
+   * Details of the customer associated with this payment.
+   */
+  customer_details?: ChargesAPI.CustomerDetails;
+  /**
+   * Details of the paykey used for this payment.
+   */
+  paykey_details?: ChargesAPI.PaykeyDetails;
+  /**
+   * Key-value metadata for this payment. Included only when `include_metadata` is `true`.
+   */
+  metadata?: Record<string, string> | null;
+}
+
+/**
+ * Transfer direction relative to the linked bank account. `deposit` moves funds into the account, and `withdrawal` moves funds out.
+ */
+export type TransferDirection = 'deposit' | 'withdrawal';
+
+/**
+ * Reason for the funding event. `charge_deposit` settles collected charges to the linked bank account. `charge_reversal` withdraws funds for reversed charges. `payout_withdrawal` withdraws funds for payouts. `payout_return` deposits returned payout funds.
+ */
+export type FundingEventType = 'charge_deposit' | 'charge_reversal' | 'payout_return' | 'payout_withdrawal';
+
+/**
+ * Transfer direction relative to the linked bank account. `deposit` moves funds into the account, and `withdrawal` moves funds out.
+ */
+export type FundingEventTransferDirection = 'deposit' | 'withdrawal';
+
+export interface FundingEventConfiguration {
+  /**
+   * Processing outcome configured for this simulated funding event.
+   */
+  sandbox_outcome?: ChargesAPI.SimulatedPaymentOutcome;
+}
+
+/**
+ * Reason the payment was included in the funding event.
+ */
+export type FundingEventPaymentReason = 'credit' | 'debit' | 'reversal' | 'failed';
+
+export interface FundingEventListParams {
+  /**
+   * Query param: Results page number. Starts at page 1.
+   * @default 1
+   * @format int32
+   */
+  page_number?: number;
+  /**
+   * Query param: Results page size. Max value: 1000.
+   * @default 100
+   * @format int32
+   */
+  page_size?: number;
+  /**
+   * Query param: Field used to sort the results.
+   */
+  sort_by?: 'transfer_date' | 'id' | 'amount';
+  /**
+   * Query param: Order in which to sort the results.
+   * @default asc
+   */
+  sort_order?: AccountsAPI.SortOrder;
+  /**
+   * Query param: Filter to funding events created on or after this date.
+   * @format date
+   */
+  created_from?: string | null;
+  /**
+   * Query param: Filter to funding events created on or before this date.
+   * @format date
+   */
+  created_to?: string | null;
+  /**
+   * Query param: Filter by transfer direction relative to the linked bank account.
+   */
+  direction?: TransferDirection;
+  /**
+   * Query param: Filter by funding event type.
+   */
+  event_type?: FundingEventType;
+  /**
+   * Query param: Filter by a network trace number assigned during processing.
+   */
+  trace_number?: string | null;
+  /**
+   * Query param: Free-text search across funding event fields.
+   */
+  search_text?: string | null;
+  /**
+   * Query param: Filter by funding event status.
+   */
+  status?: Array<ChargesAPI.PaymentStatus> | null;
+  /**
+   * Query param: Filter by a network-level trace identifier assigned during processing.
+   */
+  trace_id?: string | null;
+  /**
+   * Query param: Filter by the reason for the most recent status change.
+   */
+  status_reason?: Array<BridgeAPI.PaymentStatusReason> | null;
+  /**
+   * Query param: Filter by the source of the most recent status change.
+   */
+  status_source?: Array<BridgeAPI.PaymentStatusSource> | null;
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+}
+
+export interface FundingEventRetrieveParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+}
+
+export interface FundingEventSimulateParams {
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Required. Selects charge or payout activity for the simulated funding event.
+   */
+  funding_event_job_type: 'charges' | 'payouts';
+  /**
+   * Body param: Optional. Sets the processing outcome for the simulated funding event. Defaults to `standard`.
+   */
+  sandbox_outcome?: ChargesAPI.SimulatedPaymentOutcome;
+}
+
+export interface FundingEventListPaymentsParams {
+  /**
+   * Query param: Results page number. Starts at 1. Defaults to 1.
+   * @format int32
+   */
+  page_number?: number;
+  /**
+   * Query param: Number of results per page. Maximum 1,000. Defaults to 100.
+   * @format int32
+   */
+  page_size?: number;
+  /**
+   * Query param: When `true`, includes each payment's metadata. Defaults to `false`.
+   */
+  include_metadata?: boolean;
+  /**
+   * Query param: Default number of results returned per page.
+   * @format int32
+   */
+  default_page_size?: number;
+  /**
+   * Query param: Default field used to sort the results.
+   */
+  default_sort?: 'created_at' | 'payment_date' | 'effective_at' | 'id';
+  /**
+   * Query param: Default order in which to sort the results.
+   * @default asc
+   */
+  default_sort_order?: AccountsAPI.SortOrder;
+  /**
+   * Query param: Field used to sort the results.
+   */
+  sort_by?: 'created_at' | 'payment_date' | 'effective_at' | 'id';
+  /**
+   * Query param: Order in which to sort the results.
+   * @default asc
+   */
+  sort_order?: AccountsAPI.SortOrder;
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+}
 export declare namespace FundingEvents {
   export {
-    type FundingEventSummaryItemV1 as FundingEventSummaryItemV1,
-    type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
-    type FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
+    type FundingEventSummaryList as FundingEventSummaryList,
+    type FundingEventResponse as FundingEventResponse,
+    type FundingEventSimulation as FundingEventSimulation,
+    type FundingEventPaymentList as FundingEventPaymentList,
+    type FundingEventSummary as FundingEventSummary,
+    type FundingEvent as FundingEvent,
+    type FundingEventSimulationResult as FundingEventSimulationResult,
+    type FundingEventPayment as FundingEventPayment,
+    type TransferDirection as TransferDirection,
+    type FundingEventType as FundingEventType,
+    type FundingEventTransferDirection as FundingEventTransferDirection,
+    type FundingEventConfiguration as FundingEventConfiguration,
+    type FundingEventPaymentReason as FundingEventPaymentReason,
     type FundingEventListParams as FundingEventListParams,
-    type FundingEventGetParams as FundingEventGetParams,
+    type FundingEventRetrieveParams as FundingEventRetrieveParams,
+    type FundingEventSimulateParams as FundingEventSimulateParams,
+    type FundingEventListPaymentsParams as FundingEventListPaymentsParams,
   };
 }
