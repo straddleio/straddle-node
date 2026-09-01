@@ -1,38 +1,126 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from '../core/resource';
-import * as Shared from './shared';
-import { APIPromise } from '../core/api-promise';
+import { APIResource } from '../resource';
+import { APIPromise } from '../api-promise';
+import type { RequestOptions } from '../internal/request-options';
 import { buildHeaders } from '../internal/headers';
-import { RequestOptions } from '../internal/request-options';
-import { path } from '../internal/utils/path';
+import { multipartFormRequestOptions } from '../internal/uploads';
+import { path as __scalarPath } from '../internal/utils/path';
+import type { Uploadable } from '../core/uploads';
+import type * as ChargesAPI from './charges';
+import type * as AccountsAPI from './accounts';
+import type * as BridgeAPI from './bridge';
+import type * as CustomersAPI from './customers/customers';
 
-/**
- * Payouts represent transfers from Straddle to customer bank accounts. Create payouts to handle disbursements, process refunds, or manage marketplace settlements. Use payouts to send money quickly and securely with the most cost-effective rail automatically selected.
- */
 export class Payouts extends APIResource {
   /**
-   * Use payouts to send money to your customers.
+   * Returns a payout by its unique identifier.
+   *
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutRetrieveParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} OK
    *
    * @example
    * ```ts
-   * const payoutV1 = await client.payouts.create({
+   * const payout = await client.payouts.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  retrieve(
+    id: string,
+    params: PayoutRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ChargesAPI.PayoutResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/payouts/${id}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Updates the description, amount, `payment_date`, or metadata. The payout must have a status of `created` or `on_hold`.
+   *
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutUpdateParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} OK
+   *
+   * @example
+   * ```ts
+   * const payout = await client.payouts.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   description: '',
    *   amount: 10000,
-   *   currency: 'currency',
-   *   description: 'Vendor invoice payment',
-   *   device: { ip_address: '192.168.1.1' },
-   *   external_id: 'external_id',
-   *   paykey: 'paykey',
-   *   payment_date: '2019-12-27',
+   *   payment_date: '2024-01-01',
    * });
    * ```
    */
-  create(params: PayoutCreateParams, options?: RequestOptions): APIPromise<PayoutV1> {
+  update(
+    id: string,
+    params: PayoutUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<ChargesAPI.PayoutResponse> {
     const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
+      ...body
+    } = params;
+    return this._client.put(__scalarPath`/v1/payouts/${id}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Creates a payout to a customer's bank account. Straddle submits the payout for processing on `payment_date` unless the payout is on hold.
+   *
+   * @param {PayoutCreateParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const payout = await client.payouts.create({
+   *   paykey: '',
+   *   description: 'Vendor invoice payment',
+   *   amount: 10000,
+   *   currency: 'USD',
+   *   payment_date: '2024-01-01',
+   *   device: {
+   *     ip_address: '192.168.1.1',
+   *   },
+   *   external_id: '',
+   * });
+   * ```
+   */
+  create(params: PayoutCreateParams, options?: RequestOptions): APIPromise<ChargesAPI.PayoutResponse> {
+    const {
       'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
       ...body
     } = params;
     return this._client.post('/v1/payouts', {
@@ -40,10 +128,10 @@ export class Payouts extends APIResource {
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -51,142 +139,41 @@ export class Payouts extends APIResource {
   }
 
   /**
-   * Update the details of a payout prior to processing. The status of the payout
-   * must be `created`, `scheduled`, or `on_hold`.
+   * Places a payout on hold to prevent submission for processing. The payout must have a status of `created` or `scheduled`.
+   *
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutHoldParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} OK
    *
    * @example
    * ```ts
-   * const payoutV1 = await client.payouts.update(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   {
-   *     amount: 10000,
-   *     description: 'description',
-   *     payment_date: '2019-12-27',
-   *   },
-   * );
+   * const payout = await client.payouts.hold('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   reason: '',
+   * });
    * ```
    */
-  update(id: string, params: PayoutUpdateParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/payouts/${id}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Cancel a payout to prevent it from being processed. The status of the payout
-   * must be `created`, `scheduled`, or `on_hold`.
-   *
-   * @example
-   * ```ts
-   * const payoutV1 = await client.payouts.cancel(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { reason: 'reason' },
-   * );
-   * ```
-   */
-  cancel(id: string, params: PayoutCancelParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/payouts/${id}/cancel`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Retrieves the details of an existing payout. Supply the unique payout `id` to
-   * retrieve the corresponding payout information.
-   *
-   * @example
-   * ```ts
-   * const payoutV1 = await client.payouts.get(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  get(
+  hold(
     id: string,
-    params: PayoutGetParams | null | undefined = {},
+    params: PayoutHoldParams,
     options?: RequestOptions,
-  ): APIPromise<PayoutV1> {
+  ): APIPromise<ChargesAPI.PayoutResponse> {
     const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
       'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.get(path`/v1/payouts/${id}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Hold a payout to prevent it from being processed. The status of the payout must
-   * be `created`, `scheduled`, or `on_hold`.
-   *
-   * @example
-   * ```ts
-   * const payoutV1 = await client.payouts.hold(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { reason: 'reason' },
-   * );
-   * ```
-   */
-  hold(id: string, params: PayoutHoldParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const {
+      'Request-Id': requestID,
       'Correlation-Id': correlationID,
       'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
       ...body
     } = params;
-    return this._client.put(path`/v1/payouts/${id}/hold`, {
+    return this._client.put(__scalarPath`/v1/payouts/${id}/hold`, {
       body,
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
@@ -194,853 +181,619 @@ export class Payouts extends APIResource {
   }
 
   /**
-   * Release a payout from a `hold` status to allow it to be rescheduled for
-   * processing.
+   * Releases a payout from `on_hold` and returns it to `created` for submission on `payment_date`.
+   *
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutReleaseParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} OK
    *
    * @example
    * ```ts
-   * const payoutV1 = await client.payouts.release(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { reason: 'reason' },
-   * );
+   * const payout = await client.payouts.release('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   reason: '',
+   * });
    * ```
    */
-  release(id: string, params: PayoutReleaseParams, options?: RequestOptions): APIPromise<PayoutV1> {
-    const {
-      'Correlation-Id': correlationID,
-      'Idempotency-Key': idempotencyKey,
-      'Request-Id': requestID,
-      'Straddle-Account-Id': straddleAccountID,
-      ...body
-    } = params;
-    return this._client.put(path`/v1/payouts/${id}/release`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
-   * Get a payout by id.
-   *
-   * @example
-   * ```ts
-   * const response = await client.payouts.unmask(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  unmask(
+  release(
     id: string,
-    params: PayoutUnmaskParams | null | undefined = {},
+    params: PayoutReleaseParams,
     options?: RequestOptions,
-  ): APIPromise<PayoutUnmaskResponse> {
+  ): APIPromise<ChargesAPI.PayoutResponse> {
     const {
-      'Correlation-Id': correlationID,
-      'Request-Id': requestID,
       'Straddle-Account-Id': straddleAccountID,
-    } = params ?? {};
-    return this._client.get(path`/v1/payouts/${id}/unmask`, {
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
+    return this._client.put(__scalarPath`/v1/payouts/${id}/release`, {
+      body,
       ...options,
       headers: buildHeaders([
         {
-          ...(correlationID != null ? { 'Correlation-Id': correlationID } : undefined),
-          ...(requestID != null ? { 'Request-Id': requestID } : undefined),
-          ...(straddleAccountID != null ? { 'Straddle-Account-Id': straddleAccountID } : undefined),
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
         options?.headers,
       ]),
     });
   }
-}
-
-export interface PayoutV1 {
-  data: PayoutV1.Data;
 
   /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: Shared.ResponseMetadata;
-
-  /**
-   * Indicates the structure of the returned content.
+   * Cancels a payout. The payout must have a status of `created`, `scheduled`, or `on_hold`.
    *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
-   */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace PayoutV1 {
-  export interface Data {
-    /**
-     * Unique identifier for the payout.
-     */
-    id: string;
-
-    /**
-     * The amount of the payout in cents.
-     */
-    amount: number;
-
-    /**
-     * Configuration for the payout.
-     */
-    config: Data.Config;
-
-    /**
-     * The currency of the payout. Only USD is supported.
-     */
-    currency: string;
-
-    /**
-     * An arbitrary description for the payout.
-     */
-    description: string | null;
-
-    /**
-     * Information about the device used when the customer authorized the payout.
-     */
-    device: Shared.DeviceInfoV1;
-
-    /**
-     * Unique identifier for the payout in your database. This value must be unique
-     * across all payouts.
-     */
-    external_id: string;
-
-    /**
-     * Funding Ids
-     */
-    funding_ids: Array<string>;
-
-    /**
-     * Value of the `paykey` used for the payout.
-     */
-    paykey: string;
-
-    /**
-     * The desired date on which the payment should be occur. For payouts, this means
-     * the date you want the funds to be sent from your bank account.
-     */
-    payment_date: string;
-
-    /**
-     * The current status of the payout.
-     */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
-
-    /**
-     * Details about the current status of the payout.
-     */
-    status_details: Shared.StatusDetailsV1;
-
-    /**
-     * History of the status changes for the payout.
-     */
-    status_history: Array<Data.StatusHistory>;
-
-    /**
-     * Trace Ids.
-     */
-    trace_ids: { [key: string]: string };
-
-    /**
-     * The time the payout was created.
-     */
-    created_at?: string | null;
-
-    /**
-     * Information about the customer associated with the payout.
-     */
-    customer_details?: Shared.CustomerDetailsV1;
-
-    /**
-     * The actual date on which the payment occurred. For payouts, this is the date the
-     * funds were sent from your bank account.
-     */
-    effective_at?: string | null;
-
-    /**
-     * Up to 20 additional user-defined key-value pairs. Useful for storing additional
-     * information about the payout in a structured format.
-     */
-    metadata?: { [key: string]: string } | null;
-
-    /**
-     * Information about the paykey used for the payout.
-     */
-    paykey_details?: Shared.PaykeyDetailsV1;
-
-    /**
-     * The payment rail used for the payout.
-     */
-    payment_rail?: 'ach';
-
-    /**
-     * The time the payout was processed by Straddle and originated to the payment
-     * rail.
-     */
-    processed_at?: string | null;
-
-    /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
-
-    /**
-     * The time the payout was last updated.
-     */
-    updated_at?: string | null;
-  }
-
-  export namespace Data {
-    /**
-     * Configuration for the payout.
-     */
-    export interface Config {
-      /**
-       * Defines whether to automatically place this charge on hold after being created.
-       */
-      auto_hold?: boolean | null;
-
-      /**
-       * The reason the payout is being automatically held on creation.
-       */
-      auto_hold_message?: string | null;
-
-      /**
-       * Payment will simulate processing if not Standard.
-       */
-      sandbox_outcome?:
-        | 'standard'
-        | 'paid'
-        | 'on_hold_daily_limit'
-        | 'cancelled_for_fraud_risk'
-        | 'cancelled_for_balance_check'
-        | 'failed_insufficient_funds'
-        | 'reversed_insufficient_funds'
-        | 'failed_customer_dispute'
-        | 'reversed_customer_dispute'
-        | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account';
-    }
-
-    export interface StatusHistory {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused'
-        | 'cancel_request'
-        | 'failed_verification'
-        | 'require_review'
-        | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The current status of the `charge` or `payout`.
-       */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'validating';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
-  }
-}
-
-export interface PayoutUnmaskResponse {
-  data: PayoutUnmaskResponse.Data;
-
-  /**
-   * Metadata about the API request, including an identifier and timestamp.
-   */
-  meta: Shared.ResponseMetadata;
-
-  /**
-   * Indicates the structure of the returned content.
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutCancelParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} OK
    *
-   * - "object" means the `data` field contains a single JSON object.
-   * - "array" means the `data` field contains an array of objects.
-   * - "error" means the `data` field contains an error object with details of the
-   *   issue.
-   * - "none" means no data is returned.
+   * @example
+   * ```ts
+   * const payout = await client.payouts.cancel('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   reason: '',
+   * });
+   * ```
    */
-  response_type: 'object' | 'array' | 'error' | 'none';
-}
-
-export namespace PayoutUnmaskResponse {
-  export interface Data {
-    /**
-     * Id.
-     */
-    id: string;
-
-    /**
-     * Amount.
-     */
-    amount: number;
-
-    config: Data.Config;
-
-    /**
-     * Currency.
-     */
-    currency: string;
-
-    /**
-     * Description.
-     */
-    description: string | null;
-
-    device: Data.Device;
-
-    /**
-     * External id.
-     */
-    external_id: string;
-
-    /**
-     * Funding Ids
-     */
-    funding_ids: Array<string>;
-
-    /**
-     * Paykey.
-     */
-    paykey: string;
-
-    /**
-     * Payment date.
-     */
-    payment_date: string;
-
-    /**
-     * The current status of the `charge` or `payout`.
-     */
-    status:
-      | 'created'
-      | 'scheduled'
-      | 'failed'
-      | 'cancelled'
-      | 'on_hold'
-      | 'pending'
-      | 'paid'
-      | 'reversed'
-      | 'validating';
-
-    status_details: Shared.StatusDetailsV1;
-
-    /**
-     * Status history.
-     */
-    status_history: Array<Data.StatusHistory>;
-
-    /**
-     * Trace Ids.
-     */
-    trace_ids: { [key: string]: string };
-
-    /**
-     * Created at.
-     */
-    created_at?: string | null;
-
-    /**
-     * Information about the customer associated with the charge or payout.
-     */
-    customer_details?: Shared.CustomerDetailsV1;
-
-    /**
-     * Effective at.
-     */
-    effective_at?: string | null;
-
-    /**
-     * Metadata.
-     */
-    metadata?: { [key: string]: string } | null;
-
-    paykey_details?: Shared.PaykeyDetailsV1;
-
-    /**
-     * The payment rail used for the charge or payout.
-     */
-    payment_rail?: 'ach';
-
-    /**
-     * Processed at.
-     */
-    processed_at?: string | null;
-
-    /**
-     * Related payments.
-     */
-    related_payments?: { [key: string]: 'original' | 'resubmit' | 'refund' } | null;
-
-    /**
-     * Updated at.
-     */
-    updated_at?: string | null;
+  cancel(
+    id: string,
+    params: PayoutCancelParams,
+    options?: RequestOptions,
+  ): APIPromise<ChargesAPI.PayoutResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
+    return this._client.put(__scalarPath`/v1/payouts/${id}/cancel`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
-  export namespace Data {
-    export interface Config {
-      /**
-       * Defines whether to automatically place this charge on hold after being created.
-       */
-      auto_hold?: boolean | null;
+  /**
+   * Return a payout with its sensitive fields unmasked.
+   *
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutListUnmaskedParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<UnmaskedPayoutResponse>} OK
+   *
+   * @example
+   * ```ts
+   * const unmaskedPayout = await client.payouts.listUnmasked('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  listUnmasked(
+    id: string,
+    params: PayoutListUnmaskedParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<UnmaskedPayoutResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+    } = params ?? {};
+    return this._client.get(__scalarPath`/v1/payouts/${id}/unmask`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
 
-      /**
-       * The reason the payout is being automatically held on creation.
-       */
-      auto_hold_message?: string | null;
+  /**
+   * Creates a new payout from a failed, reversed, or cancelled payout. The request can override `description`, `external_id`, and `payment_date`. Other payment details come from the original payout.
+   *
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutResubmitParams} [params] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const payout = await client.payouts.resubmit('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  resubmit(
+    id: string,
+    params: PayoutResubmitParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ChargesAPI.PayoutResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params ?? {};
+    return this._client.post(__scalarPath`/v1/payouts/${id}/resubmit`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+          ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+          ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+          ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+        },
+        options?.headers,
+      ]),
+    });
+  }
 
-      /**
-       * Payment will simulate processing if not Standard.
-       */
-      sandbox_outcome?:
-        | 'standard'
-        | 'paid'
-        | 'on_hold_daily_limit'
-        | 'cancelled_for_fraud_risk'
-        | 'cancelled_for_balance_check'
-        | 'failed_insufficient_funds'
-        | 'reversed_insufficient_funds'
-        | 'failed_customer_dispute'
-        | 'reversed_customer_dispute'
-        | 'failed_closed_bank_account'
-        | 'reversed_closed_bank_account';
-    }
-
-    export interface Device {
-      /**
-       * Ip address.
-       */
-      ip_address: string;
-    }
-
-    export interface StatusHistory {
-      /**
-       * The time the status change occurred.
-       */
-      changed_at: string;
-
-      /**
-       * A human-readable description of the status.
-       */
-      message: string;
-
-      /**
-       * A machine-readable identifier for the specific status, useful for programmatic
-       * handling.
-       */
-      reason:
-        | 'insufficient_funds'
-        | 'closed_bank_account'
-        | 'invalid_bank_account'
-        | 'invalid_routing'
-        | 'disputed'
-        | 'payment_stopped'
-        | 'owner_deceased'
-        | 'frozen_bank_account'
-        | 'risk_review'
-        | 'fraudulent'
-        | 'duplicate_entry'
-        | 'invalid_paykey'
-        | 'payment_blocked'
-        | 'amount_too_large'
-        | 'too_many_attempts'
-        | 'internal_system_error'
-        | 'user_request'
-        | 'ok'
-        | 'other_network_return'
-        | 'payout_refused'
-        | 'cancel_request'
-        | 'failed_verification'
-        | 'require_review'
-        | 'blocked_by_system'
-        | 'watchtower_review'
-        | 'validating'
-        | 'auto_hold';
-
-      /**
-       * Identifies the origin of the status change (e.g., `bank_decline`, `watchtower`).
-       * This helps in tracking the cause of status updates.
-       */
-      source: 'watchtower' | 'bank_decline' | 'customer_dispute' | 'user_action' | 'system';
-
-      /**
-       * The current status of the `charge` or `payout`.
-       */
-      status:
-        | 'created'
-        | 'scheduled'
-        | 'failed'
-        | 'cancelled'
-        | 'on_hold'
-        | 'pending'
-        | 'paid'
-        | 'reversed'
-        | 'validating';
-
-      /**
-       * The status code if applicable.
-       */
-      code?: string | null;
-    }
+  /**
+   * Uploads a proof-of-authorization document for a payout. A later upload adds another document and does not replace an existing one.
+   *
+   * @param {string} id - Unique identifier for the payout.
+   * @param {PayoutUploadAuthorizationProofParams} params - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ChargesAPI.PayoutResponse>} Created
+   *
+   * @example
+   * ```ts
+   * const payout = await client.payouts.uploadAuthorizationProof('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   File: '',
+   * });
+   * ```
+   */
+  uploadAuthorizationProof(
+    id: string,
+    params: PayoutUploadAuthorizationProofParams,
+    options?: RequestOptions,
+  ): APIPromise<ChargesAPI.PayoutResponse> {
+    const {
+      'Straddle-Account-Id': straddleAccountID,
+      'Request-Id': requestID,
+      'Correlation-Id': correlationID,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
+    return this._client.post(
+      __scalarPath`/v1/payouts/${id}/authorization`,
+      multipartFormRequestOptions(
+        {
+          body,
+          ...options,
+          headers: buildHeaders([
+            {
+              ...(straddleAccountID !== undefined ? { 'Straddle-Account-Id': straddleAccountID } : {}),
+              ...(requestID !== undefined ? { 'Request-Id': requestID } : {}),
+              ...(correlationID !== undefined ? { 'Correlation-Id': correlationID } : {}),
+              ...(idempotencyKey !== undefined ? { 'Idempotency-Key': idempotencyKey } : {}),
+            },
+            options?.headers,
+          ]),
+        },
+        this._client,
+      ),
+    );
   }
 }
 
-export interface PayoutCreateParams {
+export interface UnmaskedPayoutResponse {
   /**
-   * Body param: The amount of the payout in cents.
+   * Metadata for an API request.
    */
-  amount: number;
-
+  meta: AccountsAPI.ResponseMetadata;
   /**
-   * Body param: The currency of the payout. Only USD is supported.
+   * Shape of the response envelope.
+   * - `object` means `data` contains one JSON object.
+   * - `array` means `data` contains an array of JSON objects.
+   * - `error` means `error` contains the error details.
+   * - `none` means the response contains no data.
    */
-  currency: string;
+  response_type: BridgeAPI.ResponseType;
+  data: UnmaskedPayout;
+}
 
+export interface UnmaskedPayout {
   /**
-   * Body param: An arbitrary description for the payout.
+   * Unique identifier for this payout.
+   * @format uuid
+   */
+  id: string;
+  /**
+   * A human-readable description of the payout.
    */
   description: string | null;
-
   /**
-   * Body param: Information about the device used when the customer authorized the
-   * payout.
+   * Amount in cents.
+   * @format int32
    */
-  device: Shared.DeviceInfoV1;
-
+  amount: number;
   /**
-   * Body param: Unique identifier for the payout in your database. This value must
-   * be unique across all payouts.
+   * Currency code. Only `USD` is supported.
    */
-  external_id: string;
-
+  currency: string;
   /**
-   * Body param: Value of the `paykey` used for the payout.
-   */
-  paykey: string;
-
-  /**
-   * Body param: The desired date on which the payout should be occur. For payouts,
-   * this means the date you want the funds to be sent from your bank account.
+   * Date when Straddle submits the payout for processing.
+   * @format date
    */
   payment_date: string;
-
+  device: ChargesAPI.PaymentDevice;
   /**
-   * Body param
+   * Your unique identifier for this payout, used to correlate with your internal records.
    */
-  config?: PayoutCreateParams.Config;
-
+  external_id: string;
+  config: ChargesAPI.PayoutConfiguration;
   /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the payout in a structured format.
+   * The current status of the `charge` or `payout`.
    */
-  metadata?: { [key: string]: string } | null;
-
+  status: ChargesAPI.PaymentStatus;
+  status_details: BridgeAPI.PaymentStatusDetails;
   /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Complete ordered history of all status changes for this payout.
    */
-  'Correlation-Id'?: string;
-
+  status_history: Array<ChargesAPI.PaymentStatusHistory>;
   /**
-   * Header param: Optional client generated value to use for idempotent requests.
+   * IDs of the funding events that included this payout.
    */
-  'Idempotency-Key'?: string;
-
+  funding_ids: Array<string>;
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Unmasked paykey token used for this payout.
    */
-  'Request-Id'?: string;
-
+  paykey: string;
   /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
+   * Trace identifiers from the payment network. Keys depend on the payment rail.
    */
-  'Straddle-Account-Id'?: string;
+  trace_ids: Record<string, string>;
+  /**
+   * Whether this payout refunds an original charge.
+   */
+  is_refund: boolean;
+  /**
+   * Whether this payout resubmits an original payout.
+   */
+  is_resubmit: boolean;
+  /**
+   * Whether this payout has been resubmitted.
+   */
+  has_resubmit: boolean;
+  /**
+   * The payment rail used for the charge or payout.
+   */
+  payment_rail?: ChargesAPI.PaymentRail;
+  /**
+   * Information about the customer associated with the charge or payout.
+   */
+  customer_details?: ChargesAPI.CustomerDetails;
+  paykey_details?: ChargesAPI.PaykeyDetails;
+  /**
+   * Timestamp when this payout was created.
+   * @format date-time
+   */
+  created_at?: string | null;
+  /**
+   * Timestamp when this payout was last updated.
+   * @format date-time
+   */
+  updated_at?: string | null;
+  /**
+   * Timestamp when this payout was submitted to the payment network. Null until processed.
+   * @format date-time
+   */
+  processed_at?: string | null;
+  /**
+   * Timestamp when funds were settled. Null until settlement is confirmed.
+   * @format date-time
+   */
+  effective_at?: string | null;
+  /**
+   * Key-value metadata stored with this payout.
+   */
+  metadata?: Record<string, string> | null;
+  /**
+   * Related payments and their relationship to this payout.
+   */
+  related_payments?: Array<ChargesAPI.RelatedPayment> | null;
+  /**
+   * Authorization documents for this payout, ordered by upload time.
+   */
+  documents?: Array<ChargesAPI.PaymentAuthorizationProof> | null;
 }
 
-export namespace PayoutCreateParams {
-  export interface Config {
-    /**
-     * Defines whether to automatically place this charge on hold after being created.
-     */
-    auto_hold?: boolean | null;
-
-    /**
-     * The reason the payout is being automatically held on creation.
-     */
-    auto_hold_message?: string | null;
-
-    /**
-     * Payment will simulate processing if not Standard.
-     */
-    sandbox_outcome?:
-      | 'standard'
-      | 'paid'
-      | 'on_hold_daily_limit'
-      | 'cancelled_for_fraud_risk'
-      | 'cancelled_for_balance_check'
-      | 'failed_insufficient_funds'
-      | 'reversed_insufficient_funds'
-      | 'failed_customer_dispute'
-      | 'reversed_customer_dispute'
-      | 'failed_closed_bank_account'
-      | 'reversed_closed_bank_account';
-  }
+export interface PayoutRetrieveParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
 }
 
 export interface PayoutUpdateParams {
   /**
-   * Body param: The amount of the payout in cents.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
-  amount: number;
-
+  'Straddle-Account-Id'?: string;
   /**
-   * Body param: An arbitrary description for the payout.
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Updated description for the payout.
    */
   description: string | null;
-
   /**
-   * Body param: The desired date on which the payment should be occur. For payouts,
-   * this means the date you want the funds to be sent from your bank account.
+   * Body param: Amount in cents.
+   * @format int32
+   */
+  amount: number;
+  /**
+   * Body param: New date for Straddle to submit the payout for processing.
+   * @format date
    */
   payment_date: string;
-
   /**
-   * Body param: Up to 20 additional user-defined key-value pairs. Useful for storing
-   * additional information about the payout in a structured format.
+   * Body param: Replacement metadata for the payout. Up to 20 user-defined string key-value pairs.
    */
-  metadata?: { [key: string]: string } | null;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
+  metadata?: Record<string, string> | null;
 }
 
-export interface PayoutCancelParams {
+export interface PayoutCreateParams {
   /**
-   * Body param: Details about why the payout status was updated.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
-  reason: string;
-
+  'Straddle-Account-Id'?: string;
   /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Header param: Optional client generated value to use for idempotent requests.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
   'Idempotency-Key'?: string;
-
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Body param: The paykey token that identifies the customer's bank account.
    */
-  'Request-Id'?: string;
-
+  paykey: string;
   /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
+   * Body param: Description shown on the customer's bank statement where supported.
    */
-  'Straddle-Account-Id'?: string;
-}
-
-export interface PayoutGetParams {
+  description: string | null;
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * Body param: Amount in cents.
+   * @format int32
    */
-  'Correlation-Id'?: string;
-
+  amount: number;
   /**
-   * Optional client generated identifier to trace and debug a request.
+   * Body param: Currency code. Only `USD` is supported.
    */
-  'Request-Id'?: string;
-
+  currency: string;
   /**
-   * For use by platforms to specify an account id and set scope of a request.
+   * Body param: Date when Straddle submits the payout for processing.
+   * @format date
    */
-  'Straddle-Account-Id'?: string;
+  payment_date: string;
+  /**
+   * Body param: Device used when the customer authorized the payout.
+   */
+  device: ChargesAPI.PaymentDevice;
+  /**
+   * Body param: Your unique identifier for the payout. Must be unique across payouts.
+   */
+  external_id: string;
+  /**
+   * Body param
+   */
+  config?: ChargesAPI.PayoutConfiguration;
+  /**
+   * Body param: Up to 20 user-defined string key-value pairs.
+   */
+  metadata?: Record<string, string> | null;
 }
 
 export interface PayoutHoldParams {
   /**
-   * Body param: Details about why the payout status was updated.
-   */
-  reason: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
-   */
-  'Correlation-Id'?: string;
-
-  /**
-   * Header param: Optional client generated value to use for idempotent requests.
-   */
-  'Idempotency-Key'?: string;
-
-  /**
-   * Header param: Optional client generated identifier to trace and debug a request.
-   */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
   'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Message explaining the payout status change.
+   */
+  reason: string;
 }
 
 export interface PayoutReleaseParams {
   /**
-   * Body param: Details about why the payout status was updated.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
    */
-  reason: string;
-
+  'Straddle-Account-Id'?: string;
   /**
-   * Header param: Optional client generated identifier to trace and debug a series
-   * of requests.
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Header param: Optional client generated value to use for idempotent requests.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
   'Idempotency-Key'?: string;
-
   /**
-   * Header param: Optional client generated identifier to trace and debug a request.
+   * Body param: Message explaining the payout status change.
    */
-  'Request-Id'?: string;
-
-  /**
-   * Header param: For use by platforms to specify an account id and set scope of a
-   * request.
-   */
-  'Straddle-Account-Id'?: string;
+  reason: string;
 }
 
-export interface PayoutUnmaskParams {
+export interface PayoutCancelParams {
   /**
-   * Optional client generated identifier to trace and debug a series of requests.
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
    */
   'Correlation-Id'?: string;
-
   /**
-   * Optional client generated identifier to trace and debug a request.
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
    */
-  'Request-Id'?: string;
-
+  'Idempotency-Key'?: string;
   /**
-   * For use by platforms to specify an account id and set scope of a request.
+   * Body param: Message explaining the payout status change.
    */
-  'Straddle-Account-Id'?: string;
+  reason: string;
 }
 
+export interface PayoutListUnmaskedParams {
+  /**
+   * For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+}
+
+export interface PayoutResubmitParams {
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: Description for the resubmitted payout. Defaults to the original description if omitted.
+   */
+  description?: string | null;
+  /**
+   * Body param: Date when Straddle submits the resubmitted payout for processing. Defaults to today if omitted.
+   * @format date
+   */
+  payment_date?: string | null;
+  /**
+   * Body param: Your unique identifier for the resubmitted payout. Defaults to a new value if omitted.
+   */
+  external_id?: string | null;
+}
+
+export interface PayoutUploadAuthorizationProofParams {
+  /**
+   * Header param: For platform requests, the embedded account UUID that sets the request scope.
+   * @format uuid
+   */
+  'Straddle-Account-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing one request.
+   */
+  'Request-Id'?: string;
+  /**
+   * Header param: Optional client-generated identifier for tracing a series of related requests.
+   */
+  'Correlation-Id'?: string;
+  /**
+   * Header param: Optional client-generated key for an idempotent request.
+   * @minLength 10
+   * @maxLength 40
+   */
+  'Idempotency-Key'?: string;
+  /**
+   * Body param: The document file to upload as proof of authorization for this payout.
+   * @format binary
+   */
+  File: Uploadable;
+}
 export declare namespace Payouts {
   export {
-    type PayoutV1 as PayoutV1,
-    type PayoutUnmaskResponse as PayoutUnmaskResponse,
-    type PayoutCreateParams as PayoutCreateParams,
+    type UnmaskedPayoutResponse as UnmaskedPayoutResponse,
+    type UnmaskedPayout as UnmaskedPayout,
+    type PayoutRetrieveParams as PayoutRetrieveParams,
     type PayoutUpdateParams as PayoutUpdateParams,
-    type PayoutCancelParams as PayoutCancelParams,
-    type PayoutGetParams as PayoutGetParams,
+    type PayoutCreateParams as PayoutCreateParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
-    type PayoutUnmaskParams as PayoutUnmaskParams,
+    type PayoutCancelParams as PayoutCancelParams,
+    type PayoutListUnmaskedParams as PayoutListUnmaskedParams,
+    type PayoutResubmitParams as PayoutResubmitParams,
+    type PayoutUploadAuthorizationProofParams as PayoutUploadAuthorizationProofParams,
   };
 }

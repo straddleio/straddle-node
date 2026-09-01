@@ -1,7 +1,7 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { hasOwn } from './values';
-import { type Straddle } from '../../client';
+import { type StraddleAPI } from '../../client';
 import { RequestOptions } from '../request-options';
 
 type LogFn = (message: string, ...rest: unknown[]) => void;
@@ -24,7 +24,7 @@ const levelNumbers = {
 export const parseLogLevel = (
   maybeLevel: string | undefined,
   sourceName: string,
-  client: Straddle,
+  client: StraddleAPI,
 ): LogLevel | undefined => {
   if (!maybeLevel) {
     return undefined;
@@ -60,7 +60,7 @@ const noopLogger = {
 
 let cachedLoggers = /* @__PURE__ */ new WeakMap<Logger, [LogLevel, Logger]>();
 
-export function loggerFor(client: Straddle): Logger {
+export function loggerFor(client: StraddleAPI): Logger {
   const logger = client.logger;
   const logLevel = client.logLevel ?? 'off';
   if (!logger) {
@@ -105,13 +105,13 @@ export const formatRequestDetails = (details: {
       (details.headers instanceof Headers ? [...details.headers] : Object.entries(details.headers)).map(
         ([name, value]) => [
           name,
-          (
-            name.toLowerCase() === 'authorization' ||
-            name.toLowerCase() === 'cookie' ||
-            name.toLowerCase() === 'set-cookie'
-          ) ?
-            '***'
-          : value,
+          name.toLowerCase() === 'authorization' ||
+          name.toLowerCase() === 'api-key' ||
+          name.toLowerCase() === 'x-api-key' ||
+          name.toLowerCase() === 'cookie' ||
+          name.toLowerCase() === 'set-cookie'
+            ? '***'
+            : value,
         ],
       ),
     );

@@ -1,136 +1,308 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import type { RequestInit, RequestInfo, BodyInit } from './internal/builtin-types';
-import type { HTTPMethod, PromiseOrValue, MergedRequestInit, FinalizedRequestInit } from './internal/types';
+import { APIPromise, type APIResponseProps } from './api-promise';
+import * as Errors from './error';
 import { uuid4 } from './internal/utils/uuid';
-import { validatePositiveInteger, isAbsoluteURL, safeJSON } from './internal/utils/values';
+import { validatePositiveInteger, isAbsoluteURL, safeJSON, isEmptyObj } from './internal/utils/values';
 import { sleep } from './internal/utils/sleep';
-export type { Logger, LogLevel } from './internal/utils/log';
 import { castToError, isAbortError } from './internal/errors';
-import type { APIResponseProps } from './internal/parse';
 import { getPlatformHeaders } from './internal/detect-platform';
 import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
-import { stringifyQuery } from './internal/utils/query';
-import { VERSION } from './version';
-import * as Errors from './core/error';
-import * as Pagination from './core/pagination';
-import { AbstractPage, type PageNumberSchemaParams, PageNumberSchemaResponse } from './core/pagination';
-import * as Uploads from './core/uploads';
-import * as API from './resources/index';
-import { APIPromise } from './core/api-promise';
-import {
-  ChargeCancelParams,
-  ChargeCreateParams,
-  ChargeGetParams,
-  ChargeHoldParams,
-  ChargeReleaseParams,
-  ChargeUnmaskParams,
-  ChargeUnmaskResponse,
-  ChargeUpdateParams,
-  ChargeV1,
-  Charges,
-} from './resources/charges';
-import {
-  FundingEventGetParams,
-  FundingEventListParams,
-  FundingEventSummaryItemV1,
-  FundingEventSummaryPagedV1,
-  FundingEventSummaryPagedV1DataPageNumberSchema,
-  FundingEvents,
-} from './resources/funding-events';
-import {
-  PaymentListParams,
-  PaymentSummaryPagedV1,
-  PaymentSummaryPagedV1DataPageNumberSchema,
-  Payments,
-} from './resources/payments';
-import {
-  PayoutCancelParams,
-  PayoutCreateParams,
-  PayoutGetParams,
-  PayoutHoldParams,
-  PayoutReleaseParams,
-  PayoutUnmaskParams,
-  PayoutUnmaskResponse,
-  PayoutUpdateParams,
-  PayoutV1,
-  Payouts,
-} from './resources/payouts';
-import {
-  ReportCreateTotalCustomersByStatusParams,
-  ReportCreateTotalCustomersByStatusResponse,
-  Reports,
-} from './resources/reports';
-import { Bridge, BridgeInitializeParams, BridgeTokenV1 } from './resources/bridge/bridge';
-import {
-  CustomerAddressV1,
-  CustomerCreateParams,
-  CustomerDeleteParams,
-  CustomerGetParams,
-  CustomerListParams,
-  CustomerSummaryPagedV1,
-  CustomerSummaryPagedV1DataPageNumberSchema,
-  CustomerUnmaskedParams,
-  CustomerUnmaskedV1,
-  CustomerUpdateParams,
-  CustomerV1,
-  Customers,
-  DeviceUnmaskedV1,
-} from './resources/customers/customers';
-import { Embed } from './resources/embed/embed';
-import {
-  PaykeyCancelParams,
-  PaykeyGetParams,
-  PaykeyListParams,
-  PaykeyRevealParams,
-  PaykeyRevealResponse,
-  PaykeySummaryPagedV1,
-  PaykeySummaryPagedV1DataPageNumberSchema,
-  PaykeyUnmaskedParams,
-  PaykeyUnmaskedV1,
-  PaykeyUpdateBalanceParams,
-  PaykeyV1,
-  Paykeys,
-} from './resources/paykeys/paykeys';
-import { type Fetch } from './internal/builtin-types';
-import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
-import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { readEnv } from './internal/utils/env';
 import {
-  type LogLevel,
-  type Logger,
   formatRequestDetails,
   loggerFor,
   parseLogLevel,
+  type LogLevel,
+  type Logger,
 } from './internal/utils/log';
-import { isEmptyObj } from './internal/utils/values';
+export type { Logger, LogLevel } from './internal/utils/log';
+import type { RequestInit, RequestInfo, BodyInit, Fetch } from './internal/builtin-types';
+import { buildHeaders, type HeadersLike, type NullableHeaders } from './internal/headers';
+import type { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import type { HTTPMethod, FinalizedRequestInit, MergedRequestInit, PromiseOrValue } from './internal/types';
+import { stringifyQuery } from './internal/utils/query';
+import { toFile } from './core/uploads';
+import { VERSION } from './version';
+import {
+  Accounts,
+  type AccountResponse,
+  type AccountList,
+  type ResponseMetadata,
+  type Account,
+  type PageMetadata,
+  type AccountStatusDetail,
+  type AccountBusinessProfile,
+  type AccountCapabilities,
+  type AccountPaymentSettings,
+  type TermsOfService,
+  type SortOrder,
+  type AccountAddress,
+  type AccountIndustry,
+  type AccountSupportChannels,
+  type AccountPaymentCapabilities,
+  type AccountCustomerCapabilities,
+  type AccountConsentCapabilities,
+  type AccountChargeSettings,
+  type AccountPayoutSettings,
+  type AccountCapability,
+  type AccountRetrieveParams,
+  type AccountUpdateParams,
+  type AccountCreateParams,
+  type AccountListParams,
+  type AccountOnboardParams,
+  type AccountSimulateOnboardingParams,
+} from './resources/accounts';
+import {
+  CapabilityRequests,
+  type CapabilityRequestList,
+  type CapabilityRequest,
+  type CapabilityRequestCreateParams,
+  type CapabilityRequestListParams,
+} from './resources/capability-requests';
+import {
+  LinkedBankAccounts,
+  type LinkedBankAccountResponse,
+  type LinkedBankAccountList,
+  type UnmaskedLinkedBankAccountResponse,
+  type LinkedBankAccount,
+  type UnmaskedLinkedBankAccount,
+  type LinkedBankAccountStatusDetail,
+  type MaskedLinkedBankAccountDetails,
+  type UnmaskedLinkedBankAccountDetails,
+  type LinkedBankAccountCreateParams,
+  type LinkedBankAccountListParams,
+  type LinkedBankAccountUpdateParams,
+  type LinkedBankAccountRetrieveParams,
+  type LinkedBankAccountListUnmaskedParams,
+  type LinkedBankAccountCancelParams,
+} from './resources/linked-bank-accounts';
+import {
+  Organizations,
+  type OrganizationResponse,
+  type OrganizationList,
+  type Organization,
+  type OrganizationCreateParams,
+  type OrganizationListParams,
+  type OrganizationRetrieveParams,
+} from './resources/organizations';
+import {
+  Representatives,
+  type RepresentativeResponse,
+  type RepresentativeList,
+  type UnmaskedRepresentativeResponse,
+  type Representative,
+  type UnmaskedRepresentative,
+  type RepresentativeStatusDetail,
+  type RepresentativeRelationship,
+  type RepresentativeCreateParams,
+  type RepresentativeListParams,
+  type RepresentativeUpdateParams,
+  type RepresentativeRetrieveParams,
+  type RepresentativeListUnmaskedParams,
+} from './resources/representatives';
+import {
+  Bridge,
+  type PaykeyResponse,
+  type BridgeTokenResponse,
+  type RevealedPaykeyResponse,
+  type ResponseType,
+  type Paykey,
+  type BridgeToken,
+  type RevealedPaykey,
+  type PaykeySource,
+  type PaykeyStatus,
+  type PaymentStatusDetails,
+  type PaykeyBankDetails,
+  type PaykeyConfiguration,
+  type PaykeyBalanceDetails,
+  type PaymentStatusReason,
+  type PaymentStatusSource,
+  type AccountType,
+  type SimulatedPaykeyOutcome,
+  type PaykeyProcessingMode,
+  type PaykeyBalanceRefreshStatus,
+  type BridgeCreateBankAccountPaykeyParams,
+  type BridgeCreatePlaidPaykeyParams,
+  type BridgeCreateTokenParams,
+  type BridgeCreateQuilttPaykeyParams,
+} from './resources/bridge';
+import {
+  Customers,
+  type CustomerResponse,
+  type CustomerSummaryList,
+  type UnmaskedCustomerResponse,
+  type Customer,
+  type CustomerSummary,
+  type UnmaskedCustomer,
+  type CustomerType,
+  type CustomerStatus,
+  type CustomerAddress,
+  type ComplianceProfile,
+  type MaskedCustomerDevice,
+  type CustomerConfiguration,
+  type UnmaskedComplianceProfile,
+  type CustomerDevice,
+  type BusinessCustomerRepresentative,
+  type SimulatedCustomerOutcome,
+  type CustomerRetrieveParams,
+  type CustomerUpdateParams,
+  type CustomerDeleteParams,
+  type CustomerListParams,
+  type CustomerCreateParams,
+  type CustomerListUnmaskedParams,
+  type CustomerRefreshReviewParams,
+} from './resources/customers/customers';
+import {
+  Paykeys,
+  type UnmaskedPaykeyResponse,
+  type PaykeySummaryList,
+  type UnmaskedPaykey,
+  type PaykeySummary,
+  type UnmaskedPaykeyBankDetails,
+  type PaykeyRetrieveParams,
+  type PaykeyListUnmaskedParams,
+  type PaykeyListParams,
+  type PaykeyRevealParams,
+  type PaykeyCancelParams,
+  type PaykeyRefreshReviewParams,
+  type PaykeyRefreshBalanceParams,
+  type PaykeyUnblockParams,
+} from './resources/paykeys/paykeys';
+import {
+  Charges,
+  type ChargeResponse,
+  type UnmaskedChargeResponse,
+  type PayoutResponse,
+  type Charge,
+  type UnmaskedCharge,
+  type Payout,
+  type PaymentRail,
+  type PaykeyDetails,
+  type CustomerDetails,
+  type ConsentType,
+  type MaskedPaymentDevice,
+  type ChargeConfiguration,
+  type PaymentStatus,
+  type PaymentStatusHistory,
+  type RelatedPayment,
+  type PaymentAuthorizationProof,
+  type PaymentDevice,
+  type PayoutConfiguration,
+  type BalanceCheckMode,
+  type SimulatedPaymentOutcome,
+  type PaymentRelationship,
+  type PaymentType,
+  type PaymentDocumentType,
+  type ChargeRetrieveParams,
+  type ChargeUpdateParams,
+  type ChargeCreateParams,
+  type ChargeHoldParams,
+  type ChargeReleaseParams,
+  type ChargeCancelParams,
+  type ChargeListUnmaskedParams,
+  type ChargeResubmitParams,
+  type ChargeRefundParams,
+  type ChargeUploadAuthorizationProofParams,
+} from './resources/charges';
+import {
+  FundingEvents,
+  type FundingEventSummaryList,
+  type FundingEventResponse,
+  type FundingEventSimulation,
+  type FundingEventPaymentList,
+  type FundingEventSummary,
+  type FundingEvent,
+  type FundingEventSimulationResult,
+  type FundingEventPayment,
+  type TransferDirection,
+  type FundingEventType,
+  type FundingEventTransferDirection,
+  type FundingEventConfiguration,
+  type FundingEventPaymentReason,
+  type FundingEventListParams,
+  type FundingEventRetrieveParams,
+  type FundingEventSimulateParams,
+  type FundingEventListPaymentsParams,
+} from './resources/funding-events';
+import {
+  Payments,
+  type PaymentSummaryList,
+  type PaymentSummary,
+  type PaymentListParams,
+} from './resources/payments';
+import {
+  Payouts,
+  type UnmaskedPayoutResponse,
+  type UnmaskedPayout,
+  type PayoutRetrieveParams,
+  type PayoutUpdateParams,
+  type PayoutCreateParams,
+  type PayoutHoldParams,
+  type PayoutReleaseParams,
+  type PayoutCancelParams,
+  type PayoutListUnmaskedParams,
+  type PayoutResubmitParams,
+  type PayoutUploadAuthorizationProofParams,
+} from './resources/payouts';
+import {
+  AccountSettingResource,
+  type AccountSettingsResponse,
+  type AccountSettings,
+  type ChargeSettings,
+  type PayoutSettings,
+  type AccountStatementSettings,
+  type AccountPaymentTypeSettings,
+  type AccountCustomerTypeSettings,
+  type AccountConsentSettings,
+  type AccountPolicyControls,
+  type AccountSettingRetrieveParams,
+} from './resources/account-settings';
+import {
+  Webhooks,
+  type AccountCreatedV1WebhookEvent,
+  type AccountEventV1WebhookEvent,
+  type RepresentativeEventV1WebhookEvent,
+  type RepresentativeCreatedV1WebhookEvent,
+  type LinkedBankAccountEventV1WebhookEvent,
+  type LinkedBankAccountCreatedV1WebhookEvent,
+  type CapabilityRequestEventV1WebhookEvent,
+  type CapabilityRequestCreatedV1WebhookEvent,
+  type CustomerEventV1WebhookEvent,
+  type CustomerCreatedV1WebhookEvent,
+  type PaykeyEventV1WebhookEvent,
+  type PaykeyCreatedV1WebhookEvent,
+  type ChargeCreatedV1WebhookEvent,
+  type ChargeEventV1WebhookEvent,
+  type PayoutCreatedV1WebhookEvent,
+  type PayoutEventV1WebhookEvent,
+  type PlatformEventV1WebhookEvent,
+  type PlatformCreatedV1WebhookEvent,
+  type UserEventV1WebhookEvent,
+  type UserCreatedV1WebhookEvent,
+  type FundingEventCreatedV1WebhookEvent,
+  type FundingEventEventV1WebhookEvent,
+  type ParsedWebhookEvent,
+} from './resources/webhooks';
 
-const environments = {
-  sandbox: 'https://sandbox.straddle.com',
-  production: 'https://production.straddle.com',
-};
-type Environment = keyof typeof environments;
+export type AuthTokenProvider = () => string | Promise<string>;
 
 export interface ClientOptions {
   /**
-   * Use your Straddle API Key in the Authorization header as Bearer <token> to authorize API requests.
+   * Send the API key as a bearer token in the `Authorization` header.
    */
-  apiKey?: string | undefined;
+  bearer?: string | AuthTokenProvider | undefined;
 
   /**
-   * Specifies the environment to use for the API.
-   *
-   * Each environment maps to a different base URL:
-   * - `sandbox` corresponds to `https://sandbox.straddle.com`
-   * - `production` corresponds to `https://production.straddle.com`
+   * Secret used to verify incoming webhook signatures.
    */
-  environment?: Environment | undefined;
+  webhookSecret?: string | null | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['STRADDLE_BASE_URL'].
+   * Defaults to process.env["STRADDLE_BASE_URL"].
    */
   baseURL?: string | null | undefined;
 
@@ -144,6 +316,7 @@ export interface ClientOptions {
    * @unit milliseconds
    */
   timeout?: number | undefined;
+
   /**
    * Additional `RequestInit` options to be passed to `fetch` calls.
    * Properties will be overridden by per-request `fetchOptions`.
@@ -184,7 +357,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['STRADDLE_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env["STRADDLE_LOG"] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -196,11 +369,14 @@ export interface ClientOptions {
   logger?: Logger | undefined;
 }
 
+export type StraddleAPIOptions = ClientOptions;
+
 /**
- * API Client for interfacing with the Straddle API.
+ * API Client for interfacing with the StraddleApi API.
  */
-export class Straddle {
-  apiKey: string;
+export class StraddleAPI {
+  bearer: string | AuthTokenProvider;
+  webhookSecret: string | null;
 
   baseURL: string;
   maxRetries: number;
@@ -208,18 +384,19 @@ export class Straddle {
   logger: Logger;
   logLevel: LogLevel | undefined;
   fetchOptions: MergedRequestInit | undefined;
-
   private fetch: Fetch;
   #encoder: Opts.RequestEncoder;
   protected idempotencyHeader?: string;
+  private _baseURLOverridden: boolean;
+  private _defaultBaseURL: string;
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Straddle API.
+   * API Client for interfacing with the StraddleApi API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['STRADDLE_API_KEY'] ?? undefined]
-   * @param {Environment} [opts.environment=sandbox] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['STRADDLE_BASE_URL'] ?? https://sandbox.straddle.com] - Override the default base URL for the API.
+   * @param {string | AuthTokenProvider | undefined} [opts.bearer=process.env["BEARER"] ?? undefined]
+   * @param {string | null | undefined} [opts.webhookSecret=process.env["STRADDLE_WEBHOOK_SECRET"] ?? null]
+   * @param {string} [opts.baseURL=process.env["STRADDLE_BASE_URL"] ?? https://sandbox.straddle.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -229,37 +406,33 @@ export class Straddle {
    */
   constructor({
     baseURL = readEnv('STRADDLE_BASE_URL'),
-    apiKey = readEnv('STRADDLE_API_KEY'),
+    bearer = readEnv('BEARER'),
+    webhookSecret = readEnv('STRADDLE_WEBHOOK_SECRET') ?? null,
     ...opts
   }: ClientOptions = {}) {
-    if (apiKey === undefined) {
-      throw new Errors.StraddleError(
-        "The STRADDLE_API_KEY environment variable is missing or empty; either provide it, or instantiate the Straddle client with an apiKey option, like new Straddle({ apiKey: 'My API Key' }).",
+    if (bearer === undefined) {
+      throw new Errors.StraddleAPIError(
+        "The BEARER environment variable is missing or empty; either provide it, or instantiate the StraddleAPI client with an bearer option, like new StraddleAPI({ bearer: 'My Bearer' }).",
       );
     }
 
     const options: ClientOptions = {
-      apiKey,
+      bearer,
+      webhookSecret,
       ...opts,
-      baseURL,
-      environment: opts.environment ?? 'sandbox',
+      baseURL: baseURL || 'https://sandbox.straddle.com',
     };
-
-    if (baseURL && opts.environment) {
-      throw new Errors.StraddleError(
-        'Ambiguous URL; The `baseURL` option (or STRADDLE_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
-      );
-    }
-
-    this.baseURL = options.baseURL || environments[options.environment || 'sandbox'];
-    this.timeout = options.timeout ?? Straddle.DEFAULT_TIMEOUT /* 1 minute */;
+    const baseURLOverridden = baseURL !== null && baseURL !== undefined && baseURL !== '';
+    const defaultBaseURL = 'https://sandbox.straddle.com';
+    this.baseURL = options.baseURL || defaultBaseURL;
+    this.timeout = options.timeout ?? StraddleAPI.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('STRADDLE_LOG'), "process.env['STRADDLE_LOG']", this) ??
+      parseLogLevel(readEnv('STRADDLE_LOG'), 'process.env["STRADDLE_LOG"]', this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -278,48 +451,38 @@ export class Straddle {
       options.defaultHeaders = { ...parsed, ...options.defaultHeaders };
     }
 
-    this._options = options;
+    this._options = { ...options, baseURL: baseURLOverridden ? this.baseURL : undefined };
+    this._baseURLOverridden = baseURLOverridden;
+    this._defaultBaseURL = defaultBaseURL;
 
-    this.apiKey = apiKey;
+    this.bearer = bearer;
+    this.webhookSecret = webhookSecret;
   }
 
-  /**
-   * Create a new client instance re-using the same options given to the current client with optional overriding.
-   */
   withOptions(options: Partial<ClientOptions>): this {
-    const client = new (this.constructor as any as new (props: ClientOptions) => typeof this)({
+    const client = new (this.constructor as new (props: ClientOptions) => this)({
       ...this._options,
-      environment: options.environment ? options.environment : undefined,
-      baseURL: options.environment ? undefined : this.baseURL,
+      ...(this.#baseURLOverridden() ? { baseURL: this.baseURL } : {}),
       maxRetries: this.maxRetries,
       timeout: this.timeout,
       logger: this.logger,
       logLevel: this.logLevel,
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
-      apiKey: this.apiKey,
+      bearer: this.bearer,
+      webhookSecret: this.webhookSecret,
       ...options,
     });
     return client;
   }
 
-  /**
-   * Check whether the base URL is set to its default.
-   */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== environments[this._options.environment || 'sandbox'];
+    // A named environment selects a default URL; only explicit overrides should bypass per-request defaults.
+    return this._baseURLOverridden || this.baseURL !== this._defaultBaseURL;
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
     return this._options.defaultQuery;
-  }
-
-  protected validateHeaders({ values, nulls }: NullableHeaders) {
-    return;
-  }
-
-  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -331,12 +494,12 @@ export class Straddle {
   }
 
   protected defaultIdempotencyKey(): string {
-    return `stainless-node-retry-${uuid4()}`;
+    return `scalar-node-retry-${uuid4()}`;
   }
 
   protected makeStatusError(
     status: number,
-    error: Object,
+    error: object | undefined,
     message: string | undefined,
     headers: Headers,
   ): Errors.APIError {
@@ -349,10 +512,13 @@ export class Straddle {
     defaultBaseURL?: string | undefined,
   ): string {
     const baseURL = (!this.#baseURLOverridden() && defaultBaseURL) || this.baseURL;
-    const url =
-      isAbsoluteURL(path) ?
-        new URL(path)
-      : new URL(baseURL + (baseURL.endsWith('/') && path.startsWith('/') ? path.slice(1) : path));
+    // Guarantee exactly one "/" between baseURL and path so that bases without a trailing slash
+    // and paths without a leading slash do not fuse into a malformed URL (e.g. ".../v1" + "widgets").
+    const url = isAbsoluteURL(path)
+      ? new URL(path)
+      : new URL(
+          (baseURL.endsWith('/') ? baseURL : baseURL + '/') + (path.startsWith('/') ? path.slice(1) : path),
+        );
 
     const defaultQuery = this.defaultQuery();
     const pathQuery = Object.fromEntries(url.searchParams);
@@ -410,7 +576,7 @@ export class Straddle {
   ): APIPromise<Rsp> {
     return this.request(
       Promise.resolve(opts).then((opts) => {
-        return { method, path, ...opts };
+        return { method, path, ...opts } as FinalRequestOptions;
       }),
     );
   }
@@ -579,30 +745,6 @@ export class Straddle {
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
-  getAPIList<Item, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
-    path: string,
-    Page: new (...args: any[]) => PageClass,
-    opts?: PromiseOrValue<RequestOptions>,
-  ): Pagination.PagePromise<PageClass, Item> {
-    return this.requestAPIList(
-      Page,
-      opts && 'then' in opts ?
-        opts.then((opts) => ({ method: 'get', path, ...opts }))
-      : { method: 'get', path, ...opts },
-    );
-  }
-
-  requestAPIList<
-    Item = unknown,
-    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
-  >(
-    Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
-    options: PromiseOrValue<FinalRequestOptions>,
-  ): Pagination.PagePromise<PageClass, Item> {
-    const request = this.makeRequest(options, null, undefined);
-    return new Pagination.PagePromise<PageClass, Item>(this as any as Straddle, request, Page);
-  }
-
   async fetchWithTimeout(
     url: RequestInfo,
     init: RequestInit | undefined,
@@ -690,9 +832,18 @@ export class Straddle {
       }
     }
 
-    // If the API asks us to wait a certain amount of time, just do what it
-    // says, but otherwise calculate a default
-    if (timeoutMillis === undefined) {
+    // If the API asks us to wait a certain amount of time, just do what it says,
+    // but cap server-provided delays at 60s so an oversized or malformed Retry-After
+    // (e.g. `retry-after-ms: 999999999`, a past HTTP-date, or a value that Date.parse
+    // failed on) cannot block retries for an unbounded amount of time. Otherwise fall
+    // back to the default exponential-backoff calculation.
+    const maxRetryAfterMillis = 60 * 1000;
+    if (
+      timeoutMillis === undefined ||
+      !Number.isFinite(timeoutMillis) ||
+      timeoutMillis <= 0 ||
+      timeoutMillis > maxRetryAfterMillis
+    ) {
       const maxRetries = options.maxRetries ?? this.maxRetries;
       timeoutMillis = this.calculateDefaultRetryTimeoutMillis(retriesRemaining, maxRetries);
     }
@@ -727,7 +878,16 @@ export class Straddle {
     if ('timeout' in options) validatePositiveInteger('timeout', options.timeout);
     options.timeout = options.timeout ?? this.timeout;
     const { bodyHeaders, body } = this.buildBody({ options });
-    const reqHeaders = await this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
+    // Headers read the caller's own options, not the copy defaulted above: `X-Scalar-Timeout`
+    // reports an explicit per-request timeout, and the idempotency key written back here has to
+    // land where the retry can see it.
+    const reqHeaders = await this.buildHeaders({
+      options: inputOptions,
+      method,
+      bodyHeaders,
+      retryCount,
+      url,
+    });
 
     const req: FinalizedRequestInit = {
       method,
@@ -735,11 +895,12 @@ export class Straddle {
       ...(options.signal && { signal: options.signal }),
       ...((globalThis as any).ReadableStream &&
         body instanceof (globalThis as any).ReadableStream && { duplex: 'half' }),
-      ...(body && { body }),
+      // `buildBody` already collapses no-body into `undefined`; here we only need to drop that
+      // sentinel. A truthiness spread would also strip an intentional empty-string body.
+      ...(body !== undefined && { body }),
       ...((this.fetchOptions as any) ?? {}),
       ...((options.fetchOptions as any) ?? {}),
     };
-
     return { req, url, timeout: options.timeout };
   }
 
@@ -748,11 +909,13 @@ export class Straddle {
     method,
     bodyHeaders,
     retryCount,
+    url,
   }: {
     options: FinalRequestOptions;
     method: HTTPMethod;
     bodyHeaders: HeadersLike;
     retryCount: number;
+    url: string;
   }): Promise<Headers> {
     let idempotencyHeaders: HeadersLike = {};
     if (this.idempotencyHeader && method !== 'get') {
@@ -765,8 +928,8 @@ export class Straddle {
       {
         Accept: 'application/json',
         'User-Agent': this.getUserAgent(),
-        'X-Stainless-Retry-Count': String(retryCount),
-        ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
+        'X-Scalar-Retry-Count': String(retryCount),
+        ...(options.timeout ? { 'X-Scalar-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
       await this.authHeaders(options),
@@ -774,8 +937,9 @@ export class Straddle {
       bodyHeaders,
       options.headers,
     ]);
+    appendAuthCookies(headers.values, await this.authCookiesAsync());
 
-    this.validateHeaders(headers);
+    this.validateAuth(url, headers.values, options);
 
     return headers.values;
   }
@@ -790,7 +954,11 @@ export class Straddle {
     bodyHeaders: HeadersLike;
     body: BodyInit | undefined;
   } {
-    if (!body) {
+    // Skip only `null`/`undefined` so an intentional empty-string (or 0/false) payload still
+    // reaches the encoder. A plain `!body` check would silently drop those falsy-but-valid bodies,
+    // and `null` must be excluded here too because the iterator check below uses `in`, which
+    // throws on null.
+    if (body == null) {
       return { bodyHeaders: undefined, body: undefined };
     }
     const headers = buildHeaders([rawHeaders]);
@@ -799,9 +967,12 @@ export class Straddle {
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      (typeof body === 'string' &&
-        // Preserve legacy string encoding behavior for now
-        headers.values.has('content-type')) ||
+      // Always pass strings through verbatim. The previous guard required a caller-set
+      // `content-type` and otherwise fell through to `FallbackEncoder`, which JSON.stringifies
+      // the value and labels it `application/json` — silently quoting plain-text payloads and
+      // mislabeling them as JSON. fetch defaults a string body to `text/plain;charset=UTF-8`
+      // when no `content-type` is set, which is a safer default than misclaiming JSON.
+      typeof body === 'string' ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -831,10 +1002,74 @@ export class Straddle {
     }
   }
 
-  static Straddle = this;
+  protected validateAuth(url: string, headers: Headers, options: FinalRequestOptions): void {
+    if (headers.has('Authorization')) return;
+    if (headerExplicitlyOmitted(options.headers, 'Authorization')) return;
+    throw new Errors.AuthenticationError(
+      401,
+      undefined,
+      'Could not resolve authentication method. Expected the bearer to be set. Or for the "Authorization" headers to be explicitly omitted',
+      headers,
+    );
+  }
+
+  authHeadersSync(): Record<string, string> {
+    const headers: Record<string, string> = {};
+    const bearer = this.resolveAuthOptionSync('bearer', this.bearer);
+    if (bearer) headers['Authorization'] = `Bearer ${bearer}`;
+    return headers;
+  }
+
+  webSocketAuthHeaders(): Record<string, string> {
+    const bearer = this.resolveAuthOptionSync('bearer', this.bearer);
+    if (bearer) return { Authorization: `Bearer ${bearer}` };
+    return {};
+  }
+
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    const bearer = await this.resolveAuthOption('bearer', this.bearer);
+    if (bearer == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${bearer}` }]);
+  }
+
+  private async authQueryAsync(): Promise<Record<string, string>> {
+    const query: Record<string, string> = {};
+    return query;
+  }
+
+  private async authCookiesAsync(): Promise<Record<string, string>> {
+    const cookies: Record<string, string> = {};
+    return cookies;
+  }
+
+  private async resolveAuthOption(
+    optionName: string,
+    value: string | AuthTokenProvider | null | undefined,
+  ): Promise<string | undefined> {
+    if (value == null) return undefined;
+    const token = typeof value === 'function' ? await value() : value;
+    if (!token)
+      throw new Errors.StraddleAPIError(`Expected '${optionName}' to resolve to a non-empty string.`);
+    return token;
+  }
+
+  private resolveAuthOptionSync(
+    optionName: string,
+    value: string | AuthTokenProvider | null | undefined,
+  ): string | undefined {
+    if (value == null) return undefined;
+    const token = typeof value === 'function' ? value() : value;
+    if (typeof token !== 'string' || !token)
+      throw new Errors.StraddleAPIError(`Expected '${optionName}' to resolve to a non-empty string.`);
+    return token;
+  }
+
+  static StraddleAPI = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static StraddleError = Errors.StraddleError;
+  static StraddleAPIError = Errors.StraddleAPIError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -848,150 +1083,333 @@ export class Straddle {
   static PermissionDeniedError = Errors.PermissionDeniedError;
   static UnprocessableEntityError = Errors.UnprocessableEntityError;
 
-  static toFile = Uploads.toFile;
+  static toFile = toFile;
 
-  embed: API.Embed = new API.Embed(this);
-  /**
-   * Bridge provides a comprehensive suite of tools for connecting customer bank accounts. Use it to generate secure widget sessions for instant account verification, accept tokens from major providers like Plaid and Finicity, or verify accounts directly via our API. Bridge handles all sensitive banking credentials and ensures secure, compliant connections with support for 90% of US bank accounts.
-   */
-  bridge: API.Bridge = new API.Bridge(this);
-  /**
-   * Customers represent the end users who send or receive payments through your integration. Each customer undergoes automatic identity verification and fraud screening upon creation. Use customers to track payment history, manage bank account connections, and maintain a secure record of all transactions associated with a user. Customers can be either individuals or businesses with appropriate compliance checks for each type.
-   */
-  customers: API.Customers = new API.Customers(this);
-  /**
-   * Paykeys are secure tokens that link verified customer identities to their bank accounts. Each Paykey includes built-in balance checking, fraud detection through LSTM machine learning models, and can be reused for subscriptions and recurring payments without storing sensitive data. Paykeys eliminate fraud by ensuring the person initiating payment owns the funding account.
-   */
-  paykeys: API.Paykeys = new API.Paykeys(this);
-  /**
-   * Charges represent attempts to debit money from a customer's bank account using a Paykey. Each charge includes automatic balance verification, real-time fraud screening, and multi-rail optimization and detailed status tracking throughout the payment lifecycle. Use charges to accept bank payments with confidence knowing every transaction is protected.
-   */
-  charges: API.Charges = new API.Charges(this);
-  /**
-   * Funding events represent all money movement between Straddle and an Account's external bank accounts. They are automatically generated when charges settle or payouts are initiated. Each event provides detailed tracking of settlement status, fee breakdowns, and reconciliation data across both incoming and outgoing transfers. Use funding events to monitor your platform's entire money movement lifecycle.
-   */
-  fundingEvents: API.FundingEvents = new API.FundingEvents(this);
-  /**
-   * Payments provide endpoints to filter both Charges and Payouts with multiple different parameters.
-   */
-  payments: API.Payments = new API.Payments(this);
-  /**
-   * Payouts represent transfers from Straddle to customer bank accounts. Create payouts to handle disbursements, process refunds, or manage marketplace settlements. Use payouts to send money quickly and securely with the most cost-effective rail automatically selected.
-   */
-  payouts: API.Payouts = new API.Payouts(this);
-  reports: API.Reports = new API.Reports(this);
+  accounts: Accounts = new Accounts(this);
+  capabilityRequests: CapabilityRequests = new CapabilityRequests(this);
+  linkedBankAccounts: LinkedBankAccounts = new LinkedBankAccounts(this);
+  organizations: Organizations = new Organizations(this);
+  representatives: Representatives = new Representatives(this);
+  bridge: Bridge = new Bridge(this);
+  customers: Customers = new Customers(this);
+  paykeys: Paykeys = new Paykeys(this);
+  charges: Charges = new Charges(this);
+  fundingEvents: FundingEvents = new FundingEvents(this);
+  payments: Payments = new Payments(this);
+  payouts: Payouts = new Payouts(this);
+  accountSettings: AccountSettingResource = new AccountSettingResource(this);
+  webhooks: Webhooks = new Webhooks(this);
 }
 
-Straddle.Embed = Embed;
-Straddle.Bridge = Bridge;
-Straddle.Customers = Customers;
-Straddle.Paykeys = Paykeys;
-Straddle.Charges = Charges;
-Straddle.FundingEvents = FundingEvents;
-Straddle.Payments = Payments;
-Straddle.Payouts = Payouts;
-Straddle.Reports = Reports;
+StraddleAPI.Accounts = Accounts;
+StraddleAPI.CapabilityRequests = CapabilityRequests;
+StraddleAPI.LinkedBankAccounts = LinkedBankAccounts;
+StraddleAPI.Organizations = Organizations;
+StraddleAPI.Representatives = Representatives;
+StraddleAPI.Bridge = Bridge;
+StraddleAPI.Customers = Customers;
+StraddleAPI.Paykeys = Paykeys;
+StraddleAPI.Charges = Charges;
+StraddleAPI.FundingEvents = FundingEvents;
+StraddleAPI.Payments = Payments;
+StraddleAPI.Payouts = Payouts;
+StraddleAPI.AccountSettingResource = AccountSettingResource;
+StraddleAPI.Webhooks = Webhooks;
 
-export declare namespace Straddle {
+export declare namespace StraddleAPI {
   export type RequestOptions = Opts.RequestOptions;
-
-  export import PageNumberSchema = Pagination.PageNumberSchema;
   export {
-    type PageNumberSchemaParams as PageNumberSchemaParams,
-    type PageNumberSchemaResponse as PageNumberSchemaResponse,
+    Accounts as Accounts,
+    type AccountResponse as AccountResponse,
+    type AccountList as AccountList,
+    type ResponseMetadata as ResponseMetadata,
+    type Account as Account,
+    type PageMetadata as PageMetadata,
+    type AccountStatusDetail as AccountStatusDetail,
+    type AccountBusinessProfile as AccountBusinessProfile,
+    type AccountCapabilities as AccountCapabilities,
+    type AccountPaymentSettings as AccountPaymentSettings,
+    type TermsOfService as TermsOfService,
+    type SortOrder as SortOrder,
+    type AccountAddress as AccountAddress,
+    type AccountIndustry as AccountIndustry,
+    type AccountSupportChannels as AccountSupportChannels,
+    type AccountPaymentCapabilities as AccountPaymentCapabilities,
+    type AccountCustomerCapabilities as AccountCustomerCapabilities,
+    type AccountConsentCapabilities as AccountConsentCapabilities,
+    type AccountChargeSettings as AccountChargeSettings,
+    type AccountPayoutSettings as AccountPayoutSettings,
+    type AccountCapability as AccountCapability,
+    type AccountRetrieveParams as AccountRetrieveParams,
+    type AccountUpdateParams as AccountUpdateParams,
+    type AccountCreateParams as AccountCreateParams,
+    type AccountListParams as AccountListParams,
+    type AccountOnboardParams as AccountOnboardParams,
+    type AccountSimulateOnboardingParams as AccountSimulateOnboardingParams,
   };
 
-  export { Embed as Embed };
+  export {
+    CapabilityRequests as CapabilityRequests,
+    type CapabilityRequestList as CapabilityRequestList,
+    type CapabilityRequest as CapabilityRequest,
+    type CapabilityRequestCreateParams as CapabilityRequestCreateParams,
+    type CapabilityRequestListParams as CapabilityRequestListParams,
+  };
+
+  export {
+    LinkedBankAccounts as LinkedBankAccounts,
+    type LinkedBankAccountResponse as LinkedBankAccountResponse,
+    type LinkedBankAccountList as LinkedBankAccountList,
+    type UnmaskedLinkedBankAccountResponse as UnmaskedLinkedBankAccountResponse,
+    type LinkedBankAccount as LinkedBankAccount,
+    type UnmaskedLinkedBankAccount as UnmaskedLinkedBankAccount,
+    type LinkedBankAccountStatusDetail as LinkedBankAccountStatusDetail,
+    type MaskedLinkedBankAccountDetails as MaskedLinkedBankAccountDetails,
+    type UnmaskedLinkedBankAccountDetails as UnmaskedLinkedBankAccountDetails,
+    type LinkedBankAccountCreateParams as LinkedBankAccountCreateParams,
+    type LinkedBankAccountListParams as LinkedBankAccountListParams,
+    type LinkedBankAccountUpdateParams as LinkedBankAccountUpdateParams,
+    type LinkedBankAccountRetrieveParams as LinkedBankAccountRetrieveParams,
+    type LinkedBankAccountListUnmaskedParams as LinkedBankAccountListUnmaskedParams,
+    type LinkedBankAccountCancelParams as LinkedBankAccountCancelParams,
+  };
+
+  export {
+    Organizations as Organizations,
+    type OrganizationResponse as OrganizationResponse,
+    type OrganizationList as OrganizationList,
+    type Organization as Organization,
+    type OrganizationCreateParams as OrganizationCreateParams,
+    type OrganizationListParams as OrganizationListParams,
+    type OrganizationRetrieveParams as OrganizationRetrieveParams,
+  };
+
+  export {
+    Representatives as Representatives,
+    type RepresentativeResponse as RepresentativeResponse,
+    type RepresentativeList as RepresentativeList,
+    type UnmaskedRepresentativeResponse as UnmaskedRepresentativeResponse,
+    type Representative as Representative,
+    type UnmaskedRepresentative as UnmaskedRepresentative,
+    type RepresentativeStatusDetail as RepresentativeStatusDetail,
+    type RepresentativeRelationship as RepresentativeRelationship,
+    type RepresentativeCreateParams as RepresentativeCreateParams,
+    type RepresentativeListParams as RepresentativeListParams,
+    type RepresentativeUpdateParams as RepresentativeUpdateParams,
+    type RepresentativeRetrieveParams as RepresentativeRetrieveParams,
+    type RepresentativeListUnmaskedParams as RepresentativeListUnmaskedParams,
+  };
 
   export {
     Bridge as Bridge,
-    type BridgeTokenV1 as BridgeTokenV1,
-    type BridgeInitializeParams as BridgeInitializeParams,
+    type PaykeyResponse as PaykeyResponse,
+    type BridgeTokenResponse as BridgeTokenResponse,
+    type RevealedPaykeyResponse as RevealedPaykeyResponse,
+    type ResponseType as ResponseType,
+    type Paykey as Paykey,
+    type BridgeToken as BridgeToken,
+    type RevealedPaykey as RevealedPaykey,
+    type PaykeySource as PaykeySource,
+    type PaykeyStatus as PaykeyStatus,
+    type PaymentStatusDetails as PaymentStatusDetails,
+    type PaykeyBankDetails as PaykeyBankDetails,
+    type PaykeyConfiguration as PaykeyConfiguration,
+    type PaykeyBalanceDetails as PaykeyBalanceDetails,
+    type PaymentStatusReason as PaymentStatusReason,
+    type PaymentStatusSource as PaymentStatusSource,
+    type AccountType as AccountType,
+    type SimulatedPaykeyOutcome as SimulatedPaykeyOutcome,
+    type PaykeyProcessingMode as PaykeyProcessingMode,
+    type PaykeyBalanceRefreshStatus as PaykeyBalanceRefreshStatus,
+    type BridgeCreateBankAccountPaykeyParams as BridgeCreateBankAccountPaykeyParams,
+    type BridgeCreatePlaidPaykeyParams as BridgeCreatePlaidPaykeyParams,
+    type BridgeCreateTokenParams as BridgeCreateTokenParams,
+    type BridgeCreateQuilttPaykeyParams as BridgeCreateQuilttPaykeyParams,
   };
 
   export {
     Customers as Customers,
-    type CustomerAddressV1 as CustomerAddressV1,
-    type CustomerSummaryPagedV1 as CustomerSummaryPagedV1,
-    type CustomerUnmaskedV1 as CustomerUnmaskedV1,
-    type CustomerV1 as CustomerV1,
-    type DeviceUnmaskedV1 as DeviceUnmaskedV1,
-    type CustomerSummaryPagedV1DataPageNumberSchema as CustomerSummaryPagedV1DataPageNumberSchema,
-    type CustomerCreateParams as CustomerCreateParams,
+    type CustomerResponse as CustomerResponse,
+    type CustomerSummaryList as CustomerSummaryList,
+    type UnmaskedCustomerResponse as UnmaskedCustomerResponse,
+    type Customer as Customer,
+    type CustomerSummary as CustomerSummary,
+    type UnmaskedCustomer as UnmaskedCustomer,
+    type CustomerType as CustomerType,
+    type CustomerStatus as CustomerStatus,
+    type CustomerAddress as CustomerAddress,
+    type ComplianceProfile as ComplianceProfile,
+    type MaskedCustomerDevice as MaskedCustomerDevice,
+    type CustomerConfiguration as CustomerConfiguration,
+    type UnmaskedComplianceProfile as UnmaskedComplianceProfile,
+    type CustomerDevice as CustomerDevice,
+    type BusinessCustomerRepresentative as BusinessCustomerRepresentative,
+    type SimulatedCustomerOutcome as SimulatedCustomerOutcome,
+    type CustomerRetrieveParams as CustomerRetrieveParams,
     type CustomerUpdateParams as CustomerUpdateParams,
-    type CustomerListParams as CustomerListParams,
     type CustomerDeleteParams as CustomerDeleteParams,
-    type CustomerGetParams as CustomerGetParams,
-    type CustomerUnmaskedParams as CustomerUnmaskedParams,
+    type CustomerListParams as CustomerListParams,
+    type CustomerCreateParams as CustomerCreateParams,
+    type CustomerListUnmaskedParams as CustomerListUnmaskedParams,
+    type CustomerRefreshReviewParams as CustomerRefreshReviewParams,
   };
 
   export {
     Paykeys as Paykeys,
-    type PaykeySummaryPagedV1 as PaykeySummaryPagedV1,
-    type PaykeyUnmaskedV1 as PaykeyUnmaskedV1,
-    type PaykeyV1 as PaykeyV1,
-    type PaykeyRevealResponse as PaykeyRevealResponse,
-    type PaykeySummaryPagedV1DataPageNumberSchema as PaykeySummaryPagedV1DataPageNumberSchema,
+    type UnmaskedPaykeyResponse as UnmaskedPaykeyResponse,
+    type PaykeySummaryList as PaykeySummaryList,
+    type UnmaskedPaykey as UnmaskedPaykey,
+    type PaykeySummary as PaykeySummary,
+    type UnmaskedPaykeyBankDetails as UnmaskedPaykeyBankDetails,
+    type PaykeyRetrieveParams as PaykeyRetrieveParams,
+    type PaykeyListUnmaskedParams as PaykeyListUnmaskedParams,
     type PaykeyListParams as PaykeyListParams,
-    type PaykeyCancelParams as PaykeyCancelParams,
-    type PaykeyGetParams as PaykeyGetParams,
     type PaykeyRevealParams as PaykeyRevealParams,
-    type PaykeyUnmaskedParams as PaykeyUnmaskedParams,
-    type PaykeyUpdateBalanceParams as PaykeyUpdateBalanceParams,
+    type PaykeyCancelParams as PaykeyCancelParams,
+    type PaykeyRefreshReviewParams as PaykeyRefreshReviewParams,
+    type PaykeyRefreshBalanceParams as PaykeyRefreshBalanceParams,
+    type PaykeyUnblockParams as PaykeyUnblockParams,
   };
 
   export {
     Charges as Charges,
-    type ChargeV1 as ChargeV1,
-    type ChargeUnmaskResponse as ChargeUnmaskResponse,
-    type ChargeCreateParams as ChargeCreateParams,
+    type ChargeResponse as ChargeResponse,
+    type UnmaskedChargeResponse as UnmaskedChargeResponse,
+    type PayoutResponse as PayoutResponse,
+    type Charge as Charge,
+    type UnmaskedCharge as UnmaskedCharge,
+    type Payout as Payout,
+    type PaymentRail as PaymentRail,
+    type PaykeyDetails as PaykeyDetails,
+    type CustomerDetails as CustomerDetails,
+    type ConsentType as ConsentType,
+    type MaskedPaymentDevice as MaskedPaymentDevice,
+    type ChargeConfiguration as ChargeConfiguration,
+    type PaymentStatus as PaymentStatus,
+    type PaymentStatusHistory as PaymentStatusHistory,
+    type RelatedPayment as RelatedPayment,
+    type PaymentAuthorizationProof as PaymentAuthorizationProof,
+    type PaymentDevice as PaymentDevice,
+    type PayoutConfiguration as PayoutConfiguration,
+    type BalanceCheckMode as BalanceCheckMode,
+    type SimulatedPaymentOutcome as SimulatedPaymentOutcome,
+    type PaymentRelationship as PaymentRelationship,
+    type PaymentType as PaymentType,
+    type PaymentDocumentType as PaymentDocumentType,
+    type ChargeRetrieveParams as ChargeRetrieveParams,
     type ChargeUpdateParams as ChargeUpdateParams,
-    type ChargeCancelParams as ChargeCancelParams,
-    type ChargeGetParams as ChargeGetParams,
+    type ChargeCreateParams as ChargeCreateParams,
     type ChargeHoldParams as ChargeHoldParams,
     type ChargeReleaseParams as ChargeReleaseParams,
-    type ChargeUnmaskParams as ChargeUnmaskParams,
+    type ChargeCancelParams as ChargeCancelParams,
+    type ChargeListUnmaskedParams as ChargeListUnmaskedParams,
+    type ChargeResubmitParams as ChargeResubmitParams,
+    type ChargeRefundParams as ChargeRefundParams,
+    type ChargeUploadAuthorizationProofParams as ChargeUploadAuthorizationProofParams,
   };
 
   export {
     FundingEvents as FundingEvents,
-    type FundingEventSummaryItemV1 as FundingEventSummaryItemV1,
-    type FundingEventSummaryPagedV1 as FundingEventSummaryPagedV1,
-    type FundingEventSummaryPagedV1DataPageNumberSchema as FundingEventSummaryPagedV1DataPageNumberSchema,
+    type FundingEventSummaryList as FundingEventSummaryList,
+    type FundingEventResponse as FundingEventResponse,
+    type FundingEventSimulation as FundingEventSimulation,
+    type FundingEventPaymentList as FundingEventPaymentList,
+    type FundingEventSummary as FundingEventSummary,
+    type FundingEvent as FundingEvent,
+    type FundingEventSimulationResult as FundingEventSimulationResult,
+    type FundingEventPayment as FundingEventPayment,
+    type TransferDirection as TransferDirection,
+    type FundingEventType as FundingEventType,
+    type FundingEventTransferDirection as FundingEventTransferDirection,
+    type FundingEventConfiguration as FundingEventConfiguration,
+    type FundingEventPaymentReason as FundingEventPaymentReason,
     type FundingEventListParams as FundingEventListParams,
-    type FundingEventGetParams as FundingEventGetParams,
+    type FundingEventRetrieveParams as FundingEventRetrieveParams,
+    type FundingEventSimulateParams as FundingEventSimulateParams,
+    type FundingEventListPaymentsParams as FundingEventListPaymentsParams,
   };
 
   export {
     Payments as Payments,
-    type PaymentSummaryPagedV1 as PaymentSummaryPagedV1,
-    type PaymentSummaryPagedV1DataPageNumberSchema as PaymentSummaryPagedV1DataPageNumberSchema,
+    type PaymentSummaryList as PaymentSummaryList,
+    type PaymentSummary as PaymentSummary,
     type PaymentListParams as PaymentListParams,
   };
 
   export {
     Payouts as Payouts,
-    type PayoutV1 as PayoutV1,
-    type PayoutUnmaskResponse as PayoutUnmaskResponse,
-    type PayoutCreateParams as PayoutCreateParams,
+    type UnmaskedPayoutResponse as UnmaskedPayoutResponse,
+    type UnmaskedPayout as UnmaskedPayout,
+    type PayoutRetrieveParams as PayoutRetrieveParams,
     type PayoutUpdateParams as PayoutUpdateParams,
-    type PayoutCancelParams as PayoutCancelParams,
-    type PayoutGetParams as PayoutGetParams,
+    type PayoutCreateParams as PayoutCreateParams,
     type PayoutHoldParams as PayoutHoldParams,
     type PayoutReleaseParams as PayoutReleaseParams,
-    type PayoutUnmaskParams as PayoutUnmaskParams,
+    type PayoutCancelParams as PayoutCancelParams,
+    type PayoutListUnmaskedParams as PayoutListUnmaskedParams,
+    type PayoutResubmitParams as PayoutResubmitParams,
+    type PayoutUploadAuthorizationProofParams as PayoutUploadAuthorizationProofParams,
   };
 
   export {
-    Reports as Reports,
-    type ReportCreateTotalCustomersByStatusResponse as ReportCreateTotalCustomersByStatusResponse,
-    type ReportCreateTotalCustomersByStatusParams as ReportCreateTotalCustomersByStatusParams,
+    AccountSettingResource as AccountSettingResource,
+    type AccountSettingsResponse as AccountSettingsResponse,
+    type AccountSettings as AccountSettings,
+    type ChargeSettings as ChargeSettings,
+    type PayoutSettings as PayoutSettings,
+    type AccountStatementSettings as AccountStatementSettings,
+    type AccountPaymentTypeSettings as AccountPaymentTypeSettings,
+    type AccountCustomerTypeSettings as AccountCustomerTypeSettings,
+    type AccountConsentSettings as AccountConsentSettings,
+    type AccountPolicyControls as AccountPolicyControls,
+    type AccountSettingRetrieveParams as AccountSettingRetrieveParams,
   };
 
-  export type CustomerDetailsV1 = API.CustomerDetailsV1;
-  export type DeviceInfoV1 = API.DeviceInfoV1;
-  export type PagedResponseMetadata = API.PagedResponseMetadata;
-  export type PaykeyDetailsV1 = API.PaykeyDetailsV1;
-  export type ResponseMetadata = API.ResponseMetadata;
-  export type StatusDetailsV1 = API.StatusDetailsV1;
+  export {
+    Webhooks as Webhooks,
+    type AccountCreatedV1WebhookEvent as AccountCreatedV1WebhookEvent,
+    type AccountEventV1WebhookEvent as AccountEventV1WebhookEvent,
+    type RepresentativeEventV1WebhookEvent as RepresentativeEventV1WebhookEvent,
+    type RepresentativeCreatedV1WebhookEvent as RepresentativeCreatedV1WebhookEvent,
+    type LinkedBankAccountEventV1WebhookEvent as LinkedBankAccountEventV1WebhookEvent,
+    type LinkedBankAccountCreatedV1WebhookEvent as LinkedBankAccountCreatedV1WebhookEvent,
+    type CapabilityRequestEventV1WebhookEvent as CapabilityRequestEventV1WebhookEvent,
+    type CapabilityRequestCreatedV1WebhookEvent as CapabilityRequestCreatedV1WebhookEvent,
+    type CustomerEventV1WebhookEvent as CustomerEventV1WebhookEvent,
+    type CustomerCreatedV1WebhookEvent as CustomerCreatedV1WebhookEvent,
+    type PaykeyEventV1WebhookEvent as PaykeyEventV1WebhookEvent,
+    type PaykeyCreatedV1WebhookEvent as PaykeyCreatedV1WebhookEvent,
+    type ChargeCreatedV1WebhookEvent as ChargeCreatedV1WebhookEvent,
+    type ChargeEventV1WebhookEvent as ChargeEventV1WebhookEvent,
+    type PayoutCreatedV1WebhookEvent as PayoutCreatedV1WebhookEvent,
+    type PayoutEventV1WebhookEvent as PayoutEventV1WebhookEvent,
+    type PlatformEventV1WebhookEvent as PlatformEventV1WebhookEvent,
+    type PlatformCreatedV1WebhookEvent as PlatformCreatedV1WebhookEvent,
+    type UserEventV1WebhookEvent as UserEventV1WebhookEvent,
+    type UserCreatedV1WebhookEvent as UserCreatedV1WebhookEvent,
+    type FundingEventCreatedV1WebhookEvent as FundingEventCreatedV1WebhookEvent,
+    type FundingEventEventV1WebhookEvent as FundingEventEventV1WebhookEvent,
+    type ParsedWebhookEvent as ParsedWebhookEvent,
+  };
 }
+
+const headerExplicitlyOmitted = (source: HeadersLike | undefined, name: string): boolean => {
+  if (!source || Array.isArray(source) || source instanceof Headers) return false;
+  const target = name.toLowerCase();
+  return Object.entries(source).some(([key, value]) => key.toLowerCase() === target && value === null);
+};
+
+const appendAuthCookies = (headers: Headers, cookies: Record<string, string>): void => {
+  for (const [name, value] of Object.entries(cookies)) {
+    if (cookieHeaderHas(headers.get('Cookie'), name)) continue;
+    const cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+    const existing = headers.get('Cookie');
+    headers.set('Cookie', existing ? existing + '; ' + cookie : cookie);
+  }
+};
+
+const cookieHeaderHas = (value: string | null, name: string): boolean => {
+  if (!value) return false;
+  const target = encodeURIComponent(name) + '=';
+  return value.split(';').some((cookie) => cookie.trim().startsWith(target));
+};
