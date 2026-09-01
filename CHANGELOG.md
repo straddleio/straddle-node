@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1 (2026-09-01)
+
+Full Changelog: [v3.1.0...v3.1.1](https://github.com/straddleio/straddle-node/compare/v3.1.0...v3.1.1)
+
 ## 3.1.0 (2026-08-20)
 
 Full Changelog: [v3.0.0...v3.1.0](https://github.com/straddleio/straddle-node/compare/v3.0.0...v3.1.0)
