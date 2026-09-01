@@ -1,6 +1,6 @@
 {
   "name": "@straddlecom/straddle",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "The Straddle API uses resource URLs, standard HTTP methods, and JSON request and response bodies.",
   "author": "Straddle API",
   "repository": {
