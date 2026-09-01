@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "The Straddle API uses resource URLs, standard HTTP methods, and JSON request and response bodies.",
   "author": "Straddle API",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/straddleio/straddle-node.git"
+  },
   "type": "module",
   "sideEffects": false,
   "main": "./dist/cjs/index.js",
