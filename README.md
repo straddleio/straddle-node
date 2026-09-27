@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This SDK has moved to [straddle-build/straddle-typescript](https://github.com/straddle-build/straddle-typescript). New development and releases happen there. The npm package name is unchanged, [`@straddlecom/straddle`](https://www.npmjs.com/package/@straddlecom/straddle), and its `latest` dist-tag (1.0.0 onward) is published from the new repository. Version 2.0.0 on npm was published from this repository before the move, so a range like `^2` still resolves to the old SDK. The rest of this README describes the SDK as released from this repository and has not been updated for the new one.
+
 # Straddle TypeScript API Library
 
 [![NPM version](<https://img.shields.io/npm/v/@straddlecom/straddle.svg?label=npm%20(stable)>)](https://npmjs.org/package/@straddlecom/straddle) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@straddlecom/straddle)
